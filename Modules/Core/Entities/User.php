@@ -1,0 +1,149 @@
+<?php
+
+namespace Modules\Core\Entities;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable
+{
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'avatar',
+        'user_type',
+        'is_active',
+        'email_verified_at',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'is_active' => 'boolean',
+        'password' => 'hashed',
+    ];
+
+    /**
+     * Relationships
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user')
+            ->withTimestamps();
+    }
+
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+
+    /**
+     * Scopes
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeByType($query, string $type)
+    {
+        return $query->where('user_type', $type);
+    }
+
+    public function scopeAdmins($query)
+    {
+        return $query->where('user_type', 'admin');
+    }
+
+    public function scopeTeachers($query)
+    {
+        return $query->where('user_type', 'teacher');
+    }
+
+    public function scopeStudents($query)
+    {
+        return $query->where('user_type', 'student');
+    }
+
+    public function scopeParents($query)
+    {
+        return $query->where('user_type', 'parent');
+    }
+
+    /**
+     * Helper Methods
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function hasAnyRole(array $roles): bool
+    {
+        return $this->roles()->whereIn('name', $roles)->exists();
+    }
+
+    public function hasPermission(string $permission): bool
+    {
+        return $this->roles()
+            ->whereHas('permissions', function ($query) use ($permission) {
+                $query->where('name', $permission);
+            })
+            ->exists();
+    }
+
+    public function assignRole(string $role): void
+    {
+        $roleModel = Role::where('name', $role)->first();
+        if ($roleModel && !$this->hasRole($role)) {
+            $this->roles()->attach($roleModel->id);
+        }
+    }
+
+    public function removeRole(string $role): void
+    {
+        $roleModel = Role::where('name', $role)->first();
+        if ($roleModel) {
+            $this->roles()->detach($roleModel->id);
+        }
+    }
+
+    public function getPermissions()
+    {
+        return $this->roles()->with('permissions')->get()
+            ->pluck('permissions')
+            ->flatten()
+            ->unique('id');
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->user_type === 'admin';
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->user_type === 'teacher';
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->user_type === 'student';
+    }
+
+    public function isParent(): bool
+    {
+        return $this->user_type === 'parent';
+    }
+}

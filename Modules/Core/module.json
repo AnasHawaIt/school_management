@@ -1,0 +1,17 @@
+{
+    "name": "Core",
+    "alias": "core",
+    "description": "Core module for authentication, users, roles and permissions",
+    "keywords": [
+        "core",
+        "auth",
+        "users",
+        "roles",
+        "permissions"
+    ],
+    "priority": 0,
+    "providers": [
+        "Modules\\Core\\Providers\\CoreServiceProvider"
+    ],
+    "files": []
+}
