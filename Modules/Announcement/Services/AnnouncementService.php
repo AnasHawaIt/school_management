@@ -14,17 +14,17 @@ class AnnouncementService
     {
         $announcement = Announcement::create($data);
 
-        // جلب أرقام المستخدمين فقط
-        $phones = User::pluck('phone')->toArray();
+        $users = User::select('id', 'phone')->get();
 
-        ActivityLog::log([
+         ActivityLog::log([
             'action' => 'create',
             'model_type' => Announcement::class,
             'model_id' => $announcement->id,
             'new_values' => $announcement->toArray(),
         ]);
 
-        event(new AnnouncementCreated($announcement, $phones));
+        event(new AnnouncementCreated($announcement, $users));
+
 
         return $announcement;
     }
@@ -40,7 +40,7 @@ class AnnouncementService
 
         $oldValues = $announcement->toArray();
 
-        $phones = User::pluck('phone')->toArray();
+        $users = User::select('id', 'phone')->get();
 
         $announcement->update($data);
 
@@ -52,7 +52,7 @@ class AnnouncementService
             'new_values' => $announcement->toArray(),
         ]);
 
-        event(new AnnouncementUpdated($announcement,$phones));
+        event(new AnnouncementUpdated($announcement, $users));
 
         return $announcement;
     }
@@ -63,7 +63,7 @@ class AnnouncementService
 
         $oldValues = $announcement->toArray();
 
-        $phones = User::pluck('phone')->toArray();
+        $users = User::select('id', 'phone')->get();
 
         $announcement->delete();
 
@@ -74,7 +74,8 @@ class AnnouncementService
             'old_values' => $oldValues,
         ]);
 
-        event(new AnnouncementDeleted($announcement,$phones));
+        event(new AnnouncementDeleted($announcement, $users));
+
     }
-    
+
 }

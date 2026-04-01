@@ -21,16 +21,6 @@ class AnnouncementController extends Controller
         // مثال: $this->middleware('auth');
     }
 
-//    public function test()
-//    {
-//        SendSmsJob::dispatch(
-//            '963993168007',
-//            'اختبار 🚀'
-//        );
-//
-//        return 'done';
-//    }
-
     public function index()
     {
         // استخدام الكاش لمدة 5 دقائق لتقليل استعلامات DB

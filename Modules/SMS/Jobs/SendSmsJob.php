@@ -18,16 +18,19 @@ class SendSmsJob implements ShouldQueue
 
     protected $phone;
     protected $message;
+    protected $announcementId;
 
-    public function __construct($phone, $message)
+    public function __construct($phone, $message, $announcementId)
     {
         $this->phone = $phone;
         $this->message = $message;
+        $this->announcementId = $announcementId;
     }
 
     public function handle(WhatsAppService $whatsApp)
     {
         $sms = SmsLog::create([
+            'announcement_id' => $this->announcementId,
             'phone' => $this->phone,
             'message' => $this->message,
             'status' => 'pending',

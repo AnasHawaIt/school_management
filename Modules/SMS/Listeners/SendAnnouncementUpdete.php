@@ -25,9 +25,10 @@ class SendAnnouncementUpdete
                     );
 
                     SendSmsJob::dispatch(
-                        "963993168007",//$user->phone,
-                        $message
-                    )->delay(now()->addSeconds(2));
+                        "963993168007",
+                        $message,
+                        $event->announcement->id
+                    )->delay(now()->addSeconds(2))->onQueue('sms');
 
                 }
             });
