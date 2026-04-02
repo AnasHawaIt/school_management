@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\User;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\AcademicYear;
+use Modules\Transport\Entities\Subscription;
 
 class Student extends Model
 {
@@ -92,4 +93,11 @@ class Student extends Model
     {
         return $query->where('academic_year_id', $yearId);
     }
+
+    // ========== TRANSPORT SUBSCRIPTION  ==========
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
 }
