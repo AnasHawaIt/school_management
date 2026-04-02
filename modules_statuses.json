@@ -3,5 +3,7 @@
     "School": true,
     "Academic": true,
     "Announcement": true,
-    "SMS": true
+    "SMS": true,
+    "Library": true,
+    "Transport": true
 }
