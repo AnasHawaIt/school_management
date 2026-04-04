@@ -21,7 +21,7 @@ class MemberController extends Controller
 
     public function index(Request $request)
     {
-        $members = Member::with('transactions')->get($request);
+        $members = Member::with('transactions')->get();
 
         return MemberResource::collection($members);
     }

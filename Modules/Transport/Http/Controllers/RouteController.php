@@ -4,53 +4,76 @@ namespace Modules\Transport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Transport\Events\BusEvents\BusDeleted;
+use Modules\Transport\Events\BusEvents\BusRestored;
+use Modules\Transport\Events\RouteEvents\RouteDeleted;
+use Modules\Transport\Events\RouteEvents\RouteRestored;
+use Modules\Transport\Http\Requests\StoreRouteRequest;
+use Modules\Transport\Http\Requests\UpdateRouteRequest;
+use Modules\Transport\Http\Requests\UpdateRouteStopRequest;
+use Modules\Transport\Http\Resources\RouteResource;
+use Modules\Transport\Repositories\Interfaces\RouteRepositoryInterface;
+use Modules\Transport\Services\RouteService;
 
 class RouteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $service;
+
+    public function __construct(RouteService $service)
     {
-        return view('transport::index');
+        $this->service = $service;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function AllOnlyTrashed()
     {
-        return view('transport::create');
+        return RouteResource::collection($this->service->getRoutesOnlyTrashed(  ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
+    public function restore($id)
+    {
+        $bus = $this->service->restore($id);
 
-    /**
-     * Show the specified resource.
-     */
+        event(new RouteRestored($bus));
+
+        return response()->json($bus);
+    }
+
+    public function forceDelete($id)
+    {
+        $bus = $this->service->forceDelete($id);
+
+        event(new RouteDeleted($bus));
+
+        return response()->json($bus);
+    }
+
+    public function index(Request $request)
+    {
+        return RouteResource::collection($this->service->getAll( $request ));
+    }
+
+    public function store(StoreRouteRequest $request)
+    {
+        return new RouteResource(
+            $this->service->create($request->validated())
+        );
+    }
+
+    public function update(UpdateRouteRequest $request, $id)
+    {
+        return new RouteResource(
+            $this->service->update($id, $request->validated())
+        );
+    }
     public function show($id)
     {
-        return view('transport::show');
+        return new RouteResource($this->service->find($id));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+
+    public function destroy($id)
     {
-        return view('transport::edit');
+        $this->service->delete($id);
+        return response()->json(['message' => 'Deleted']);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }

@@ -4,8 +4,14 @@ namespace Modules\Transport\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Transport\Repositories\Eloquent\BusRepository;
+use Modules\Transport\Repositories\Eloquent\RouteRepository;
+use Modules\Transport\Repositories\Eloquent\RouteStopRepository;
+use Modules\Transport\Repositories\Eloquent\SubscriptionRepository;
+use Modules\Transport\Repositories\Interfaces\BusRepositoryInterface;
+use Modules\Transport\Repositories\Interfaces\RouteRepositoryInterface;
+use Modules\Transport\Repositories\Interfaces\RouteStopRepositoryInterface;
 use Modules\Transport\Repositories\Interfaces\SubscriptionRepositoryInterface;
-use Modules\Transport\Repositories\SubscriptionRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -38,10 +44,11 @@ class TransportServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-        $this->app->bind(
-            SubscriptionRepositoryInterface::class,
-            SubscriptionRepository::class
-        );
+        $this->app->bind(SubscriptionRepositoryInterface::class, SubscriptionRepository::class);
+        $this->app->bind(RouteRepositoryInterface::class, RouteRepository::class);
+        $this->app->bind(BusRepositoryInterface::class, BusRepository::class);
+        $this->app->bind(RouteStopRepositoryInterface::class, RouteStopRepository::class);
+
     }
 
     /**

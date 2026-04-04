@@ -18,9 +18,9 @@ class AuthorController extends Controller
         $this->authorRepo = $authorRepo;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return AuthorResource::collection($this->authorRepo->getAll());
+        return AuthorResource::collection($this->authorRepo->getAll( $request ));
     }
 
     public function store(StoreAuthorRequest $request)

@@ -4,53 +4,82 @@ namespace Modules\Transport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Transport\Entities\RouteStop;
+use Modules\Transport\Events\RouteStopEvents\RouteStopDeleted;
+use Modules\Transport\Events\RouteStopEvents\RouteStopRestored;
+use Modules\Transport\Http\Requests\StoreRouteStopRequest;
+use Modules\Transport\Http\Requests\UpdateRouteStopRequest;
+use Modules\Transport\Http\Resources\RouteStopResource;
+use Modules\Transport\Repositories\Interfaces\RouteStopRepositoryInterface;
+use Modules\Transport\Services\RouteStopService;
 
 class RouteStopController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+
+    protected $service;
+
+    public function __construct(RouteStopService $service)
     {
-        return view('transport::index');
+        $this->service = $service;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function AllOnlyTrashed()
     {
-        return view('transport::create');
+        return RouteStop::collection($this->service->getRouteStopsOnlyTrashed());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
+    public function restore($id)
+    {
+        $bus = $this->service->restore($id);
 
-    /**
-     * Show the specified resource.
-     */
+        event(new RouteStopRestored($bus));
+
+        return response()->json($bus);
+    }
+
+    public function forceDelete($id)
+    {
+        $bus = $this->service->forceDelete($id);
+
+        event(new RouteStopDeleted($bus));
+
+        return response()->json($bus);
+    }
+
+    public function index(Request $request)
+    {
+        return RouteStopResource::collection($this->service->getAll( $request ));
+    }
+
+    public function store(StoreRouteStopRequest $request)
+    {
+        return new RouteStopResource($this->service->create($request->all()));
+    }
+
     public function show($id)
     {
-        return view('transport::show');
+        return new RouteStopResource($this->service->find($id));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function update(UpdateRouteStopRequest $request, $id)
     {
-        return view('transport::edit');
+        return new RouteStopResource($this->service->update($id, $request->all()));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+    public function reorder($routeId)
+    {
+        $this->service->reorder($routeId);
+
+        return response()->json([
+            'message' => 'Stops reordered successfully'
+        ]);
+    }
+
+
+    public function destroy($id)
+    {
+        $this->service->delete($id);
+        return response()->json(['message' => 'Deleted']);
+    }
 }
