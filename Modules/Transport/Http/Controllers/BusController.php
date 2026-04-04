@@ -4,53 +4,48 @@ namespace Modules\Transport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Library\Http\Requests\StoreBusRequest;
+use Modules\Transport\Http\Requests\UpdateBusRequest;
+use Modules\Transport\Http\Resources\BusResource;
+use Modules\Transport\Services\BusService;
 
 class BusController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    protected $service;
+
+    public function __construct(BusService $service)
     {
-        return view('transport::index');
+        $this->service = $service;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function index(Request $request)
     {
-        return view('transport::create');
+        return BusResource::collection($this->service->getAll( $request ));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
+    public function store(StoreBusRequest $request)
+    {
+        return new BusResource(
+            $this->service->create($request->validated())
+        );
+    }
 
-    /**
-     * Show the specified resource.
-     */
+    public function update(UpdateBusRequest $request, $id)
+    {
+        return new BusResource(
+            $this->service->update($id, $request->validated())
+        );
+    }
+
     public function show($id)
     {
-        return view('transport::show');
+        return new BusResource($this->service->find($id));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function destroy($id)
     {
-        return view('transport::edit');
+        $this->service->delete($id);
+        return response()->json(['message' => 'Deleted']);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }

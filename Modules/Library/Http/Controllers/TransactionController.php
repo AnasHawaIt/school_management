@@ -22,7 +22,7 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
 
-        $transactions = Transaction::with(['book', 'member'])->get($request);
+        $transactions = Transaction::with(['book', 'member'])->get();
 
         return TransactionResource::collection($transactions);
     }

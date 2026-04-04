@@ -27,8 +27,4 @@ class Route extends Model
         return $this->hasMany(Subscription::class);
     }
 
-    // protected static function newFactory(): RouteFactory
-    // {
-    //     // return RouteFactory::new();
-    // }
 }

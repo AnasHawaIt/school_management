@@ -4,10 +4,15 @@ namespace Modules\Transport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Transport\Http\Requests\StoreSubscriptionRequest;
+use Modules\Transport\Http\Requests\UpdateSubscriptionRequest;
+use Modules\Transport\Http\Resources\SubscriptionResource;
 use Modules\Transport\Services\SubscriptionService;
+
 
 class SubscriptionController extends Controller
 {
+
     protected $service;
 
     public function __construct(SubscriptionService $service)
@@ -15,18 +20,50 @@ class SubscriptionController extends Controller
         $this->service = $service;
     }
 
-    public function store(Request $request)
+    public function index(Request $request)
     {
-        $subscription = $this->service->create($request->all());
+        return SubscriptionResource::collection(
+            $this->service->getAll($request)
+        );
+    }
 
-        return response()->json($subscription);
+    public function show($id)
+    {
+        return new SubscriptionResource(
+            $this->service->find($id)
+        );
+    }
+
+    public function store(StoreSubscriptionRequest $request)
+    {
+        $subscription = $this->service->subscribe(
+            $request->validated()
+        );
+
+        return new SubscriptionResource($subscription);
+    }
+
+    public function update(UpdateSubscriptionRequest $request, $id)
+    {
+        return new SubscriptionResource(
+            $this->service->update($id, $request->validated())
+        );
     }
 
     public function expire($id)
     {
-        return response()->json(
-            $this->service->expire($id)
+        return new SubscriptionResource(
+            $this->service->cancel($id)
         );
+    }
+
+    public function destroy($id)
+    {
+        $this->service->delete($id);
+
+        return response()->json([
+            'message' => 'Deleted successfully'
+        ]);
     }
 
 }
