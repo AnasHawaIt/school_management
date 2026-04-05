@@ -1,5 +1,9 @@
 {
     "Core": true,
     "School": true,
-    "Academic": true
+    "Academic": true,
+    "Announcement": true,
+    "SMS": true,
+    "Library": true,
+    "Transport": true
 }

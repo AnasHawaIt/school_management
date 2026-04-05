@@ -1,0 +1,43 @@
+<?php
+
+namespace Modules\Transport\Repositories\Eloquent;
+
+use Modules\Transport\Entities\Bus;
+use Modules\Transport\Filters\BusFilter;
+use Modules\Transport\Repositories\Interfaces\BusRepositoryInterface;
+
+class BusRepository implements BusRepositoryInterface
+{
+    public function getAll($request)
+    {
+        $query = Bus::query();
+
+        $query = (new BusFilter($request))->apply($query);
+
+        return $query->paginate($request->get('per_page', 10));
+    }
+
+    public function create(array $data)
+    {
+        return Bus::create($data);
+    }
+
+    public function find($id)
+    {
+        return Bus::findOrFail($id);
+    }
+
+    public function update($id, array $data)
+    {
+        $bus = $this->find($id);
+        $bus->update($data);
+
+        return $bus;
+    }
+
+    public function delete($id)
+    {
+        $bus = $this->find($id);
+        return $bus->delete();
+    }
+}

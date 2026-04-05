@@ -1,0 +1,11 @@
+{
+    "name": "SMS",
+    "alias": "sms",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SMS\\Providers\\SMSServiceProvider"
+    ],
+    "files": []
+}
