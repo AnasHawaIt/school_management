@@ -4,11 +4,11 @@ namespace Modules\Transport\Listeners\RouteListeners;
 
 use Modules\Transport\Entities\EventLog;
 use Modules\Transport\Events\RouteEvents\RouteCreated;
-use Modules\Transport\Events\RouteEvents\RouteUpdated;
+use Modules\Transport\Events\RouteEvents\AuthorUpdated;
 
 class RouteUpdatedLogEventListener
 {
-    public function handle(RouteUpdated $event)
+    public function handle(AuthorUpdated $event)
     {
         EventLog::create([
             'user_id' => $event->userId,

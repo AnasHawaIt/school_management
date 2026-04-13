@@ -3,11 +3,11 @@
 namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener;
 
 use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
+use Modules\Transport\Events\SubscriptionEvents\TransactionCreated;
 
 class SubscriptionCreatedLogEventListener
 {
-    public function handle(SubscriptionCreated $event)
+    public function handle(TransactionCreated $event)
     {
         EventLog::create([
             'user_id' => $event->userId,

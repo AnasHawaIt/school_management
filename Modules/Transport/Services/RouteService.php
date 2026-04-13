@@ -4,20 +4,18 @@ namespace Modules\Transport\Services;
 
 use Modules\Transport\Events\RouteEvents\RouteCreated;
 use Modules\Transport\Events\RouteEvents\RouteDeleted;
+use Modules\Transport\Events\RouteEvents\RouteRestored;
 use Modules\Transport\Events\RouteEvents\RouteUpdated;
 use Modules\Transport\Repositories\Interfaces\RouteRepositoryInterface;
 
 class RouteService
 {
     protected $repo;
-    protected $routeStopService;
 
     public function __construct(
-        RouteRepositoryInterface $repo,
-        RouteStopService $routeStopService
+        RouteRepositoryInterface $repo
     ) {
         $this->repo = $repo;
-        $this->routeStopService = $routeStopService;
     }
 
     public function getRoutesOnlyTrashed()
@@ -27,14 +25,21 @@ class RouteService
 
     public function restore($id)
     {
-        return $this->repo->restore($id);
+        $route= $this->repo->restore($id);
+
+        event(new RouteRestored($route));
+
+        return $route;
     }
 
     public function forceDelete($id)
     {
-        return $this->repo->forceDelete($id);
-    }
+        $route= $this->repo->forceDelete($id);
 
+        event(new RouteDeleted($route));
+
+        return true;
+    }
     public function getAll($request)
     {
         return $this->repo->getAll($request);
@@ -78,9 +83,4 @@ class RouteService
         return true;
     }
 
-
-    public function addStops($routeId, array $stops)
-    {
-        return $this->routeStopService->addMultipleStops($routeId, $stops);
-    }
 }

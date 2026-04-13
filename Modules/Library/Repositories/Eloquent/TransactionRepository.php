@@ -11,6 +11,25 @@ use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 class TransactionRepository implements TransactionRepositoryInterface
 {
 
+    public function getTransactionOnlyTrashed()
+    {
+        $query = Transaction::onlyTrashed()->get();
+
+        return $query->paginate($query->get('per_page', 10));
+    }
+
+    public function restore($id)
+    {
+        $bus = Transaction::withTrashed()->findOrFail($id);
+        return $bus->restore();
+    }
+
+    public function forceDelete($id)
+    {
+        $bus = Transaction::withTrashed()->findOrFail($id);
+        return $bus->forceDelete();
+    }
+
     public function getAll($request)
     {
         $query = Transaction::query();
@@ -61,6 +80,7 @@ class TransactionRepository implements TransactionRepositoryInterface
             return $transaction;
         });
     }
+
     public function delete($id)
     {
         $transaction = $this->findById($id);

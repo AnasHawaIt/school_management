@@ -16,23 +16,25 @@ use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
 use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
 use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
 use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedBroadcastEventListener;
-use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedLogEventListener;
+use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\CategoryCreatedLogEventListener;
 use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedNotificationDatabaseListener;
 use Modules\Transport\Listeners\BusListeners\BusDeletedListeners\BusDeletedBroadcastEventListener;
-use Modules\Transport\Listeners\BusListeners\BusDeletedListeners\BusDeletedLogEventListener;
+use Modules\Transport\Listeners\BusListeners\BusDeletedListeners\AuthorDeletedLogEventListener;
 use Modules\Transport\Listeners\BusListeners\BusUpdateListeners\BusUpdateBroadcastEventListener;
-use Modules\Transport\Listeners\BusListeners\BusUpdateListeners\BusUpdateLogEventListener;
+use Modules\Transport\Listeners\BusListeners\BusUpdateListeners\CategoryUpdateLogEventListener;
 use Modules\Transport\Listeners\RouteListeners\RouteCreatedLogEventListener;
 use Modules\Transport\Listeners\RouteListeners\RouteCreatedNotificationDatabaseListener;
 use Modules\Transport\Listeners\RouteListeners\RouteDeletedLogEventListener;
 use Modules\Transport\Listeners\RouteListeners\RouteUpdatedLogEventListener;
 use Modules\Transport\Listeners\RouteStopListeners\RouteStopCreatedLogEventListener;
 use Modules\Transport\Listeners\RouteStopListeners\RouteStopDeletedLogEventListener;
-use Modules\Transport\Listeners\RouteStopListeners\RouteStopUpdateLogEventListener;
+use Modules\Transport\Listeners\RouteStopListeners\TransactionUpdateLogEventListener;
 use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedBroadcastEventListener;
 use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedLogEventListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedNotificationDatabaseListener;
 use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedListener\SubscriptionDeletedNotificationDatabaseListener;
 use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedListener\SubscriptionDeletedLogEventListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionUpdatedListener\SubscriptionUpdatedBroadcastEventListener;
 use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionUpdatedListener\SubscriptionUpdatedLogEventListener;
 
 class EventServiceProvider extends ServiceProvider
@@ -46,17 +48,17 @@ class EventServiceProvider extends ServiceProvider
         BusCreated::class => [
            BusCreatedNotificationDatabaseListener::class,
             BusCreatedBroadcastEventListener::class,
-            BusCreatedLogEventListener::class,
+            CategoryCreatedLogEventListener::class,
         ],
 
         BusUpdated::class => [
-            BusUpdateLogEventListener::class,
+            CategoryUpdateLogEventListener::class,
             BusUpdateBroadcastEventListener::class,
         ],
 
         BusDeleted::class => [
             BusDeletedBroadcastEventListener::class,
-            BusDeletedLogEventListener::class,
+            AuthorDeletedLogEventListener::class,
         ],
 
         RouteCreated::class => [
@@ -77,7 +79,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         RouteStopUpdated::class => [
-            RouteStopUpdateLogEventListener::class,
+            TransactionUpdateLogEventListener::class,
         ],
 
         RouteStopDeleted::class => [
@@ -86,13 +88,13 @@ class EventServiceProvider extends ServiceProvider
 
         SubscriptionCreated::class => [
             SubscriptionCreatedLogEventListener::class,
-            SubscriptionDeletedNotificationDatabaseListener::class,
+            SubscriptionCreatedNotificationDatabaseListener::class,
             SubscriptionCreatedBroadcastEventListener::class,
         ],
 
         SubscriptionUpdated::class=>[
             SubscriptionUpdatedLogEventListener::class,
-            SubscriptionDeletedNotificationDatabaseListener::class,
+            SubscriptionUpdatedBroadcastEventListener::class,
         ],
 
         SubscriptionDeleted::class => [

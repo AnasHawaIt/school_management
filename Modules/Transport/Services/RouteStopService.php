@@ -6,6 +6,7 @@ namespace Modules\Transport\Services;
 use Illuminate\Support\Facades\DB;
 use Modules\Transport\Events\RouteStopEvents\RouteStopCreated;
 use Modules\Transport\Events\RouteStopEvents\RouteStopDeleted;
+use Modules\Transport\Events\RouteStopEvents\RouteStopRestored;
 use Modules\Transport\Events\RouteStopEvents\RouteStopUpdated;
 use Modules\Transport\Repositories\Interfaces\RouteStopRepositoryInterface;
 
@@ -25,12 +26,20 @@ class RouteStopService
 
     public function restore($id)
     {
-        return $this->repo->restore($id);
+        $routeStop= $this->repo->restore($id);
+
+        event(new RouteStopRestored($routeStop));
+
+        return $routeStop;
     }
 
     public function forceDelete($id)
     {
-        return $this->repo->forceDelete($id);
+        $routeStop= $this->repo->forceDelete($id);
+
+        event(new RouteStopDeleted($routeStop));
+
+        return true;
     }
 
     public function reorder($routeId)

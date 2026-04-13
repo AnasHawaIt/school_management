@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Transport\Entities\Route;
 use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
 use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionRestored;
 use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
 use Modules\Transport\Repositories\Interfaces\SubscriptionRepositoryInterface;
 
@@ -25,12 +26,20 @@ class SubscriptionService
 
     public function restore($id)
     {
-        return $this->repo->restore($id);
+        $subscription= $this->repo->restore($id);
+
+        event(new SubscriptionRestored($subscription));
+
+        return $subscription;
     }
 
     public function forceDelete($id)
     {
-        return $this->repo->forceDelete($id);
+        $subscription= $this->repo->forceDelete($id);
+
+        event(new SubscriptionDeleted($subscription));
+
+        return true;
     }
 
     public function getAll($request)
@@ -113,9 +122,6 @@ class SubscriptionService
 
         return true;
     }
-
-
-
 
     public function getStudentSubscriptions($studentId)
     {

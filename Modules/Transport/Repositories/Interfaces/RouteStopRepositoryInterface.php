@@ -5,8 +5,13 @@ namespace Modules\Transport\Repositories\Interfaces;
 interface RouteStopRepositoryInterface
 {
     public function getRouteStopsOnlyTrashed();
+
     public function restore($id);
+
     public function forceDelete($id);
+
+    public function getAll($request);
+
     public function getByRoute($routeId);
 
     public function insert(array $data);

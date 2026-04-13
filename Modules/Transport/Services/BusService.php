@@ -4,6 +4,7 @@ namespace Modules\Transport\Services;
 
 use Modules\Transport\Events\BusEvents\BusCreated;
 use Modules\Transport\Events\BusEvents\BusDeleted;
+use Modules\Transport\Events\BusEvents\BusRestored;
 use Modules\Transport\Events\BusEvents\BusUpdated;
 use Modules\Transport\Repositories\Interfaces\BusRepositoryInterface;
 
@@ -21,14 +22,23 @@ class BusService
         return $this->repo->getBusesOnlyTrashed();
     }
 
+
     public function restore($id)
     {
-        return $this->repo->restore($id);
+        $bus= $this->repo->restore($id);
+
+        event(new BusRestored($bus));
+
+        return $bus;
     }
 
     public function forceDelete($id)
     {
-        return $this->repo->forceDelete($id);
+        $bus= $this->repo->forceDelete($id);
+
+        event(new BusDeleted($bus));
+
+        return true;
     }
 
     public function getAll($request)
