@@ -6,13 +6,13 @@ namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedL
 
 use Illuminate\Support\Facades\Notification;
 use Modules\Core\Entities\User;
-use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
+use Modules\Transport\Events\SubscriptionEvents\TransactionDeleted;
 use Modules\Transport\Notifications\SubscriptionCreatedNotification;
 use Modules\Transport\Notifications\SubscriptionDeletedNotification;
 
 class SubscriptionDeletedNotificationDatabaseListener
 {
-    public function handle(SubscriptionDeleted $event)
+    public function handle(TransactionDeleted $event)
     {
         $users = User::all();
 

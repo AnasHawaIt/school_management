@@ -5,12 +5,12 @@ namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionUpdatedL
 
 
 use Modules\Transport\Events\Broadcasts\SubscriptionBroadcast;
-use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
+use Modules\Transport\Events\SubscriptionEvents\TransactionUpdated;
 
 class SubscriptionUpdatedBroadcastEventListener
 {
 
-    public function handle(SubscriptionUpdated $event)
+    public function handle(TransactionUpdated $event)
     {
         broadcast(new SubscriptionBroadcast($event->subscription))->toOthers();
     }

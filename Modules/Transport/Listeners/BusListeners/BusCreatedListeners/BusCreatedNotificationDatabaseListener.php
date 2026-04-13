@@ -3,12 +3,12 @@
 namespace Modules\Transport\Listeners\BusListeners\BusCreatedListeners;
 
 use Modules\Core\Entities\User;
-use Modules\Transport\Events\BusEvents\BusCreated;
+use Modules\Transport\Events\BusEvents\CategoryCreated;
 use Modules\Transport\Notifications\BusCreatedNotification;
 
 class BusCreatedNotificationDatabaseListener
 {
-        public function handle(BusCreated $event)
+        public function handle(CategoryCreated $event)
     {
         $users = User::all();
 

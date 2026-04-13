@@ -4,15 +4,15 @@ namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionUpdatedL
 
 
 use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
+use Modules\Transport\Events\SubscriptionEvents\TransactionUpdated;
 
 class SubscriptionUpdatedLogEventListener
 {
-    public function handle(SubscriptionUpdated $event)
+    public function handle(TransactionUpdated $event)
     {
         EventLog::create([
             'user_id' => $event->userId,
-            'event_type' => 'SubscriptionUpdated',
+            'event_type' => 'TransactionUpdated',
             'data' =>$event->subscription,
         ]);
     }

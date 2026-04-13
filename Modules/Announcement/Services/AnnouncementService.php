@@ -4,8 +4,8 @@ namespace Modules\Announcement\Services;
 
 use Modules\Announcement\Entities\Announcement;
 use Modules\Announcement\Events\AnnouncementCreated;
-use Modules\Announcement\Events\AnnouncementUpdated;
-use Modules\Announcement\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\AuthorUpdated;
+use Modules\Announcement\Events\AuthorDeleted;
 use Modules\Core\Entities\ActivityLog;
 use App\Models\User;
 class AnnouncementService
@@ -52,7 +52,7 @@ class AnnouncementService
             'new_values' => $announcement->toArray(),
         ]);
 
-        event(new AnnouncementUpdated($announcement, $users));
+        event(new AuthorUpdated($announcement, $users));
 
         return $announcement;
     }
@@ -74,7 +74,7 @@ class AnnouncementService
             'old_values' => $oldValues,
         ]);
 
-        event(new AnnouncementDeleted($announcement, $users));
+        event(new AuthorDeleted($announcement, $users));
 
     }
 
