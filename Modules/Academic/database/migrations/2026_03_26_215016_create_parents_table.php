@@ -11,16 +11,9 @@ return new class extends Migration
         Schema::create('parents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('first_name_ar')->nullable();
-            $table->string('last_name_ar')->nullable();
-            $table->enum('gender', ['male', 'female']);
             $table->string('national_id')->nullable()->unique();
             $table->string('nationality')->nullable();
-            $table->string('phone');
             $table->string('phone_secondary')->nullable();
-            $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('occupation')->nullable();   // المهنة

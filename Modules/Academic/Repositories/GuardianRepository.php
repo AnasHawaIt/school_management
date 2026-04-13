@@ -54,7 +54,14 @@ class GuardianRepository implements GuardianRepositoryInterface
 
     public function restore(int $id): bool
     {
-        return $this->model->withTrashed()->findOrFail($id)->restore();
+        $user = $this->model->withTrashed()->findOrFail($id);
+
+        // إذا كان العمود قيمته null، يعني السجل غير محذوف
+        if (!$user->trashed()) {
+            return false ; // سنستخدم كلمة مفتاحية لنفحصها في الكنترولر
+        }
+
+        return $user->restore(); // سيرجع true إذا تمت الاستعادة بنجاح
     }
 
     public function attachStudent(int $guardianId, int $studentId, array $pivotData): bool

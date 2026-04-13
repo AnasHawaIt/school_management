@@ -11,25 +11,25 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
-            // Users
-            ['name' => 'users.view', 'display_name' => 'View Users', 'description' => 'Can view users list'],
-            ['name' => 'users.create', 'display_name' => 'Create User', 'description' => 'Can create new users'],
-            ['name' => 'users.update', 'display_name' => 'Update User', 'description' => 'Can update users'],
-            ['name' => 'users.delete', 'display_name' => 'Delete User', 'description' => 'Can delete users'],
+            // Teachers (Academic Module)
+            ['name' => 'teachers.view', 'display_name' => 'View Teachers', 'description' => 'Can view teachers list'],
+            ['name' => 'teachers.create', 'display_name' => 'Create Teacher', 'description' => 'Can register new teachers'],
+            ['name' => 'teachers.update', 'display_name' => 'Update Teacher', 'description' => 'Can update teacher profiles'],
+            ['name' => 'teachers.delete', 'display_name' => 'Delete Teacher', 'description' => 'Can remove teachers'],
 
-            // Roles
-            ['name' => 'roles.view', 'display_name' => 'View Roles', 'description' => 'Can view roles list'],
-            ['name' => 'roles.create', 'display_name' => 'Create Role', 'description' => 'Can create new roles'],
-            ['name' => 'roles.update', 'display_name' => 'Update Role', 'description' => 'Can update roles'],
-            ['name' => 'roles.delete', 'display_name' => 'Delete Role', 'description' => 'Can delete roles'],
+            // Students (Academic Module)
+            ['name' => 'students.view', 'display_name' => 'View Students', 'description' => 'Can view students list'],
+            ['name' => 'students.create', 'display_name' => 'Create Student', 'description' => 'Can enroll new students'],
+            ['name' => 'students.update', 'display_name' => 'Update Student', 'description' => 'Can update student profiles'],
 
-            // Permissions
-            ['name' => 'permissions.view', 'display_name' => 'View Permissions', 'description' => 'Can view permissions list'],
-            ['name' => 'permissions.manage', 'display_name' => 'Manage Permissions', 'description' => 'Can assign/revoke permissions'],
+            // Sections & Classes
+            ['name' => 'sections.manage', 'display_name' => 'Manage Sections', 'description' => 'Can create and assign sections'],
+            ['name' => 'grades.manage', 'display_name' => 'Manage Grades', 'description' => 'Can manage school grades/levels'],
 
-            // Settings
-            ['name' => 'settings.view', 'display_name' => 'View Settings', 'description' => 'Can view settings'],
-            ['name' => 'settings.update', 'display_name' => 'Update Settings', 'description' => 'Can update settings'],
+            // Subjects & Timetables
+            ['name' => 'subjects.manage', 'display_name' => 'Manage Subjects', 'description' => 'Can manage school subjects'],
+            ['name' => 'timetables.view', 'display_name' => 'View Timetables', 'description' => 'Can view class schedules'],
+            ['name' => 'timetables.manage', 'display_name' => 'Manage Timetables', 'description' => 'Can create and edit schedules'],
         ];
 
         foreach ($permissions as $permission) {
@@ -47,6 +47,15 @@ class PermissionSeeder extends Seeder
             $allPermissions = Permission::all()->pluck('id');
             $adminRole->permissions()->sync($allPermissions);
             $this->command->info('Admin role assigned all permissions!');
+        }
+        $teacherRole = Role::where('name', 'teacher')->first();
+        if ($teacherRole) {
+            $teacherPerms = Permission::whereIn('name', [
+                'students.view',
+                'timetables.view',
+                'teachers.view'
+            ])->pluck('id');
+            $teacherRole->permissions()->syncWithoutDetaching($teacherPerms);
         }
     }
 }

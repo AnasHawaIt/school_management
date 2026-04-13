@@ -7,13 +7,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Academic\Entities\Guardian;
+use Modules\Academic\Entities\Student;
+use Modules\Academic\Entities\Teacher;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
 
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'first_name_ar',
+        'last_name_ar',
+        'gender',
+        'date_of_birth',
         'email',
         'password',
         'phone',
@@ -30,6 +38,7 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'date_of_birth' => 'date',
         'is_active' => 'boolean',
         'password' => 'hashed',
     ];
@@ -37,6 +46,19 @@ class User extends Authenticatable
     /**
      * Relationships
      */
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function getFullNameArAttribute(): string
+    {
+        return "{$this->first_name_ar} {$this->last_name_ar}";
+    }
+    public function getAgeAttribute(): int
+    {
+        return $this->date_of_birth->age;
+    }
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_user')
@@ -47,7 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ActivityLog::class);
     }
-
+    public function teacher() { return $this->hasOne(Teacher::class); }
+    public function student() { return $this->hasOne(Student::class); }
+    public function parent()  { return $this->hasOne(Guardian::class); }
     /**
      * Scopes
      */

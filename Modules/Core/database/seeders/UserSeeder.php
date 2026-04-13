@@ -11,85 +11,58 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create Admin User
-        $admin = User::firstOrCreate(
+        // 1. إنشاء الحساب الإداري (Admin)
+        $adminUser = User::firstOrCreate(
             ['email' => 'admin@school.com'],
             [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
-                'phone' => '1234567890',
+                'first_name' => 'Super',
+                'last_name' => 'Admin',
+                'first_name_ar' => 'المدير',
+                'last_name_ar' => 'العام',
+                'gender' => 'male',
+                'password' => Hash::make('password'), // أو 'password' فقط إذا كان الموديل بيعمل Hash تلقائي
                 'user_type' => 'admin',
                 'is_active' => true,
                 'email_verified_at' => now(),
             ]
         );
 
-        // Assign admin role
-        $adminRole = Role::where('name', 'admin')->first();
-        if ($adminRole && !$admin->hasRole('admin')) {
-            $admin->assignRole('admin');
-        }
+        $this->assignRoleTo($adminUser, 'admin');
 
-        $this->command->info('Admin user created: admin@school.com / password');
-
-        // Create Teacher User
-        $teacher = User::firstOrCreate(
+        // 2. حساب تجريبي لأستاذ (User + Teacher Profile)
+        $teacherUser = User::firstOrCreate(
             ['email' => 'teacher@school.com'],
             [
-                'name' => 'Teacher User',
+                'first_name' => 'Ahmad',
+                'last_name' => 'Hassan',
+                'gender' => 'male',
                 'password' => Hash::make('password'),
-                'phone' => '1234567891',
                 'user_type' => 'teacher',
                 'is_active' => true,
-                'email_verified_at' => now(),
             ]
         );
+        $this->assignRoleTo($teacherUser, 'teacher');
 
-        $teacherRole = Role::where('name', 'teacher')->first();
-        if ($teacherRole && !$teacher->hasRole('teacher')) {
-            $teacher->assignRole('teacher');
-        }
-
-        $this->command->info('Teacher user created: teacher@school.com / password');
-
-        // Create Student User
-        $student = User::firstOrCreate(
+        // 3. حساب تجريبي لطالب (User + Student Profile)
+        $studentUser = User::firstOrCreate(
             ['email' => 'student@school.com'],
             [
-                'name' => 'Student User',
+                'first_name' => 'Sami',
+                'last_name' => 'Ali',
+                'gender' => 'male',
                 'password' => Hash::make('password'),
-                'phone' => '1234567892',
                 'user_type' => 'student',
                 'is_active' => true,
-                'email_verified_at' => now(),
             ]
         );
+        $this->assignRoleTo($studentUser, 'student');
+    }
 
-        $studentRole = Role::where('name', 'student')->first();
-        if ($studentRole && !$student->hasRole('student')) {
-            $student->assignRole('student');
+    private function assignRoleTo($user, $roleName)
+    {
+        $role = Role::where('name', $roleName)->first();
+        if ($role && !$user->hasRole($roleName)) {
+            $user->roles()->attach($role->id);
         }
-
-        $this->command->info('Student user created: student@school.com / password');
-
-        // Create Parent User
-        $parent = User::firstOrCreate(
-            ['email' => 'parent@school.com'],
-            [
-                'name' => 'Parent User',
-                'password' => Hash::make('password'),
-                'phone' => '1234567893',
-                'user_type' => 'parent',
-                'is_active' => true,
-                'email_verified_at' => now(),
-            ]
-        );
-
-        $parentRole = Role::where('name', 'parent')->first();
-        if ($parentRole && !$parent->hasRole('parent')) {
-            $parent->assignRole('parent');
-        }
-
-        $this->command->info('Parent user created: parent@school.com / password');
     }
 }

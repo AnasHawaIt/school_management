@@ -12,19 +12,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('employee_id')->unique(); // رقم الموظف
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('first_name_ar')->nullable();
-            $table->string('last_name_ar')->nullable();
-            $table->enum('gender', ['male', 'female']);
-            $table->date('date_of_birth')->nullable();
             $table->string('national_id')->nullable()->unique(); // رقم الهوية
             $table->string('nationality')->nullable();
-            $table->string('phone')->nullable();
             $table->string('emergency_contact')->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
-            $table->string('photo')->nullable();
             $table->string('specialization'); // التخصص
             $table->integer('experience_years')->default(0);
             $table->date('joining_date');

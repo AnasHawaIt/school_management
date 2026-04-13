@@ -4,6 +4,7 @@ namespace Modules\Core\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Core\Entities\Role;
+use Modules\Core\Entities\Permission; // تأكد من وجود موديل الصلاحيات
 
 class RoleSeeder extends Seeder
 {
@@ -14,31 +15,58 @@ class RoleSeeder extends Seeder
                 'name' => 'admin',
                 'display_name' => 'Administrator',
                 'description' => 'Full system access and control',
+
             ],
             [
                 'name' => 'teacher',
                 'display_name' => 'Teacher',
-                'description' => 'Teacher access to manage classes and students',
+                'description' => 'Manage classes, subjects, and student marks',
+
             ],
             [
                 'name' => 'student',
                 'display_name' => 'Student',
-                'description' => 'Student access to view grades and attendance',
+                'description' => 'View schedule, attendance, and grades',
+
             ],
             [
                 'name' => 'parent',
                 'display_name' => 'Parent',
-                'description' => 'Parent access to view children information',
+                'description' => 'Monitor children performance and attendance',
+
             ],
         ];
 
-        foreach ($roles as $role) {
+        foreach ($roles as $roleData) {
             Role::firstOrCreate(
-                ['name' => $role['name']],
-                $role
+                ['name' => $roleData['name']],
+                $roleData
             );
         }
 
         $this->command->info('Roles seeded successfully!');
+
+        $this->seedDefaultPermissions();
+    }
+
+    private function seedDefaultPermissions()
+    {
+
+        $permissions = [
+            'view_dashboard',
+            'manage_users',
+            'manage_teachers',
+            'view_reports',
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission]);
+        }
+
+
+        $adminRole = Role::where('name', 'admin')->first();
+        if ($adminRole) {
+            $adminRole->syncPermissions($permissions); // إذا كنت تستخدم Spatie
+        }
     }
 }

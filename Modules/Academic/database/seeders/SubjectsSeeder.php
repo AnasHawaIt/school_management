@@ -31,16 +31,18 @@ class SubjectsSeeder extends Seeder
 
         foreach ($grades as $grade) {
             foreach ($subjects as $subject) {
+                // منطق استثناء: مثلاً لا تضف دراسات اجتماعية للصفوف العليا إذا كان هناك تخصص
+                if ($grade->order > 9 && $subject['code'] === 'SOC') {
+                    continue;
+                }
                 Subject::firstOrCreate(
                     ['code' => $subject['code'] . '-G' . $grade->id],
                     [
                         'name'         => $subject['name'],
-                        'name_ar'      => $subject['name_ar'],
                         'grade_id'     => $grade->id,
                         'weekly_hours' => $subject['weekly_hours'],
                         'credit_hours' => 1,
-                        'pass_mark'    => 50.00,
-                        'full_mark'    => 100.00,
+                        'pass_mark'    => $grade->order > 9 ? 60.00 : 50.00,                        'full_mark'    => 100.00,
                         'is_mandatory' => true,
                         'color'        => $subject['color'],
                         'status'       => 'active',

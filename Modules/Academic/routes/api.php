@@ -7,7 +7,7 @@ use Modules\Academic\Http\Controllers\GuardianController;
 use Modules\Academic\Http\Controllers\SubjectController;
 use Modules\Academic\Http\Controllers\TimetableController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     // ==================== Teachers ====================
     Route::prefix('teachers')->group(function () {

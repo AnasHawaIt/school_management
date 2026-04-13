@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Modules\Academic\Contracts\Services\TeacherServiceInterface;
 use Modules\Academic\Http\Requests\StoreTeacherRequest;
 use Modules\Academic\Http\Requests\UpdateTeacherRequest;
+use Modules\Academic\Http\Resources\TeacherQualificationsResource;
 use Modules\Academic\Http\Resources\TeacherResource;
 
 class TeacherController extends Controller
@@ -93,7 +94,7 @@ class TeacherController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data'    => new TeacherResource($this->teacherService->getTeacherWithQualifications($id)),
+            'data'    => new TeacherQualificationsResource($this->teacherService->getTeacherWithQualifications($id)),
         ]);
     }
 
@@ -128,7 +129,7 @@ class TeacherController extends Controller
     // GET /teachers/{teacher}/timetable?semester_id=1
     public function timetable(Request $request, int $id): JsonResponse
     {
-        $request->validate(['semester_id' => 'required|exists:semesters,id']);
+        $request->validate(['semester_id' => 'required']);
         return response()->json([
             'success' => true,
             'data'    => new TeacherResource($this->teacherService->getTeacherTimetable($id, $request->semester_id)),

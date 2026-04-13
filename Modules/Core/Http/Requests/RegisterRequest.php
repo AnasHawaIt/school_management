@@ -13,13 +13,17 @@ class RegisterRequest extends FormRequest
 
     public function rules(): array
     {
-        return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
-            'phone' => 'nullable|string|max:20',
-            'user_type' => 'required|in:admin,teacher,student,parent',
-        ];
+          return [
+              'first_name'    => 'required|string|max:255',
+              'last_name'     => 'required|string|max:255',
+              'first_name_ar' => 'nullable|string|max:255',
+              'last_name_ar'  => 'nullable|string|max:255',
+              'gender'        => 'required|in:male,female',
+              'date_of_birth' => 'required|date',
+              'email'         => 'required|email|unique:users,email',
+              'password'      => 'required|string|min:8|confirmed',
+              'user_type'     => 'required|in:admin,teacher,student,parent',
+          ];
     }
 
     public function messages(): array

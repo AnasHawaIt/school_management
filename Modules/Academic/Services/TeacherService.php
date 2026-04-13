@@ -7,7 +7,7 @@ use Modules\Academic\Contracts\Repositories\TeacherRepositoryInterface;
 use Modules\Academic\Entities\TeacherQualification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Modules\Core\Entities\User;
 
 class TeacherService implements TeacherServiceInterface
 {
@@ -29,10 +29,17 @@ class TeacherService implements TeacherServiceInterface
     {
         return DB::transaction(function () use ($data) {
             $user = User::create([
-                'name'     => "{$data['first_name']} {$data['last_name']}",
+                'first_name'     => $data['first_name'],
+                'last_name'     => $data['last_name'],
+                'first_name_ar' => $data['first_name_ar'],
+                'last_name_ar'     => $data['last_name_ar'],
+                'gender'     => $data['gender'],
+                'date_of_birth'     => $data['date_of_birth'],
+                'phone'     => $data['phone'],
+                'avatar' => $data['avatar'],
                 'email'    => $data['email'],
                 'password' => Hash::make($data['password'] ?? 'Teacher@123'),
-                'type'     => 'teacher',
+                'user_type'     => 'teacher',
             ]);
 
             $data['user_id']     = $user->id;

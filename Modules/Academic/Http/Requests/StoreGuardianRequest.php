@@ -23,6 +23,8 @@ class StoreGuardianRequest extends FormRequest
             'occupation'                      => 'nullable|string|max:100',
             'employer'                        => 'nullable|string|max:150',
             'work_phone'                      => 'nullable|string|max:20',
+            'date_of_birth'                   => 'required|date|before:today',
+            'avatar'                          => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'education_level'                 => 'nullable|in:none,primary,secondary,diploma,bachelor,master,phd',
             'notes'                           => 'nullable|string',
             'students'                        => 'nullable|array',

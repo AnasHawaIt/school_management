@@ -34,8 +34,8 @@ return new class extends Migration
             $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->timestamps();
-
-            $table->unique(['subject_id', 'section_id', 'academic_year_id'], 'subject_section_year_unique');
+//هنا عند اضافة الشرط لايمكن لاي مادة ان تحمل اكثر من استاذ
+        //    $table->unique(['subject_id', 'section_id', 'academic_year_id','semester_id'], 'subject_section_year_unique');
         });
     }
 

@@ -16,11 +16,19 @@ class StudentsSeeder extends Seeder
      * Run the database seeds.
      */
     public function run(): void
-    {
-        $section     = Section::first();
+    {// جلب كل الشعب المتاحة في السنة الحالية
         $academicYear = AcademicYear::where('is_current', true)->first();
 
-        if (!$section || !$academicYear) {
+        $sections = Section::whereHas('class', function($q) use ($academicYear) {
+            $q->where('academic_year_id', $academicYear->id);
+        })->get();
+
+        if ($sections->isEmpty()) {
+            $this->command->error('❌ No sections found for the current year!');
+            return;
+        }
+
+        if (!$sections || !$academicYear) {
             $this->command->warn('⚠️  No section or academic year found. Run School module seeder first.');
             return;
         }
@@ -37,30 +45,26 @@ class StudentsSeeder extends Seeder
         ];
 
         foreach ($students as $index => $data) {
+            $randomSection = $sections->random();
             $user = User::create([
-                'name'     => "{$data['first_name']} {$data['last_name']}",
-                'email'    => strtolower($data['first_name']) . '.student' . ($index + 1) . '@school.com',
-                'password' => Hash::make('Student@123'),
-                'user_type'     => 'student',
+                'first_name' => $data['first_name'],
+                'last_name'  => $data['last_name'],
+                'email'      => strtolower($data['first_name'] . '.' . $data['last_name']) . '@school.com',
+                'password'   => Hash::make('password'),
+                'user_type'  => 'student',
             ]);
 
             $student = Student::create([
                 'user_id'            => $user->id,
                 'student_id'         => 'STU-' . now()->year . '-' . str_pad($index + 1, 5, '0', STR_PAD_LEFT),
-                'first_name'         => $data['first_name'],
-                'last_name'          => $data['last_name'],
-                'first_name_ar'      => $data['first_name_ar'],
-                'last_name_ar'       => $data['last_name_ar'],
-                'gender'             => $data['gender'],
-                'date_of_birth'      => $data['dob'],
+                // تم حذف first_name و last_name من هنا لأنها غير موجودة بجدول students
                 'enrollment_date'    => now()->startOfYear()->format('Y-m-d'),
-                'current_section_id' => $section->id,
+                'current_section_id' => $randomSection->id,
                 'academic_year_id'   => $academicYear->id,
                 'blood_type'         => collect(['A+', 'B+', 'O+', 'AB+'])->random(),
                 'nationality'        => 'Saudi',
                 'status'             => 'active',
-            ]);
-
+             ]);
             // سجل طبي فارغ لكل طالب
             StudentMedicalRecord::create(['student_id' => $student->id]);
 
@@ -70,7 +74,7 @@ class StudentsSeeder extends Seeder
         }
 
         // تحديث عدد الطلاب في الشعبة
-        $section->update(['current_students' => count($students)]);
-        $this->command->info("✅ Section [{$section->name}] updated: {$section->current_students} students");
+        $randomSection->increment('current_students');
+        $this->command->info("✅ Section [{$randomSection->name}] updated: {$randomSection->current_students} students");
     }
 }

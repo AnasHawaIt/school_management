@@ -8,7 +8,7 @@ use Modules\Academic\Entities\StudentMedicalRecord;
 use Modules\School\Entities\Section;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Modules\Core\Entities\User;
 
 class StudentService implements StudentServiceInterface
 {
@@ -28,7 +28,7 @@ class StudentService implements StudentServiceInterface
 
     public function createStudent(array $data): object
     {
-        return DB::transaction(function () use ($data) {
+        return DB::transaction(callback: function () use ($data) {
             if (!empty($data['current_section_id'])) {
                 $section = Section::findOrFail($data['current_section_id']);
                 if ($section->current_students >= $section->max_students) {
@@ -38,10 +38,16 @@ class StudentService implements StudentServiceInterface
             }
 
             $user = User::create([
-                'name'     => "{$data['first_name']} {$data['last_name']}",
+                'first_name'     => $data['first_name'],
+                'last_name'     => $data['last_name'],
+                'first_name_ar' => $data['first_name_ar'],
+                'last_name_ar'     => $data['last_name_ar'],
+                'gender'     => $data['gender'],
+                'date_of_birth'     => $data['date_of_birth'],
+                'phone'     => $data['phone'],
                 'email'    => $data['email'],
-                'password' => Hash::make($data['password'] ?? 'Student@123'),
-                'type'     => 'student',
+                'password' => Hash::make($data['password'] ?? 'Teacher@123'),
+                'user_type' => 'student',
             ]);
 
             $data['user_id']    = $user->id;

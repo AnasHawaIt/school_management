@@ -11,62 +11,68 @@ class SettingSeeder extends Seeder
     {
         $settings = [
             [
-                'key' => 'school_name',
-                'value' => 'My School',
+                'key' => 'school_name_en',
+                'value' => 'Elite International School',
                 'type' => 'string',
-                'description' => 'School name',
+                'description' => 'School name in English',
+            ],
+            [
+                'key' => 'school_name_ar',
+                'value' => 'مدرسة النخبة الدولية',
+                'type' => 'string',
+                'description' => 'School name in Arabic',
             ],
             [
                 'key' => 'school_email',
-                'value' => 'info@myschool.com',
+                'value' => 'info@elite-school.com',
                 'type' => 'string',
-                'description' => 'School email address',
+                'description' => 'Official school email',
             ],
             [
-                'key' => 'school_phone',
-                'value' => '1234567890',
+                'key' => 'school_logo',
+                'value' => 'defaults/logo.png',
                 'type' => 'string',
-                'description' => 'School phone number',
+                'description' => 'Path to the school logo',
             ],
             [
-                'key' => 'school_address',
-                'value' => '123 Main Street, City, Country',
+                'key' => 'school_stamp',
+                'value' => 'defaults/stamp.png',
                 'type' => 'string',
-                'description' => 'School address',
+                'description' => 'Official digital stamp for documents',
             ],
             [
-                'key' => 'academic_year',
-                'value' => '2024-2025',
+                'key' => 'current_academic_year_id',
+                'value' => '1',
+                'type' => 'integer',
+                'description' => 'ID of the active academic year',
+            ],
+            [
+                'key' => 'attendance_mode',
+                'value' => 'daily', // daily or lesson-based
                 'type' => 'string',
-                'description' => 'Current academic year',
+                'description' => 'How to take attendance (Daily or by Subject)',
+            ],
+            [
+                'key' => 'currency_symbol',
+                'value' => '$',
+                'type' => 'string',
+                'description' => 'Currency used for school fees',
             ],
             [
                 'key' => 'timezone',
-                'value' => 'UTC',
+                'value' => 'Asia/Damascus',
                 'type' => 'string',
-                'description' => 'School timezone',
-            ],
-            [
-                'key' => 'max_students_per_class',
-                'value' => '30',
-                'type' => 'integer',
-                'description' => 'Maximum students per class',
-            ],
-            [
-                'key' => 'enable_notifications',
-                'value' => '1',
-                'type' => 'boolean',
-                'description' => 'Enable system notifications',
+                'description' => 'School system timezone',
             ],
         ];
 
         foreach ($settings as $setting) {
-            Setting::firstOrCreate(
+            Setting::updateOrCreate(
                 ['key' => $setting['key']],
                 $setting
             );
         }
 
-        $this->command->info('Settings seeded successfully!');
+        $this->command->info('School Settings seeded successfully!');
     }
 }

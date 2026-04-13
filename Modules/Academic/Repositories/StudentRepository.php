@@ -127,7 +127,7 @@ class StudentRepository implements StudentRepositoryInterface
         return $this->model->with('user')
             ->where('current_section_id', $sectionId)
             ->where('status', 'active')
-            ->orderBy('first_name')
+           // ->orderBy('first_name')
             ->get();
     }
 
@@ -137,8 +137,12 @@ class StudentRepository implements StudentRepositoryInterface
         return [
             'total'  => (clone $base)->count(),
             'active' => (clone $base)->where('status', 'active')->count(),
-            'male'   => (clone $base)->where('gender', 'male')->count(),
-            'female' => (clone $base)->where('gender', 'female')->count(),
+            'male'   => (clone $base)->whereHas('user', function($query) {
+                $query->where('gender', 'male');
+            })->count(),
+            'female' => (clone $base)->whereHas('user', function($query) {
+                $query->where('gender', 'female');
+            })->count(),
         ];
     }
 }

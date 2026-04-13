@@ -14,8 +14,8 @@ class StoreTimetableRequest extends FormRequest
             'semester_id'      => 'required|exists:semesters,id',
             'day_of_week'      => 'required|in:sunday,monday,tuesday,wednesday,thursday,friday,saturday',
             'period_number'    => 'required|integer|min:1|max:12',
-            'start_time'       => 'required|date_format:H:i',
-            'end_time'         => 'required|date_format:H:i|after:start_time',
+            'start_time'       => 'required',
+            'end_time'         => 'required|after:start_time',
             'room_number'      => 'nullable|string|max:20',
         ];
     }

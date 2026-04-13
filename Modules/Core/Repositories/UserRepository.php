@@ -51,9 +51,15 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         }
 
         if (isset($filters['search'])) {
-            $query->where(function ($q) use ($filters) {
-                $q->where('name', 'like', "%{$filters['search']}%")
-                    ->orWhere('email', 'like', "%{$filters['search']}%");
+            $search = $filters['search'];
+
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('first_name_ar', 'like', "%{$search}%")
+                    ->orWhere('last_name_ar', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%"); // اختياري: البحث برقم الهاتف أيضاً
             });
         }
 

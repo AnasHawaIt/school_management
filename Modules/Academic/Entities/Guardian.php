@@ -17,9 +17,8 @@ class Guardian extends Model
     protected $table = 'parents';
 
     protected $fillable = [
-        'user_id', 'first_name', 'last_name', 'first_name_ar', 'last_name_ar',
-        'gender', 'national_id', 'nationality', 'phone', 'phone_secondary',
-        'email', 'address', 'city', 'occupation', 'employer',
+        'user_id', 'national_id', 'nationality', 'phone_secondary',
+         'address', 'city', 'occupation', 'employer',
         'work_phone', 'education_level', 'status', 'notes',
     ];
 
@@ -41,7 +40,7 @@ class Guardian extends Model
 
     public function getFullNameAttribute(): string
     {
-        return "{$this->first_name} {$this->last_name}";
+        return "{$this->user?->first_name} {$this->user?->last_name}";
     }
 
     // ========== Scopes ==========

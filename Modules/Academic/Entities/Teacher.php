@@ -15,15 +15,13 @@ class Teacher extends Model
     use  SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'employee_id', 'first_name', 'last_name',
-        'first_name_ar', 'last_name_ar', 'gender', 'date_of_birth',
-        'national_id', 'nationality', 'phone', 'emergency_contact',
-        'address', 'city', 'photo', 'specialization', 'experience_years',
+        'user_id', 'employee_id',
+        'national_id', 'nationality', 'emergency_contact',
+        'address', 'city', 'specialization', 'experience_years',
         'joining_date', 'salary', 'contract_type', 'status', 'notes',
     ];
 
     protected $casts = [
-        'date_of_birth'  => 'date',
         'joining_date'   => 'date',
         'salary'         => 'decimal:2',
         'experience_years' => 'integer',
@@ -59,12 +57,26 @@ class Teacher extends Model
 
     public function getFullNameAttribute(): string
     {
-        return "{$this->first_name} {$this->last_name}";
+        // نستخدم الـ optional helper أو الـ Null Safe Operator لضمان عدم حدوث خطأ
+        if (!$this->user) {
+            return 'No User Assigned';
+        }
+
+        // تأكد أن موديل User لديه accessor اسمه full_name
+        // أو قم بدمج الحقول هنا مباشرة
+        return "{$this->user->first_name} {$this->user->last_name}";
     }
 
     public function getFullNameArAttribute(): string
     {
-        return "{$this->first_name_ar} {$this->last_name_ar}";
+        // نستخدم الـ optional helper أو الـ Null Safe Operator لضمان عدم حدوث خطأ
+        if (!$this->user) {
+            return 'No User Assigned';
+        }
+
+        // تأكد أن موديل User لديه accessor اسمه full_name
+        // أو قم بدمج الحقول هنا مباشرة
+        return "{$this->user->first_name} {$this->user->last_name}";
     }
 
     // ========== Scopes ==========

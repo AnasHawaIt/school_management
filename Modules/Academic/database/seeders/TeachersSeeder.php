@@ -70,20 +70,16 @@ class TeachersSeeder extends Seeder
 
         foreach ($teachers as $index => $data) {
             $user = User::create([
-                'name'     => "{$data['first_name']} {$data['last_name']}",
-                'email'    => $data['email'],
-                'password' => Hash::make('Teacher@123'),
-                'user_type'     => 'teacher',
+                'first_name' => $data['first_name'],
+                'last_name'  => $data['last_name'],
+                'email'      => strtolower($data['first_name'] . '.' . $data['last_name']) . '@school.com',
+                'password'   => Hash::make('password'),
+                'user_type'  => 'teacher',
             ]);
 
             $teacher = Teacher::create([
                 'user_id'          => $user->id,
                 'employee_id'      => 'EMP-' . now()->year . '-' . str_pad($index + 1, 4, '0', STR_PAD_LEFT),
-                'first_name'       => $data['first_name'],
-                'last_name'        => $data['last_name'],
-                'first_name_ar'    => $data['first_name_ar'],
-                'last_name_ar'     => $data['last_name_ar'],
-                'gender'           => $data['gender'],
                 'specialization'   => $data['specialization'],
                 'experience_years' => rand(3, 15),
                 'joining_date'     => now()->subYears(rand(1, 5))->format('Y-m-d'),
@@ -103,7 +99,7 @@ class TeachersSeeder extends Seeder
 
             $user->assignRole('teacher');
 
-            $this->command->info("✅ Teacher created: {$teacher->full_name} [{$teacher->employee_id}]");
+            $this->command->info("✅ Teacher created: {$data['first_name']} {$data['last_name']} [{$teacher->employee_id}]");
         }
     }
 }

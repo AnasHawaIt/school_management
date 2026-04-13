@@ -42,7 +42,12 @@ class UserService implements UserServiceInterface
             if (isset($data['password'])) {
                 $data['password'] = Hash::make($data['password']);
             }
-
+            if (isset($data['avatar']) && $data['avatar'] instanceof \Illuminate\Http\UploadedFile) {
+                // تخزين الصورة في مجلد 'avatars' داخل الـ public disk
+                $path = $data['avatar']->store('avatars', 'public');
+                // استبدال كائن الملف بالمسار النصي لتخزينه في الداتابيز
+                $data['avatar'] = $path;
+            }
             // Create user
             $user = $this->userRepository->create($data);
 

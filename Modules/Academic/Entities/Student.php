@@ -18,8 +18,7 @@ class Student extends Model
     use  SoftDeletes;
 
     protected $fillable = [
-        'user_id', 'student_id', 'first_name', 'last_name',
-        'first_name_ar', 'last_name_ar', 'gender', 'date_of_birth',
+        'user_id', 'student_id',
         'national_id', 'nationality', 'place_of_birth', 'religion',
         'photo', 'address', 'city', 'phone', 'enrollment_date',
         'current_section_id', 'academic_year_id', 'status',
@@ -27,7 +26,6 @@ class Student extends Model
     ];
 
     protected $casts = [
-        'date_of_birth'    => 'date',
         'enrollment_date'  => 'date',
     ];
 
@@ -64,18 +62,14 @@ class Student extends Model
 
     public function getFullNameAttribute(): string
     {
-        return "{$this->first_name} {$this->last_name}";
+        return "{$this->user?->first_name} {$this->user?->last_name}";
     }
 
     public function getFullNameArAttribute(): string
     {
-        return "{$this->first_name_ar} {$this->last_name_ar}";
+        return "{$this->user?->first_name_ar} {$this->user?->last_name_ar}";
     }
 
-    public function getAgeAttribute(): int
-    {
-        return $this->date_of_birth->age;
-    }
 
     // ========== Scopes ==========
 

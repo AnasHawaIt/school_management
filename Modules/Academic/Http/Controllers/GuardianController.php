@@ -5,9 +5,11 @@ namespace Modules\Academic\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Modules\Academic\Contracts\Services\GuardianServiceInterface;
 use Modules\Academic\Http\Requests\StoreGuardianRequest;
 use Modules\Academic\Http\Resources\GuardianResource;
+use Modules\Core\Entities\User;
 
 class GuardianController extends Controller
 {
@@ -19,7 +21,8 @@ class GuardianController extends Controller
     public function index(Request $request): JsonResponse
     {
         $result = $this->guardianService->getAllGuardians($request->all());
-        return response()->json([
+        return response()->json(
+            [
             'success' => true,
             'data'    => GuardianResource::collection($result->items()),
             'meta'    => [
@@ -72,8 +75,19 @@ class GuardianController extends Controller
     // POST /guardians/{guardian}/restore
     public function restore(int $id): JsonResponse
     {
-        $this->guardianService->restoreGuardian($id);
-        return response()->json(['success' => true, 'message' => 'Guardian restored successfully.']);
+        $result = $this->guardianService->restoreGuardian($id);
+
+        if ($result === false) {
+            return response()->json([
+                'success' => false,
+                'message' => 'this parent is exist.',
+            ], 400);
+        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Guardian restored successfully.'
+        ]);
+
     }
 
     // GET /guardians/{guardian}/students

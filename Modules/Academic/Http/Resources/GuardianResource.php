@@ -6,18 +6,23 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class GuardianResource extends JsonResource
 {
+
     public function toArray($request): array
     {
         return [
             'id'              => $this->id,
             'full_name'       => $this->full_name,
-            'first_name'      => $this->first_name,
-            'last_name'       => $this->last_name,
-            'gender'          => $this->gender,
+            'first_name'       => $this->user?->first_name,
+            'last_name'        => $this->user?->last_name,
+            'first_name_ar'    => $this->user?->first_name_ar,
+            'last_name_ar'     => $this->user?->last_name_ar,
+            'gender'           => $this->user?->gender,
+            'date_of_birth'    => $this->user?->date_of_birth,
+            'age' => $this->user?->date_of_birth ? \Carbon\Carbon::parse($this->user?->date_of_birth)->age : null,            'national_id'      => $this->national_id,
+            'phone'            => $this->user?->phone,
+            'email'            => $this->user?->email,
             'national_id'     => $this->national_id,
-            'phone'           => $this->phone,
             'phone_secondary' => $this->phone_secondary,
-            'email'           => $this->user?->email,
             'address'         => $this->address,
             'city'            => $this->city,
             'occupation'      => $this->occupation,

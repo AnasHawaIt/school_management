@@ -6,7 +6,8 @@ use Modules\Academic\Contracts\Services\GuardianServiceInterface;
 use Modules\Academic\Contracts\Repositories\GuardianRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Modules\Core\Entities\User;
+
 
 class GuardianService implements GuardianServiceInterface
 {
@@ -16,22 +17,31 @@ class GuardianService implements GuardianServiceInterface
 
     public function getAllGuardians(array $filters = [])
     {
-        return $this->guardianRepository->getAll($filters);
+        return $this->guardianRepository->getAll($filters)
+            ->through(fn ($guardian) => $guardian->load(['students', 'user']));
     }
-
     public function getGuardian(int $id)
     {
-        return $this->guardianRepository->findById($id);
+        return $this->guardianRepository
+            ->findById($id)
+            ->load(['students', 'user']);
     }
 
     public function createGuardian(array $data): object
     {
         return DB::transaction(function () use ($data) {
             $user = User::create([
-                'name'     => "{$data['first_name']} {$data['last_name']}",
-                'email'    => $data['email'],
+                'first_name'     => $data['first_name'],
+                'last_name'     => $data['last_name'],
+                'first_name_ar' => $data['first_name_ar'],
+                'last_name_ar'     => $data['last_name_ar'],
+                'gender'     => $data['gender'],
+                'email'=>$data['email'],
+                'date_of_birth'     => $data['date_of_birth'],
+                'phone'     => $data['phone'],
+                'avatar' => $data['avatar'],
                 'password' => Hash::make($data['password'] ?? 'Parent@123'),
-                'type'     => 'parent',
+                'user_type'     => 'parent',
             ]);
 
             $data['user_id'] = $user->id;
