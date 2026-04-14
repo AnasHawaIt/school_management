@@ -7,6 +7,24 @@ use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
 
 class BookRepository implements BookRepositoryInterface
 {
+    public function getBookOnlyTrashed()
+    {
+        $query = Book::onlyTrashed()->get();
+
+        return $query->paginate($query->get('per_page', 10));
+    }
+
+    public function restore($id)
+    {
+        $bus = Book::withTrashed()->findOrFail($id);
+        return $bus->restore();
+    }
+
+    public function forceDelete($id)
+    {
+        $bus = Book::withTrashed()->findOrFail($id);
+        return $bus->forceDelete();
+    }
 
     public function query()
     {
@@ -28,7 +46,7 @@ class BookRepository implements BookRepositoryInterface
         );
     }
 
-    public function findById($id)
+    public function find($id)
     {
         return Book::findOrFail($id);
     }
@@ -40,14 +58,14 @@ class BookRepository implements BookRepositoryInterface
 
     public function update($id, array $data)
     {
-        $book = $this->findById($id);
+        $book = $this->find($id);
         $book->update($data);
         return $book;
     }
 
     public function delete($id)
     {
-        $book = $this->findById($id);
+        $book = $this->find($id);
         return $book->delete();
     }
 

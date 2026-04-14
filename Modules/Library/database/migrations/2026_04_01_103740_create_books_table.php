@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->string('isbn')->unique();
             $table->integer('copies')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
