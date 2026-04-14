@@ -5,16 +5,19 @@ namespace Modules\Library\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
 
 // use Modules\Library\Database\Factories\AuthorFactory;
 
 class Author extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,HasTranslations;
+
+    public $translatable = ['name', 'description','birth_date','death_date',];
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'description','birth_date','death_date','photo'];
 
     public function books()
     {

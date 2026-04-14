@@ -12,10 +12,31 @@ class AuthorService
 {
     protected $repo;
 
+    protected $locales = ['en', 'ar'];
+
     public function __construct(AuthorRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }
+
+    private function prepareTranslatable(array $data, array $fields)
+    {
+        $result = [];
+
+        foreach ($fields as $field) {
+
+            if (!isset($data[$field])) {
+                continue;
+            }
+
+            foreach ($this->locales as $locale) {
+                $result[$field][$locale] = $data[$field][$locale] ?? null;
+            }
+        }
+
+        return $result;
+    }
+
 
     public function getAuthorOnlyTrashed()
     {
@@ -24,18 +45,18 @@ class AuthorService
 
     public function restore($id)
     {
-        $bus= $this->repo->restore($id);
+        $author= $this->repo->restore($id);
 
-        event(new AuthorRestored($bus));
+        event(new AuthorRestored($author));
 
-        return $bus;
+        return $author;
     }
 
     public function forceDelete($id)
     {
-        $bus= $this->repo->forceDelete($id);
+        $author= $this->repo->forceDelete($id);
 
-        event(new AuthorDeleted($bus));
+        event(new AuthorDeleted($author));
 
         return true;
     }
@@ -47,33 +68,52 @@ class AuthorService
 
     public function create(array $data)
     {
-        $bus = $this->repo->create($data);
 
-        event(new AuthorCreated($bus, auth()->id()));
+        $translatable = $this->prepareTranslatable($data, [
+            'name',
+            'description'
+        ]);
 
-        return $bus;
+        $author = $this->repo->create([
+            $translatable,
+            'birth_date' => $data['birth_date'] ?? null,
+            'death_date' => $data['death_date'] ?? null,
+        ]);
+
+        event(new AuthorCreated($author, auth()->id()));
+
+        return $author;
     }
 
     public function update($id, array $data)
     {
-        $bus= $this->repo->update($id, $data);
+        $translatable = $this->prepareTranslatable($data, [
+            'name',
+            'description'
+        ]);
 
-        event(new AuthorUpdated($bus, auth()->id()));
+        $author = $this->repo->update($id, [
+            $translatable,
+            'birth_date' => $data['birth_date'] ?? null,
+            'death_date' => $data['death_date'] ?? null,
+        ]);
 
-        return $bus;
+        event(new AuthorUpdated($author, auth()->id()));
+
+        return $author;
     }
 
     public function delete($id)
     {
-        $bus = $this->repo->find($id);
+        $author = $this->repo->find($id);
 
-        if (!$bus) {
-            throw new \Exception('Bus not found');
+        if (!$author) {
+            throw new \Exception('Author not found');
         }
 
         $this->repo->delete($id);
 
-        event(new AuthorDeleted($bus));
+        event(new AuthorDeleted($author, auth()->id()));
 
         return true;
     }

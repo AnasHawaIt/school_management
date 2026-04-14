@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::create('authors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('description')->nullable();
+            $table->string('photo')->nullable()->change();
+            $table->date('birth_date')();
+            $table->date('death_date');
             $table->softDeletes();
             $table->timestamps();
         });

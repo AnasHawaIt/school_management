@@ -13,16 +13,20 @@ class UpdateAuthorRequest extends FormRequest
 
     public function rules(): array
     {
+
         return [
-            'name' => 'sometimes|string|max:255|unique:authors,name,' . $this->route('id'),
+            'name' => 'sometimes|string|max:255|unique:authors,name',
+            'description' => 'sometimes|string',
+            'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:2000',
+            'birth_date'=>'sometimes|date',
+            'death_date'=>'sometimes|date',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.string' => 'Author name must be a string',
-            'name.unique' => 'Author already exists',
+
         ];
     }
 }
