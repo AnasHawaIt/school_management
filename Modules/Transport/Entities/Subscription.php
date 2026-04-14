@@ -4,16 +4,13 @@ namespace Modules\Transport\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Academic\Entities\Student;
 
 // use Modules\Transport\Database\Factories\SubscriptionFactory;
 
 class Subscription extends Model
 {
-    use HasFactory, SoftDeletes;
-
-    protected $dates = ['deleted_at'];
+    use HasFactory;
 
     protected $fillable = [
             'student_id',

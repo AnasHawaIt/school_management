@@ -2,13 +2,13 @@
 
 namespace Modules\SMS\Listeners;
 use Modules\Announcement\Events\AnnouncementCreated;
-use Modules\Announcement\Events\AuthorUpdated;
+use Modules\Announcement\Events\AnnouncementUpdated;
 use Modules\Core\Entities\User;
 use Modules\SMS\Jobs\SendSmsJob;
 
 class SendAnnouncementUpdete
 {
-    public function handle(AuthorUpdated $event)
+    public function handle(AnnouncementUpdated $event)
     {
         User::whereNotNull('phone')
             ->chunk(100, function ($users) use ($event) {

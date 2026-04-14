@@ -4,9 +4,6 @@ namespace Modules\Library\Repositories\Interfaces;
 
 interface MemberRepositoryInterface
 {
-    public function getMemberOnlyTrashed();
-    public function restore($id);
-    public function forceDelete($id);
     public function getAll($request);
     public function findById($id);
     public function create(array $data);

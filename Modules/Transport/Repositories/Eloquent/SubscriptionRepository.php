@@ -1,7 +1,6 @@
 <?php
 namespace Modules\Transport\Repositories\Eloquent;
 
-use Modules\Transport\Entities\RouteStop;
 use Modules\Transport\Entities\Subscription;
 use Modules\Transport\Filters\SubscriptionFilter;
 use Modules\Transport\Repositories\Interfaces\SubscriptionRepositoryInterface;
@@ -59,24 +58,5 @@ class SubscriptionRepository implements SubscriptionRepositoryInterface
         return Subscription::where('route_id', $routeId)
             ->where('status', 'active')
             ->get();
-    }
-
-    public function getSubscriptionOnlyTrashed()
-    {
-        $query = Subscription::onlyTrashed()->get();
-
-        return $query->paginate($query->get('per_page', 10));
-    }
-
-    public function restore($id)
-    {
-        $bus = Subscription::withTrashed()->findOrFail($id);
-        return $bus->restore();
-    }
-
-    public function forceDelete($id)
-    {
-        $bus = Subscription::withTrashed()->findOrFail($id);
-        return $bus->forceDelete();
     }
 }

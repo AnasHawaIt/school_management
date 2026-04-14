@@ -40,23 +40,4 @@ class BusRepository implements BusRepositoryInterface
         $bus = $this->find($id);
         return $bus->delete();
     }
-
-    public function getBusesOnlyTrashed()
-    {
-        $query = Bus::onlyTrashed()->get();
-
-        return $query->paginate($query->get('per_page', 10));
-    }
-
-    public function restore($id)
-    {
-        $bus = Bus::withTrashed()->findOrFail($id);
-        return $bus->restore();
-    }
-
-    public function forceDelete($id)
-    {
-        $bus = Bus::withTrashed()->findOrFail($id);
-        return $bus->forceDelete();
-    }
 }

@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Transport\app\Http\Controllers\BusController;
-use Modules\Transport\app\Http\Controllers\RouteController;
-use Modules\Transport\app\Http\Controllers\RouteStopController;
-use Modules\Transport\app\Http\Controllers\SubscriptionController;
-use Modules\Transport\app\Http\Controllers\TransportController;
+use Modules\Transport\Http\Controllers\BusController;
+use Modules\Transport\Http\Controllers\RouteController;
+use Modules\Transport\Http\Controllers\RouteStopController;
+use Modules\Transport\Http\Controllers\SubscriptionController;
+use Modules\Transport\Http\Controllers\TransportController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('transports', TransportController::class)->names('transport');
@@ -14,52 +14,30 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 Route::prefix('transport')->group(function() {
 
     // Buses CRUD
-    Route::prefix('buses')->group(function() {
-        Route::get('/', [BusController::class, 'index']);
-        Route::post('/', [BusController::class, 'store']);
-        Route::get('/{id}', [BusController::class, 'show']);
-        Route::post('/{id}', [BusController::class, 'update']);
-        Route::delete('/{id}', [BusController::class, 'destroy']);
-        Route::post('/{id}/restore', [BusController::class, 'restore']);
-        route::delete('/{id}/force', [BusController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [BusController::class, 'AllOnlyTrashed']);
-    });
-
-
+    Route::get('buses', [BusController::class, 'index']);
+    Route::post('buses', [BusController::class, 'store']);
+    Route::get('buses/{id}', [BusController::class, 'show']);
+    Route::put('buses/{id}', [BusController::class, 'update']);
+    Route::delete('buses/{id}', [BusController::class, 'destroy']);
 
     // Routes CRUD
-    Route::prefix('route')->group(function() {
-        Route::get('/', [RouteController::class, 'index']);
-        Route::post('/', [RouteController::class, 'store']);
-        Route::get('/{id}', [RouteController::class, 'show']);
-        Route::put('/{id}', [RouteController::class, 'update']);
-        Route::delete('/{id}', [RouteController::class, 'destroy']);
-        Route::post('/{id}/restore', [RouteController::class, 'restore']);
-        Route::delete('/{id}/force', [RouteController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [BusController::class, 'AllOnlyTrashed']);
-    });
+    Route::get('routes', [RouteController::class, 'index']);
+    Route::post('routes', [RouteController::class, 'store']);
+    Route::get('routes/{id}', [RouteController::class, 'show']);
+    Route::put('routes/{id}', [RouteController::class, 'update']);
+    Route::delete('routes/{id}', [RouteController::class, 'destroy']);
 
     // Route Stops CRUD
-    Route::prefix('route-stops')->group(function() {
-        Route::get('/', [RouteStopController::class, 'index']);
-        Route::post('/', [RouteStopController::class, 'store']);
-        Route::get('/{id}', [RouteStopController::class, 'show']);
-        Route::put('/{id}', [RouteStopController::class, 'update']);
-        Route::delete('/{id}', [RouteStopController::class, 'destroy']);
-        Route::post('/{id}/restore', [RouteStopController::class, 'restore']);
-        Route::delete('/{id}/force', [RouteStopController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [BusController::class, 'AllOnlyTrashed']);
-    });
+    Route::get('route-stops', [RouteStopController::class, 'index']);
+    Route::post('route-stops', [RouteStopController::class, 'store']);
+    Route::get('route-stops/{id}', [RouteStopController::class, 'show']);
+    Route::put('route-stops/{id}', [RouteStopController::class, 'update']);
+    Route::delete('route-stops/{id}', [RouteStopController::class, 'destroy']);
 
     // Subscriptions CRUD
-    route::prefix('subscription')->group(function() {
-        Route::get('/', [SubscriptionController::class, 'index']);
-        Route::post('/', [SubscriptionController::class, 'store']);
-        Route::get('/{id}', [SubscriptionController::class, 'show']);
-        Route::put('/{id}', [SubscriptionController::class, 'update']);
-        Route::delete('/{id}', [SubscriptionController::class, 'destroy']);
-        Route::post('/{id}/restore', [SubscriptionController::class, 'restore']);
-        route::delete('/{id}/force', [SubscriptionController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [BusController::class, 'AllOnlyTrashed']);
-    });
+    Route::get('subscriptions', [SubscriptionController::class, 'index']);
+    Route::post('subscriptions', [SubscriptionController::class, 'store']);
+    Route::get('subscriptions/{id}', [SubscriptionController::class, 'show']);
+    Route::put('subscriptions/{id}', [SubscriptionController::class, 'update']);
+    Route::delete('subscriptions/{id}', [SubscriptionController::class, 'destroy']);
 });

@@ -1,12 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Library\app\Http\Controllers\AuthorController;
-use Modules\Library\app\Http\Controllers\BookController;
-use Modules\Library\app\Http\Controllers\CategoryController;
-use Modules\Library\app\Http\Controllers\LibraryController;
-use Modules\Library\app\Http\Controllers\MemberController;
-use Modules\Library\app\Http\Controllers\TransactionController;
+use Modules\Library\Http\Controllers\AuthorController;
+use Modules\Library\Http\Controllers\BookController;
+use Modules\Library\Http\Controllers\CategoryController;
+use Modules\Library\Http\Controllers\LibraryController;
+use Modules\Library\Http\Controllers\MemberController;
+use Modules\Library\Http\Controllers\TransactionController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('libraries', LibraryController::class)->names('library');
@@ -20,9 +20,6 @@ Route::prefix('library')->group(function() {
         Route::post('/', [AuthorController::class, 'store']);
         Route::put('{id}', [AuthorController::class, 'update']);
         Route::delete('{id}', [AuthorController::class, 'destroy']);
-        Route::post('/{id}/restore', [AuthorController::class, 'restore']);
-        route::delete('/{id}/force', [AuthorController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [AuthorController::class, 'AllOnlyTrashed']);
     });
 
 // ---------------- Categories ----------------
@@ -32,9 +29,6 @@ Route::prefix('library')->group(function() {
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('{id}', [CategoryController::class, 'update']);
         Route::delete('{id}', [CategoryController::class, 'destroy']);
-        Route::post('/{id}/restore', [CategoryController::class, 'restore']);
-        route::delete('/{id}/force', [CategoryController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [CategoryController::class, 'AllOnlyTrashed']);
     });
 
 // ---------------- Members ----------------
@@ -44,9 +38,6 @@ Route::prefix('library')->group(function() {
         Route::post('/', [MemberController::class, 'store']);
         Route::put('{id}', [MemberController::class, 'update']);
         Route::delete('{id}', [MemberController::class, 'destroy']);
-        Route::post('/{id}/restore', [MemberController::class, 'restore']);
-        route::delete('/{id}/force', [MemberController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [MemberController::class, 'AllOnlyTrashed']);
     });
 
 // ---------------- Books ----------------
@@ -56,9 +47,6 @@ Route::prefix('library')->group(function() {
         Route::post('/', [BookController::class, 'store']);
         Route::put('{id}', [BookController::class, 'update']);
         Route::delete('{id}', [BookController::class, 'destroy']);
-        Route::post('/{id}/restore', [BookController::class, 'restore']);
-        route::delete('/{id}/force', [BookController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [BookController::class, 'AllOnlyTrashed']);
     });
 
 // ---------------- Transactions ----------------
@@ -68,8 +56,5 @@ Route::prefix('library')->group(function() {
         Route::post('/', [TransactionController::class, 'store']);
         Route::put('{id}', [TransactionController::class, 'update']);
         Route::delete('{id}', [TransactionController::class, 'destroy']);
-        Route::post('/{id}/restore', [TransactionController::class, 'restore']);
-        route::delete('/{id}/force', [TransactionController::class, 'forceDelete']);
-        Route::get('/AllOnlyTrashed', [TransactionController::class, 'AllOnlyTrashed']);
     });
 });

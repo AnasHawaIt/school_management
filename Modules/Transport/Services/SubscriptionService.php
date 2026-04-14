@@ -4,10 +4,6 @@ namespace Modules\Transport\Services;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Transport\Entities\Route;
-use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
-use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
-use Modules\Transport\Events\SubscriptionEvents\SubscriptionRestored;
-use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
 use Modules\Transport\Repositories\Interfaces\SubscriptionRepositoryInterface;
 
 class SubscriptionService
@@ -17,29 +13,6 @@ class SubscriptionService
     public function __construct(SubscriptionRepositoryInterface $repo)
     {
         $this->repo = $repo;
-    }
-
-    public function getSubscriptionOnlyTrashed()
-    {
-        return $this->repo->getSubscriptionOnlyTrashed();
-    }
-
-    public function restore($id)
-    {
-        $subscription= $this->repo->restore($id);
-
-        event(new SubscriptionRestored($subscription));
-
-        return $subscription;
-    }
-
-    public function forceDelete($id)
-    {
-        $subscription= $this->repo->forceDelete($id);
-
-        event(new SubscriptionDeleted($subscription));
-
-        return true;
     }
 
     public function getAll($request)
@@ -54,11 +27,7 @@ class SubscriptionService
 
     public function create(array $data)
     {
-        $subscription = $this->repo->create($data);
-
-        event(new SubscriptionCreated($subscription),auth()->id());
-
-        return $subscription;
+        return $this->repo->create($data);
     }
 
     public function subscribe(array $data)
@@ -94,11 +63,7 @@ class SubscriptionService
 
     public function update($id, array $data)
     {
-        $subscription= $this->repo->update($id, $data);
-
-        event(new SubscriptionUpdated($subscription),auth()->id());
-
-        return $subscription;
+        return $this->repo->update($id, $data);
     }
 
     public function cancel($id)
@@ -110,17 +75,7 @@ class SubscriptionService
 
     public function delete($id)
     {
-        $subscription = $this->repo->find($id);
-
-        if (!$subscription) {
-            throw new \Exception('Route not found');
-        }
-
-        $this->repo->delete($id);
-
-        event(new SubscriptionDeleted($subscription),auth()->id());
-
-        return true;
+        return $this->repo->delete($id);
     }
 
     public function getStudentSubscriptions($studentId)

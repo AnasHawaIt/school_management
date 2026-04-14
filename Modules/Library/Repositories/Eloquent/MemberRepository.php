@@ -8,25 +8,6 @@ use Modules\Library\Repositories\Interfaces\MemberRepositoryInterface;
 
 class MemberRepository implements MemberRepositoryInterface
 {
-    public function getMemberOnlyTrashed()
-    {
-        $query = Member::onlyTrashed()->get();
-
-        return $query->paginate($query->get('per_page', 10));
-    }
-
-    public function restore($id)
-    {
-        $bus = Member::withTrashed()->findOrFail($id);
-        return $bus->restore();
-    }
-
-    public function forceDelete($id)
-    {
-        $bus = Member::withTrashed()->findOrFail($id);
-        return $bus->forceDelete();
-    }
-
     public function getAll($request)
     {
         $query = Member::query();

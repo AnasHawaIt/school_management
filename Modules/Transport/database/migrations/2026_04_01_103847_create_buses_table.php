@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('plate_number')->unique();
             $table->integer('capacity');
-            $table->softDeletes();
             $table->timestamps();
         });
     }
