@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('route_id')->constrained()->cascadeOnDelete();
             $table->string('stop_name');
             $table->integer('sequence');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

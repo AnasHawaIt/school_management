@@ -40,4 +40,23 @@ class RouteRepository implements RouteRepositoryInterface
         $route = $this->find($id);
         return $route->delete();
     }
+
+    public function getRoutesOnlyTrashed()
+    {
+        $query = Route::onlyTrashed()->get();
+
+        return $query->paginate($query->get('per_page', 10));
+    }
+
+    public function restore($id)
+    {
+        $bus = Route::withTrashed()->findOrFail($id);
+        return $bus->restore();
+    }
+
+    public function forceDelete($id)
+    {
+        $bus = Route::withTrashed()->findOrFail($id);
+        return $bus->forceDelete();
+    }
 }

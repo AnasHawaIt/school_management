@@ -15,10 +15,10 @@ class EventServiceProvider extends ServiceProvider
         \Modules\Announcement\Events\AnnouncementCreated::class => [
             \Modules\SMS\Listeners\SendAnnouncementCreate::class,
         ],
-        \Modules\Announcement\Events\AnnouncementDeleted::class => [
+        \Modules\Announcement\Events\AuthorDeleted::class => [
             \Modules\SMS\Listeners\SendAnnouncementDelete::class,
         ],
-        \Modules\Announcement\Events\AnnouncementUpdated::class => [
+        \Modules\Announcement\Events\AuthorUpdated::class => [
             \Modules\SMS\Listeners\SendAnnouncementUpdete::class,
         ],
     ];
