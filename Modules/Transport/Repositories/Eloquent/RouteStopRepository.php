@@ -67,4 +67,23 @@ class RouteStopRepository implements RouteStopRepositoryInterface
 
         return true;
     }
+
+    public function getRouteStopsOnlyTrashed()
+    {
+        $query = RouteStop::onlyTrashed()->get();
+
+        return $query->paginate($query->get('per_page', 10));
+    }
+
+    public function restore($id)
+    {
+        $bus = RouteStop::withTrashed()->findOrFail($id);
+        return $bus->restore();
+    }
+
+    public function forceDelete($id)
+    {
+        $bus = RouteStop::withTrashed()->findOrFail($id);
+        return $bus->forceDelete();
+    }
 }

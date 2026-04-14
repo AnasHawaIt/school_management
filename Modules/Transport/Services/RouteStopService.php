@@ -4,6 +4,10 @@
 namespace Modules\Transport\Services;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Transport\Events\RouteStopEvents\RouteStopCreated;
+use Modules\Transport\Events\RouteStopEvents\RouteStopDeleted;
+use Modules\Transport\Events\RouteStopEvents\RouteStopRestored;
+use Modules\Transport\Events\RouteStopEvents\RouteStopUpdated;
 use Modules\Transport\Repositories\Interfaces\RouteStopRepositoryInterface;
 
 class RouteStopService
@@ -13,6 +17,29 @@ class RouteStopService
     public function __construct(RouteStopRepositoryInterface $repo)
     {
         $this->repo = $repo;
+    }
+
+    public function getRouteStopsOnlyTrashed()
+    {
+        return $this->repo->getRouteStopsOnlyTrashed();
+    }
+
+    public function restore($id)
+    {
+        $routeStop= $this->repo->restore($id);
+
+        event(new RouteStopRestored($routeStop));
+
+        return $routeStop;
+    }
+
+    public function forceDelete($id)
+    {
+        $routeStop= $this->repo->forceDelete($id);
+
+        event(new RouteStopDeleted($routeStop));
+
+        return true;
     }
 
     public function reorder($routeId)
@@ -31,6 +58,8 @@ class RouteStopService
             $created = $this->repo->create($data);
 
             $this->repo->reorder($data['route_id']);
+
+            event(new RouteStopCreated($created),auth()->id());
 
             return $created;
         });
@@ -65,7 +94,11 @@ class RouteStopService
 
     public function update($id, array $data)
     {
-        return $this->repo->update($id, $data);
+        $routeSto= $this->repo->update($id, $data);
+
+        event(new RouteStopUpdated($routeSto),auth()->id());
+
+        return $routeSto;
     }
 
     public function delete($id)
@@ -74,9 +107,15 @@ class RouteStopService
 
         $routeId = $routeStop->route_id;
 
+        if (!$routeStop) {
+            throw new \Exception('Route not found');
+        }
+
         $this->repo->delete($id);
 
         $this->repo->reorder($routeId);
+
+        event(new RouteStopDeleted($routeStop),auth()->id());
 
         return true;
     }
@@ -90,6 +129,4 @@ class RouteStopService
     {
         return $this->repo->getAll($request);
     }
-
-
 }

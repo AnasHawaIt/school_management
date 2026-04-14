@@ -9,6 +9,25 @@ use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {
+    public function getCategoryOnlyTrashed()
+    {
+        $query = Category::onlyTrashed()->get();
+
+        return $query->paginate($query->get('per_page', 10));
+    }
+
+    public function restore($id)
+    {
+        $bus = Category::withTrashed()->findOrFail($id);
+        return $bus->restore();
+    }
+
+    public function forceDelete($id)
+    {
+        $bus = Category::withTrashed()->findOrFail($id);
+        return $bus->forceDelete();
+    }
+
     public function getAll($request)
     {
         $query = Category::query();
