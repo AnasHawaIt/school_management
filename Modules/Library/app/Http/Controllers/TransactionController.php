@@ -3,7 +3,6 @@
 namespace Modules\Library\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreTransactionRequest;
 use Modules\Library\app\Http\Requests\UpdateTransactionRequest;
 use Modules\Library\app\Http\Resources\TransactionResource;
@@ -33,10 +32,10 @@ class TransactionController extends Controller
     {
         return new TransactionResource($this->service->getTransactionOnlyTrashed());
     }
-    public function index(Request $request)
-    {
 
-        $transactions = Transaction::with(['book', 'member'])->get();
+    public function index($request)
+    {
+        $transactions =Transaction::with(['book', 'member'])->get();
 
         return new TransactionResource($transactions);
     }
@@ -61,12 +60,15 @@ class TransactionController extends Controller
     public function update(UpdateTransactionRequest $request, $id)
     {
         $transaction = $this->service->update($id, $request->all());
+
         return new TransactionResource($transaction);
     }
 
     public function destroy($id)
     {
         $this->service->delete($id);
+
         return response()->json(['message' => 'Deleted']);
     }
+
 }

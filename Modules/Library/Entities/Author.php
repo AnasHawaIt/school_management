@@ -17,7 +17,7 @@ class Author extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name', 'description','birth_date','death_date','photo'];
+    protected $guarded = [];
 
     public function books()
     {

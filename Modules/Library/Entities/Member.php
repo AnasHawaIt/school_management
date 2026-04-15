@@ -14,8 +14,7 @@ class Member extends Model
 
     protected $dates = ['deleted_at'];
 
-
-    protected $fillable = ['name', 'email', 'phone'];
+    protected $guarded=[];
 
     public function transactions()
     {

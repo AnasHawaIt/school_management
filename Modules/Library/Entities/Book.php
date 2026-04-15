@@ -5,6 +5,7 @@ namespace Modules\Library\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Nwidart\Modules\Publishing\Publisher;
 
 // use Modules\Library\Database\Factories\BookFactory;
 
@@ -14,14 +15,7 @@ class Book extends Model
 
     protected $dates = ['deleted_at'];
 
-
-    protected $fillable = [
-        'title',
-        'author_id',
-        'category_id',
-        'isbn',
-        'copies'
-    ];
+    protected $guarded = [];
 
     public function author()
     {
@@ -31,6 +25,11 @@ class Book extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function publisher()
+    {
+        return $this->belongsTo(Publisher::class);
     }
 
     public function transactions()

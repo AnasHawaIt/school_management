@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone');
+            $table->foreignId('student_id')->constrained('students');
+            $table->foreignId('school_id')->constrained('schools');
+            $table->date('start_date');
+            $table->date('end_date')->default(date('Y-m-d'));
+            $table->string('username')->unique();
+            $table->string('password');
             $table->softDeletes();
             $table->timestamps();
         });
