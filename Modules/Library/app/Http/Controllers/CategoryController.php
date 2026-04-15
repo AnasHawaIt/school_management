@@ -25,17 +25,24 @@ class CategoryController extends Controller
 
     public function forceDelete($id)
     {
-        return new CategoryResource($this->service->forceDelete($id));
+
+        $this->service->forceDelete($id);
+
+        return response()->json([
+            'message' => 'Force deleted successfully'
+        ]);
     }
 
     public function AllOnlyTrashed()
     {
-        return new CategoryResource($this->service->getCategoryOnlyTrashed());
+        return CategoryResource::collection(
+            $this->service->getCategoryOnlyTrashed()
+        );
     }
 
     public function index(Request $request)
     {
-        return new CategoryResource($this->service->getAll($request));
+        return  CategoryResource::collection($this->service->getAll($request));
     }
 
     public function store(StoreCategoryRequest $request)

@@ -18,23 +18,23 @@ class BookService
         $this->repo = $repo;
     }
 
-    private function prepareTranslatable(array $data, array $fields)
-    {
-        $result = [];
-
-        foreach ($fields as $field) {
-
-            if (!isset($data[$field])) {
-                continue;
-            }
-
-            foreach ($this->locales as $locale) {
-                $result[$field][$locale] = $data[$field][$locale] ?? null;
-            }
-        }
-
-        return $result;
-    }
+//    private function prepareTranslatable(array $data, array $fields)
+//    {
+//        $result = [];
+//
+//        foreach ($fields as $field) {
+//
+//            if (!isset($data[$field])) {
+//                continue;
+//            }
+//
+//            foreach ($this->locales as $locale) {
+//                $result[$field][$locale] = $data[$field][$locale] ?? null;
+//            }
+//        }
+//
+//        return $result;
+//    }
 
 
     public function getBookOnlyTrashed()
@@ -59,19 +59,20 @@ class BookService
 
     public function create(array $data)
     {
-
-        $translatable = $this->prepareTranslatable($data, [
-            'title',
-            'description'
-        ]);
-
-        $book= $this->repo->create([
-            ...$translatable,
-            'author_id'=>$data['author_id'],
-            'category_id'=>$data['category_id'],
-            'isbn'=>$data['isbn'],
-            'copies'=>$data['copies'],
-        ]);
+//
+//        $translatable = $this->prepareTranslatable($data, [
+//            'title',
+//            'description'
+//        ]);
+//
+//        $book= $this->repo->create([
+//            ...$translatable,
+//            'author_id'=>$data['author_id'],
+//            'category_id'=>$data['category_id'],
+//            'isbn'=>$data['isbn'],
+//            'copies'=>$data['copies'],
+//        ]);
+        $book = $this->repo->create($data);
 
         event(new BookCreated($book, auth()->id()));
 
@@ -80,18 +81,20 @@ class BookService
 
     public function update($id, array $data)
     {
-        $translatable = $this->prepareTranslatable($data, [
-            'title',
-            'description'
-        ]);
+//        $translatable = $this->prepareTranslatable($data, [
+//            'title',
+//            'description'
+//        ]);
+//
+//        $book= $this->repo->update($id,[
+//            ...$translatable,
+//            'author_id'=>$data['author_id'],
+//            'category_id'=>$data['category_id'],
+//            'isbn'=>$data['isbn'],
+//            'copies'=>$data['copies'],
+//        ]);
 
-        $book= $this->repo->update($id,[
-            ...$translatable,
-            'author_id'=>$data['author_id'],
-            'category_id'=>$data['category_id'],
-            'isbn'=>$data['isbn'],
-            'copies'=>$data['copies'],
-        ]);
+        $book = $this->repo->update($id, $data);
 
         event(new BookUpdated($book, auth()->id()));
 

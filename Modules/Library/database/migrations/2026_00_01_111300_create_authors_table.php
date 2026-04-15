@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('photo')->nullable()->change();
-            $table->date('birth_date')();
-            $table->date('death_date');
+            $table->date('birth_date');
+            $table->date('death_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

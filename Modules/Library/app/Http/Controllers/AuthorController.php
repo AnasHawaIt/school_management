@@ -25,12 +25,20 @@ class AuthorController extends Controller
 
     public function forceDelete($id)
     {
-        return new AuthorResource($this->service->forceDelete($id));
+        $this->service->forceDelete($id);
+
+        return response()->json([
+            'message' => 'Force deleted successfully'
+        ]);
     }
 
     public function AllOnlyTrashed()
     {
-        return new AuthorResource($this->service->getAuthorOnlyTrashed());
+
+        return AuthorResource::collection(
+            $this->service->getAuthorOnlyTrashed()
+        );
+
     }
 
     public function index(Request $request)
@@ -45,7 +53,7 @@ class AuthorController extends Controller
 
     public function show($id)
     {
-        return new AuthorResource($this->service->findById($id));
+        return new AuthorResource($this->service->find($id));
     }
 
     public function update(UpdateAuthorRequest $request, $id)

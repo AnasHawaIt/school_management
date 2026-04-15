@@ -14,17 +14,18 @@ class UpdateMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:members,email,' . $this->route('id'),
-            'phone' => 'nullable|string|max:20',
-        ];
+                'student_id' => 'sometimes|integer|exists:students,id',
+                'school_id' => 'sometimes|integer|exists:schools,id',
+                'username' => 'sometimes|string|unique:members,username',
+                'password' => 'sometimes|string|confirmed',
+            ];
     }
 
     public function messages(): array
     {
         return [
-            'email.email'  => 'Invalid email format',
-            'email.unique' => 'Email already exists',
+            'student_id.integer' => 'student_id must be an integer',
+            'school_id.integer' => 'school_id must be an integer',
         ];
     }
 }

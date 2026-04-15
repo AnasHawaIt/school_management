@@ -17,8 +17,7 @@ class StoreTransactionRequest extends FormRequest
             'book_id'     => 'required|exists:books,id',
             'member_id'   => 'required|exists:members,id',
             'borrow_date' => 'required|date',
-            'due_date'    => 'required|date|after_or_equal:borrow_date',
-            //'status'      => 'nullable|in:borrowed,returned',
+            'return_date' => 'required|date',
         ];
     }
 
@@ -27,7 +26,8 @@ class StoreTransactionRequest extends FormRequest
         return [
             'book_id.exists'   => 'Book not found',
             'member_id.exists' => 'Member not found',
-            'due_date.after_or_equal' => 'Due date must be after borrow date',
+            'borrow_date.date'   => 'Borrow date must be a date',
+            'return_date.date'   => 'Return date must be a date',
         ];
     }
 }

@@ -14,7 +14,7 @@ class MemberRestored
 
     public Member $member;
 
-    public function __construct(Member $member)
+    public function __construct(Member $member,public ?int $userId = null)
     {
         $this->member = $member;
     }

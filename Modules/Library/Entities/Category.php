@@ -14,9 +14,7 @@ class Category extends Model
 
     protected $dates = ['deleted_at'];
 
-
-
-    protected $fillable = ['name'];
+    protected $guarded = [];
 
     public function books()
     {

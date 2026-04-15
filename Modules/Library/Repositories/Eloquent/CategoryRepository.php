@@ -11,21 +11,25 @@ class CategoryRepository implements CategoryRepositoryInterface
 {
     public function getCategoryOnlyTrashed()
     {
-        $query = Category::onlyTrashed()->get();
-
-        return $query->paginate($query->get('per_page', 10));
+        return Category::onlyTrashed()->paginate(10);
     }
 
     public function restore($id)
     {
-        $bus = Category::withTrashed()->findOrFail($id);
-        return $bus->restore();
+        $category = Category::withTrashed()->findOrFail($id);
+
+        $category->restore();
+
+        return $category;
     }
 
     public function forceDelete($id)
     {
-        $bus = Category::withTrashed()->findOrFail($id);
-        return $bus->forceDelete();
+        $category = Category::withTrashed()->findOrFail($id);
+
+        $category->forceDelete();
+
+        return $category;
     }
 
     public function getAll($request)

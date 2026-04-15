@@ -5,7 +5,6 @@ namespace Modules\Library\Listeners\MemberListeners;
 
 use Modules\Core\Entities\User;
 use Modules\Library\Events\MemberEvents\MemberDeleted;
-use Modules\Library\Notifications\BookDeletedNotification;
 use Modules\Library\Notifications\MemberDeletedNotification;
 
 class MemberDeletedNotificationDatabaseListener
