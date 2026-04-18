@@ -15,9 +15,8 @@ class UpdateMemberRequest extends FormRequest
     {
         return [
                 'student_id' => 'sometimes|integer|exists:students,id',
-                'school_id' => 'sometimes|integer|exists:schools,id',
                 'username' => 'sometimes|string|unique:members,username',
-                'password' => 'sometimes|string|confirmed',
+                'password' => 'sometimes|string',
             ];
     }
 

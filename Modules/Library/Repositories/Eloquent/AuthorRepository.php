@@ -2,7 +2,6 @@
 
 namespace Modules\Library\Repositories\Eloquent;
 
-use Illuminate\Http\Request;
 use Modules\Library\Entities\Author;
 use Modules\Library\Filters\AuthorFilter;
 use Modules\Library\Repositories\Interfaces\AuthorRepositoryInterface;

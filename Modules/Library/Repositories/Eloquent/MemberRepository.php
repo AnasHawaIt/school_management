@@ -10,9 +10,8 @@ class MemberRepository implements MemberRepositoryInterface
 {
     public function getMemberOnlyTrashed()
     {
-        $query = Member::onlyTrashed()->get();
-
-        return $query->paginate($query->get('per_page', 10));
+        return Member::onlyTrashed()
+        ->paginate(request()->get('per_page', 10));
     }
 
     public function restore($id)
@@ -24,6 +23,11 @@ class MemberRepository implements MemberRepositoryInterface
          return $member;
     }
 
+    public function query()
+    {
+        return Member::query();
+    }
+
     public function forceDelete($id)
     {
         $member = Member::withTrashed()->findOrFail($id);
@@ -33,15 +37,15 @@ class MemberRepository implements MemberRepositoryInterface
         return $member;
     }
 
-    public function getAll($request)
+    public function getAll( $request)
     {
-        $query = Member::query();
+        $query = $this->query();
 
         $query = (new MemberFilter($request))->apply($query);
 
-        return $query
-            ->latest()
-            ->paginate($request->get('per_page', 10));
+        $query->latest();
+
+        return$query->paginate($request->get('per_page', 10));
     }
 
     public function findById($id)

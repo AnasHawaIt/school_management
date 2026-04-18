@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreMemberRequest;
 use Modules\Library\app\Http\Requests\UpdateMemberRequest;
 use Modules\Library\app\Http\Resources\MemberResource;
-use Modules\Library\Entities\Member;
 use Modules\Library\Services\MemberService;
 
 class MemberController extends Controller
@@ -42,7 +41,7 @@ class MemberController extends Controller
 
     public function index(Request $request)
     {
-        return new MemberResource(Member::with('transactions')->get());
+        return MemberResource::collection($this->service->getAll($request));
     }
 
     public function store(StoreMemberRequest $request)

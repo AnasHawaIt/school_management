@@ -10,9 +10,14 @@ class MemberResource extends JsonResource
     {
         return [
             'id'         => $this->id,
-            'name'       => $this->name,
-            'email'      => $this->email,
-            'phone'      => $this->phone,
+            'start_date'       => $this->start_date,
+            'username'      => $this->username,
+            'password'      => $this->password,
+            'student'=>[
+                'student_id'=>$this->student_id,
+                'academic_year_id'=>$this->academic_year_id,
+                'status'=>$this->status,
+            ],
             'created_at' => $this->created_at,
         ];
     }

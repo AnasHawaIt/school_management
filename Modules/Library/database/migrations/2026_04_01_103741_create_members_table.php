@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained('students');
-            $table->date('start_date');
+            $table->date('start_date')->useCurrent();;
             $table->date('end_date')->default(date('Y-m-d'));
             $table->string('username')->unique();
             $table->string('password');

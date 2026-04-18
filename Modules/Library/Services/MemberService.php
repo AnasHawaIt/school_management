@@ -48,9 +48,10 @@ class MemberService
 
     public function create(array $data)
     {
+        $data['start_date']=now();
         $category= $this->repo->create($data);
 
-        event(new MemberCreated($category),auth()->id());
+        event(new MemberCreated($category,auth()->id()));
 
         return $category;
     }
@@ -64,7 +65,7 @@ class MemberService
     {
         $category= $this->repo->update($id, $data);
 
-        event(new MemberUpdated($category),auth()->id());
+        event(new MemberUpdated($category,auth()->id()));
 
         return $category;
     }

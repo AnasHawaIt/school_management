@@ -13,9 +13,8 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function getTransactionOnlyTrashed()
     {
-        $query = Transaction::onlyTrashed()->get();
-
-        return $query->paginate($query->get('per_page', 10));
+        return Transaction::onlyTrashed()
+        ->paginate(request()->get('per_page', 10));
     }
 
     public function restore($id)
