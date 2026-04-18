@@ -32,7 +32,7 @@ class AuthorRepository implements AuthorRepositoryInterface
         return $author;
     }
 
-    public function getAll($request)
+    public function getAll( $request)
     {
         $query = Author::query();
 
