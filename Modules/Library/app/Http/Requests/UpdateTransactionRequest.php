@@ -17,15 +17,17 @@ class UpdateTransactionRequest extends FormRequest
             'book_id'     => 'sometimes|exists:books,id',
             'member_id'   => 'sometimes|exists:members,id',
             'borrow_date' => 'sometimes|date',
-            'due_date'    => 'sometimes|date|after_or_equal:borrow_date',
-            'status'      => 'sometimes|in:borrowed,returned',
+            'return_date' => 'sometimes|date',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'status.in' => 'Status must be borrowed or returned',
+            'book_id.exists' => 'The book id does not exist.',
+            'member_id.exists' => 'The member id does not exist.',
+            'borrow_date.date' => 'The borrow date is not a valid date.',
+            'return_date.date' => 'The return date is not a valid date.',
         ];
     }
 }

@@ -10,21 +10,25 @@ class AuthorRepository implements AuthorRepositoryInterface
 {
     public function getAuthorOnlyTrashed()
     {
-        $query = Author::onlyTrashed()->get();
-
-        return $query->paginate($query->get('per_page', 10));
+        return Author::onlyTrashed()->paginate(10);
     }
 
     public function restore($id)
     {
-        $bus = Author::withTrashed()->findOrFail($id);
-        return $bus->restore();
+        $author = Author::withTrashed()->findOrFail($id);
+
+        $author->restore();
+
+        return $author;
     }
 
     public function forceDelete($id)
     {
-        $bus = Author::withTrashed()->findOrFail($id);
-        return $bus->forceDelete();
+        $author = Author::withTrashed()->findOrFail($id);
+
+        $author->forceDelete();
+
+        return $author;
     }
 
     public function getAll($request)

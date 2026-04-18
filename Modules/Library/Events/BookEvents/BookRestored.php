@@ -3,7 +3,7 @@
 
 namespace Modules\Library\Events\BookEvents;
 
-use Modules\Transport\Entities\Bus;
+use Modules\Library\Entities\Book;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -11,10 +11,10 @@ class BookRestored
 {
     use Dispatchable, SerializesModels;
 
-    public Bus $bus;
+    public Book $book;
 
-    public function __construct(Bus $bus)
+    public function __construct(Book $book,public ?int $userId = null )
     {
-        $this->bus = $bus;
+        $this->book = $book;
     }
 }

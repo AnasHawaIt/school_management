@@ -2,6 +2,7 @@
 
 namespace Modules\Library\Services;
 
+use App\Services\ImageService;
 use Modules\Library\Events\BookEvents\BookCreated;
 use Modules\Library\Events\BookEvents\BookDeleted;
 use Modules\Library\Events\BookEvents\BookUpdated;
@@ -11,10 +12,33 @@ class BookService
 {
     protected $repo;
 
-    public function __construct(BookRepositoryInterface $repo)
+    protected $locales = ['en', 'ar'];
+
+    protected $imageService;
+
+    public function __construct(BookRepositoryInterface $repo,ImageService $imageService)
     {
         $this->repo = $repo;
+        $this->imageService = $imageService;
     }
+//    private function prepareTranslatable(array $data, array $fields)
+//    {
+//        $result = [];
+//
+//        foreach ($fields as $field) {
+//
+//            if (!isset($data[$field])) {
+//                continue;
+//            }
+//
+//            foreach ($this->locales as $locale) {
+//                $result[$field][$locale] = $data[$field][$locale] ?? null;
+//            }
+//        }
+//
+//        return $result;
+//    }
+
 
     public function getBookOnlyTrashed()
     {
@@ -36,18 +60,48 @@ class BookService
         return $this->repo->getAll($request);
     }
 
-    public function create(array $data)
+    public function create(array $data,$images = null)
     {
-        $bus = $this->repo->create($data);
+//
+//        $translatable = $this->prepareTranslatable($data, [
+//            'title',
+//            'description'
+//        ]);
+//
+//        $book= $this->repo->create([
+//            ...$translatable,
+//            'author_id'=>$data['author_id'],
+//            'category_id'=>$data['category_id'],
+//            'isbn'=>$data['isbn'],
+//            'copies'=>$data['copies'],
+//        ]);
+        $book = $this->repo->create($data);
 
-        event(new BookCreated($bus, auth()->id()));
+        $this->imageService->upload($book, $images);
 
-        return $bus;
+        event(new BookCreated($book, auth()->id()));
+
+        return $book;
     }
 
-    public function update($id, array $data)
+    public function update($id, array $data,$images = null)
     {
-        $book= $this->repo->update($id, $data);
+//        $translatable = $this->prepareTranslatable($data, [
+//            'title',
+//            'description'
+//        ]);
+//
+//        $book= $this->repo->update($id,[
+//            ...$translatable,
+//            'author_id'=>$data['author_id'],
+//            'category_id'=>$data['category_id'],
+//            'isbn'=>$data['isbn'],
+//            'copies'=>$data['copies'],
+//        ]);
+
+        $book = $this->repo->update($id, $data);
+
+        $this->imageService->replace($book, $images);
 
         event(new BookUpdated($book, auth()->id()));
 
@@ -59,7 +113,7 @@ class BookService
         $book = $this->repo->find($id);
 
         if (!$book) {
-            throw new \Exception('Bus not found');
+            throw new \Exception('Book not found');
         }
 
         $this->repo->delete($id);

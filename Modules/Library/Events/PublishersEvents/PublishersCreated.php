@@ -1,0 +1,19 @@
+<?php
+
+namespace Modules\Library\Events\PublishersEvents;
+
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Modules\Library\Entities\Publishers;
+
+class PublishersCreated
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public function __construct(
+       public Publishers $publishers,
+        public ?int $userId = null,
+        public ?string $socketId = null
+    ) {}
+}

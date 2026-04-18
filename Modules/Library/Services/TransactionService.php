@@ -2,14 +2,11 @@
 
 namespace Modules\Library\Services;
 
-use Illuminate\Support\Facades\DB;
 use Modules\Library\Events\TransactionEvents\TransactionCreated;
 use Modules\Library\Events\TransactionEvents\TransactionDeleted;
 use Modules\Library\Events\TransactionEvents\TransactionRestored;
+use Modules\Library\Events\TransactionEvents\TransactionUpdated;
 use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
-use Modules\Transport\Entities\Route;
-use Modules\Transport\Events\SubscriptionEvents\TransactionUpdated;
-use Modules\Transport\Repositories\Interfaces\SubscriptionRepositoryInterface;
 
 class TransactionService
 {
@@ -27,18 +24,18 @@ class TransactionService
 
     public function restore($id)
     {
-        $bus= $this->repo->restore($id);
+        $transaction= $this->repo->restore($id);
 
-        event(new TransactionRestored($bus));
+        event(new TransactionRestored($transaction));
 
-        return $bus;
+        return $transaction;
     }
 
     public function forceDelete($id)
     {
-        $bus= $this->repo->forceDelete($id);
+        $transaction= $this->repo->forceDelete($id);
 
-        event(new TransactionDeleted($bus));
+        event(new TransactionDeleted($transaction));
 
         return true;
     }
@@ -76,7 +73,7 @@ class TransactionService
         $category = $this->repo->findById($id);
 
         if (!$category) {
-            throw new \Exception('Bus not found');
+            throw new \Exception('Transaction not found');
         }
 
         $this->repo->delete($id);

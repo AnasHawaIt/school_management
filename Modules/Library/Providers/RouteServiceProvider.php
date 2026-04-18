@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    public const HOME = '/dashboard';
+
     protected string $moduleName = 'Library';
 
     public function boot()

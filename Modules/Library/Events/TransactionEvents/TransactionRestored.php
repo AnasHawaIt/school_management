@@ -13,7 +13,7 @@ class TransactionRestored
 
     public Transaction $transaction;
 
-    public function __construct(Transaction $transaction)
+    public function __construct(Transaction $transaction,public ?int $userId = null)
     {
         $this->transaction =$transaction;
     }

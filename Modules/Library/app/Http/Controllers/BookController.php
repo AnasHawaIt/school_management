@@ -25,24 +25,31 @@ class BookController extends Controller
 
     public function forceDelete($id)
     {
-        return new BookResource($this->service->forceDelete($id));
+        $this->service->forceDelete($id);
+
+        return response()->json([
+            'message' => 'Force deleted successfully'
+        ]);
     }
 
     public function AllOnlyTrashed()
     {
-        return new BookResource($this->service->getBookOnlyTrashed());
+        return BookResource::collection(
+            $this->service->getBookOnlyTrashed()
+        );
+
     }
 
     public function index()
     {
-        $books = Book::with(['author','category'])->paginate(10);
-        return new BookResource($books);
+        return BookResource::collection(
+            Book::with(['author','category'])->paginate(10)
+        );
     }
 
     public function store(StoreBookRequest $request)
     {
-        $book = $this->service->create($request->all());
-        return new BookResource($book);
+        return new BookResource($this->service->create($request->all(), $request->file('image')));
     }
 
     public function show($id)
@@ -52,7 +59,7 @@ class BookController extends Controller
 
     public function update(UpdateBookRequest $request, $id)
     {
-        $book = $this->service->update($id, $request->all());
+        $book = $this->service->update($id, $request->all(), $request->file('image'));
         return new BookResource($book);
     }
 

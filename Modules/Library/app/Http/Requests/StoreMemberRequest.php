@@ -14,19 +14,23 @@ class StoreMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:members,email',
-            'phone' => 'nullable|string|max:20|regex:/^[0-9+\-() ]+$/',
+           'student_id' => 'required|integer|exists:students,id',
+            'username' => 'required|string|unique:members,username',
+            'password' => 'required|string',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required'  => 'Member name is required',
-            'email.required' => 'Email is required',
-            'email.email'    => 'Invalid email format',
-            'email.unique'   => 'Email already exists',
+           'student_id.required' => 'Student ID is required.',
+            'student_id.integer' => 'Student ID must be an integer.',
+            'student_id.exists' => 'Student ID does not exist.',
+            'username.required' => 'Username is required.',
+            'username.string' => 'Username must be a string.',
+            'username.unique' => 'Username already exists.',
+            'password.required' => 'Password is required.',
+            'password.string' => 'Password must be a string.',
         ];
     }
 }

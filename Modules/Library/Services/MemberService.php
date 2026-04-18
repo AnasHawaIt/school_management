@@ -25,18 +25,18 @@ class MemberService
 
     public function restore($id)
     {
-        $bus= $this->repo->restore($id);
+        $member= $this->repo->restore($id);
 
-        event(new MemberRestored($bus));
+        event(new MemberRestored($member));
 
-        return $bus;
+        return $member;
     }
 
     public function forceDelete($id)
     {
-        $bus= $this->repo->forceDelete($id);
+        $member= $this->repo->forceDelete($id);
 
-        event(new MemberDeleted($bus));
+        event(new MemberDeleted($member));
 
         return true;
     }
@@ -74,7 +74,7 @@ class MemberService
         $category = $this->repo->findById($id);
 
         if (!$category) {
-            throw new \Exception('Bus not found');
+            throw new \Exception('Member not found');
         }
 
         $this->repo->delete($id);

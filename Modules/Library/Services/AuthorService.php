@@ -2,6 +2,9 @@
 
 namespace Modules\Library\Services;
 
+use App\Services\ImageService;
+use Illuminate\Http\Request;
+use Modules\Library\Entities\Author;
 use Modules\library\Events\AuthorEvents\AuthorCreated;
 use Modules\library\Events\AuthorEvents\AuthorDeleted;
 use Modules\library\Events\AuthorEvents\AuthorRestored;
@@ -12,9 +15,38 @@ class AuthorService
 {
     protected $repo;
 
-    public function __construct(AuthorRepositoryInterface $repo)
+//    protected $locales = ['en', 'ar'];
+    protected $imageService;
+
+    public function __construct(AuthorRepositoryInterface $repo, ImageService $imageService)
     {
         $this->repo = $repo;
+        $this->imageService = $imageService;
+    }
+
+
+//    private function prepareTranslatable(array $data, array $fields)
+//    {
+//        $result = [];
+//
+//        foreach ($fields as $field) {
+//            foreach ($this->locales as $locale) {
+//                if (isset($data[$field][$locale])) {
+//                    $result[$field][$locale] = $data[$field][$locale];
+//                }
+//            }
+//        }
+//
+//        return $result;
+//    }
+
+    private function normalizeDate($value)
+    {
+        if (is_array($value)) {
+            return $value['en'] ?? null;
+        }
+
+        return $value;
     }
 
     public function getAuthorOnlyTrashed()
@@ -24,56 +56,65 @@ class AuthorService
 
     public function restore($id)
     {
-        $bus= $this->repo->restore($id);
+        $author= $this->repo->restore($id);
 
-        event(new AuthorRestored($bus));
+        event(new AuthorRestored($author,auth()->id()));
 
-        return $bus;
+        return $author;
     }
 
     public function forceDelete($id)
     {
-        $bus= $this->repo->forceDelete($id);
+        $author= $this->repo->find($id);
 
-        event(new AuthorDeleted($bus));
+        $author->forceDelete();
+
+        event(new AuthorDeleted($author,auth()->id()));
 
         return true;
     }
 
-    public function getAll($request)
+    public function getAll(Request $request)
     {
         return $this->repo->getAll($request);
     }
 
-    public function create(array $data)
+    public function create(array $data, $images = null)
     {
-        $bus = $this->repo->create($data);
+        $data['birth_date'] = $this->normalizeDate($data['birth_date'] ?? null);
+        $data['death_date'] = $this->normalizeDate($data['death_date'] ?? null);
 
-        event(new AuthorCreated($bus, auth()->id()));
+        $author = $this->repo->create($data);
 
-        return $bus;
+        $this->imageService->upload($author, $images);
+
+        event(new AuthorCreated($author, auth()->id()));
+
+        return $author;
     }
 
-    public function update($id, array $data)
+    public function update($id, array $data, $images = null)
     {
-        $bus= $this->repo->update($id, $data);
+        $author = $this->repo->update($id, $data);
 
-        event(new AuthorUpdated($bus, auth()->id()));
+        $this->imageService->replace($author, $images);
 
-        return $bus;
+        event(new AuthorUpdated($author, auth()->id()));
+
+        return $author;
     }
 
     public function delete($id)
     {
-        $bus = $this->repo->find($id);
+        $author = $this->repo->find($id);
 
-        if (!$bus) {
-            throw new \Exception('Bus not found');
+        if (!$author) {
+            throw new \Exception('Author not found');
         }
 
         $this->repo->delete($id);
 
-        event(new AuthorDeleted($bus));
+        event(new AuthorDeleted($author, auth()->id()));
 
         return true;
     }

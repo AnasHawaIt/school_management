@@ -9,21 +9,25 @@ class BookRepository implements BookRepositoryInterface
 {
     public function getBookOnlyTrashed()
     {
-        $query = Book::onlyTrashed()->get();
-
-        return $query->paginate($query->get('per_page', 10));
+        return Book::onlyTrashed()->paginate(10);
     }
 
     public function restore($id)
     {
-        $bus = Book::withTrashed()->findOrFail($id);
-        return $bus->restore();
+        $book = Book::withTrashed()->findOrFail($id);
+
+        $book->restore();
+
+        return $book;
     }
 
     public function forceDelete($id)
     {
-        $bus = Book::withTrashed()->findOrFail($id);
-        return $bus->forceDelete();
+        $book = Book::withTrashed()->findOrFail($id);
+
+        $book->forceDelete();
+
+        return $book;
     }
 
     public function query()
@@ -48,8 +52,9 @@ class BookRepository implements BookRepositoryInterface
 
     public function find($id)
     {
-        return Book::findOrFail($id);
+        return Book::with(['author', 'category'])->findOrFail($id);
     }
+
 
     public function create(array $data)
     {

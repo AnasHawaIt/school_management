@@ -17,14 +17,20 @@ class MemberRepository implements MemberRepositoryInterface
 
     public function restore($id)
     {
-        $bus = Member::withTrashed()->findOrFail($id);
-        return $bus->restore();
+        $member = Member::withTrashed()->findOrFail($id);
+
+         $member->restore();
+
+         return $member;
     }
 
     public function forceDelete($id)
     {
-        $bus = Member::withTrashed()->findOrFail($id);
-        return $bus->forceDelete();
+        $member = Member::withTrashed()->findOrFail($id);
+
+        $member->forceDelete();
+
+        return $member;
     }
 
     public function getAll($request)

@@ -3,7 +3,6 @@
 namespace Modules\Library\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreAuthorRequest;
 use Modules\Library\app\Http\Requests\UpdateAuthorRequest;
 use Modules\Library\app\Http\Resources\AuthorResource;
@@ -25,32 +24,58 @@ class AuthorController extends Controller
 
     public function forceDelete($id)
     {
-        return new AuthorResource($this->service->forceDelete($id));
+        $this->service->forceDelete($id);
+
+        return response()->json([
+            'message' => 'Force deleted successfully'
+        ]);
     }
 
     public function AllOnlyTrashed()
     {
-        return new AuthorResource($this->service->getAuthorOnlyTrashed());
+
+        return AuthorResource::collection(
+            $this->service->getAuthorOnlyTrashed()
+        );
+
     }
 
-    public function index(Request $request)
+    public function index( $request)
     {
         return AuthorResource::collection($this->service->getAll( $request ));
     }
 
     public function store(StoreAuthorRequest $request)
     {
-        return new AuthorResource($this->service->create($request->all()));
+        $data =[
+            'name' => $request->name,
+            'birth_date' => $request->birth_date,
+            'death_date' => $request->death_date,
+            ];
+
+        $images = $request->file('images');
+
+
+        return new AuthorResource($this->service->create($data,$images ));
     }
 
     public function show($id)
     {
-        return new AuthorResource($this->service->findById($id));
+        return new AuthorResource($this->service->find($id));
     }
 
     public function update(UpdateAuthorRequest $request, $id)
     {
-        return new AuthorResource($this->service->update($id, $request->all()));
+        $data =$request->only([
+            'name',
+            'birth_date',
+            'death_date'
+        ]);
+
+        $images = $request->file('images');
+
+
+        return new AuthorResource($this->service->update($id, $data ,$images ));
     }
 
     public function destroy($id)

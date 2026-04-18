@@ -15,6 +15,9 @@ use Modules\Library\Events\CategoryEvents\CategoryUpdated;
 use Modules\Library\Events\MemberEvents\MemberCreated;
 use Modules\Library\Events\MemberEvents\MemberDeleted;
 use Modules\Library\Events\MemberEvents\MemberUpdated;
+use Modules\Library\Events\PublishersEvents\PublishersCreated;
+use Modules\Library\Events\PublishersEvents\PublishersDeleted;
+use Modules\Library\Events\PublishersEvents\PublishersUpdated;
 use Modules\Library\Events\TransactionEvents\TransactionCreated;
 use Modules\Library\Events\TransactionEvents\TransactionDeleted;
 use Modules\Library\Events\TransactionEvents\TransactionUpdated;
@@ -39,6 +42,9 @@ use Modules\Library\Listeners\MemberListeners\MemberDeletedLogEventListener;
 use Modules\Library\Listeners\MemberListeners\MemberDeletedNotificationDatabaseListener;
 use Modules\Library\Listeners\MemberListeners\MemberUpdatedLogEventListener;
 use Modules\Library\Listeners\MemberListeners\MemberUpdatedNotificationDatabaseListener;
+use Modules\Library\Listeners\PublishersListeners\PublishersCreatedLogEventListener;
+use Modules\Library\Listeners\PublishersListeners\PublishersDeletedLogEventListener;
+use Modules\Library\Listeners\PublishersListeners\PublishersUpdateLogEventListener;
 use Modules\Library\Listeners\TransactionListeners\TransactionCreatedLogEventListener;
 use Modules\Library\Listeners\TransactionListeners\TransactionCreatedNotificationDatabaseListener;
 use Modules\Library\Listeners\TransactionListeners\TransactionDeletedBroadcastEventListener;
@@ -66,6 +72,18 @@ class EventServiceProvider extends ServiceProvider
 
         AuthorDeleted::class => [
             AuthorDeletedLogEventListener::class,
+        ],
+
+        PublishersCreated::class=>[
+            PublishersCreatedLogEventListener::class
+            ],
+
+        PublishersUpdated::class=>[
+            PublishersUpdateLogEventListener::class
+        ],
+
+        PublishersDeleted::class=>[
+            PublishersDeletedLogEventListener::class
         ],
 
         CategoryCreated::class => [

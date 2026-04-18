@@ -20,14 +20,20 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function restore($id)
     {
-        $bus = Transaction::withTrashed()->findOrFail($id);
-        return $bus->restore();
+        $transaction = Transaction::withTrashed()->findOrFail($id);
+
+        $transaction->restore();
+
+        return $transaction;
     }
 
     public function forceDelete($id)
     {
-        $bus = Transaction::withTrashed()->findOrFail($id);
-        return $bus->forceDelete();
+        $transaction = Transaction::withTrashed()->findOrFail($id);
+
+        $transaction->forceDelete();
+
+        return $transaction;
     }
 
     public function getAll($request)

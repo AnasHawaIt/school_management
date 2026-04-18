@@ -19,7 +19,11 @@ class UpdateBookRequest extends FormRequest
             'category_id' => 'sometimes|exists:categories,id',
             'isbn' => 'sometimes|string|unique:books,isbn,' . $this->route('id'),
             'copies'      => 'sometimes|integer|min:0',
-        ];
+             'description' => 'sometimes|string',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+             'publisher_id'=> 'sometimes|exists:publishers,id',
+         ];
     }
 
     public function messages()
@@ -29,6 +33,9 @@ class UpdateBookRequest extends FormRequest
             'author_id.exists' => 'Author not found',
             'category_id.exists' => 'Category not found',
             'isbn.unique' => 'ISBN already exists',
+            'copies.integer' => 'Copies must be an integer',
+            'description.string' => 'Description must be a string',
+            'photo.image' => 'Photo must be an image',
         ];
     }
 }

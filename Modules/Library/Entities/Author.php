@@ -2,6 +2,7 @@
 
 namespace Modules\Library\Entities;
 
+use App\Models\Images;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,11 +15,16 @@ class Author extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['name'];
+    protected $guarded = [];
 
     public function books()
     {
         return $this->hasMany(Book::class);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Images::class, 'imageable');
     }
 
     // protected static function newFactory(): AuthorFactory

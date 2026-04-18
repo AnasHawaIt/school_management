@@ -26,40 +26,38 @@ class MemberController extends Controller
 
     public function forceDelete($id)
     {
-        return new MemberResource($this->service->forceDelete($id));
+        $this->service->forceDelete($id);
+
+        return response()->json([
+            'message' => 'Force deleted successfully'
+        ]);
     }
 
     public function AllOnlyTrashed()
     {
-        return new MemberResource($this->service->getMemberOnlyTrashed());
+        return MemberResource::collection(
+            $this->service->getMemberOnlyTrashed()
+        );
     }
 
     public function index(Request $request)
     {
-        $members = Member::with('transactions')->get();
-
-        return new MemberResource($members);
+        return new MemberResource(Member::with('transactions')->get());
     }
 
     public function store(StoreMemberRequest $request)
     {
-        $member=$this->service->create($request->all());
-
-        return new MemberResource($member);
+        return new MemberResource($this->service->create($request->all()));
     }
 
     public function show($id)
     {
-        $member=$this->service->findById($id);
-
-        return new MemberResource($member);
+        return new MemberResource($this->service->findById($id));
     }
 
     public function update(UpdateMemberRequest $request, $id)
     {
-        $member=$this->service->update($id, $request->all());
-
-        return new MemberResource($member);
+        return new MemberResource($this->service->update($id, $request->all()));
     }
 
     public function destroy($id)

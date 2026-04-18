@@ -3,10 +3,8 @@
 namespace Modules\Library\Services;
 
 use Modules\library\Events\CategoryEvents\CategoryCreated;
-use Modules\library\Events\CategoryEvents\CategoryDeleted;
-use Modules\library\Events\CategoryEvents\CategoryRestored;
-use Modules\library\Events\CategoryEvents\CategoryUpdated;
 use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
+
 class CategoryService
 {
     protected $repo;
@@ -23,18 +21,23 @@ class CategoryService
 
     public function restore($id)
     {
-        $bus= $this->repo->restore($id);
+        $category= $this->repo->restore($id);
 
-        event(new CategoryRestored($bus));
+        event(new CategoryCreated($category, auth()->id()));
 
-        return $bus;
+
+        return $category;
     }
 
     public function forceDelete($id)
     {
-        $bus= $this->repo->forceDelete($id);
 
-        event(new CategoryDeleted($bus));
+        $category= $this->repo->findById($id);
+
+        $category->forceDelete();
+
+        event(new CategoryCreated($category, auth()->id()));
+
 
         return true;
     }
@@ -44,11 +47,13 @@ class CategoryService
         return $this->repo->getAll($request);
     }
 
+
     public function create(array $data)
     {
         $category= $this->repo->create($data);
 
-        event(new CategoryCreated($category),auth()->id());
+        event(new CategoryCreated($category, auth()->id()));
+
 
         return $category;
     }
@@ -62,7 +67,8 @@ class CategoryService
     {
         $category= $this->repo->update($id, $data);
 
-        event(new CategoryUpdated($category),auth()->id());
+        event(new CategoryCreated($category, auth()->id()));
+
 
         return $category;
     }
@@ -72,12 +78,13 @@ class CategoryService
         $category = $this->repo->findById($id);
 
         if (!$category) {
-            throw new \Exception('Bus not found');
+            throw new \Exception('Category not found');
         }
 
         $this->repo->delete($id);
 
-        event(new CategoryDeleted($category));
+        event(new CategoryCreated($category, auth()->id()));
+
 
         return true;
     }
