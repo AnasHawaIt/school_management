@@ -2,7 +2,9 @@
 
 namespace Modules\Library\Services;
 
+use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Modules\Library\Entities\Author;
 use Modules\library\Events\AuthorEvents\AuthorCreated;
 use Modules\library\Events\AuthorEvents\AuthorDeleted;
 use Modules\library\Events\AuthorEvents\AuthorRestored;
@@ -14,11 +16,14 @@ class AuthorService
     protected $repo;
 
 //    protected $locales = ['en', 'ar'];
+    protected $imageService;
 
-    public function __construct(AuthorRepositoryInterface $repo)
+    public function __construct(AuthorRepositoryInterface $repo, ImageService $imageService)
     {
         $this->repo = $repo;
+        $this->imageService = $imageService;
     }
+
 
 //    private function prepareTranslatable(array $data, array $fields)
 //    {
@@ -74,33 +79,25 @@ class AuthorService
         return $this->repo->getAll($request);
     }
 
-    public function create(array $data)
+    public function create(array $data, $images = null)
     {
         $data['birth_date'] = $this->normalizeDate($data['birth_date'] ?? null);
         $data['death_date'] = $this->normalizeDate($data['death_date'] ?? null);
 
         $author = $this->repo->create($data);
 
+        $this->imageService->upload($author, $images);
+
         event(new AuthorCreated($author, auth()->id()));
 
         return $author;
     }
 
-
-    public function update($id, array $data)
+    public function update($id, array $data, $images = null)
     {
-//        $translatable = $this->prepareTranslatable($data, [
-//            'name',
-//            'description'
-//        ]);
-//
-//        $author = $this->repo->update($id, [
-//            ... $translatable,
-//            'birth_date' => $data['birth_date'] ?? null,
-//            'death_date' => $data['death_date'] ?? null,
-//        ]);
-
         $author = $this->repo->update($id, $data);
+
+        $this->imageService->replace($author, $images);
 
         event(new AuthorUpdated($author, auth()->id()));
 

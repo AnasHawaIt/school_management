@@ -2,6 +2,7 @@
 
 namespace Modules\Library\Services;
 
+use App\Services\ImageService;
 use Modules\Library\Events\BookEvents\BookCreated;
 use Modules\Library\Events\BookEvents\BookDeleted;
 use Modules\Library\Events\BookEvents\BookUpdated;
@@ -13,11 +14,13 @@ class BookService
 
     protected $locales = ['en', 'ar'];
 
-    public function __construct(BookRepositoryInterface $repo)
+    protected $imageService;
+
+    public function __construct(BookRepositoryInterface $repo,ImageService $imageService)
     {
         $this->repo = $repo;
+        $this->imageService = $imageService;
     }
-
 //    private function prepareTranslatable(array $data, array $fields)
 //    {
 //        $result = [];
@@ -57,7 +60,7 @@ class BookService
         return $this->repo->getAll($request);
     }
 
-    public function create(array $data)
+    public function create(array $data,$images = null)
     {
 //
 //        $translatable = $this->prepareTranslatable($data, [
@@ -74,12 +77,14 @@ class BookService
 //        ]);
         $book = $this->repo->create($data);
 
+        $this->imageService->upload($book, $images);
+
         event(new BookCreated($book, auth()->id()));
 
         return $book;
     }
 
-    public function update($id, array $data)
+    public function update($id, array $data,$images = null)
     {
 //        $translatable = $this->prepareTranslatable($data, [
 //            'title',
@@ -95,6 +100,8 @@ class BookService
 //        ]);
 
         $book = $this->repo->update($id, $data);
+
+        $this->imageService->replace($book, $images);
 
         event(new BookUpdated($book, auth()->id()));
 

@@ -2,12 +2,9 @@
 
 namespace Modules\Library\Services;
 
-use Modules\Library\app\Http\Resources\CategoryResource;
 use Modules\library\Events\CategoryEvents\CategoryCreated;
-use Modules\library\Events\CategoryEvents\CategoryDeleted;
-use Modules\library\Events\CategoryEvents\CategoryRestored;
-use Modules\library\Events\CategoryEvents\CategoryUpdated;
 use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
+
 class CategoryService
 {
     protected $repo;

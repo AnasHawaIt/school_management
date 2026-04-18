@@ -2,6 +2,7 @@
 
 namespace Modules\Library\Entities;
 
+use App\Models\Images;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,6 +36,11 @@ class Book extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Images::class, 'imageable');
     }
 
 

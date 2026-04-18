@@ -15,7 +15,8 @@ class StoreBookRequest extends FormRequest
         return [
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
-            'photo'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
             'publisher_id'=> 'required|exists:publishers,id',
             'author_id'   => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',

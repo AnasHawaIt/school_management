@@ -50,7 +50,7 @@ class BookController extends Controller
 
     public function store(StoreBookRequest $request)
     {
-        return new BookResource($this->service->create($request->all()));
+        return new BookResource($this->service->create($request->all(), $request->file('image')));
     }
 
     public function show($id)
@@ -60,7 +60,7 @@ class BookController extends Controller
 
     public function update(UpdateBookRequest $request, $id)
     {
-        $book = $this->service->update($id, $request->all());
+        $book = $this->service->update($id, $request->all(), $request->file('image'));
         return new BookResource($book);
     }
 

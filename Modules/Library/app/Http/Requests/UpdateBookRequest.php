@@ -20,7 +20,8 @@ class UpdateBookRequest extends FormRequest
             'isbn'        => 'sometimes|string|unique:books,isbn,' . $this->route('id'),
             'copies'      => 'sometimes|integer|min:0',
              'description' => 'sometimes|string',
-             'photo'       => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
              'publisher_id'=> 'sometimes|exists:publishers,id',
          ];
     }

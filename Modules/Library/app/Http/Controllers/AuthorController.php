@@ -48,7 +48,16 @@ class AuthorController extends Controller
 
     public function store(StoreAuthorRequest $request)
     {
-        return new AuthorResource($this->service->create($request->all()));
+        $data =[
+            'name' => $request->name,
+            'birth_date' => $request->birth_date,
+            'death_date' => $request->death_date,
+            ];
+
+        $images = $request->file('images');
+
+
+        return new AuthorResource($this->service->create($data,$images ));
     }
 
     public function show($id)
@@ -58,7 +67,16 @@ class AuthorController extends Controller
 
     public function update(UpdateAuthorRequest $request, $id)
     {
-        return new AuthorResource($this->service->update($id, $request->all()));
+        $data =$request->only([
+            'name',
+            'birth_date',
+            'death_date'
+        ]);
+
+        $images = $request->file('images');
+
+
+        return new AuthorResource($this->service->update($id, $data ,$images ));
     }
 
     public function destroy($id)

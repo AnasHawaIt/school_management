@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('photo')->nullable()->change();
             $table->date('birth_date');
             $table->date('death_date')->nullable();
             $table->softDeletes();

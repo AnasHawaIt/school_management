@@ -16,7 +16,8 @@ class StoreAuthorRequest extends FormRequest
         return [
             'name' => 'required|string|max:255|unique:authors,name',
             'description' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:2000',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
             'birth_date'=>'nullable|date',
             'death_date'=>'nullable|date',
         ];

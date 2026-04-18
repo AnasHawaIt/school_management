@@ -17,7 +17,8 @@ class UpdateAuthorRequest extends FormRequest
         return [
             'name' => 'sometimes|string|max:255|unique:authors,name',
             'description' => 'sometimes|string',
-            'photo' => 'nullable|image|mimes:jpeg,jpg,png|max:2000',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
             'birth_date'=>'sometimes|date',
             'death_date'=>'sometimes|date',
         ];
