@@ -27,8 +27,6 @@ class ImageService
                 'path' => $path
             ]);
 
-            dd($path);
-
         }
 
         return $savedImages;

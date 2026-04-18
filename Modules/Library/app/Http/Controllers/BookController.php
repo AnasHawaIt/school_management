@@ -13,6 +13,7 @@ class BookController extends Controller
 {
     protected $service;
 
+
     public function __construct(BookService $service)
     {
         $this->service = $service;
@@ -49,7 +50,20 @@ class BookController extends Controller
 
     public function store(StoreBookRequest $request)
     {
-        return new BookResource($this->service->create($request->all(), $request->file('image')));
+        $data =[
+            'title' => $request->title,
+            'description' => $request->description,
+            'author_id' => $request->author_id,
+            'category_id' => $request->category_id,
+            'publisher_id' => $request->publisher_id,
+            'isbn' => $request->isbn,
+            'copies' => $request->copies,
+        ];
+
+        $images = $request->file('images');
+
+
+        return new BookResource($this->service->create($data,$images));
     }
 
     public function show($id)
@@ -59,7 +73,20 @@ class BookController extends Controller
 
     public function update(UpdateBookRequest $request, $id)
     {
-        $book = $this->service->update($id, $request->all(), $request->file('image'));
+        $data =[
+            'title' => $request->title,
+            'description' => $request->description,
+            'author_id' => $request->author_id,
+            'category_id' => $request->category_id,
+            'publisher_id' => $request->publisher_id,
+            'isbn' => $request->isbn,
+            'copies' => $request->copies,
+        ];
+
+        $images = $request->file('images');
+
+        $book = $this->service->update($id,$data,$images);
+
         return new BookResource($book);
     }
 

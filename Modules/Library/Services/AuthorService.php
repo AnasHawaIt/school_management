@@ -3,8 +3,6 @@
 namespace Modules\Library\Services;
 
 use App\Services\ImageService;
-use Illuminate\Http\Request;
-use Modules\Library\Entities\Author;
 use Modules\library\Events\AuthorEvents\AuthorCreated;
 use Modules\library\Events\AuthorEvents\AuthorDeleted;
 use Modules\library\Events\AuthorEvents\AuthorRestored;
@@ -21,6 +19,7 @@ class AuthorService
     public function __construct(AuthorRepositoryInterface $repo, ImageService $imageService)
     {
         $this->repo = $repo;
+
         $this->imageService = $imageService;
     }
 
@@ -39,15 +38,6 @@ class AuthorService
 //
 //        return $result;
 //    }
-
-    private function normalizeDate($value)
-    {
-        if (is_array($value)) {
-            return $value['en'] ?? null;
-        }
-
-        return $value;
-    }
 
     public function getAuthorOnlyTrashed()
     {
@@ -74,16 +64,13 @@ class AuthorService
         return true;
     }
 
-    public function getAll(Request $request)
+    public function getAll($request)
     {
         return $this->repo->getAll($request);
     }
 
     public function create(array $data, $images = null)
     {
-        $data['birth_date'] = $this->normalizeDate($data['birth_date'] ?? null);
-        $data['death_date'] = $this->normalizeDate($data['death_date'] ?? null);
-
         $author = $this->repo->create($data);
 
         $this->imageService->upload($author, $images);
@@ -95,7 +82,9 @@ class AuthorService
 
     public function update($id, array $data, $images = null)
     {
-        $author = $this->repo->update($id, $data);
+        $this->repo->update($id, $data);
+
+        $author = $this->repo->find($id);
 
         $this->imageService->replace($author, $images);
 
@@ -111,6 +100,8 @@ class AuthorService
         if (!$author) {
             throw new \Exception('Author not found');
         }
+
+       $this->imageService->deleteAll($author);
 
         $this->repo->delete($id);
 

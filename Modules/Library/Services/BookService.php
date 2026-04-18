@@ -19,6 +19,7 @@ class BookService
     public function __construct(BookRepositoryInterface $repo,ImageService $imageService)
     {
         $this->repo = $repo;
+
         $this->imageService = $imageService;
     }
 //    private function prepareTranslatable(array $data, array $fields)
@@ -115,6 +116,8 @@ class BookService
         if (!$book) {
             throw new \Exception('Book not found');
         }
+
+        $this->imageService->deleteAll($book);
 
         $this->repo->delete($id);
 

@@ -20,7 +20,7 @@ Route::prefix('library')->group(function() {
         Route::get('/AllOnlyTrashed', [AuthorController::class, 'AllOnlyTrashed']);
         Route::get('{id}', [AuthorController::class, 'show']);
         Route::post('/', [AuthorController::class, 'store']);
-        Route::put('{id}', [AuthorController::class, 'update']);
+        Route::post('/Update/{id}', [AuthorController::class, 'update']);
         Route::delete('{id}', [AuthorController::class, 'destroy']);
         Route::post('/{id}/restore', [AuthorController::class, 'restore']);
         route::delete('/{id}/force', [AuthorController::class, 'forceDelete']);
@@ -68,7 +68,7 @@ Route::prefix('library')->group(function() {
         Route::get('/AllOnlyTrashed', [BookController::class, 'AllOnlyTrashed']);
         Route::get('{id}', [BookController::class, 'show']);
         Route::post('/', [BookController::class, 'store']);
-        Route::put('{id}', [BookController::class, 'update']);
+        Route::post('/Update/{id}', [BookController::class, 'update']);
         Route::delete('{id}', [BookController::class, 'destroy']);
         Route::post('/{id}/restore', [BookController::class, 'restore']);
         route::delete('/{id}/force', [BookController::class, 'forceDelete']);

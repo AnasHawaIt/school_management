@@ -2,6 +2,7 @@
 
 namespace Modules\Library\Repositories\Eloquent;
 
+use Illuminate\Http\Request;
 use Modules\Library\Entities\Author;
 use Modules\Library\Filters\AuthorFilter;
 use Modules\Library\Repositories\Interfaces\AuthorRepositoryInterface;
@@ -54,7 +55,9 @@ class AuthorRepository implements AuthorRepositoryInterface
     public function update($id, array $data)
     {
         $author = $this->find($id);
-        $author->update($data);
+
+        $author= Author::query()->update($data);
+
         return $author;
     }
 
