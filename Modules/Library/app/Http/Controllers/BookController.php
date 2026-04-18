@@ -47,7 +47,6 @@ class BookController extends Controller
         );
     }
 
-
     public function store(StoreBookRequest $request)
     {
         return new BookResource($this->service->create($request->all(), $request->file('image')));

@@ -17,7 +17,7 @@ class UpdateBookRequest extends FormRequest
             'title'       => 'sometimes|string|max:255',
             'author_id'   => 'sometimes|exists:authors,id',
             'category_id' => 'sometimes|exists:categories,id',
-            'isbn'        => 'sometimes|string|unique:books,isbn,' . $this->route('id'),
+            'isbn' => 'sometimes|string|unique:books,isbn,' . $this->route('id'),
             'copies'      => 'sometimes|integer|min:0',
              'description' => 'sometimes|string',
             'images' => 'nullable|array',

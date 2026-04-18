@@ -3,7 +3,6 @@
 namespace Modules\Library\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreAuthorRequest;
 use Modules\Library\app\Http\Requests\UpdateAuthorRequest;
 use Modules\Library\app\Http\Resources\AuthorResource;
@@ -41,7 +40,7 @@ class AuthorController extends Controller
 
     }
 
-    public function index(Request $request)
+    public function index( $request)
     {
         return AuthorResource::collection($this->service->getAll( $request ));
     }
