@@ -4,7 +4,6 @@ namespace Modules\Library\Services;
 
 use App\Services\ImageService;
 use Illuminate\Http\Request;
-use Modules\Library\Entities\Author;
 use Modules\library\Events\AuthorEvents\AuthorCreated;
 use Modules\library\Events\AuthorEvents\AuthorDeleted;
 use Modules\library\Events\AuthorEvents\AuthorRestored;
@@ -40,15 +39,6 @@ class AuthorService
 //        return $result;
 //    }
 
-    private function normalizeDate($value)
-    {
-        if (is_array($value)) {
-            return $value['en'] ?? null;
-        }
-
-        return $value;
-    }
-
     public function getAuthorOnlyTrashed()
     {
         return $this->repo->getAuthorOnlyTrashed();
@@ -74,16 +64,13 @@ class AuthorService
         return true;
     }
 
-    public function getAll(Request $request)
+    public function getAll($request)
     {
         return $this->repo->getAll($request);
     }
 
     public function create(array $data, $images = null)
     {
-        $data['birth_date'] = $this->normalizeDate($data['birth_date'] ?? null);
-        $data['death_date'] = $this->normalizeDate($data['death_date'] ?? null);
-
         $author = $this->repo->create($data);
 
         $this->imageService->upload($author, $images);
@@ -97,7 +84,7 @@ class AuthorService
     {
         $author = $this->repo->update($id, $data);
 
-        $this->imageService->replace($author, $images);
+        $this->imageService->update($author, $images);
 
         event(new AuthorUpdated($author, auth()->id()));
 

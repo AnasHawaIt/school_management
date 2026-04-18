@@ -3,6 +3,7 @@
 namespace Modules\Library\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreAuthorRequest;
 use Modules\Library\app\Http\Requests\UpdateAuthorRequest;
 use Modules\Library\app\Http\Resources\AuthorResource;
@@ -40,7 +41,7 @@ class AuthorController extends Controller
 
     }
 
-    public function index( $request)
+    public function index(Request $request)
     {
         return AuthorResource::collection($this->service->getAll( $request ));
     }
@@ -74,8 +75,7 @@ class AuthorController extends Controller
 
         $images = $request->file('images');
 
-
-        return new AuthorResource($this->service->update($id, $data ,$images ));
+         return new AuthorResource($this->service->update($id, $data ,$images ));
     }
 
     public function destroy($id)
