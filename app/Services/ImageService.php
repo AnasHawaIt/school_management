@@ -7,6 +7,17 @@ use Illuminate\Support\Facades\Storage;
 
 class ImageService
 {
+    public function getAll($model)
+    {
+        return $model->images->map(function ($image) {
+            return [
+                'id' => $image->id,
+                'path' => $image->path,
+                'url' => asset('storage/' . $image->path),
+            ];
+        });
+    }
+
     public function upload($model, $images)
     {
 

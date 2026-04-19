@@ -58,7 +58,7 @@ class BookService
 
     public function getAll($request)
     {
-        return $this->repo->getAll($request);
+        return $this->repo->getAll($request)->load('images');
     }
 
     public function create(array $data,$images = null)
@@ -128,7 +128,7 @@ class BookService
 
     public function find($id)
     {
-        return $this->repo->find($id);
+        return $this->repo->find($id)->load('images');
     }
 
 }

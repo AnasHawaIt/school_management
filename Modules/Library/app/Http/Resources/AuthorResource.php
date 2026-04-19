@@ -15,6 +15,7 @@ class AuthorResource extends JsonResource
             'birth_date'=>$this->birth_date,
             'death_date'=>$this->death_date,
             'created_at' => $this->created_at,
+            'images'=>$this->images
         ];
     }
 }
