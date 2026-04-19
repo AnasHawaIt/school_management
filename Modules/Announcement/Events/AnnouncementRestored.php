@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Announcement\Entities\Announcement;
 
-class AnnouncementDeleted
+class AnnouncementRestored
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -16,6 +16,6 @@ class AnnouncementDeleted
         public ?int $userId = null,
         public ?string $socketId = null
     ) {}
-}
 
+}
 

@@ -12,9 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('title', 255);
             $table->text('body');
-            $table->foreignId('user_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('is_active')->default(true);
             $table->timestamp('published_at')->nullable();
             $table->index('published_at');

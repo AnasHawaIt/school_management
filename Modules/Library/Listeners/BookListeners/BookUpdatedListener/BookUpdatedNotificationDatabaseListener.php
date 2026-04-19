@@ -5,7 +5,7 @@ namespace Modules\Library\Listeners\BookListeners\BookUpdatedListener;
 
 use Modules\Core\Entities\User;
 use Modules\Library\Events\BookEvents\BookUpdated;
-use Modules\Library\Notifications\MemberUpdatedNotification;
+use Modules\Library\Notifications\BookUpdatedNotification;
 
 class BookUpdatedNotificationDatabaseListener
 {
@@ -14,7 +14,7 @@ class BookUpdatedNotificationDatabaseListener
         $users = User::all();
 
         foreach ($users as $user) {
-            $user->notify(new MemberUpdatedNotification($event->book));
+            $user->notify(new BookUpdatedNotification($event->book));
         }
     }
 }

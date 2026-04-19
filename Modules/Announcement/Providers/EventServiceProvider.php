@@ -3,6 +3,18 @@
 namespace Modules\Announcement\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\Announcement\Events\AnnouncementCreated;
+use Modules\Announcement\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\AnnouncementUpdated;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedNotificationDatabaseListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedNotificationDatabaseListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedNotificationDatabaseListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -12,6 +24,24 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
+
+        AnnouncementCreated::class => [
+            AnnouncementCreatedLogEventListener::class,
+            AnnouncementCreatedNotificationDatabaseListener::class,
+            AnnouncementCreatedBroadcastEventListener::class,
+        ],
+
+        AnnouncementUpdated::class => [
+            AnnouncementUpdatedLogEventListener::class,
+            AnnouncementUpdatedNotificationDatabaseListener::class,
+            AnnouncementUpdatedBroadcastEventListener::class,
+        ],
+
+        AnnouncementDeleted::class => [
+            AnnouncementDeletedLogEventListener::class,
+            AnnouncementDeletedNotificationDatabaseListener::class,
+            AnnouncementDeletedBroadcastEventListener::class,
+        ],
     ];
     /**
      * Indicates if events should be discovered.

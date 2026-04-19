@@ -3,11 +3,11 @@
 namespace Modules\Announcement\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Modules\Announcement\app\Resources\AnnouncementResource;
 use Modules\Announcement\Services\AnnouncementService;
 use Modules\Announcement\app\Requests\AnnouncementCreateRequest;
 use Modules\Announcement\app\Requests\AnnouncementUpdateRequest;
 use Modules\Announcement\app\Requests\AnnouncementDeleteRequest;
-use Modules\SMS\Jobs\SendSmsJob;
 
 class AnnouncementController extends Controller
 {
@@ -23,26 +23,25 @@ class AnnouncementController extends Controller
 
     public function index()
     {
-        // استخدام الكاش لمدة 5 دقائق لتقليل استعلامات DB
         $announcements = cache()->remember('announcements_all', 300, function () {
             return $this->service->getAll();
         });
 
-        return response()->json(['announcement::index', compact('announcements')]);
+        return AnnouncementResource::collection(['announcement::index', compact('announcements')]);
     }
 
     public function store(AnnouncementCreateRequest $request)
     {
         $announcement = $this->service->create($request->validated());
 
-        return response()->json(['Announcement'=>$announcement, 'Announcement created success']);
+        return AnnouncementResource::collection(['Announcement'=>$announcement, 'Announcement created success']);
     }
 
     public function update(AnnouncementUpdateRequest $request)
     {
         $announcement = $this->service->update($request->id, $request->validated());
 
-        return response()->json(['Announcement'=>$announcement, 'Announcement updated success'],);
+        return AnnouncementResource::collection(['Announcement'=>$announcement, 'Announcement updated success'],);
     }
 
     public function destroy(AnnouncementDeleteRequest $request)

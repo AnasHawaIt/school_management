@@ -2,80 +2,94 @@
 
 namespace Modules\Announcement\Services;
 
+use App\Services\ImageService;
 use Modules\Announcement\Entities\Announcement;
 use Modules\Announcement\Events\AnnouncementCreated;
-use Modules\Announcement\Events\AuthorUpdated;
-use Modules\Announcement\Events\AuthorDeleted;
-use Modules\Core\Entities\ActivityLog;
+use Modules\Announcement\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\AnnouncementRestored;
+use Modules\Announcement\Events\AnnouncementUpdated;
+use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
 use App\Models\User;
+
 class AnnouncementService
 {
-    public function create(array $data)
+    protected $repo;
+    protected $imageService;
+
+    public function __construct(
+        AnnouncementRepositoryInterface $repo,
+        ImageService $imageService
+    ) {
+        $this->repo = $repo;
+        $this->imageService = $imageService;
+    }
+
+
+    public function getOnlyTrashed()
     {
-        $announcement = Announcement::create($data);
+        return $this->repo->getAnnouncementOnlyTrashed();
+    }
+
+    public function restore($id)
+    {
+        $author= $this->repo->restore($id);
 
         $users = User::select('id', 'phone')->get();
 
-         ActivityLog::log([
-            'action' => 'create',
-            'model_type' => Announcement::class,
-            'model_id' => $announcement->id,
-            'new_values' => $announcement->toArray(),
-        ]);
+        event(new AnnouncementRestored($author,$users));
+
+        return $author;
+    }
+
+    public function forceDelete($id)
+    {
+        $author= $this->repo->find($id);
+
+        $author->forceDelete();
+
+        $users = User::select('id', 'phone')->get();
+
+        event(new AnnouncementDeleted($author,$users));
+
+        return true;
+    }
+
+
+    public function create(array $data)
+    {
+        $announcement = $this->repo->create($data);
+
+        $users = User::select('id', 'phone')->get();
 
         event(new AnnouncementCreated($announcement, $users));
-
 
         return $announcement;
     }
 
     public function getAll()
     {
-        return Announcement::latest()->paginate(10);
+        return $this->repo->getAll();
     }
 
     public function update(int $id, array $data): Announcement
     {
-        $announcement = Announcement::findOrFail($id);
-
-        $oldValues = $announcement->toArray();
+        $announcement = $this->repo->update($id, $data);
 
         $users = User::select('id', 'phone')->get();
 
-        $announcement->update($data);
-
-        ActivityLog::log([
-            'action' => 'update',
-            'model_type' => Announcement::class,
-            'model_id' => $announcement->id,
-            'old_values' => $oldValues,
-            'new_values' => $announcement->toArray(),
-        ]);
-
-        event(new AuthorUpdated($announcement, $users));
+        event(new AnnouncementUpdated($announcement,$users));
 
         return $announcement;
     }
 
     public function delete(int $id): void
     {
-        $announcement = Announcement::findOrFail($id);
+        $announcement = $this->repo->find($id);
 
-        $oldValues = $announcement->toArray();
+        $this->repo->delete($id);
 
         $users = User::select('id', 'phone')->get();
 
-        $announcement->delete();
-
-        ActivityLog::log([
-            'action' => 'delete',
-            'model_type' => Announcement::class,
-            'model_id' => $id,
-            'old_values' => $oldValues,
-        ]);
-
-        event(new AuthorDeleted($announcement, $users));
-
+        event(new AnnouncementDeleted($announcement, $users));
     }
-
 }

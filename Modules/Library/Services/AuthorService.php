@@ -23,7 +23,6 @@ class AuthorService
         $this->imageService = $imageService;
     }
 
-
 //    private function prepareTranslatable(array $data, array $fields)
 //    {
 //        $result = [];
