@@ -4,10 +4,11 @@
 namespace Modules\Library\Listeners\TransactionListeners;
 
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Library\Events\Broadcasts\TransactionBroadcast;
 use Modules\Library\Events\TransactionEvents\TransactionCreated;
 
-class TransactionCreatedBroadcastEventListener
+class TransactionCreatedBroadcastEventListener  implements ShouldQueue
 {
 
     public function handle(TransactionCreated $event)

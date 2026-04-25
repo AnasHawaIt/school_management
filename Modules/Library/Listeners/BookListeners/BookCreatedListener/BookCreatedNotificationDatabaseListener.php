@@ -2,11 +2,12 @@
 
 namespace Modules\Library\Listeners\BookListeners\BookCreatedListener;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Core\Entities\User;
 use Modules\Library\Events\BookEvents\BookCreated;
 use Modules\Library\Notifications\BookCreatedNotification;
 
-class BookCreatedNotificationDatabaseListener
+class BookCreatedNotificationDatabaseListener  implements ShouldQueue
 {
     public function handle(BookCreated $event)
     {

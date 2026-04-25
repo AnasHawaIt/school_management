@@ -12,7 +12,6 @@ class AnnouncementUpdated
 
     public function __construct(
         public Announcement $announcement,
-        public ?int $userId = null,
         public ?string $socketId = null
     ) {}
 }

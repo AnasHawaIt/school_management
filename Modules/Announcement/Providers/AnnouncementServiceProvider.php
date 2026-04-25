@@ -4,6 +4,8 @@ namespace Modules\Announcement\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Announcement\Repositories\Eloquent\AnnouncementRepository;
+use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -36,6 +38,10 @@ class AnnouncementServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
+        $this->app->bind(
+            AnnouncementRepositoryInterface::class,
+            AnnouncementRepository::class
+        );
     }
 
     /**

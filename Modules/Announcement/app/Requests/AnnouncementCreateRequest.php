@@ -20,14 +20,18 @@ class AnnouncementCreateRequest extends FormRequest
                 'user_id' => 'required|exists:users,id',
                 'is_active' => 'boolean',
                 'published_at' => 'nullable|date',
+                'audience' => 'required|in:admin,student,teacher,parent,public',
         ];
     }
 
     public function messages()
     {
         return [
-            'title.required' => ' title => required',
-            'message.required' => ' message => required',
+            'title.required' => 'Announcement title is required.',
+            'body.required' => 'Body is required.',
+            'user_id.required' => 'User is required.',
+            'audience.required' => 'Audience is required.',
+            'audience.in' => 'Audience must be admin or student or teacher or parent or public.',
         ];
     }
 }

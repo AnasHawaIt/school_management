@@ -4,10 +4,11 @@
 namespace Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener;
 
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Announcement\Events\AnnouncementCreated;
 use Modules\Announcement\Events\Broadcasts\AnnouncementBroadcast;
 
-class AnnouncementCreatedBroadcastEventListener
+class AnnouncementCreatedBroadcastEventListener implements ShouldQueue
 {
 
     public function handle(AnnouncementCreated $event)

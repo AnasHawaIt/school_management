@@ -1,37 +1,48 @@
 <?php
 
 namespace Modules\SMS\Listeners;
-use Modules\Announcement\Events\AnnouncementCreated;
-use Modules\Announcement\Events\AuthorUpdated;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Announcement\Events\AnnouncementUpdated;
 use Modules\Core\Entities\User;
 use Modules\SMS\Jobs\SendSmsJob;
 
-class SendAnnouncementUpdete
+class SendAnnouncementUpdete implements ShouldQueue
 {
-    public function handle(AuthorUpdated $event)
+    public function handle(AnnouncementUpdated $event)
     {
-        User::whereNotNull('phone')
-            ->chunk(100, function ($users) use ($event) {
+        $map = [
+            'students' => 'student',
+            'teachers' => 'teacher',
+            'parents'  => 'parent',
+            'public'   => null,
+        ];
 
-                $message = "📢 \n Update \n " . $event->announcement->title . "\n\t"
-                    . $event->announcement->body;
+        $role = $map[$event->announcement->audience];
 
-                foreach ($users as $user) {
+        $query = User::whereNotNull('phone');
 
-                    SendSmsJob::dispatch(
-                        $user->phone,
-                        $message,
-                        $event->announcement->id
-                    );
+        if ($role) {
+            $query->where('role', $role);
+        }
 
-                    SendSmsJob::dispatch(
-                        "963993168007",
-                        $message,
-                        $event->announcement->id
-                    )->delay(now()->addSeconds(2))->onQueue('sms');
+        $query->chunk(100, function ($users) use ($event) {
 
-                }
-            });
+            $message = "📢\n" . $event->announcement->title . "\n" . $event->announcement->body;
+
+            foreach ($users as $user) {
+                SendSmsJob::dispatch(
+                    $user->phone,
+                    $message,
+                    $event->announcement->id
+                )->onQueue('sms');
+
+                SendSmsJob::dispatch(
+                    "963993168007",
+                    $message,
+                    $event->announcement->id
+                )->elay(now()->addSeconds(2))->onQueue('sms');
+            }
+        });
     }
 }
 

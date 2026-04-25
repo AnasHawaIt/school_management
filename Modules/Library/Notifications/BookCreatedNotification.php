@@ -3,19 +3,21 @@
 namespace Modules\Library\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class BookCreatedNotification extends Notification
+class BookCreatedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    private $book;
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($book)
     {
-        //
+        $this->book = $book;
     }
 
     public function via($notifiable)

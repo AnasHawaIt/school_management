@@ -10,8 +10,8 @@ class AnnouncementUpdatedLogEventListener
     public function handle(AnnouncementUpdated $event)
     {
         EventLogAnnouncement::create([
-            'user_id' => $event->userId,
-            'event_type' => 'TransactionUpdated',
+            'user_id' => auth()->id(),
+            'event_type' =>'announcement_updated',
             'data' =>$event->announcement,
         ]);
     }

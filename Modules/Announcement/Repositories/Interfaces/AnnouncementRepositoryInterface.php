@@ -2,9 +2,6 @@
 
 namespace Modules\Announcement\Repositories\Interfaces;
 
-use Illuminate\Http\Request;
-use Modules\Announcement\Entities\Announcement;
-
 interface AnnouncementRepositoryInterface
 
 {

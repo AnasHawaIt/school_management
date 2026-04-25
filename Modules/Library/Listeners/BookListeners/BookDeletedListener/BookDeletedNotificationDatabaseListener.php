@@ -3,11 +3,12 @@
 namespace Modules\Library\Listeners\BookListeners\BookDeletedListener;
 
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Core\Entities\User;
 use Modules\Library\Events\BookEvents\BookDeleted;
 use Modules\Library\Notifications\BookDeletedNotification;
 
-class BookDeletedNotificationDatabaseListener
+class BookDeletedNotificationDatabaseListener implements ShouldQueue
 {
     public function handle(BookDeleted $event)
     {

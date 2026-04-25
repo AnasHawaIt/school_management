@@ -16,6 +16,8 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamp('published_at')->nullable();
             $table->index('published_at');
+            $table->timestamp('expires_at')->nullable()->index();
+            $table->enum('audience', ['admin','student', 'teacher', 'parent', 'public'])->default('public');
             $table->index('is_active');
             $table->timestamps();
             $table->softDeletes();

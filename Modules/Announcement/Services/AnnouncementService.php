@@ -9,7 +9,6 @@ use Modules\Announcement\Events\AnnouncementDeleted;
 use Modules\Announcement\Events\AnnouncementRestored;
 use Modules\Announcement\Events\AnnouncementUpdated;
 use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
-use App\Models\User;
 
 class AnnouncementService
 {
@@ -25,7 +24,7 @@ class AnnouncementService
     }
 
 
-    public function getOnlyTrashed()
+    public function getAnnouncementOnlyTrashed()
     {
         return $this->repo->getAnnouncementOnlyTrashed();
     }
@@ -34,9 +33,8 @@ class AnnouncementService
     {
         $author= $this->repo->restore($id);
 
-        $users = User::select('id', 'phone')->get();
 
-        event(new AnnouncementRestored($author,$users));
+        event(new AnnouncementRestored($author));
 
         return $author;
     }
@@ -47,21 +45,19 @@ class AnnouncementService
 
         $author->forceDelete();
 
-        $users = User::select('id', 'phone')->get();
-
-        event(new AnnouncementDeleted($author,$users));
+        event(new AnnouncementDeleted($author));
 
         return true;
     }
 
 
-    public function create(array $data)
+    public function create(array $data,$images=null)
     {
         $announcement = $this->repo->create($data);
 
-        $users = User::select('id', 'phone')->get();
+        $this->imageService->upload($announcement, $images);
 
-        event(new AnnouncementCreated($announcement, $users));
+        event(new AnnouncementCreated($announcement));
 
         return $announcement;
     }
@@ -71,13 +67,13 @@ class AnnouncementService
         return $this->repo->getAll();
     }
 
-    public function update(int $id, array $data): Announcement
+    public function update(int $id, array $data,$images=null): Announcement
     {
         $announcement = $this->repo->update($id, $data);
 
-        $users = User::select('id', 'phone')->get();
+        $this->imageService->replace($announcement, $images);
 
-        event(new AnnouncementUpdated($announcement,$users));
+        event(new AnnouncementUpdated($announcement));
 
         return $announcement;
     }
@@ -86,10 +82,10 @@ class AnnouncementService
     {
         $announcement = $this->repo->find($id);
 
+        $this->imageService->deleteAll($announcement);
+
         $this->repo->delete($id);
 
-        $users = User::select('id', 'phone')->get();
-
-        event(new AnnouncementDeleted($announcement, $users));
+        event(new AnnouncementDeleted($announcement));
     }
 }

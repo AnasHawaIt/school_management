@@ -3,16 +3,19 @@
 namespace Modules\Announcement\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AnnouncementUpdateNotification extends Notification
+class AnnouncementUpdateNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public function __construct()
+    protected $announcement;
+
+    public function __construct($announcement)
     {
-        //
+        $this->announcement=$announcement;
     }
 
     public function via($notifiable)

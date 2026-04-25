@@ -3,11 +3,12 @@
 namespace Modules\Library\Listeners\MemberListeners;
 
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Core\Entities\User;
 use Modules\Library\Events\MemberEvents\MemberCreated;
 use Modules\Library\Notifications\MemberCreatedNotification;
 
-class MemberCreatedNotificationDatabaseListener
+class MemberCreatedNotificationDatabaseListener implements ShouldQueue
 {
     public function handle(MemberCreated $event)
     {

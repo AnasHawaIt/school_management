@@ -4,19 +4,22 @@
 namespace Modules\Library\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MemberDeletedNotification extends Notification
+class MemberDeletedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    private $member;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($member)
     {
-        //
+        $this->member = $member;
     }
 
     public function via($notifiable)

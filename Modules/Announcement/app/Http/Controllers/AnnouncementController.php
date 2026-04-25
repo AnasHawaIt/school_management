@@ -7,7 +7,6 @@ use Modules\Announcement\app\Resources\AnnouncementResource;
 use Modules\Announcement\Services\AnnouncementService;
 use Modules\Announcement\app\Requests\AnnouncementCreateRequest;
 use Modules\Announcement\app\Requests\AnnouncementUpdateRequest;
-use Modules\Announcement\app\Requests\AnnouncementDeleteRequest;
 
 class AnnouncementController extends Controller
 {
@@ -21,32 +20,76 @@ class AnnouncementController extends Controller
         // مثال: $this->middleware('auth');
     }
 
+    public function restore($id)
+    {
+        return new AnnouncementResource( $this->service->restore($id));
+    }
+
+    public function forceDelete($id)
+    {
+        $this->service->forceDelete($id);
+
+        return response()->json([
+            'message' => 'Force deleted successfully'
+        ]);
+    }
+
+    public function AllOnlyTrashed()
+    {
+        return AnnouncementResource::collection(
+            $this->service->getAnnouncementOnlyTrashed()
+        );
+
+    }
+
     public function index()
     {
         $announcements = cache()->remember('announcements_all', 300, function () {
             return $this->service->getAll();
         });
 
-        return AnnouncementResource::collection(['announcement::index', compact('announcements')]);
+        return AnnouncementResource::collection($announcements);
     }
 
     public function store(AnnouncementCreateRequest $request)
     {
-        $announcement = $this->service->create($request->validated());
+        $data =[
+            'title' => $request->title,
+            'user_id' => $request->user_id,
+            'is_active' => $request->is_active,
+            'published_at' => $request->published_at,
+            'expires_at' => $request->expires_at,
+            'type' => $request->type,
+        ];
 
-        return AnnouncementResource::collection(['Announcement'=>$announcement, 'Announcement created success']);
+        $images = $request->file('images');
+
+        $announcement = $this->service->create($data,$images);
+
+        return new AnnouncementResource($announcement);
     }
 
     public function update(AnnouncementUpdateRequest $request)
     {
-        $announcement = $this->service->update($request->id, $request->validated());
+        $data =[
+            'title' => $request->title,
+            'user_id' => $request->user_id,
+            'is_active' => $request->is_active,
+            'published_at' => $request->published_at,
+            'expires_at' => $request->expires_at,
+            'type' => $request->type,
+        ];
 
-        return AnnouncementResource::collection(['Announcement'=>$announcement, 'Announcement updated success'],);
+        $images = $request->file('images');
+
+        $announcement = $this->service->update($request->id, $data,$images);
+
+        return new AnnouncementResource($announcement);
     }
 
-    public function destroy(AnnouncementDeleteRequest $request)
+    public function destroy($id)
     {
-        $this->service->delete($request->id);
+        $this->service->delete($id);
 
         return response()->json(['success', 'Announcement deleted!'],);
     }

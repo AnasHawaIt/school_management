@@ -3,19 +3,22 @@
 namespace Modules\Library\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TransactionUpdateNotification extends Notification
+class TransactionUpdateNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    private $transaction;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($transaction)
     {
-        //
+        $this->transaction = $transaction;
     }
 
     public function via($notifiable)

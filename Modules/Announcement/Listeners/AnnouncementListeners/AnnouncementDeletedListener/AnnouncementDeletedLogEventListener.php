@@ -11,8 +11,8 @@ class AnnouncementDeletedLogEventListener
     public function handle(AnnouncementDeleted $event)
     {
         EventLogAnnouncement::create([
-            'user_id' => $event->userId,
-            'event_type' => 'Announcement Deleted',
+            'user_id' => auth()->id(),
+            'event_type' => 'announcement_deleted',
             'data' =>$event->announcement,
         ]);
     }

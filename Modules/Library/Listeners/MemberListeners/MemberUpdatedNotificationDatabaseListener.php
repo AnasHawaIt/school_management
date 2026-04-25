@@ -3,11 +3,12 @@
 namespace Modules\Library\Listeners\MemberListeners;
 
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Core\Entities\User;
 use Modules\Library\Events\MemberEvents\MemberUpdated;
 use Modules\Library\Notifications\MemberUpdatedNotification;
 
-class MemberUpdatedNotificationDatabaseListener
+class MemberUpdatedNotificationDatabaseListener implements ShouldQueue
 {
     public function handle(MemberUpdated $event)
     {

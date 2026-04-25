@@ -3,6 +3,12 @@
 namespace Modules\SMS\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\Announcement\Events\AnnouncementCreated;
+use Modules\Announcement\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\AnnouncementUpdated;
+use Modules\SMS\Listeners\SendAnnouncementCreate;
+use Modules\SMS\Listeners\SendAnnouncementDelete;
+use Modules\SMS\Listeners\SendAnnouncementUpdete;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -12,14 +18,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
-        \Modules\Announcement\Events\AnnouncementCreated::class => [
-            \Modules\SMS\Listeners\SendAnnouncementCreate::class,
+        AnnouncementCreated::class => [
+            SendAnnouncementCreate::class,
         ],
-        \Modules\Announcement\Events\AuthorDeleted::class => [
-            \Modules\SMS\Listeners\SendAnnouncementDelete::class,
+        AnnouncementDeleted::class => [
+            SendAnnouncementDelete::class,
         ],
-        \Modules\Announcement\Events\AuthorUpdated::class => [
-            \Modules\SMS\Listeners\SendAnnouncementUpdete::class,
+        AnnouncementUpdated::class => [
+            SendAnnouncementUpdete::class,
         ],
     ];
 

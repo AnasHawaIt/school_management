@@ -3,7 +3,6 @@
 namespace Modules\Announcement\Repositories\Eloquent;
 
 use Modules\Announcement\Entities\Announcement;
-//use Modules\Announcement\Filters\AnnouncementFilter;
 use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
 
 class AnnouncementRepository implements AnnouncementRepositoryInterface
@@ -24,21 +23,23 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
     public function forceDelete($id)
     {
         $announcement = Announcement::withTrashed()->findOrFail($id);
+
         $announcement->forceDelete();
 
         return $announcement;
     }
 
+
     public function getAll()
     {
         $query = Announcement::query();
 
-        return $query->get('per_page', 10);
+        return $query->get();
     }
 
     public function find($id)
     {
-        return Announcement::findOrFail($id);
+        return Announcement::find($id);
     }
 
     public function create(array $data)

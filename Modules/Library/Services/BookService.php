@@ -12,7 +12,7 @@ class BookService
 {
     protected $repo;
 
-    protected $locales = ['en', 'ar'];
+   // protected $locales = ['en', 'ar'];
 
     protected $imageService;
 

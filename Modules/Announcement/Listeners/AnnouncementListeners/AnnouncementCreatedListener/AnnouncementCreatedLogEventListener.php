@@ -10,8 +10,8 @@ class AnnouncementCreatedLogEventListener
     public function handle(AnnouncementCreated $event)
     {
         EventLogAnnouncement::create([
-            'user_id' => $event->userId,
-            'event_type' => 'subscription_created',
+            'user_id' => auth()->id(),
+            'event_type' => 'announcement_created',
             'data' =>$event->announcement,
         ]);
     }

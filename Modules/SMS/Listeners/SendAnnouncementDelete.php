@@ -1,36 +1,49 @@
 <?php
 
 namespace Modules\SMS\Listeners;
-use Modules\Announcement\Events\AuthorDeleted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+use Modules\Announcement\Events\AnnouncementDeleted;
 use Modules\Core\Entities\User;
 use Modules\SMS\Jobs\SendSmsJob;
 
-class SendAnnouncementDelete
+class SendAnnouncementDelete  implements ShouldQueue
 {
-    public function handle(AuthorDeleted $event)
+    public function handle(AnnouncementDeleted $event)
     {
-        User::whereNotNull('phone')
-            ->chunk(100, function ($users) use ($event) {
+        $map = [
+            'students' => 'student',
+            'teachers' => 'teacher',
+            'parents'  => 'parent',
+            'public'   => null,
+        ];
 
-                $message = "📢"." \n "." Delete "." \n \t "." successfully ";
+        $role = $map[$event->announcement->audience];
 
-                foreach ($users as $user) {
+        $query = User::whereNotNull('phone');
 
-                    SendSmsJob::dispatch(
-                        $user->phone,
-                        $message,
-                        $event->announcement->id
-                    );
+        if ($role) {
+            $query->where('role', $role);
+        }
 
-                    SendSmsJob::dispatch(
-                        "963993168007",
-                        $message,
-                        $event->announcement->id
-                    )->delay(now()->addSeconds(2))->onQueue('sms');
+        $query->chunk(100, function ($users) use ($event) {
 
+            $message = "📢\n" . $event->announcement->title . "\n" . $event->announcement->body;
 
-                }
-            });
+            foreach ($users as $user) {
+                SendSmsJob::dispatch(
+                    $user->phone,
+                    $message,
+                    $event->announcement->id
+                )->onQueue('sms');
+
+                SendSmsJob::dispatch(
+                    "963993168007",
+                    $message,
+                    $event->announcement->id
+                )->elay(now()->addSeconds(2))->onQueue('sms');
+            }
+        });
     }
 }
 
