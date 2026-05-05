@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
+use Modules\SMS\Entities\SmsOtp;
 
 class User extends Authenticatable
 {
@@ -170,4 +171,10 @@ class User extends Authenticatable
     {
         return $this->user_type === 'parent';
     }
+
+    public function otps()
+    {
+        return $this->hasMany(SmsOtp::class);
+    }
+
 }
