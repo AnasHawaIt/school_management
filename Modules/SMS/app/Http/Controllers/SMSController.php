@@ -4,53 +4,50 @@ namespace Modules\SMS\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
+use Modules\SMS\Services\SmsOtpService;
 
-class SMSController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+class SMSController extends Controller{
+    public function send(Request $request, SmsOtpService $otpService): JsonResponse
     {
-        return view('sms::index');
+        $data = $request->validate([
+            'phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
+        ]);
+
+        try {
+            $sent = $otpService->sendOtp($data['phone']);
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages([
+                'phone' => [$e->getMessage()],
+            ]);
+        }
+
+
+        return response()->json([
+            'message' => 'OTP sent successfully',
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function verify(Request $request, SmsOtpService $otpService): JsonResponse
     {
-        return view('sms::create');
+        $data = $request->validate(
+            ['phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
+        ]);
+
+        try {
+            $result = $otpService->verifyOtp(
+                $data['phone'],
+                $data['otp']
+            );
+
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            throw ValidationException::withMessages([
+                'otp' => [$e->getMessage()],
+            ]);
+        }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('sms::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('sms::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
 }
+

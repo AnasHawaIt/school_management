@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sms_logs', function (Blueprint $table) {
+        Schema::create('sms_otps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('announcement_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->string('otp');
             $table->string('phone');
-            $table->text('message');
-            $table->string('status')->default('pending');
-            $table->text('response')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->boolean('used')->default(false);
+            $table->dateTime('expires_at');
+            $table->integer('attempts')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sms_logs');
+        Schema::dropIfExists('book_SmsOtps');
     }
 };
