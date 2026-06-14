@@ -12,6 +12,7 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'first_name' => $this->first_name,
+            'last_name'=>$this->last_name,
             'first_name_ar' => $this->first_name_ar,
             'last_name_ar' => $this->last_name_ar,
             'gender' => $this->gender,
@@ -19,6 +20,7 @@ class UserResource extends JsonResource
             'phone' => $this->phone,
             'avatar' => $this->avatar,
             'user_type' => $this->user_type,
+            'national_id'=>$this->user?->national_id,
             'is_active' => $this->is_active,
             'email_verified_at' => $this->email_verified_at?->format('Y-m-d H:i:s'),
             'roles' => RoleResource::collection($this->whenLoaded('roles')),

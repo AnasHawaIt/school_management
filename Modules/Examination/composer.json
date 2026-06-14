@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/examination",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Examination\\": "app/",
+            "Modules\\Examination\\Database\\Factories\\": "database/factories/",
+            "Modules\\Examination\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Examination\\Tests\\": "tests/"
+        }
+    }
+}

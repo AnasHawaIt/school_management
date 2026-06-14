@@ -22,7 +22,9 @@ class RoleRepository extends BaseRepository implements RoleRepositoryInterface
     public function attachPermissions(int $roleId, array $permissionIds): bool
     {
         $role = $this->findOrFail($roleId);
-        $role->permissions()->attach($permissionIds);
+        //$role->permissions()->attach($permissionIds);
+        //this method is repetition any  permissions old and store only the new permissions put method attach store new permissions with old permissions may be repetition
+        $role->permissions()->syncWithoutDetaching($permissionIds);
         return true;
     }
 

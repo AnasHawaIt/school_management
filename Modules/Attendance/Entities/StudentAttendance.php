@@ -10,6 +10,9 @@ use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Semester;
 use App\Models\User;
 
+/**
+ * @method insert(array $records)
+ */
 class StudentAttendance extends Model
 {
     protected $fillable = [

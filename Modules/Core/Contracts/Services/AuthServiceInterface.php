@@ -12,7 +12,6 @@ interface AuthServiceInterface
 
     public function me(): User;
 
-    public function register(array $data): User;
 
     public function refreshToken(): string;
 }

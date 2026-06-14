@@ -48,7 +48,7 @@ class RoleService implements RoleServiceInterface
             $this->activityLogRepository->log([
                 'action' => 'create',
                 'model_type' => Role::class,
-                'model_id' => $role->id,
+             //   'model_id' => $role->id,
                 'new_values' => $role->toArray(),
             ]);
 
@@ -81,7 +81,7 @@ class RoleService implements RoleServiceInterface
             $this->activityLogRepository->log([
                 'action' => 'update',
                 'model_type' => Role::class,
-                'model_id' => $id,
+          //      'model_id' => $id,
                 'old_values' => $oldValues,
                 'new_values' => $data,
             ]);
@@ -109,7 +109,7 @@ class RoleService implements RoleServiceInterface
             $this->activityLogRepository->log([
                 'action' => 'delete',
                 'model_type' => Role::class,
-                'model_id' => $id,
+         //       'model_id' => $id,
                 'old_values' => $role->toArray(),
             ]);
 

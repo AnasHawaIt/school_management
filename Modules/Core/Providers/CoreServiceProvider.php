@@ -178,25 +178,25 @@ class CoreServiceProvider extends ServiceProvider
 
     protected function registerServices(): void
     {
-        // Auth Service
+        // Auth Services
         $this->app->bind(
             \Modules\Core\Contracts\Services\AuthServiceInterface::class,
             \Modules\Core\Services\AuthService::class
         );
 
-        // User Service
+        // User Services
         $this->app->bind(
             \Modules\Core\Contracts\Services\UserServiceInterface::class,
             \Modules\Core\Services\UserService::class
         );
 
-        // Role Service
+        // Role Services
         $this->app->bind(
             \Modules\Core\Contracts\Services\RoleServiceInterface::class,
             \Modules\Core\Services\RoleService::class
         );
 
-        // Setting Service
+        // Setting Services
         $this->app->bind(
             \Modules\Core\Contracts\Services\SettingServiceInterface::class,
             \Modules\Core\Services\SettingService::class

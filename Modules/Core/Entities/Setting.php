@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Cache;
 
 class Setting extends Model
 {
-    use HasFactory;
 
     protected $fillable = [
         'key',
