@@ -6,5 +6,6 @@
     "SMS": true,
     "Library": true,
     "Transport": true,
-    "Attendance": true
+    "Attendance": true,
+    "Messagings": true
 }

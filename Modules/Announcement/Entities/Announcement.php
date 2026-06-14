@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
-use Modules\SMS\Entities\SmsLog;
+//use Modules\SMS\Entities\SmsLog;
 
 class Announcement extends Model
 {
@@ -28,10 +28,10 @@ class Announcement extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function smsLogs()
-    {
-       return $this->hasMany(SmsLog::class);
-    }
+//    public function smsLogs()
+//    {
+//       return $this->hasMany(SmsLog::class);
+//    }
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
@@ -39,7 +39,8 @@ class Announcement extends Model
 
     public function scopePublished($query)
     {
-        return $query->whereNotNull('published_at')->where('published_at', '<=', now());}
+        return $query->whereNotNull('published_at')->where('published_at', '<=', now());
+     }
 
     public function images()
     {

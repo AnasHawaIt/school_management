@@ -23,6 +23,9 @@ class RegisterRequest extends FormRequest
               'email'         => 'required|email|unique:users,email',
               'password'      => 'required|string|min:8|confirmed',
               'user_type'     => 'required|in:admin,teacher,student,parent',
+              'avatar'        => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+              'phone'         => 'nullable|string|max:255',
+              'national_id'   => 'nullable|string|unique:teachers,national_id',
           ];
     }
 

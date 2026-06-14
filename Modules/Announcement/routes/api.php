@@ -13,5 +13,6 @@ Route::prefix('announcement')->group(function () {
     Route::delete('/{id}', [AnnouncementController::class, 'Destroy']);
     Route::post('/{id}/restore', [AnnouncementController::class, 'restore']);
     route::delete('/{id}/force', [AnnouncementController::class, 'forceDelete']);
+    route::get('/indexPublished', [AnnouncementController::class, 'indexPublished']);  // Add postman
 });
 

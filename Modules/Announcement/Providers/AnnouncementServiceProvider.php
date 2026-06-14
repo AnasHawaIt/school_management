@@ -44,9 +44,6 @@ class AnnouncementServiceProvider extends ServiceProvider
         );
     }
 
-    /**
-     * Register commands in the format of Command::class
-     */
     protected function registerCommands(): void
     {
         // $this->commands([]);

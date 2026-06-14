@@ -18,12 +18,12 @@ use Modules\Attendance\Repositories\StudentAttendanceRepository;
 use Modules\Attendance\Repositories\TeacherAttendanceRepository;
 use Modules\Attendance\Repositories\LeaveRequestRepository;
 
-// Service Contracts
+// Services Contracts
 use Modules\Attendance\Contracts\Services\StudentAttendanceServiceInterface;
 use Modules\Attendance\Contracts\Services\TeacherAttendanceServiceInterface;
 use Modules\Attendance\Contracts\Services\LeaveRequestServiceInterface;
 
-// Service Implementations
+// Services Implementations
 use Modules\Attendance\Services\StudentAttendanceService;
 use Modules\Attendance\Services\TeacherAttendanceService;
 use Modules\Attendance\Services\LeaveRequestService;

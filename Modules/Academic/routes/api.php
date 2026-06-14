@@ -48,7 +48,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // ==================== Guardians ====================
-    Route::prefix('guardians')->group(function () {
+    Route::prefix('---')->group(function () {
         Route::get('/',                                        [GuardianController::class, 'index']);
         Route::post('/',                                       [GuardianController::class, 'store']);
         Route::get('/{guardian}',                              [GuardianController::class, 'show']);

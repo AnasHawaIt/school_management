@@ -15,7 +15,7 @@ use Modules\Core\Http\Controllers\SettingController;
 
 // Public routes (No authentication required)
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+
 
 // Protected routes (Authentication required)
 Route::middleware('auth:sanctum')->group(function () {

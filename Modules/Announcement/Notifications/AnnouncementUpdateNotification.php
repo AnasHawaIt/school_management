@@ -49,7 +49,7 @@ class AnnouncementUpdateNotification extends Notification implements ShouldQueue
     {
         return [
 
-            'message' => 'Announcement Update Successfully',
+            'message' => 'Message Update Successfully',
             'announcement_id' => $notifiable->id,
             'user_id' => $notifiable->user_id,
         ];

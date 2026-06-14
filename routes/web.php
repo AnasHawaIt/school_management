@@ -18,3 +18,11 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+use Kreait\Firebase\Contract\Messaging;
+
+Route::get('/firebase-test', function (Messaging $messaging) {
+    return response()->json([
+        'status' => 'Firebase Connected'
+    ]);
+});

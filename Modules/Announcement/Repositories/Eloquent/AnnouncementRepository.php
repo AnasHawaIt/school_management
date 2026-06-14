@@ -29,6 +29,14 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
         return $announcement;
     }
 
+    public function getPublished()
+    {
+        return Announcement::query()
+            ->active()
+            ->published()
+            ->get();
+    }
+
 
     public function getAll()
     {

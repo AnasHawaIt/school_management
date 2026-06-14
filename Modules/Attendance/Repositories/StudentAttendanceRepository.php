@@ -66,7 +66,7 @@ class StudentAttendanceRepository implements StudentAttendanceRepositoryInterfac
         return true;
     }
 
-    public function getBySection(int $sectionId, string $date)
+    public function getBySection(int $sectionId, string $date): \Illuminate\Database\Eloquent\Collection
     {
         return $this->model->with(['student.user', 'status'])
             ->where('section_id', $sectionId)

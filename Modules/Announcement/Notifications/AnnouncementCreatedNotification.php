@@ -51,7 +51,7 @@ class AnnouncementCreatedNotification extends Notification implements ShouldQueu
     {
         return [
 
-            'message' => 'Announcement Created Successfully',
+            'message' => 'Message Created Successfully',
             'Announcement_id' => $notifiable->announcement_id,
             'user_id' => $notifiable->user_id,
         ];

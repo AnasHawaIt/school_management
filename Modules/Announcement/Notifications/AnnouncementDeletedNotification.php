@@ -52,7 +52,7 @@ class AnnouncementDeletedNotification extends Notification implements ShouldQueu
     {
         return [
 
-            'message' => 'Announcement Deleted Successfully',
+            'message' => 'Message Deleted Successfully',
             'announcement_id' => $notifiable->id,
             'user_id' => $notifiable->user_id,
         ];

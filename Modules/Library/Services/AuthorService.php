@@ -13,7 +13,6 @@ class AuthorService
 {
     protected $repo;
 
-//    protected $locales = ['en', 'ar'];
     protected $imageService;
 
     public function __construct(AuthorRepositoryInterface $repo, ImageService $imageService)
@@ -22,21 +21,6 @@ class AuthorService
 
         $this->imageService = $imageService;
     }
-
-//    private function prepareTranslatable(array $data, array $fields)
-//    {
-//        $result = [];
-//
-//        foreach ($fields as $field) {
-//            foreach ($this->locales as $locale) {
-//                if (isset($data[$field][$locale])) {
-//                    $result[$field][$locale] = $data[$field][$locale];
-//                }
-//            }
-//        }
-//
-//        return $result;
-//    }
 
     public function getAuthorOnlyTrashed()
     {

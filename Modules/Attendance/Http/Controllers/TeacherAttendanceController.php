@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Attendance\Contracts\Services\TeacherAttendanceServiceInterface;
 use Modules\Attendance\Http\Requests\RecordTeacherAttendanceRequest;
+use Modules\Attendance\Http\Resources\StudentAttendanceResource;
 use Modules\Attendance\Http\Resources\TeacherAttendanceResource;
 
 class TeacherAttendanceController extends Controller
@@ -56,10 +57,10 @@ class TeacherAttendanceController extends Controller
     // GET /teacher-attendance/{id}
     public function show(int $id): JsonResponse
     {
-        $record = $this->attendanceService->getAll(['id' => $id]);
+        $attendances = $this->attendanceService->getAll(['teacher_id' => $id]);
         return response()->json([
             'success' => true,
-            'data'    => new TeacherAttendanceResource($record),
+            'data'    =>  TeacherAttendanceResource::collection($attendances),
         ]);
     }
 

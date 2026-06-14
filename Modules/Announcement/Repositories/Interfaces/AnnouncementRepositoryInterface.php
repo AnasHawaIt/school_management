@@ -8,6 +8,7 @@ interface AnnouncementRepositoryInterface
     public function getAnnouncementOnlyTrashed();
     public function restore($id);
     public function forceDelete($id);
+    public function getPublished();
     public function getAll();
     public function find($id);
     public function create(array $data);

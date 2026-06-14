@@ -60,7 +60,7 @@ class UserService implements UserServiceInterface
             $this->activityLogRepository->log([
                 'action' => 'create',
                 'model_type' => User::class,
-                'model_id' => $user->id,
+              //  'model_id' => $user->id,
                 'new_values' => $user->toArray(),
             ]);
 
@@ -100,7 +100,7 @@ class UserService implements UserServiceInterface
             $this->activityLogRepository->log([
                 'action' => 'update',
                 'model_type' => User::class,
-                'model_id' => $id,
+              //  'model_id' => $id,
                 'old_values' => $oldValues,
                 'new_values' => $data,
             ]);
@@ -128,7 +128,7 @@ class UserService implements UserServiceInterface
             $this->activityLogRepository->log([
                 'action' => 'delete',
                 'model_type' => User::class,
-                'model_id' => $id,
+             //   'model_id' => $id,
                 'old_values' => $user->toArray(),
             ]);
 
@@ -153,7 +153,7 @@ class UserService implements UserServiceInterface
             $this->activityLogRepository->log([
                 'action' => 'restore',
                 'model_type' => User::class,
-                'model_id' => $id,
+              //  'model_id' => $id,
             ]);
 
             DB::commit();
@@ -175,7 +175,7 @@ class UserService implements UserServiceInterface
         $this->activityLogRepository->log([
             'action' => 'assign_role',
             'model_type' => User::class,
-            'model_id' => $userId,
+          //  'model_id' => $userId,
             'new_values' => ['role' => $role],
         ]);
 
@@ -191,7 +191,7 @@ class UserService implements UserServiceInterface
         $this->activityLogRepository->log([
             'action' => 'remove_role',
             'model_type' => User::class,
-            'model_id' => $userId,
+          //  'model_id' => $userId,
             'old_values' => ['role' => $role],
         ]);
 

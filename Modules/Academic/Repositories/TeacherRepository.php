@@ -80,8 +80,9 @@ class TeacherRepository implements TeacherRepositoryInterface
         return $this->model->with(['subjects.grade'])->findOrFail($id);
     }
 
-    public function getTeacherTimetable(int $teacherId, int $semesterId)
+    public function  getTeacherTimetable(int $teacherId, int $semesterId): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|Teacher|null
     {
+        //استخدام دالة with هنا يسمى في لارافل Eager Loading. ميزته الأساسية هي حل مشكلة الـ (N+1 query) في قواعد البيانات، حيث يقوم بجلب المعلم وجدوله والعلاقات المرتبطة به دفعة واحدة في استعلامات محدودة بدلاً من عمل استعلام لكل سطر.
         return $this->model->with([
             'timetables' => fn($q) => $q
                 ->where('semester_id', $semesterId)

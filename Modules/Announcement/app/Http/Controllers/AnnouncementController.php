@@ -16,8 +16,6 @@ class AnnouncementController extends Controller
     {
         $this->service = $service;
 
-        // يمكنك تطبيق middleware هنا
-        // مثال: $this->middleware('auth');
     }
 
     public function restore($id)
@@ -42,10 +40,17 @@ class AnnouncementController extends Controller
 
     }
 
+    public function indexPublished()
+    {
+        return $this->service->getPublishedAnnouncements();
+    }
+
     public function index()
     {
         $announcements = cache()->remember('announcements_all', 300, function () {
+
             return $this->service->getAll();
+
         });
 
         return AnnouncementResource::collection($announcements);
@@ -91,6 +96,6 @@ class AnnouncementController extends Controller
     {
         $this->service->delete($id);
 
-        return response()->json(['success', 'Announcement deleted!'],);
+        return response()->json(['success', 'Message deleted!'],);
     }
 }

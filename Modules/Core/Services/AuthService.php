@@ -45,7 +45,7 @@ class AuthService implements AuthServiceInterface
         $this->activityLogRepository->log([
             'action' => 'login',
             'model_type' => User::class,
-            'model_id' => $user->id,
+           // 'model_id' => $user->id,
         ]);
 
         return [
@@ -62,7 +62,7 @@ class AuthService implements AuthServiceInterface
         $this->activityLogRepository->log([
             'action' => 'logout',
             'model_type' => User::class,
-            'model_id' => $user->id,
+        //    'model_id' => $user->id,
         ]);
 
         // Delete current token
@@ -76,27 +76,8 @@ class AuthService implements AuthServiceInterface
         return auth()->user()->load('roles.permissions');
     }
 
-    public function register(array $data): User
-    {
-        $data['password'] = Hash::make($data['password']);
 
-        $user = $this->userRepository->create($data);
 
-        // Assign default role based on user type
-        if (isset($data['user_type'])) {
-            $user->assignRole($data['user_type']);
-        }
-
-        // Log activity
-        $this->activityLogRepository->log([
-            'action' => 'register',
-            'model_type' => User::class,
-            'model_id' => $user->id,
-            'new_values' => $user->toArray(),
-        ]);
-
-        return $user;
-    }
 
     public function refreshToken(): string
     {

@@ -1,0 +1,50 @@
+<?php
+
+namespace Modules\Messagings\Entities;
+
+use App\Models\Images;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Core\Entities\User;
+
+//use Modules\SMS\Entities\SmsLog;
+
+class Message extends Model
+{
+    use SoftDeletes,HasFactory;
+
+    protected $dates = ['deleted_at'];
+
+    protected $fillable = [
+        'sender_id',
+        'subject',
+        'body',
+        'priority'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function recipients()
+    {
+        return $this->hasMany(MessageRecipient::class);
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(MessageAttachment::class);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Images::class, 'imageable');
+    }
+}

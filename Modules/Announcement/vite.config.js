@@ -1,8 +1,5 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
-import { readdirSync, statSync } from 'fs';
-import { join,relative,dirname } from 'path';
-import { fileURLToPath } from 'url';
 
 export default defineConfig({
     build: {
@@ -32,7 +29,7 @@ export default defineConfig({
 //            const filePath = join(currentPath, file);
 //            const stats = statSync(filePath);
 //            if (stats.isFile() && !file.startsWith('.')) {
-//                const relativePath = 'Modules/Announcement/'+relative(__dirname, filePath);
+//                const relativePath = 'Modules/Message/'+relative(__dirname, filePath);
 //                filePaths.push(relativePath);
 //            } else if (stats.isDirectory()) {
 //                walkDirectory(filePath);
@@ -52,6 +49,6 @@ export default defineConfig({
 
 
 //export const paths = [
-//    'Modules/Announcement/resources/assets/sass/app.scss',
-//    'Modules/Announcement/resources/assets/js/app.js',
+//    'Modules/Message/resources/assets/sass/app.scss',
+//    'Modules/Message/resources/assets/js/app.js',
 //];

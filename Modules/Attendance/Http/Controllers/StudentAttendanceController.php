@@ -16,7 +16,6 @@ class StudentAttendanceController extends Controller
         protected StudentAttendanceServiceInterface $attendanceService,
     ) {}
 
-    // GET /student-attendance
     public function index(Request $request): JsonResponse
     {
         $result = $this->attendanceService->getAll($request->all());
@@ -32,7 +31,7 @@ class StudentAttendanceController extends Controller
         ]);
     }
 
-    // GET /sections/{section}/attendance?date=2024-01-01
+
     public function sectionAttendance(Request $request, int $sectionId): JsonResponse
     {
         $request->validate(['date' => 'required|date']);
@@ -43,7 +42,7 @@ class StudentAttendanceController extends Controller
         ]);
     }
 
-    // POST /student-attendance
+
     public function store(RecordStudentAttendanceRequest $request): JsonResponse
     {
         $record = $this->attendanceService->recordAttendance($request->validated());
@@ -54,7 +53,7 @@ class StudentAttendanceController extends Controller
         ], 201);
     }
 
-    // POST /student-attendance/bulk
+
     public function bulk(BulkRecordAttendanceRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -72,18 +71,17 @@ class StudentAttendanceController extends Controller
         ]);
     }
 
-    // GET /student-attendance/{id}
+
     public function show(int $id): JsonResponse
     {
+        $attendances = $this->attendanceService->getAll(['student_id' => $id]);
         return response()->json([
             'success' => true,
-            'data'    => new StudentAttendanceResource(
-                $this->attendanceService->getAll(['id' => $id])
-            ),
+            'data'    => StudentAttendanceResource::collection($attendances),
         ]);
     }
 
-    // PUT /student-attendance/{id}
+
     public function update(Request $request, int $id): JsonResponse
     {
         $data = $request->validate([
@@ -100,14 +98,14 @@ class StudentAttendanceController extends Controller
         ]);
     }
 
-    // DELETE /student-attendance/{id}
+
     public function destroy(int $id): JsonResponse
     {
         $this->attendanceService->deleteAttendance($id);
         return response()->json(['success' => true, 'message' => 'Attendance deleted successfully.']);
     }
 
-    // GET /students/{student}/attendance-report
+
     public function studentReport(Request $request, int $studentId): JsonResponse
     {
         $result = $this->attendanceService->getStudentReport($studentId, $request->all());
@@ -122,7 +120,7 @@ class StudentAttendanceController extends Controller
         ]);
     }
 
-    // GET /students/{student}/attendance-stats?semester_id=1
+
     public function studentStats(Request $request, int $studentId): JsonResponse
     {
         $request->validate(['semester_id' => 'required|exists:semesters,id']);
@@ -130,7 +128,7 @@ class StudentAttendanceController extends Controller
         return response()->json(['success' => true, 'data' => $stats]);
     }
 
-    // GET /sections/{section}/attendance-stats?semester_id=1
+
     public function sectionStats(Request $request, int $sectionId): JsonResponse
     {
         $request->validate(['semester_id' => 'required|exists:semesters,id']);

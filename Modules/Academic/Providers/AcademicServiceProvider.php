@@ -21,14 +21,14 @@ use Modules\Academic\Repositories\GuardianRepository;
 use Modules\Academic\Repositories\SubjectRepository;
 use Modules\Academic\Repositories\TimetableRepository;
 
-// Service Contracts
+// Services Contracts
 use Modules\Academic\Contracts\Services\TeacherServiceInterface;
 use Modules\Academic\Contracts\Services\StudentServiceInterface;
 use Modules\Academic\Contracts\Services\GuardianServiceInterface;
 use Modules\Academic\Contracts\Services\SubjectServiceInterface;
 use Modules\Academic\Contracts\Services\TimetableServiceInterface;
 
-// Service Implementations
+// Services Implementations
 use Modules\Academic\Services\TeacherService;
 use Modules\Academic\Services\StudentService;
 use Modules\Academic\Services\GuardianService;

@@ -62,6 +62,11 @@ class AnnouncementService
         return $announcement;
     }
 
+    public function getPublishedAnnouncements()
+    {
+        return $this->repo->getPublished();
+    }
+
     public function getAll()
     {
         return $this->repo->getAll();

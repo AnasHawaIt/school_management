@@ -179,37 +179,37 @@ class SchoolServiceProvider extends ServiceProvider
 
     protected function registerServices(): void
     {
-        // Academic Year Service
+        // Academic Year Services
         $this->app->bind(
             \Modules\School\Contracts\Services\AcademicYearServiceInterface::class,
             \Modules\School\Services\AcademicYearService::class
         );
 
-        // Semester Service
+        // Semester Services
         $this->app->bind(
             \Modules\School\Contracts\Services\SemesterServiceInterface::class,
             \Modules\School\Services\SemesterService::class
         );
 
-        // Grade Service
+        // Grade Services
         $this->app->bind(
             \Modules\School\Contracts\Services\GradeServiceInterface::class,
             \Modules\School\Services\GradeService::class
         );
 
-        // SchoolClass Service
+        // SchoolClass Services
         $this->app->bind(
             \Modules\School\Contracts\Services\SchoolClassServiceInterface::class,
             \Modules\School\Services\SchoolClassService::class
         );
 
-        // Section Service
+        // Section Services
         $this->app->bind(
             \Modules\School\Contracts\Services\SectionServiceInterface::class,
             \Modules\School\Services\SectionService::class
         );
 
-        // Holiday Service
+        // Holiday Services
         $this->app->bind(
             \Modules\School\Contracts\Services\HolidayServiceInterface::class,
             \Modules\School\Services\HolidayService::class

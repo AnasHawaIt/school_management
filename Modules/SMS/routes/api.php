@@ -15,3 +15,6 @@ Route::prefix('SmsOtps')->group(function () {
     Route::post('/verify', [SMSController::class, 'verify']);
 
 });
+
+
+

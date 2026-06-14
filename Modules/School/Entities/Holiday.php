@@ -47,10 +47,10 @@ class Holiday extends Model
 
     public function scopeUpcoming($query)
     {
-        return $query->where('start_date', '>=', now()->toDateString());
+        return $query->where('start_date', '>=', now()->toDateString());//يقارن التواريخ فقط دون الدخول في الساعات والثواني
     }
 
-    public function scopeRecurring($query)
+    public function scopeRecurring($query) //جلب التكرار كل سنة
     {
         return $query->where('is_recurring', true);
     }

@@ -16,7 +16,7 @@ class StoreTimetableRequest extends FormRequest
             'period_number'    => 'required|integer|min:1|max:12',
             'start_time'       => 'required',
             'end_time'         => 'required|after:start_time',
-            'room_number'      => 'nullable|string|max:20',
+            'room_number'      => 'nullable|string|max:20',//A1
         ];
     }
 }

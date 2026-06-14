@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ActivityLog extends Model
 {
-    use HasFactory;
 
     const UPDATED_AT = null; // لا نحتاج updated_at
 
@@ -15,7 +14,7 @@ class ActivityLog extends Model
         'user_id',
         'action',
         'model_type',
-        'model_id',
+       // 'model_id',
         'old_values',
         'new_values',
         'ip_address',
@@ -78,7 +77,7 @@ class ActivityLog extends Model
             'user_id' => auth()->id(),
             'action' => $data['action'],
             'model_type' => $data['model_type'] ?? null,
-            'model_id' => $data['model_id'] ?? null,
+          //  'model_id' => $data['model_id'] ?? null,
             'old_values' => $data['old_values'] ?? null,
             'new_values' => $data['new_values'] ?? null,
             'ip_address' => request()->ip(),

@@ -27,7 +27,7 @@ class AnnouncementCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'Announcement title is required.',
+            'title.required' => 'Message title is required.',
             'body.required' => 'Body is required.',
             'user_id.required' => 'User is required.',
             'audience.required' => 'Audience is required.',
