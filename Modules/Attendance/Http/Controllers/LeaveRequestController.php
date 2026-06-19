@@ -47,7 +47,7 @@ class LeaveRequestController extends Controller
     public function store(StoreLeaveRequestRequest $request): JsonResponse
     {
         $data = $request->validated();
-
+        $data['status'] = 'pending';
         // رفع المرفق إن وجد
         if ($request->hasFile('attachment')) {
             $data['attachment'] = $request->file('attachment')

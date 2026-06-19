@@ -7,7 +7,7 @@ use Modules\Academic\Http\Controllers\GuardianController;
 use Modules\Academic\Http\Controllers\SubjectController;
 use Modules\Academic\Http\Controllers\TimetableController;
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function(){
 
     // ==================== Teachers ====================
     Route::prefix('teachers')->group(function () {
@@ -48,7 +48,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     // ==================== Guardians ====================
-    Route::prefix('---')->group(function () {
+    Route::prefix('guardians')->group(function () {
         Route::get('/',                                        [GuardianController::class, 'index']);
         Route::post('/',                                       [GuardianController::class, 'store']);
         Route::get('/{guardian}',                              [GuardianController::class, 'show']);
