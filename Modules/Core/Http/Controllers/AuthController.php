@@ -25,7 +25,6 @@ class AuthController extends Controller
     {
         try {
             $result = $this->authService->login($request->validated());
-
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful',

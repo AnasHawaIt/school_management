@@ -15,7 +15,7 @@ class GuardiansSeeder extends Seeder
      */
     public function run(): void
     {
-        // جلب الطلاب مع مستخدميهم للتأكد من وجود بيانات للربط
+
         $students = Student::with('user')->take(8)->get();
 
         if ($students->isEmpty()) {
