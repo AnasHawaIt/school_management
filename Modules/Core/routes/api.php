@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [UserController::class, 'show']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'destroy']);
+        Route::post('image/{id}',[UserController::class, 'avatarUpload']);
 
         // Additional user endpoints
         Route::post('/{id}/restore', [UserController::class, 'restore']);
