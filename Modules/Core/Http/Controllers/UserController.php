@@ -5,7 +5,12 @@ namespace Modules\Core\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Modules\Core\Contracts\Repositories\ActivityLogRepositoryInterface;
+use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
 use Modules\Core\Contracts\Services\UserServiceInterface;
+use Modules\Core\Entities\User;
 use Modules\Core\Http\Requests\StoreUserRequest;
 use Modules\Core\Http\Requests\UpdateUserRequest;
 use Modules\Core\Http\Resources\UserResource;
@@ -13,10 +18,17 @@ use Modules\Core\Http\Resources\UserResource;
 class UserController extends Controller
 {
     protected $userService;
+    protected $userRepository;
+    protected $activityLogRepository;
 
-    public function __construct(UserServiceInterface $userService)
-    {
+    public function __construct(
+        UserServiceInterface $userService,
+        UserRepositoryInterface $userRepository,
+        ActivityLogRepositoryInterface $activityLogRepository
+    ) {
         $this->userService = $userService;
+        $this->userRepository = $userRepository; // هذا كان مفقوداً
+        $this->activityLogRepository = $activityLogRepository; // هذا كان مفقوداً
     }
 
     /**
@@ -250,5 +262,37 @@ class UserController extends Controller
                 'message' => $e->getMessage(),
             ], 400);
         }
+    }
+
+    public function avatarUpload(Request $request, int $id): JsonResponse
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+        $user = $this->userRepository->findOrFail($id);
+        $oldValues = $user->toArray();
+        $data=[];
+        if ($request->hasFile('avatar')) {
+            // قم بحذف الصورة القديمة من السيرفر إذا لزم الأمر
+            if ($user->avatar_path) {
+                Storage::disk('public')->delete($user->avatar_path);
+            }
+
+            $data['avatar']=$request->file('avatar')->store('avatars', 'public');
+        }
+        $updated = $this->userRepository->update($id, $data);
+        $this->activityLogRepository->log([
+            'action' => 'update',
+            'model_type' => User::class,
+            //  'model_id' => $id,
+            'old_values' => $oldValues,
+            'new_values' => $data,
+        ]);
+        DB::commit();
+
+        return response()->json([
+            'message' => 'Avatar updated successfully',
+            'data' => $data
+        ]);
     }
 }
