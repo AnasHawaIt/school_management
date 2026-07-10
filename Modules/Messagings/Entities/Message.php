@@ -23,14 +23,22 @@ class Message extends Model
         'priority'
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     public function sender()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(
+            User::class,
+            'sender_id'
+        );
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($message) {
+
+            $message->recipients()->delete();
+
+            $message->attachments()->delete();
+        });
     }
 
     public function recipients()

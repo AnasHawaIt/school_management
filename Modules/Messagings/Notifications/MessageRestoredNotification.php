@@ -7,15 +7,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MessageUpdateNotification extends Notification implements ShouldQueue
+class MessageRestoredNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $announcement;
+    protected $message;
 
-    public function __construct($announcement)
+    public function __construct($message)
     {
-        $this->announcement=$announcement;
+        $this->message=$message;
     }
 
     public function via($notifiable)
@@ -40,18 +40,17 @@ class MessageUpdateNotification extends Notification implements ShouldQueue
             ->line('Thank you for using our application!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
+
+    public function toArray($notifiable)
     {
         return [
-
-            'message' => 'Message Update Successfully',
-            'announcement_id' => $notifiable->id,
-            'user_id' => $notifiable->user_id,
+            'type'         => 'message_restored',
+            'title'        => 'Message Restored',
+            'message'      => 'A deleted message has been restored.',
+            'message_id'   => $this->message->id,
+            'restored_by'  => auth()->id(),
+            'icon'         => 'restore',
+            'created_at'   => now(),
         ];
     }
 }

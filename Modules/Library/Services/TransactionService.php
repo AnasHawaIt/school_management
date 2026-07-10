@@ -2,6 +2,7 @@
 
 namespace Modules\Library\Services;
 
+use Modules\Library\Entities\Member;
 use Modules\Library\Events\TransactionEvents\TransactionCreated;
 use Modules\Library\Events\TransactionEvents\TransactionDeleted;
 use Modules\Library\Events\TransactionEvents\TransactionRestored;
@@ -47,11 +48,17 @@ class TransactionService
 
     public function create(array $data)
     {
-        $category= $this->repo->create($data);
+        $member = Member::findOrFail($data['member_id']);
 
-        event(new TransactionCreated($category),auth()->id());
+        if ($member->status !== 'active') {
+            throw new \Exception('Membership is not active');
+        }
 
-        return $category;
+        $transaction = $this->repo->create($data);
+
+        event(new TransactionCreated($transaction), auth()->id());
+
+        return $transaction;
     }
 
     public function findById($id)
@@ -61,24 +68,24 @@ class TransactionService
 
     public function update($id, array $data)
     {
-        $category= $this->repo->update($id, $data);
+        $Transaction= $this->repo->update($id, $data);
 
-        event(new TransactionUpdated($category),auth()->id());
+        event(new TransactionUpdated($Transaction),auth()->id());
 
-        return $category;
+        return $Transaction;
     }
 
     public function delete($id)
     {
-        $category = $this->repo->findById($id);
+        $Transaction = $this->repo->findById($id);
 
-        if (!$category) {
+        if (!$Transaction) {
             throw new \Exception('Transaction not found');
         }
 
         $this->repo->delete($id);
 
-        event(new TransactionDeleted($category));
+        event(new TransactionDeleted($Transaction));
 
         return true;
     }

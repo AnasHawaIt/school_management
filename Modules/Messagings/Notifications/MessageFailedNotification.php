@@ -7,18 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MessageDeletedNotification extends Notification implements ShouldQueue
+class MessageFailedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $message;
+    protected $messageModel;
+    protected $reason;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct($message)
+    public function __construct($messageModel, string $reason)
     {
-        $this->message=$message;
+        $this->messageModel = $messageModel;
+        $this->reason = $reason;
     }
 
     public function via($notifiable)
@@ -47,14 +46,13 @@ class MessageDeletedNotification extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'type'        => 'message_deleted',
-            'title'       => 'Message Deleted',
-            'message'     => 'A message has been deleted.',
-            'message_id'  => $this->message->id,
-            'deleted_by'  => auth()->id(),
-            'icon'        => 'trash',
+            'type'        => 'message_failed',
+            'title'       => 'Message Delivery Failed',
+            'message'     => 'The message could not be delivered.',
+            'message_id'  => $this->messageModel->id,
+            'reason'      => $this->reason,
+            'icon'        => 'error',
             'created_at'  => now(),
         ];
     }
-
 }

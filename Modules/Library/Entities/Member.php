@@ -27,6 +27,17 @@ class Member extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    public function getMembershipStatusAttribute()
+    {
+        if ($this->status === 'suspended') {
+            return 'suspended';
+        }
+
+        return $this->end_date < now()
+            ? 'expired'
+            : 'active';
+    }
+
     // protected static function newFactory(): MemberFactory
     // {
     //     // return MemberFactory::new();

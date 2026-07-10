@@ -20,7 +20,6 @@ return new class extends Migration
             $table->date('start_date')->useCurrent();
             $table->enum('status',[
                 'active',
-                'expired',
                 'suspended'
             ])->default('active');
             $table->string('membership_number')->unique();

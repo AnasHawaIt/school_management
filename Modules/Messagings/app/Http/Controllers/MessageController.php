@@ -3,6 +3,7 @@
 namespace Modules\Messagings\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use http\Client\Request;
 use Modules\Messagings\app\Requests\ForwardMessageRequest;
 use Modules\Messagings\app\Requests\ReplyMessageRequest;
 use Modules\Messagings\app\Requests\SendMessageRequest;
@@ -19,6 +20,32 @@ class MessageController extends Controller
     {
         $this->messageService = $messageService;
 
+    }
+
+    public function uploadAttachment( $request, $id)
+    {
+        $request->validate([
+            'attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+        ]);
+
+        $attachment = $this->messageService->uploadAttachment(
+            $id,
+            $request->file('attachment')
+        );
+
+        return response()->json([
+            'message' => 'Attachment uploaded successfully.',
+            'data' => $attachment,
+        ], 201);
+    }
+
+    public function deleteAttachment($id)
+    {
+        $this->messageService->deleteAttachment($id);
+
+        return response()->json([
+            'message' => 'Attachment deleted successfully.',
+        ]);
     }
 
     public function restore($id)

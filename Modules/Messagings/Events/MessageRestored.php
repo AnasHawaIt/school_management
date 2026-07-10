@@ -5,14 +5,14 @@ namespace Modules\Messagings\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Announcement\Entities\Announcement;
+use Modules\Messagings\Entities\Message;
 
-class AnnouncementRestored
+class MessageRestored
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(
-        public Announcement $announcement,
+        public Message $message,
         public ?string $socketId = null
     ) {}
 

@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MessageDeletedNotification extends Notification implements ShouldQueue
+class MessageReplyNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -21,20 +21,7 @@ class MessageDeletedNotification extends Notification implements ShouldQueue
         $this->message=$message;
     }
 
-    public function via($notifiable)
-    {
-        return ['database','mail']; // أو mail
-    }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-
-    /**
-     * Get the mail representation of the notification.
-     */
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
@@ -43,18 +30,20 @@ class MessageDeletedNotification extends Notification implements ShouldQueue
             ->line('Thank you for using our application!');
     }
 
+    public function via($notifiable)
+    {
+        return ['database', 'mail'];
+    }
 
     public function toArray($notifiable)
     {
         return [
-            'type'        => 'message_deleted',
-            'title'       => 'Message Deleted',
-            'message'     => 'A message has been deleted.',
-            'message_id'  => $this->message->id,
-            'deleted_by'  => auth()->id(),
-            'icon'        => 'trash',
-            'created_at'  => now(),
+            'type' => 'reply',
+            'title' => 'New Reply',
+            'message' => 'Someone replied to your message.',
+            'message_id' => $this->message->id,
+            'sender_id' => $this->message->sender_id,
+            'created_at' => now(),
         ];
     }
-
 }

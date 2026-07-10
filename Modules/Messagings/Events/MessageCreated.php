@@ -1,0 +1,21 @@
+<?php
+
+namespace Modules\Messagings\Events;
+
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Modules\Messagings\Entities\Message;
+
+class MessageCreated
+{
+    use Dispatchable, SerializesModels;
+
+    public Message $message;
+    public int $senderId;
+
+    public function __construct(Message $message, int $senderId)
+    {
+        $this->message = $message;
+        $this->senderId = $senderId;
+    }
+}
