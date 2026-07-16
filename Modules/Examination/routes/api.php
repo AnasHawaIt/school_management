@@ -5,7 +5,7 @@ use Modules\Examination\Http\Controllers\ExamController;
 use Modules\Examination\Http\Controllers\ExamResultController;
 use Modules\Examination\Http\Controllers\ReportCardController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 
     // ==================== Exams ====================
     Route::prefix('exams')->group(function () {
@@ -16,16 +16,16 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
         Route::delete('/{exam}',         [ExamController::class, 'destroy']);
         Route::post('/{exam}/restore',   [ExamController::class, 'restore']);
         Route::patch('/{exam}/status',   [ExamController::class, 'updateStatus']);
-        // نتائج الامتحان
+
         Route::get('/{exam}/results',       [ExamResultController::class, 'examResults']);
         Route::post('/{exam}/results/bulk', [ExamResultController::class, 'bulk']);
         Route::get('/{exam}/stats',         [ExamResultController::class, 'examStats']);
     });
 
-    // امتحانات الشعبة
+
     Route::get('/sections/{section}/exams', [ExamController::class, 'sectionExams']);
 
-    // امتحانات المعلم
+
     Route::get('/teachers/{teacher}/exams', [ExamController::class, 'teacherExams']);
 
     // ==================== Exam Results ====================
@@ -36,7 +36,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
         Route::put('/{id}', [ExamResultController::class, 'update']);
     });
 
-    // نتائج وإحصائيات طالب معين
+
     Route::prefix('students/{student}')->group(function () {
         Route::get('/results',    [ExamResultController::class, 'studentResults']);
         Route::get('/exam-stats', [ExamResultController::class, 'studentStats']);
@@ -51,7 +51,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
         Route::patch('/{id}/publish', [ReportCardController::class, 'publish']);
     });
 
-    // توليد ونشر الشهادات للشعبة
+
     Route::prefix('sections/{section}/report-cards')->group(function () {
         Route::get('/',             [ReportCardController::class, 'sectionReportCards']);
         Route::post('/generate',    [ReportCardController::class, 'generate']);
