@@ -18,6 +18,11 @@ class ImageService
         });
     }
 
+    public function find(int $id)
+    {
+        return $this->find($id);
+    }
+
     public function upload($model, $images)
     {
 

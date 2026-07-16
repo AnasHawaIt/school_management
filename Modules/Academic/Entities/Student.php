@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\User;
+use Modules\Library\Entities\Member;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\AcademicYear;
 use Modules\Transport\Entities\Subscription;
@@ -93,5 +94,6 @@ class Student extends Model
     {
         return $this->hasMany(Subscription::class);
     }
+
 
 }

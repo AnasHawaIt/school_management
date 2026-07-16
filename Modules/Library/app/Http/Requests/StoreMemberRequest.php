@@ -14,23 +14,20 @@ class StoreMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'student_id' => 'required|integer|exists:students,id',
-            'username' => 'required|string|unique:members,username',
-            'password' => 'required|string',
+           'user_id' => 'required|integer|exists:users,id|unique:members,user_id',
+            'membership_number' => 'required|unique:members,membership_number',
+
         ];
     }
 
     public function messages(): array
     {
         return [
-           'student_id.required' => 'Student ID is required.',
-            'student_id.integer' => 'Student ID must be an integer.',
-            'student_id.exists' => 'Student ID does not exist.',
-            'username.required' => 'Username is required.',
-            'username.string' => 'Username must be a string.',
-            'username.unique' => 'Username already exists.',
-            'password.required' => 'Password is required.',
-            'password.string' => 'Password must be a string.',
+            'membership_number.unique' => 'Membership number already exists',
+            'membership_number.required' => 'Membership number is required',
+            'user_id.required' => 'User is required',
+            'user_id.integer' => 'User must be an integer',
+            'user_id.exists' => 'User does not exist',
         ];
     }
 }

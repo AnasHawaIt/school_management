@@ -13,11 +13,17 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students');
-            $table->date('start_date')->useCurrent();;
-            $table->date('end_date')->default(date('Y-m-d'));
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->foreignId('user_id')
+                ->unique()
+                ->constrained('users')
+                ->cascadeOnDelete();
+            $table->date('start_date')->useCurrent();
+            $table->enum('status',[
+                'active',
+                'suspended'
+            ])->default('active');
+            $table->string('membership_number')->unique();
+            $table->date('end_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

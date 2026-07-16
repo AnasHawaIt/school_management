@@ -17,4 +17,12 @@ Route::prefix('Message')->group(function () {
     Route::patch('/{id}/read', [MessageController::class, 'markAsRead']);
     route::delete('/{id}/force', [MessageController::class, 'forceDelete']);
     Route::delete('/{id}', [MessageController::class, 'destroy']);
+    Route::post(
+        '/{message}/attachments',
+        [MessageController::class, 'uploadAttachment']
+    );
+    Route::delete(
+        '/{attachment}',
+        [MessageController::class, 'deleteAttachment']
+    );
     });

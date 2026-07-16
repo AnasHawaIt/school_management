@@ -6,15 +6,15 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Modules\Announcement\Events\AnnouncementCreated;
 use Modules\Announcement\Events\AnnouncementDeleted;
 use Modules\Announcement\Events\AnnouncementUpdated;
-use Modules\Messagings\Listeners\MessageSendedListener\AnnouncementCreatedBroadcastEventListener;
-use Modules\Messagings\Listeners\MessageSendedListener\AnnouncementCreatedLogEventListener;
-use Modules\Messagings\Listeners\MessageSendedListener\SedNotificationDatabaseListener;
-use Modules\Messagings\Listeners\MessageDeletedListener\AnnouncementDeletedBroadcastEventListener;
-use Modules\Messagings\Listeners\MessageDeletedListener\AnnouncementDeletedLogEventListener;
-use Modules\Messagings\Listeners\MessageDeletedListener\AnnouncementDeletedNotificationDatabaseListener;
-use Modules\Messagings\Listeners\MessageUpdatedListener\AnnouncementUpdatedBroadcastEventListener;
-use Modules\Messagings\Listeners\MessageUpdatedListener\AnnouncementUpdatedLogEventListener;
-use Modules\Messagings\Listeners\MessageUpdatedListener\AnnouncementUpdatedNotificationDatabaseListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedNotificationDatabaseListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedNotificationDatabaseListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedNotificationDatabaseListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,22 +26,23 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
 
         AnnouncementCreated::class => [
-            AnnouncementCreatedLogEventListener::class,
-            SedNotificationDatabaseListener::class,
             AnnouncementCreatedBroadcastEventListener::class,
+            AnnouncementCreatedLogEventListener::class,
+            AnnouncementCreatedNotificationDatabaseListener::class,
         ],
 
         AnnouncementUpdated::class => [
+            AnnouncementUpdatedBroadcastEventListener::class,
             AnnouncementUpdatedLogEventListener::class,
             AnnouncementUpdatedNotificationDatabaseListener::class,
-            AnnouncementUpdatedBroadcastEventListener::class,
         ],
 
         AnnouncementDeleted::class => [
+            AnnouncementDeletedBroadcastEventListener::class,
             AnnouncementDeletedLogEventListener::class,
             AnnouncementDeletedNotificationDatabaseListener::class,
-            AnnouncementDeletedBroadcastEventListener::class,
         ],
+
     ];
     /**
      * Indicates if events should be discovered.

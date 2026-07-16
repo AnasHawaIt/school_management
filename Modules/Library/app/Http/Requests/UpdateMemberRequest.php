@@ -14,17 +14,16 @@ class UpdateMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'student_id' => 'sometimes|integer|exists:students,id',
-                'username' => 'sometimes|string|unique:members,username',
-                'password' => 'sometimes|string',
-            ];
+            'user_id' => 'sometimes|exists:users,id',
+            'membership_number' => 'sometimes|unique:members,membership_number',
+        ];
     }
 
     public function messages(): array
     {
         return [
-            'student_id.integer' => 'student_id must be an integer',
-            'school_id.integer' => 'school_id must be an integer',
-        ];
+            'membership_number.unique' => 'Membership number already exists',
+            'user_id.exists' => 'User id does not exist',
+            ];
     }
 }

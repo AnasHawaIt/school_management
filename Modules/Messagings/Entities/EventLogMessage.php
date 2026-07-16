@@ -9,7 +9,7 @@ class EventLogMessage extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'event_logs_announcements';
+    protected $table ='event_logs_messages';
 
     protected $dates = ['deleted_at'];
 

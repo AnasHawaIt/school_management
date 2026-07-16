@@ -3,6 +3,7 @@
 namespace Modules\Library\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreTransactionRequest;
 use Modules\Library\app\Http\Requests\UpdateTransactionRequest;
 use Modules\Library\app\Http\Resources\TransactionResource;
@@ -37,11 +38,11 @@ class TransactionController extends Controller
         return TransactionResource::collection($this->service->getTransactionOnlyTrashed());
     }
 
-    public function index($request)
+    public function index(Request $request)
     {
         $transactions =Transaction::with(['book', 'member'])->get();
 
-        return new TransactionResource($transactions);
+        return  TransactionResource::collection($transactions);
     }
 
     public function store(StoreTransactionRequest $request)

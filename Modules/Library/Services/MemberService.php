@@ -49,11 +49,12 @@ class MemberService
     public function create(array $data)
     {
         $data['start_date']=now();
-        $category= $this->repo->create($data);
+        $data['end_date']=now()->addYear();
+        $Member= $this->repo->create($data);
 
-        event(new MemberCreated($category,auth()->id()));
+        event(new MemberCreated($Member,auth()->id()));
 
-        return $category;
+        return $Member;
     }
 
     public function findById($id)
@@ -63,24 +64,24 @@ class MemberService
 
     public function update($id, array $data)
     {
-        $category= $this->repo->update($id, $data);
+        $Member= $this->repo->update($id, $data);
 
-        event(new MemberUpdated($category,auth()->id()));
+        event(new MemberUpdated($Member,auth()->id()));
 
-        return $category;
+        return $Member;
     }
 
     public function delete($id)
     {
-        $category = $this->repo->findById($id);
+        $Member=$this->repo->findById($id);
 
-        if (!$category) {
+        if (!$Member) {
             throw new \Exception('Member not found');
         }
 
         $this->repo->delete($id);
 
-        event(new MemberDeleted($category));
+        event(new MemberDeleted($Member));
 
         return true;
     }

@@ -17,6 +17,18 @@ class MessageRepository implements MessageRepositoryInterface
         return Message::findOrFail($id);
     }
 
+
+    public function uploadAttachment($id, $file)
+    {
+        $message = $this->find($id);
+
+        return $message;
+    }
+
+    public function deleteAttachment($id)
+    {
+    }
+
     public function getInbox(int $userId)
     {
         return MessageRecipient::query()
@@ -49,6 +61,7 @@ class MessageRepository implements MessageRepositoryInterface
         return MessageRecipient::query()
             ->where('message_id', $messageId)
             ->where('recipient_id', $userId)
+            ->where('is_read', false)
             ->update([
                 'is_read' => true,
                 'read_at' => now()
@@ -63,32 +76,33 @@ class MessageRepository implements MessageRepositoryInterface
             ->count();
     }
 
-    public function getAnnouncementOnlyTrashed()
+    public function getMessagesOnlyTrashed()
     {
         return Message::onlyTrashed()->paginate(10);
     }
 
     public function restore($id)
     {
-        $announcement = Message::withTrashed()->findOrFail($id);
-        $announcement->restore();
+        $Messages = Message::withTrashed()->findOrFail($id);
+        $Messages->restore();
 
-        return $announcement;
+        return $Messages;
     }
 
     public function forceDelete($id)
     {
-        $announcement = Message::withTrashed()->findOrFail($id);
 
-        $announcement->forceDelete();
+        $Messages = Message::withTrashed()->findOrFail($id);
 
-        return $announcement;
+        $Messages->forceDelete();
+
+        return $Messages;
     }
 
     public function delete($id)
     {
-        $announcement = $this->find($id);
+        $Messages = $this->find($id);
 
-        return $announcement->delete();
+        return $Messages->delete();
     }
 }

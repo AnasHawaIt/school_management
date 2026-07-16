@@ -11,14 +11,14 @@ class MessageDeletedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    protected $announcement;
+    protected $message;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($announcement)
+    public function __construct($message)
     {
-        $this->announcement=$announcement;
+        $this->message=$message;
     }
 
     public function via($notifiable)
@@ -43,18 +43,18 @@ class MessageDeletedNotification extends Notification implements ShouldQueue
             ->line('Thank you for using our application!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
+
+    public function toArray($notifiable)
     {
         return [
-
-            'message' => 'Message Deleted Successfully',
-            'announcement_id' => $notifiable->id,
-            'user_id' => $notifiable->user_id,
+            'type'        => 'message_deleted',
+            'title'       => 'Message Deleted',
+            'message'     => 'A message has been deleted.',
+            'message_id'  => $this->message->id,
+            'deleted_by'  => auth()->id(),
+            'icon'        => 'trash',
+            'created_at'  => now(),
         ];
     }
+
 }

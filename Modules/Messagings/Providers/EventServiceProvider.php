@@ -12,11 +12,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
-//        AnnouncementCreated::class => [
-//            AnnouncementCreatedLogEventListener::class,
-//            AnnouncementCreatedNotificationDatabaseListener::class,
-//            AnnouncementCreatedBroadcastEventListener::class,
-//        ],
+        AnnouncementCreated::class => [
+            AnnouncementCreatedLogEventListener::class,
+            AnnouncementCreatedNotificationDatabaseListener::class,
+            AnnouncementCreatedBroadcastEventListener::class,
+       ],
     ];
 
     /**

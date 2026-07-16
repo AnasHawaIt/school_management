@@ -7,9 +7,11 @@ interface MessageRepositoryInterface
     public function unreadCount(int $userId);
     public function getSent(int $userId);
     public function markAsRead(int $messageId, int $userId);
-    public function getAnnouncementOnlyTrashed();
+    public function getMessagesOnlyTrashed();
     public function restore($id);
     public function forceDelete($id);
+    public function uploadAttachment($id, $file);
+    public function deleteAttachment($id);
     public function find($id);
     public function create(array $data);
     public function delete($id);
