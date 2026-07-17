@@ -18,14 +18,14 @@ class ImageService
         });
     }
 
+
     public function find(int $id)
     {
-        return $this->find($id);
+        return Images::findOrFail($id);
     }
 
     public function upload($model, $images)
     {
-
         if (!$images || empty($images)) return false;
 
         if (!is_array($images)) {
@@ -50,12 +50,11 @@ class ImageService
 
     public function deleteAll($model)
     {
-        foreach ($model->images as $image) {
-
+        foreach ($model->images as $image)
+        {
             if (Storage::disk('public')->exists($image->path)) {
                 Storage::disk('public')->delete($image->path);
             }
-
             $image->delete();
         }
     }

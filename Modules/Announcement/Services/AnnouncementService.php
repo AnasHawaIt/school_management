@@ -50,7 +50,6 @@ class AnnouncementService
         return true;
     }
 
-
     public function create(array $data,$images=null)
     {
         $announcement = $this->repo->create($data);

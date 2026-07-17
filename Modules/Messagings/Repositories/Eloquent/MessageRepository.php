@@ -4,6 +4,7 @@ namespace Modules\Messagings\Repositories\Eloquent;
 use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageRecipient;
 use Modules\Messagings\Repositories\Interfaces\MessageRepositoryInterface;
+use Modules\Transport\Entities\images;
 
 class MessageRepository implements MessageRepositoryInterface
 {
@@ -17,7 +18,6 @@ class MessageRepository implements MessageRepositoryInterface
         return Message::findOrFail($id);
     }
 
-
     public function uploadAttachment($id, $file)
     {
         $message = $this->find($id);
@@ -27,6 +27,9 @@ class MessageRepository implements MessageRepositoryInterface
 
     public function deleteAttachment($id)
     {
+        $message = images::query()->find($id);
+
+        return $message;
     }
 
     public function getInbox(int $userId)
@@ -53,10 +56,7 @@ class MessageRepository implements MessageRepositoryInterface
             ->paginate(20);
     }
 
-    public function markAsRead(
-        int $messageId,
-        int $userId
-    )
+    public function markAsRead(int $messageId, int $userId)
     {
         return MessageRecipient::query()
             ->where('message_id', $messageId)

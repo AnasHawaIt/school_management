@@ -17,37 +17,39 @@ class SendMessageRequest extends FormRequest
             'subject' => [
                 'required',
                 'string',
-                'max:255'
+                'max:255',
             ],
 
             'body' => [
                 'required',
-                'string'
+                'string',
             ],
 
             'priority' => [
                 'nullable',
-                'in:normal,important,urgent'
+                'in:normal,important,urgent',
             ],
 
             'recipients' => [
                 'required',
                 'array',
-                'min:1'
+                'min:1',
             ],
 
             'recipients.*' => [
-                'exists:users,id'
-            ]
+                'integer',
+                'exists:users,id',
+            ],
         ];
     }
 
     public function messages(): array{
         return [
+            'sender_id'=>'sender_id is required ',
+            'sender_id.integer'=>'sender_id must be an integer',
             'subject.required' => 'Subject is required',
             'body.required' => 'Body is required',
             'priority.required' => 'Priority is required',
-            'recipients.required' => 'Recipients is required',
             'body.string' => 'Body must be string',
         ];
     }

@@ -9,12 +9,16 @@ class AnnouncementResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id'=>$this->id,
-            'title'=>$this->title,
-            'body'=>$this->body,
-            'user_id'=>$this->user_id,
-            'is_active'=>$this->is_active,
-            'published_at'=>$this->published_at
+
+            'id' => $this->id,
+            'title' => $this->title,
+            'body' => $this->body,
+            'user_id' => $this->user_id,
+            'is_active' => $this->is_active,
+            'audience' => $request->audience,
+            'published_at' => $this->published_at,
+            'expires_at' => $request->expires_at,
+            'type' => $request->type,
         ];
     }
 }

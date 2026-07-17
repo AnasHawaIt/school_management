@@ -3,13 +3,15 @@
 namespace Modules\Messagings\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use http\Client\Request;
+use App\Models\Images;
+use Illuminate\Http\Request;
 use Modules\Messagings\app\Requests\ForwardMessageRequest;
 use Modules\Messagings\app\Requests\ReplyMessageRequest;
 use Modules\Messagings\app\Requests\SendMessageRequest;
 use Modules\Messagings\app\Resources\InboxResource;
 use Modules\Messagings\app\Resources\MessageDetailsResource;
 use Modules\Messagings\app\Resources\MessageResource;
+use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Services\MessageService;
 
 class MessageController extends Controller
@@ -22,14 +24,93 @@ class MessageController extends Controller
 
     }
 
-    public function uploadAttachment( $request, $id)
+    public function indexAttachment()
+    {
+        $iamges = Images::query()->get();
+
+        if (!$iamges) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Not Found Any iamges '
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'count' => $iamges->count(),
+            'iamgess' => $iamges
+        ], 200);
+    }
+
+//    public function store(Request $request, $id)
+//    {
+//        $apartment = Apartment::find($id);
+//
+//        if (!$apartment) {
+//            return response()->json(['message' => 'Apartment not found'], 404);
+//        }
+//
+//        if (auth()->id()!= $apartment->owner_id) {
+//            return response()->json(['message' => 'Invalid, you are not the owner'], 400);
+//        }
+//
+//        $request->validate([
+//            'image_url'   => 'nullable',
+//            'image_url.*' => 'image|mimes:jpg,png,jpeg|max:2048'
+//        ]);
+//
+//        if (!$request->hasFile('image_url')) {
+//            return response()->json(['message' => 'No images uploaded'], 400);
+//        }
+//
+//        $files = $request->file('image_url');
+//
+//        if (!is_array($files)) {
+//            $files = [$files];
+//        }
+//
+//        foreach ($files as $img) {
+//
+//            $imageName = time() . '_' . uniqid() . '.' . $img->getClientOriginalExtension();
+//            $img->move(public_path('uploads/apartments'), $imageName);
+//
+//            $image=ApartmentImage::create([
+//                'apartment_id' => $apartment->id,
+//                'image_url'    => asset('uploads/apartments/' .$imageName)
+//            ]);
+//        }
+//
+//        return response()->json(['status'=>true,
+//            'image'=>$image,
+//            'message' => 'Images stored successfully'], 201);
+//    }
+
+//    public function destroy($id){
+//
+//        $apartment = Apartment::find($id);
+//        if (!$apartment) {
+//            return response()->json(['message' => 'Apartment not found'], 404);
+//        }
+//
+//        if (auth()->id()!= $apartment->owner_id) {
+//            return response()->json(['message' => 'Invalid, you are not the owner'], 400);
+//        }
+//
+//        foreach ($apartment->images as $image) {
+//            $apartmentImage = ApartmentImage::find($image->id);
+//            $apartmentImage->delete();
+//        }
+//        return response()->json(['message' => 'Image deleted'], 201);
+//    }
+
+    public function uploadAttachment(Request $request, int $message)
     {
         $request->validate([
             'attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
         ]);
 
         $attachment = $this->messageService->uploadAttachment(
-            $id,
+            $message,
             $request->file('attachment')
         );
 
@@ -95,7 +176,7 @@ class MessageController extends Controller
     public function  inbox()
     {
         $messages = $this->messageService
-                ->getInbox(auth()->id());
+                ->getInbox(1);//auth()->id()
 
         return InboxResource::collection($messages);
     }
