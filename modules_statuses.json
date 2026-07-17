@@ -7,5 +7,6 @@
     "Library": true,
     "Transport": true,
     "Attendance": true,
-    "Messagings": true
+    "Messaging": true,
+    "Examination": true
 }
