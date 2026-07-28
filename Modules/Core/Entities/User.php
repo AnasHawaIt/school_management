@@ -11,6 +11,7 @@ use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Library\Entities\Member;
+use Modules\Notifications\Entities\Notification;
 use Modules\SMS\Entities\SmsOtp;
 
 class User extends Authenticatable
@@ -181,5 +182,10 @@ class User extends Authenticatable
     public function member()
     {
         return $this->hasOne(Member::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
     }
 }

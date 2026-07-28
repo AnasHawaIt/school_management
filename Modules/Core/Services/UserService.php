@@ -210,4 +210,12 @@ class UserService implements UserServiceInterface
             'password' => Hash::make($newPassword)
         ]);
     }
+
+    public function updateFcmToken(int $userId, string $token):void
+    {
+        User::where('id', $userId)
+            ->update([
+                'fcm_token' => $token,
+            ]);
+    }
 }

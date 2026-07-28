@@ -20,6 +20,8 @@ Route::post('users/', [UserController::class, 'store']);
 // Protected routes (Authentication required)
 Route::middleware('auth:sanctum')->group(function () {
 
+    Route::post('/users/fcm-token', [UserController::class, 'updateFcmToken']);
+
     // Authentication
     Route::prefix('auth')->group(function () {
         Route::get('/me', [AuthController::class, 'me']);

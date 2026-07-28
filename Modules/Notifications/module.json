@@ -1,0 +1,15 @@
+{
+    "name": "Notifications",
+    "alias": "notifications",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Notifications\\Providers\\NotificationsServiceProvider",
+        "Modules\\Notifications\\Providers\\RouteServiceProvider"
+    ],
+    "files": [],
+    "id": "Notifications",
+    "title": "Notifications",
+    "version": "1.0.0"
+}

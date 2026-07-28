@@ -1,12 +1,21 @@
 <?php
 
-namespace Modules\Core\Http\Controllers;
+namespace Modules\Core\Http\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Core\Services\UserService;
 
 class CoreController extends Controller
 {
+    protected UserService $UserService;
+
+    public function __construct(UserService $UserService)
+    {
+        $this->UserService = $UserService;
+
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -53,4 +62,20 @@ class CoreController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy($id) {}
+
+    public function updateFcmToken(Request $request)
+    {
+        $request->validate([
+            'fcm_token' => 'required|string',
+        ]);
+
+        $this->UserService->updateFcmToken(
+            auth()->id(),
+            $request->fcm_token
+        );
+
+        return response()->json([
+            'success' => true,
+        ]);
+    }
 }

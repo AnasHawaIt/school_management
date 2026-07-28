@@ -163,7 +163,7 @@ class MessageService
     {
         $message = $this->repo->find($messageId);
 
-        Gate::authorize('forward', $message);
+       // Gate::authorize('forward', $message);
 
         $message= $this->send([
             'subject' =>
