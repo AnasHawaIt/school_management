@@ -2,17 +2,20 @@
 
 namespace Modules\Transport\Listeners\RouteStopListeners;
 
-use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\RouteStopEvents\MemberDeleted;
+use Modules\Transport\Events\RouteStopEvents\RouteStopDeleted;
 
 class RouteStopDeletedLogEventListener
 {
-    public function handle(MemberDeleted $event)
+    public function handle(RouteStopDeleted $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'MemberDeleted',
-            'data' =>$event->routeStop
-        ]);
+        $routeStop = $event->routeStop;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($routeStop)
+            ->withProperties([
+                'RouteStop_id' => $routeStop->id,
+            ])
+            ->log('RouteStop.Deleted');
     }
 }

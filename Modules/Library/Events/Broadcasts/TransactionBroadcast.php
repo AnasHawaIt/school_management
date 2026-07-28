@@ -7,7 +7,7 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Transaction;
+use Modules\Library\Entities\Borrowing;
 
 class TransactionBroadcast
 {
@@ -15,7 +15,7 @@ class TransactionBroadcast
 
     public $transaction;
 
-    public function __construct(Transaction $transaction)
+    public function __construct(Borrowing $transaction)
     {
         $this->transaction = $transaction;
     }

@@ -3,16 +3,20 @@
 namespace Modules\Transport\Listeners\BusListeners\BusUpdateListeners;
 
 use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\BusEvents\CategoryUpdated;
+use Modules\Transport\Events\BusEvents\BusUpdated;
 
 class BusUpdateLogEventListener
 {
-    public function handle(CategoryUpdated $event)
+    public function handle(BusUpdated $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'CategoryUpdated',
-            'data' =>$event->bus
-        ]);
+        $bus = $event->bus;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($bus)
+            ->withProperties([
+                'Bus_id' => $bus->id,
+            ])
+            ->log('Bus.updated');
     }
 }

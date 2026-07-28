@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Notifications\Listeners\notifications;
+namespace Modules\Notifications\notifications;
 
 
 use Modules\Notifications\Events\NotificationCreated;

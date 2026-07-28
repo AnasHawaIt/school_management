@@ -2,17 +2,20 @@
 
 namespace Modules\Library\Listeners\BookListeners\BookCreatedListener;
 
-use Modules\Library\Entities\EventLog;
 use Modules\Library\Events\BookEvents\BookCreated;
 
 class BookCreatedLogEventListener
 {
     public function handle(BookCreated $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'subscription_created',
-            'data' =>$event->book,
-        ]);
+        $book = $event->book;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($book)
+            ->withProperties([
+                'book_id' => $book->id,
+            ])
+            ->log('book.created');
     }
 }

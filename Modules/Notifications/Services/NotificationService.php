@@ -2,51 +2,21 @@
 
 namespace Modules\Notifications\Services;
 
-
-use Modules\Core\Entities\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Modules\Core\Entities\User;
 use Modules\Notifications\Entities\Notification;
 use Modules\Notifications\Events\NotificationCreated;
 
-
 class NotificationService
 {
-
-    public function sendToUsers(
-        array $users,
-        string $title,
-        string $body,
-        string $type,
-        array $data = []
-    ): Collection {
-        $notifications = collect();
-        foreach ($users as $userId) {
-            $user = User::find($userId);
-            if (!$user) {
-                continue;
-            }
-            $notifications->push(
-                $this->send(
-                    $user,
-                    $title,
-                    $body,
-                    $type,
-                    $data
-                )
-            );
-        }
-        return $notifications;
-    }
-
     public function send(
         User $user,
         string $title,
         string $body,
         string $type,
         array $data = []
-    ): Notification
-    {
+    ): Notification {
         return DB::transaction(function () use (
             $user,
             $title,
@@ -54,13 +24,13 @@ class NotificationService
             $type,
             $data
         ) {
-
             $notification = Notification::create([
                 'user_id' => $user->id,
                 'title' => $title,
                 'body' => $body,
                 'type' => $type,
                 'data' => $data,
+                'status' => 'pending',
             ]);
 
             event(new NotificationCreated($notification));
@@ -69,25 +39,25 @@ class NotificationService
         });
     }
 
-    public function sendToAll(
+    public function sendToUsers(
+        array $userIds,
         string $title,
         string $body,
         string $type,
         array $data = []
-    )
-    {
+    ): Collection {
         $notifications = collect();
 
-        User::chunk(100, function ($users) use (
-            &$notifications,
-            $title,
-            $body,
-            $type,
-            $data
-        ) {
-
-            foreach ($users as $user) {
-
+        User::query()
+            ->whereIn('id', $userIds)
+            ->where('is_active', true)
+            ->each(function (User $user) use (
+                &$notifications,
+                $title,
+                $body,
+                $type,
+                $data
+            ) {
                 $notifications->push(
                     $this->send(
                         $user,
@@ -97,10 +67,7 @@ class NotificationService
                         $data
                     )
                 );
-
-            }
-
-        });
+            });
 
         return $notifications;
     }
@@ -111,40 +78,77 @@ class NotificationService
         string $body,
         string $type,
         array $data = []
-    )
-    {
-        $users = User::query()
-            ->where('user_type', $role)
-            ->where('is_active', true)
-            ->get();
-
+    ): Collection {
         $notifications = collect();
 
-        foreach ($users as $user) {
+        User::query()
+            ->where('user_type', $role)
+            ->where('is_active', true)
+            ->chunkById(100, function ($users) use (
+                &$notifications,
+                $title,
+                $body,
+                $type,
+                $data
+            ) {
+                foreach ($users as $user) {
+                    $notifications->push(
+                        $this->send(
+                            $user,
+                            $title,
+                            $body,
+                            $type,
+                            $data
+                        )
+                    );
+                }
+            });
 
-            $notifications->push(
-                $this->send(
-                    $user,
-                    $title,
-                    $body,
-                    $type,
-                    $data
-                )
-            );
+        return $notifications;
+    }
 
-        }
+    public function sendToAll(
+        string $title,
+        string $body,
+        string $type,
+        array $data = []
+    ): Collection {
+        $notifications = collect();
+
+        User::query()
+            ->where('is_active', true)
+            ->chunkById(100, function ($users) use (
+                &$notifications,
+                $title,
+                $body,
+                $type,
+                $data
+            ) {
+                foreach ($users as $user) {
+                    $notifications->push(
+                        $this->send(
+                            $user,
+                            $title,
+                            $body,
+                            $type,
+                            $data
+                        )
+                    );
+                }
+            });
 
         return $notifications;
     }
 
     public function all(User $user): Collection
     {
-        return Notification::where('user_id', $user->id)
+        return Notification::query()
+            ->where('user_id', $user->id)
             ->latest()
             ->get();
     }
 
-    public function unread(User $user)
+    public function unread(User $user): Collection
     {
         return Notification::query()
             ->where('user_id', $user->id)
@@ -161,12 +165,14 @@ class NotificationService
             ->count();
     }
 
+
     public function find(int $id): Notification
     {
         return Notification::query()
             ->where('user_id', auth()->id())
             ->findOrFail($id);
     }
+
 
     public function markAsRead(int $id): Notification
     {
@@ -213,6 +219,7 @@ class NotificationService
 
         $notification->update([
             'status' => 'pending',
+            'sent_at' => null,
             'error_message' => null,
         ]);
 

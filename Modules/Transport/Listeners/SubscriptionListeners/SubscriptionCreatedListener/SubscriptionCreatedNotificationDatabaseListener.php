@@ -2,14 +2,13 @@
 
 namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener;
 
-use Illuminate\Support\Facades\Notification;
 use Modules\Core\Entities\User;
-use Modules\Transport\Events\SubscriptionEvents\TransactionCreated;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
 use Modules\Transport\Notifications\SubscriptionCreatedNotification;
 
 class SubscriptionCreatedNotificationDatabaseListener
 {
-    public function handle(TransactionCreated $event)
+    public function handle(SubscriptionCreated $event)
     {
         $users = User::all();
 

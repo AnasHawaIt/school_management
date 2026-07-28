@@ -2,17 +2,20 @@
 
 namespace Modules\Transport\Listeners\RouteStopListeners;
 
-use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\RouteStopEvents\MemberUpdated;
+use Modules\Transport\Events\RouteStopEvents\RouteStopUpdated;
 
 class RouteStopUpdateLogEventListener
 {
-    public function handle(MemberUpdated $event)
+    public function handle(RouteStopUpdated $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'MemberUpdated',
-            'data' =>$event->routeStop
-        ]);
+        $routeStop = $event->routeStop;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($routeStop)
+            ->withProperties([
+                'RouteStop_id' => $routeStop->id,
+            ])
+            ->log('RouteStop.updated');
     }
 }

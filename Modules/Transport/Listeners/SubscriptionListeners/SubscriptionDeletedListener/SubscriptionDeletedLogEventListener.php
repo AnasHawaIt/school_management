@@ -3,17 +3,20 @@
 namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedListener;
 
 
-use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\SubscriptionEvents\TransactionDeleted;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
 
 class SubscriptionDeletedLogEventListener
 {
-    public function handle(TransactionDeleted $event)
+    public function handle(SubscriptionDeleted $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'TransactionDeleted',
-            'data' =>$event->subscription,
-        ]);
+        $subscription = $event->subscription;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($subscription)
+            ->withProperties([
+                'Subscription_id' => $subscription->id,
+            ])
+            ->log('Subscription.Deleted');
     }
 }

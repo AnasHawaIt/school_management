@@ -3,16 +3,20 @@
 namespace Modules\Transport\Listeners\BusListeners\BusCreatedListeners;
 
 use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\BusEvents\CategoryCreated;
+use Modules\Transport\Events\BusEvents\BusCreated;
 
 class BusCreatedLogEventListener
 {
-    public function handle(CategoryCreated $event)
+    public function handle(BusCreated $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'CategoryCreated',
-            'data' =>$event->bus
-        ]);
+        $bus = $event->bus;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($bus)
+            ->withProperties([
+                'Bus_id' => $bus->id,
+            ])
+            ->log('Bus.created');
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 // use Modules\Library\Database\Factories\TransactionFactory;
 
-class Transaction extends Model
+class Borrowing extends Model
 {
     use HasFactory,SoftDeletes;
 

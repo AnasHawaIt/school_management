@@ -1,19 +1,21 @@
 <?php
 
-namespace Modules\Library\Events\TransactionEvents;
+namespace Modules\Library\Events\BorrowingEvents;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Transaction;
+use Modules\Library\Entities\Borrowing;
 
-class TransactionUpdated
+
+class   BorrowingCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(
-        public Transaction $transaction,
-        public ?int $userId = null,
-        public array $changes = []
+        public Borrowing $transaction,
+        public ?int      $userId = null,
+        public ?string   $socketId = null
     ) {}
 }
+

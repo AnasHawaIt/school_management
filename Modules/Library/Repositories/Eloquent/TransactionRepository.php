@@ -4,7 +4,7 @@ namespace Modules\Library\Repositories\Eloquent;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Library\Entities\Book;
-use Modules\Library\Entities\Transaction;
+use Modules\Library\Entities\Borrowing;
 use Modules\Library\Filters\TransactionFilter;
 use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 
@@ -13,13 +13,13 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function getTransactionOnlyTrashed()
     {
-        return Transaction::onlyTrashed()
+        return Borrowing::onlyTrashed()
         ->paginate(request()->get('per_page', 10));
     }
 
     public function restore($id)
     {
-        $transaction = Transaction::withTrashed()->findOrFail($id);
+        $transaction = Borrowing::withTrashed()->findOrFail($id);
 
         $transaction->restore();
 
@@ -28,7 +28,7 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function forceDelete($id)
     {
-        $transaction = Transaction::withTrashed()->findOrFail($id);
+        $transaction = Borrowing::withTrashed()->findOrFail($id);
 
         $transaction->forceDelete();
 
@@ -37,7 +37,7 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function getAll($request)
     {
-        $query = Transaction::query();
+        $query = Borrowing::query();
 
         $query = (new TransactionFilter($request))->apply($query);
 
@@ -49,7 +49,7 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function findById($id)
     {
-        return Transaction::with(['book', 'member'])->findOrFail($id);
+        return Borrowing::with(['book', 'member'])->findOrFail($id);
     }
 
     public function create(array $data)
@@ -63,7 +63,7 @@ class TransactionRepository implements TransactionRepositoryInterface
 
         $book->decrement('copies');
 
-        return Transaction::create($data);
+        return Borrowing::create($data);
     }
 
     public function update($id, array $data)

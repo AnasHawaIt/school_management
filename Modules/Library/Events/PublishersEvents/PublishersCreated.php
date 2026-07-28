@@ -12,7 +12,7 @@ class PublishersCreated
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(
-       public Publishers $publishers,
+       public Publishers $publisher,
         public ?int $userId = null,
         public ?string $socketId = null
     ) {}

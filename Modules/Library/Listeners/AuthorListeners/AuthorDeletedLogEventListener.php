@@ -2,17 +2,19 @@
 
 namespace Modules\Library\Listeners\AuthorListeners;
 
-use Modules\Library\Entities\EventLog;
 use Modules\Library\Events\AuthorEvents\AuthorDeleted;
 
 class AuthorDeletedLogEventListener
 {
     public function handle(AuthorDeleted $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'AuthorDeleted',
-            'data' =>$event->author,
-        ]);
+        $author = $event->author;
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($author)
+            ->withProperties([
+                'author_id' => $author->id,
+            ])
+            ->log('author.deleted');
     }
 }

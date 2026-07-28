@@ -2,17 +2,20 @@
 
 namespace Modules\Library\Listeners\BookListeners\BookUpdatedListener;
 
-use Modules\Library\Entities\EventLog;
 use Modules\Library\Events\BookEvents\BookUpdated;
 
 class BookUpdatedLogEventListener
 {
     public function handle(BookUpdated $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'TransactionUpdated',
-            'data' =>$event->book,
-        ]);
+        $book = $event->book;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($book)
+            ->withProperties([
+                'book_id' => $book->id,
+            ])
+            ->log('book.updated');
     }
 }

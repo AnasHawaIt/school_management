@@ -52,7 +52,7 @@ class TransactionUpdateNotification extends Notification implements ShouldQueue
     {
         return [
 
-            'message' => 'Transaction Update Successfully',
+            'message' => 'Borrowing Update Successfully',
         ];
     }
 }

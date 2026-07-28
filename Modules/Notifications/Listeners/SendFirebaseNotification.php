@@ -13,7 +13,8 @@ class SendFirebaseNotification implements ShouldQueue
 
     public function __construct(
         protected FirebaseNotificationService $firebase
-    ) {}
+    ) {
+    }
 
     public function handle(NotificationCreated $event): void
     {
@@ -21,23 +22,21 @@ class SendFirebaseNotification implements ShouldQueue
 
         $user = $notification->user;
 
-        if (!$user || !$user->fcm_token) {
+        if (!$user) {
+            return;
+        }
 
-            $notification->update([
-                'status' => 'failed',
-                'error_message' => 'User does not have FCM token.'
-            ]);
-
+        if (!$user->fcm_token) {
             return;
         }
 
         try {
 
-            $this->firebase->sendFirebase(
-                $user->fcm_token,
-                $notification->title,
-                $notification->body,
-                $notification->data ?? []
+            $this->firebase->send(
+                token: $user->fcm_token,
+                title: $notification->title,
+                body: $notification->body,
+                data: $notification->data ?? []
             );
 
             $notification->update([

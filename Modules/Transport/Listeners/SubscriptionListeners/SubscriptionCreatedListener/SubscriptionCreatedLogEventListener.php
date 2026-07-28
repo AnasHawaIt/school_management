@@ -2,17 +2,20 @@
 
 namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener;
 
-use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\SubscriptionEvents\TransactionCreated;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
 
 class SubscriptionCreatedLogEventListener
 {
-    public function handle(TransactionCreated $event)
+    public function handle(SubscriptionCreated $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'subscription_created',
-            'data' =>$event->subscription,
-        ]);
+        $subscription = $event->subscription;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($subscription)
+            ->withProperties([
+                'Subscription_id' => $subscription->id,
+            ])
+            ->log('Subscription.created');
     }
 }

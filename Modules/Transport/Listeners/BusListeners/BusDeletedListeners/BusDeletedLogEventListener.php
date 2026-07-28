@@ -2,17 +2,20 @@
 
 namespace Modules\Transport\Listeners\BusListeners\BusDeletedListeners;
 
-use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\BusEvents\CategoryDeleted;
+use Modules\Transport\Events\BusEvents\BusDeleted;
 
 class BusDeletedLogEventListener
 {
-    public function handle(CategoryDeleted $event)
+    public function handle(BusDeleted $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'CategoryDeleted',
-            'data' =>$event->bus
-        ]);
+        $bus = $event->bus;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($bus)
+            ->withProperties([
+                'Bus_id' => $bus->id,
+            ])
+            ->log('Bus.Deleted');
     }
 }

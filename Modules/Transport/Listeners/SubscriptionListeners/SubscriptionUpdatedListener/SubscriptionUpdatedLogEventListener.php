@@ -2,18 +2,20 @@
 
 namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionUpdatedListener;
 
-
-use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\SubscriptionEvents\TransactionUpdated;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
 
 class SubscriptionUpdatedLogEventListener
 {
-    public function handle(TransactionUpdated $event)
+    public function handle(SubscriptionUpdated $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'TransactionUpdated',
-            'data' =>$event->subscription,
-        ]);
+        $subscription = $event->subscription;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($subscription)
+            ->withProperties([
+                'Subscription_id' => $subscription->id,
+            ])
+            ->log('Subscription.Updated');
     }
 }

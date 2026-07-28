@@ -3,16 +3,20 @@
 namespace Modules\Transport\Listeners\RouteListeners;
 
 use Modules\Transport\Entities\EventLog;
-use Modules\Transport\Events\RouteEvents\AuthorDeleted;
+use Modules\Transport\Events\RouteEvents\RouteDeleted;
 
 class RouteDeletedLogEventListener
 {
-    public function handle(AuthorDeleted $event)
+    public function handle(RouteDeleted $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'RouteDeleted',
-            'data' =>$event->route
-        ]);
+        $route = $event->route;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($route)
+            ->withProperties([
+                'Route_id' => $route->id,
+            ])
+            ->log('Route.created');
     }
 }

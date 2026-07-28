@@ -11,7 +11,7 @@ class AuthorUpdated
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        private Author $author,
+        public Author $author,
         public ?int $userId = null,
         public array $changes = []
     ) {}

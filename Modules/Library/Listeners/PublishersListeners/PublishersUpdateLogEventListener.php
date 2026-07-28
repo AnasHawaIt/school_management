@@ -2,17 +2,20 @@
 
 namespace Modules\Library\Listeners\PublishersListeners;
 
-use Modules\Library\Entities\EventLog;
 use Modules\Library\Events\PublishersEvents\PublishersUpdated;
 
 class PublishersUpdateLogEventListener
 {
     public function handle(PublishersUpdated $event)
     {
-        EventLog::create([
-            'user_id' => $event->userId,
-            'event_type' => 'Publishers Updated',
-            'data' =>$event->publisher,
-        ]);
+        $publisher = $event->publisher;
+
+        activity()
+            ->causedBy($event->userId)
+            ->performedOn($publisher)
+            ->withProperties([
+                'publisher_id' => $publisher->id,
+            ])
+            ->log('publisher.updated');
     }
 }

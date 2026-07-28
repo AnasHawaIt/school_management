@@ -11,10 +11,10 @@ class PublishersRestored
 {
     use Dispatchable, SerializesModels;
 
-    public Publishers $publishers;
+    public Publishers $publisher;
 
-    public function __construct(Publishers $publishers,public ?int $userId = null)
+    public function __construct(Publishers $publisher,public ?int $userId = null)
     {
-        $this->publishers = $publishers;
+        $this->publisher= $publisher;
     }
 }

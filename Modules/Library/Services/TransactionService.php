@@ -3,10 +3,10 @@
 namespace Modules\Library\Services;
 
 use Modules\Library\Entities\Member;
-use Modules\Library\Events\TransactionEvents\TransactionCreated;
-use Modules\Library\Events\TransactionEvents\TransactionDeleted;
-use Modules\Library\Events\TransactionEvents\TransactionRestored;
-use Modules\Library\Events\TransactionEvents\TransactionUpdated;
+use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
+use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
+use Modules\Library\Events\BorrowingEvents\BorrowingApproved;
+use Modules\Library\Events\BorrowingEvents\TransactionUpdated;
 use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 
 class TransactionService
@@ -27,7 +27,7 @@ class TransactionService
     {
         $transaction= $this->repo->restore($id);
 
-        event(new TransactionRestored($transaction));
+        event(new BorrowingApproved($transaction));
 
         return $transaction;
     }
@@ -36,7 +36,7 @@ class TransactionService
     {
         $transaction= $this->repo->forceDelete($id);
 
-        event(new TransactionDeleted($transaction));
+        event(new BorrowingRejected($transaction));
 
         return true;
     }
@@ -56,7 +56,7 @@ class TransactionService
 
         $transaction = $this->repo->create($data);
 
-        event(new TransactionCreated($transaction), auth()->id());
+        event(new BorrowingCreated($transaction), auth()->id());
 
         return $transaction;
     }
@@ -80,12 +80,12 @@ class TransactionService
         $Transaction = $this->repo->findById($id);
 
         if (!$Transaction) {
-            throw new \Exception('Transaction not found');
+            throw new \Exception('Borrowing not found');
         }
 
         $this->repo->delete($id);
 
-        event(new TransactionDeleted($Transaction));
+        event(new BorrowingRejected($Transaction));
 
         return true;
     }

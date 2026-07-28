@@ -9,6 +9,7 @@ use Modules\Library\Events\AuthorEvents\AuthorUpdated;
 use Modules\Library\Events\BookEvents\BookCreated;
 use Modules\Library\Events\BookEvents\BookDeleted;
 use Modules\Library\Events\BookEvents\BookUpdated;
+use Modules\Library\Events\BorrowingEvents\BorrowingApproved;
 use Modules\Library\Events\CategoryEvents\CategoryCreated;
 use Modules\Library\Events\CategoryEvents\CategoryDeleted;
 use Modules\Library\Events\CategoryEvents\CategoryUpdated;
@@ -18,9 +19,8 @@ use Modules\Library\Events\MemberEvents\MemberUpdated;
 use Modules\Library\Events\PublishersEvents\PublishersCreated;
 use Modules\Library\Events\PublishersEvents\PublishersDeleted;
 use Modules\Library\Events\PublishersEvents\PublishersUpdated;
-use Modules\Library\Events\TransactionEvents\TransactionCreated;
-use Modules\Library\Events\TransactionEvents\TransactionDeleted;
-use Modules\Library\Events\TransactionEvents\TransactionUpdated;
+use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
+use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 use Modules\Library\Listeners\AuthorListeners\AuthorCreatedLogEventListener;
 use Modules\Library\Listeners\AuthorListeners\AuthorDeletedLogEventListener;
 use Modules\Library\Listeners\AuthorListeners\AuthorUpdateLogEventListener;
@@ -33,6 +33,7 @@ use Modules\Library\Listeners\BookListeners\BookDeletedListener\BookDeletedNotif
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedBroadcastEventListener;
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedLogEventListener;
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedNotificationDatabaseListener;
+use Modules\Library\Listeners\Borrowing\CreateBorrowingApprovedNotification;
 use Modules\Library\Listeners\CategoryListeners\CategoryCreatedLogEventListener;
 use Modules\Library\Listeners\CategoryListeners\CategoryDeletedLogEventListener;
 use Modules\Library\Listeners\CategoryListeners\CategoryUpdateLogEventListener;
@@ -45,14 +46,12 @@ use Modules\Library\Listeners\MemberListeners\MemberUpdatedNotificationDatabaseL
 use Modules\Library\Listeners\PublishersListeners\PublishersCreatedLogEventListener;
 use Modules\Library\Listeners\PublishersListeners\PublishersDeletedLogEventListener;
 use Modules\Library\Listeners\PublishersListeners\PublishersUpdateLogEventListener;
-use Modules\Library\Listeners\TransactionListeners\TransactionCreatedLogEventListener;
+use Modules\Library\Listeners\TransactionListeners\LogBorrowingApproved;
+use Modules\Library\Listeners\TransactionListeners\LogBorrowingCreated;
 use Modules\Library\Listeners\TransactionListeners\TransactionCreatedNotificationDatabaseListener;
 use Modules\Library\Listeners\TransactionListeners\TransactionDeletedBroadcastEventListener;
 use Modules\Library\Listeners\TransactionListeners\TransactionDeletedLogEventListener;
 use Modules\Library\Listeners\TransactionListeners\TransactionDeletedNotificationDatabaseListener;
-use Modules\Library\Listeners\TransactionListeners\TransactionUpdatedBroadcastEventListener;
-use Modules\Library\Listeners\TransactionListeners\TransactionUpdatedNotificationDatabaseListener;
-use Modules\Library\Listeners\TransactionListeners\TransactionUpdateLogEventListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -131,18 +130,17 @@ class EventServiceProvider extends ServiceProvider
             BookDeletedBroadcastEventListener::class,
         ],
 
-        TransactionCreated::class => [
-            TransactionCreatedLogEventListener::class,
+        BorrowingCreated::class => [
+            LogBorrowingCreated::class,
             TransactionCreatedNotificationDatabaseListener::class,
         ],
 
-        TransactionUpdated::class=>[
-            TransactionUpdatedBroadcastEventListener::class,
-            TransactionUpdatedNotificationDatabaseListener::class,
-            TransactionUpdateLogEventListener::class,
+        BorrowingApproved::class => [
+            LogBorrowingApproved::class,
+            CreateBorrowingApprovedNotification::class,
         ],
 
-        TransactionDeleted::class => [
+        BorrowingRejected::class => [
             TransactionDeletedLogEventListener::class,
             TransactionDeletedNotificationDatabaseListener::class,
             TransactionDeletedBroadcastEventListener::class,

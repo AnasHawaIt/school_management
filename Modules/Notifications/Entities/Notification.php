@@ -2,16 +2,17 @@
 
 namespace Modules\Notifications\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-// use Modules\Notifications\Database\Factories\NotificationFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
 
 class Notification extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'notification';
+
+    protected $table = 'notifications';
 
     protected $fillable = [
         'user_id',
@@ -21,32 +22,42 @@ class Notification extends Model
         'data',
         'is_read',
         'read_at',
+        'status',
+        'sent_at',
+        'error_message',
     ];
-
-    public function scopePending($query)
-    {
-        return $query->where('status', 'pending');
-    }
-
-    public function scopeSent($query)
-    {
-        return $query->where('status', 'sent');
-    }
-
-    public function scopeFailed($query)
-    {
-        return $query->where('status', 'failed');
-    }
 
     protected $casts = [
         'data' => 'array',
         'is_read' => 'boolean',
         'read_at' => 'datetime',
+        'sent_at' => 'datetime',
     ];
+
+
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    public function scopePending(Builder $query)
+    {
+        return $query->where('status', 'pending');
+    }
+
+    public function scopeSent(Builder $query)
+    {
+        return $query->where('status', 'sent');
+    }
+
+    public function scopeFailed(Builder $query)
+    {
+        return $query->where('status', 'failed');
+    }
+
+    public function scopeUnread(Builder $query)
+    {
+        return $query->where('is_read', false);
+    }
 }
