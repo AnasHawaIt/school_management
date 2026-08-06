@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/teachers/{teacher}/exams', [ExamController::class, 'teacherExams']);
 
     // ==================== Exam Results ====================
-    Route::prefix('exam-results     ')->group(function () {
+    Route::prefix('exam-results')->group(function () {
         Route::get('/',     [ExamResultController::class, 'index']);
         Route::post('/',    [ExamResultController::class, 'store']);
         Route::get('/{id}', [ExamResultController::class, 'show']);

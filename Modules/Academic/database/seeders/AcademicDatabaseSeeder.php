@@ -25,6 +25,9 @@ class AcademicDatabaseSeeder extends Seeder
 
             GuardiansSeeder::class,
             ParentSeeder::class,
+
+            CounselorsSeeder::class,
+            InspectionProgramsSeeder::class,
         ]);
     }
 }

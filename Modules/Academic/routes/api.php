@@ -6,6 +6,8 @@ use Modules\Academic\Http\Controllers\StudentController;
 use Modules\Academic\Http\Controllers\GuardianController;
 use Modules\Academic\Http\Controllers\SubjectController;
 use Modules\Academic\Http\Controllers\TimetableController;
+use Modules\Academic\Http\Controllers\CounselorController;
+use Modules\Academic\Http\Controllers\InspectionProgramController;
 
 Route::middleware(['auth:sanctum'])->group(function(){
 
@@ -86,4 +88,34 @@ Route::middleware(['auth:sanctum'])->group(function(){
     });
 
     Route::get('/teachers/{teacher}/timetable', [TimetableController::class, 'teacherTimetable']);
+
+    Route::prefix('counselors')->group(function () {
+        Route::get('/',                           [CounselorController::class, 'index']);
+        Route::post('/',                          [CounselorController::class, 'store']);
+        Route::get('/{id}',                       [CounselorController::class, 'show']);
+        Route::put('/{id}',                       [CounselorController::class, 'update']);
+        Route::delete('/{id}',                    [CounselorController::class, 'destroy']);
+        Route::post('/{id}/restore',              [CounselorController::class, 'restore']);
+        Route::patch('/{id}/toggle-status',       [CounselorController::class, 'toggleStatus']);
+        Route::post('/{id}/assign-section',       [CounselorController::class, 'assignSection']);
+        Route::delete('/{id}/unassign-section',   [CounselorController::class, 'unassignSection']);
+        Route::get('/{id}/sections',              [CounselorController::class, 'sections']);
+        Route::get('/{id}/inspection-programs',   [InspectionProgramController::class, 'counselorPrograms']);
+    });
+
+// ==================== Inspection Programs ====================
+    Route::prefix('inspection-programs')->group(function () {
+        Route::get('/',                                         [InspectionProgramController::class, 'index']);
+        Route::post('/',                                        [InspectionProgramController::class, 'store']);
+        Route::get('/{id}',                                     [InspectionProgramController::class, 'show']);
+        Route::put('/{id}',                                     [InspectionProgramController::class, 'update']);
+        Route::delete('/{id}',                                  [InspectionProgramController::class, 'destroy']);
+        Route::post('/{id}/restore',                            [InspectionProgramController::class, 'restore']);
+        Route::patch('/{id}/status',                            [InspectionProgramController::class, 'updateStatus']);
+        Route::post('/{id}/assign-counselor',                   [InspectionProgramController::class, 'assignCounselor']);
+        Route::delete('/{id}/unassign-counselor/{counselorId}', [InspectionProgramController::class, 'unassignCounselor']);
+        Route::post('/{id}/observation',                        [InspectionProgramController::class, 'submitObservation']);
+    });
+
+    Route::get('/sections/{section}/inspection-programs', [InspectionProgramController::class, 'sectionPrograms']);
 });

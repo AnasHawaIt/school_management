@@ -9,9 +9,9 @@ class AttendanceDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-           // AttendanceStatusesSeeder::class,
+           AttendanceStatusesSeeder::class,
             StudentAttendancesSeeder::class,
-         //   TeacherAttendancesSeeder::class,
+            TeacherAttendancesSeeder::class,
         ]);
     }
 
