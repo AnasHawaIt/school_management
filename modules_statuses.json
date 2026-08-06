@@ -8,5 +8,7 @@
     "Transport": true,
     "Attendance": true,
     "Messaging": true,
-    "Examination": true
+    "Examination": true,
+    "Messagings": true,
+    "Notifications": true
 }

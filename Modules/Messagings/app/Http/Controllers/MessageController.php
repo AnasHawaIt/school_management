@@ -3,11 +3,11 @@
 namespace Modules\Messagings\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use http\Client\Request;
+use App\Models\Images;
+use Illuminate\Http\Request;
 use Modules\Messagings\app\Requests\ForwardMessageRequest;
 use Modules\Messagings\app\Requests\ReplyMessageRequest;
 use Modules\Messagings\app\Requests\SendMessageRequest;
-use Modules\Messagings\app\Resources\InboxResource;
 use Modules\Messagings\app\Resources\MessageDetailsResource;
 use Modules\Messagings\app\Resources\MessageResource;
 use Modules\Messagings\Services\MessageService;
@@ -22,14 +22,32 @@ class MessageController extends Controller
 
     }
 
-    public function uploadAttachment( $request, $id)
+    public function indexAttachment()
+    {
+        $iamges = Images::query()->get();
+
+        if (!$iamges) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Not Found Any iamges '
+            ], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'count' => $iamges->count(),
+            'iamgess' => $iamges
+        ], 200);
+    }
+
+    public function uploadAttachment(Request $request, int $message)
     {
         $request->validate([
             'attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
         ]);
 
         $attachment = $this->messageService->uploadAttachment(
-            $id,
+            $message,
             $request->file('attachment')
         );
 
@@ -90,14 +108,6 @@ class MessageController extends Controller
             'message' => 'Message sent successfully',
             'data' => $message
         ]);
-    }
-
-    public function  inbox()
-    {
-        $messages = $this->messageService
-                ->getInbox(auth()->id());
-
-        return InboxResource::collection($messages);
     }
 
     public function sent()

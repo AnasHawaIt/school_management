@@ -16,9 +16,11 @@ use Modules\Core\Http\Controllers\SettingController;
 // Public routes (No authentication required)
 Route::post('/login', [AuthController::class, 'login']);
 
-
+Route::post('users/', [UserController::class, 'store']);
 // Protected routes (Authentication required)
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/users/fcm-token', [UserController::class, 'updateFcmToken']);
 
     // Authentication
     Route::prefix('auth')->group(function () {
@@ -30,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Users Management
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index']);
-        Route::post('/', [UserController::class, 'store']);
+       // Route::post('/', [UserController::class, 'store']);
         Route::get('/{id}', [UserController::class, 'show']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::delete('/{id}', [UserController::class, 'destroy']);

@@ -20,7 +20,7 @@ class AnnouncementUpdateRequest extends FormRequest
             'user_id' => 'nullable|exists:users,id',
             'is_active' => 'nullable|boolean',
             'published_at' => 'nullable|date',
-            'audience' => 'required|in:admin,student,teacher,parent,public',
+            'audience' => 'sometimes|in:admin,student,teacher,parent,public',
         ];
     }
 

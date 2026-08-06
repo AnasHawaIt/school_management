@@ -19,7 +19,10 @@ class MessageDetailsResource extends JsonResource
                 'name' => $this->sender->name,
             ],
 
-            'attachments' => AttachmentResource::collection($this->attachments),
+            'images' => ImageResource::collection(
+                $this->message?->images ?? collect()
+            ),
+
             'created_at' => $this->created_at
         ];
     }

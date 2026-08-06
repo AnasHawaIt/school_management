@@ -2,15 +2,18 @@
 
 namespace Modules\Messagings\Events;
 
+use App\Models\Images;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Messagings\Entities\Message;
 
 class AttachmentDeleted
 {
     use Dispatchable, SerializesModels;
 
-    public function __construct(
-        public Message $message,
-    ) {}
+    public Images $image;
+
+    public function __construct(Images $image)
+    {
+        $this->image = $image;
+    }
 }

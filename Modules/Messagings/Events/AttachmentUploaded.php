@@ -2,6 +2,7 @@
 
 namespace Modules\Messagings\Events;
 
+use App\Models\Images;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Messagings\Entities\Message;
@@ -12,6 +13,6 @@ class AttachmentUploaded
 
     public function __construct(
         public Message $message,
-        public string $filePath
+        public array $image
     ) {}
 }

@@ -8,7 +8,7 @@ class AnnouncementCreateRequest extends FormRequest
 {
     public function authorize()
     {
-        //return auth()->check(); // السماح لأي مستخدم مسجل، يمكن تخصيصه
+
         return true;
     }
 
@@ -20,7 +20,7 @@ class AnnouncementCreateRequest extends FormRequest
                 'user_id' => 'required|exists:users,id',
                 'is_active' => 'boolean',
                 'published_at' => 'nullable|date',
-                'audience' => 'required|in:admin,student,teacher,parent,public',
+                'audience' => 'sometimes|in:admin,student,teacher,parent,public',
         ];
     }
 

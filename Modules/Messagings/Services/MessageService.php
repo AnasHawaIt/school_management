@@ -3,13 +3,11 @@
 namespace Modules\Messagings\Services;
 
 use App\Services\ImageService;
-use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Modules\Messagings\Events\AttachmentDeleted;
 use Modules\Messagings\Events\AttachmentUploaded;
 use Modules\Messagings\Events\MessageCreated;
-use Modules\Messagings\Events\MessageFailed;
 use Modules\Messagings\Events\MessageForwarded;
 use Modules\Messagings\Events\MessageRead;
 use Modules\Messagings\Events\MessageReplied;
@@ -77,13 +75,17 @@ class MessageService
 
             return $message;
 
-        } catch (\Throwable $e) {
+        }catch (\Throwable $e) {
 
             DB::rollBack();
 
-            event(new MessageFailed($message, $e->getMessage()));
+            return response()->json([
+                'message' => $e->getMessage(),
+                'file'    => $e->getFile(),
+                'line'    => $e->getLine(),
+                'trace'   => $e->getTraceAsString(),
+            ], 500);
 
-            throw $e;
         }
     }
 
@@ -116,9 +118,8 @@ class MessageService
         $message = $this->repo->uploadAttachment($id, $file);
 
         $image = $this->imageService->upload(
-            $file,
             $message,
-            'messages'
+            $file,
         );
 
         event(new AttachmentUploaded($message, $image));
@@ -130,7 +131,11 @@ class MessageService
     {
         $image = $this->imageService->find($id);
 
-        $this->imageService->delete($image);
+        if (!$image) {
+            return response()->json(['message' => 'image not found'], 404);
+        }
+
+        $this->imageService->delete($id);
 
         event(new AttachmentDeleted($image));
 
@@ -158,7 +163,7 @@ class MessageService
     {
         $message = $this->repo->find($messageId);
 
-        Gate::authorize('forward', $message);
+       // Gate::authorize('forward', $message);
 
         $message= $this->send([
             'subject' =>
@@ -189,8 +194,10 @@ class MessageService
 
         $this->imageService->deleteAll($message);
 
+        event(new MessagesDeleted($message));
+
         $this->repo->delete($id);
 
-        event(new MessagesDeleted($message));
+
     }
 }
