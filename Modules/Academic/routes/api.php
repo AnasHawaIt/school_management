@@ -8,6 +8,7 @@ use Modules\Academic\Http\Controllers\SubjectController;
 use Modules\Academic\Http\Controllers\TimetableController;
 use Modules\Academic\Http\Controllers\CounselorController;
 use Modules\Academic\Http\Controllers\InspectionProgramController;
+use Modules\Academic\Http\Controllers\StudentPointController;
 
 Route::middleware(['auth:sanctum'])->group(function(){
 
@@ -118,4 +119,28 @@ Route::middleware(['auth:sanctum'])->group(function(){
     });
 
     Route::get('/sections/{section}/inspection-programs', [InspectionProgramController::class, 'sectionPrograms']);
+
+
+// ==================== Student Points ====================
+    Route::prefix('student-points')->group(function () {
+        Route::get('/', [StudentPointController::class, 'index']);
+        Route::post('/', [StudentPointController::class, 'store']);
+        Route::post('/bulk', [StudentPointController::class, 'bulk']);
+        Route::delete('/{id}', [StudentPointController::class, 'destroy']);
+        Route::get('/stats', [StudentPointController::class, 'stats']);
+    });
+
+    Route::prefix('students/{student}')->group(function () {
+        Route::get('/points/total', [StudentPointController::class, 'studentTotal']);
+        Route::get('/points/history', [StudentPointController::class, 'studentHistory']);
+    });
+
+    Route::get('/sections/{section}/points/ranking', [StudentPointController::class, 'sectionRanking']);
+
+    Route::prefix('point-categories')->group(function () {
+        Route::get('/', [\Modules\Academic\Http\Controllers\PointCategoryController::class, 'index']);
+        Route::post('/', [\Modules\Academic\Http\Controllers\PointCategoryController::class, 'store']);
+        Route::put('/{id}', [\Modules\Academic\Http\Controllers\PointCategoryController::class, 'update']);
+        Route::delete('/{id}', [\Modules\Academic\Http\Controllers\PointCategoryController::class, 'destroy']);
+    });
 });

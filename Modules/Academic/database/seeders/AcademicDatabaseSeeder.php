@@ -13,21 +13,16 @@ class AcademicDatabaseSeeder extends Seeder
     {
         $this->call([
            SubjectsSeeder::class,
-
-
            TeachersSeeder::class,
            QualificationSeeder::class,
-
-
            StudentsSeeder::class,
             MedicalRecordSeeder::class,
-
-
             GuardiansSeeder::class,
             ParentSeeder::class,
-
             CounselorsSeeder::class,
             InspectionProgramsSeeder::class,
+            PointCategoriesSeeder::class,
+            SampleStudentPointsSeeder::class,
         ]);
     }
 }
