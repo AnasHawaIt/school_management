@@ -78,7 +78,24 @@ class AcademicServiceProvider extends ServiceProvider
         $this->app->bind(GuardianServiceInterface::class,  GuardianService::class);
         $this->app->bind(SubjectServiceInterface::class,   SubjectService::class);
         $this->app->bind(TimetableServiceInterface::class, TimetableService::class);
+        $this->app->bind(
+            \Modules\Academic\Contracts\Repositories\CounselorRepositoryInterface::class,
+            \Modules\Academic\Repositories\CounselorRepository::class
+        );
+        $this->app->bind(
+            \Modules\Academic\Contracts\Services\CounselorServiceInterface::class,
+            \Modules\Academic\Services\CounselorService::class
+        );
 
+// ===== InspectionProgram =====
+        $this->app->bind(
+            \Modules\Academic\Contracts\Repositories\InspectionProgramRepositoryInterface::class,
+            \Modules\Academic\Repositories\InspectionProgramRepository::class
+        );
+        $this->app->bind(
+            \Modules\Academic\Contracts\Services\InspectionProgramServiceInterface::class,
+            \Modules\Academic\Services\InspectionProgramService::class
+        );
     }
 
     /**

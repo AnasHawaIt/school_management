@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
             'date_of_birth' => 'nullable|date|before:today',
 
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // تعديل لنوع الملف وحجمه
-            'user_type' => 'required|in:admin,teacher,student,parent',
+            'user_type' => 'required|in:admin,teacher,student,parent,counselor',
             'is_active' => 'boolean',
             'role' => 'nullable|string|exists:roles,name',
         ];
