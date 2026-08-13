@@ -3,11 +3,11 @@
 
 namespace Modules\Library\Listeners\TransactionListeners;
 
-use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
+use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 
 class LogBorrowingCreated
 {
-    public function handle(BorrowingCreated $event): void
+    public function handle(BorrowingRejected $event): void
     {
         $borrowing = $event->borrowing;
 

@@ -4,6 +4,7 @@ namespace Modules\Messagings\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Messagings\Events\MessageCreated;
+use Modules\Messagings\Notifications\NewMessageNotification;
 
 class SendMessageNotificationListener implements ShouldQueue
 {

@@ -12,8 +12,9 @@ class   BorrowingCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+
     public function __construct(
-        public Borrowing $transaction,
+        public Borrowing $borrowing,
         public ?int      $userId = null,
         public ?string   $socketId = null
     ) {}

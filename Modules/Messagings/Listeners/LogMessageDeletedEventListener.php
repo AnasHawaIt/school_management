@@ -11,6 +11,6 @@ class LogMessageDeletedEventListener
     {
         activity()
             ->performedOn($event->Message)
-            ->log('Message Deleted');
+            ->log('Message.Deleted');
     }
 }

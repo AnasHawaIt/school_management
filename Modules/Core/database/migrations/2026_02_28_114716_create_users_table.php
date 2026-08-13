@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('phone', 20)->nullable();
             $table->string('avatar')->nullable();
-            $table->enum('user_type', ['admin', 'teacher', 'student', 'parent'])->default('student');
+            $table->enum('user_type', ['admin', 'teacher', 'student', 'parent','counselor'])->default('student');
             $table->boolean('is_active')->default(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

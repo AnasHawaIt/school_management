@@ -11,6 +11,6 @@ class LogMessageReadEventListener
         activity()
             ->causedBy($event->readerId)
             ->performedOn($event->message)
-            ->log('Message Read');
+            ->log('Message.Read');
     }
 }

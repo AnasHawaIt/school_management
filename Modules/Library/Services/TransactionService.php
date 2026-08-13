@@ -3,7 +3,7 @@
 namespace Modules\Library\Services;
 
 use Modules\Library\Entities\Member;
-use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
+use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 use Modules\Library\Events\BorrowingEvents\BorrowingApproved;
 use Modules\Library\Events\BorrowingEvents\TransactionUpdated;
@@ -56,7 +56,7 @@ class TransactionService
 
         $transaction = $this->repo->create($data);
 
-        event(new BorrowingCreated($transaction), auth()->id());
+        event(new BorrowingRejected($transaction), auth()->id());
 
         return $transaction;
     }

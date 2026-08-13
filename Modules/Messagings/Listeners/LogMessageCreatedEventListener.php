@@ -11,7 +11,7 @@ class LogMessageCreatedEventListener
         activity()
             ->causedBy($event->senderId)
             ->performedOn($event->message)
-            ->log('Message Created');
+            ->log('Message.Created');
     }
 
 }

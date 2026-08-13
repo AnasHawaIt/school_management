@@ -6,7 +6,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Library\Entities\Borrowing;
 
-class BorrowingCreated
+class BorrowingRejected
 {
     use Dispatchable, SerializesModels;
 

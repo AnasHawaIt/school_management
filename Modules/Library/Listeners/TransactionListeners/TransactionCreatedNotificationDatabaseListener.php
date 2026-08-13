@@ -2,20 +2,27 @@
 
 namespace Modules\Library\Listeners\TransactionListeners;
 
-
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Core\Entities\User;
 use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
-use Modules\Library\Notifications\CreateBorrowingApprovedNotification;
+use Modules\Library\Notifications\TransactionCreatedNotification;
 
-class TransactionCreatedNotificationDatabaseListener  implements ShouldQueue
+class TransactionCreatedNotificationDatabaseListener implements ShouldQueue
 {
-    public function handle(BorrowingCreated $event)
+    public function handle(BorrowingCreated $event): void
     {
-        $users = User::all();
+
+
+        $query = User::query();
+
+        $users = $query->get();
 
         foreach ($users as $user) {
-            $user->notify(new CreateBorrowingApprovedNotification($event->transaction));
+            $user->notify(
+                new TransactionCreatedNotification(
+                    $event->borrowing
+                )
+            );
         }
     }
 }

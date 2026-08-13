@@ -6,7 +6,7 @@ namespace Modules\Messagings\Listeners;
 
 use Modules\Messagings\Events\MessageCreated;
 
-class UpdateUnreadCounter
+class UpdateUnreadCounterListener
 {
     public function handle(MessageCreated $event): void
     {

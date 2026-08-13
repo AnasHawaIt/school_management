@@ -11,6 +11,6 @@ class LogMessageForwardedEventListener
         activity()
             ->causedBy($event->userId)
             ->performedOn($event->message)
-            ->log('Message Forwarded');
+            ->log('Message.Forwarded');
     }
 }

@@ -18,7 +18,15 @@ class AnnouncementCreatedNotificationDatabaseListener implements ShouldQueue
             'public'   => null,
         ];
 
-        $role = $map[$event->announcement->audience];
+        $audience = $event->announcement->audience;
+
+        if (!array_key_exists($audience, $map)) {
+            throw new \InvalidArgumentException(
+                "Invalid announcement audience: {$audience}"
+            );
+        }
+
+        $role = $map[$audience];
 
         $query = User::query();
 

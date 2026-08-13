@@ -11,6 +11,6 @@ class LogMessageRestoredEventListener
     {
         activity()
             ->performedOn($event->message)
-            ->log('Message Restored');
+            ->log('Message.Restored');
     }
 }
