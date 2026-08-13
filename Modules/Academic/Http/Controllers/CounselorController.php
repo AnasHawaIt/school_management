@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Academic\Contracts\Services\CounselorServiceInterface;
+use Modules\Academic\Entities\Counselor;
 use Modules\Academic\Http\Requests\StoreCounselorRequest;
 use Modules\Academic\Http\Requests\UpdateCounselorRequest;
 use Modules\Academic\Http\Resources\CounselorResource;
@@ -100,10 +101,17 @@ class CounselorController extends Controller
         return response()->json(['success' => true, 'message' => 'Section unassigned.']);
     }
 
-    public function sections(Request $request, int $id): JsonResponse
+    public function sections(Request $request): JsonResponse
     {
         $request->validate(['academic_year_id' => 'required|exists:academic_years,id']);
-        $sections = $this->counselorService->getCounselorSections($id, $request->academic_year_id);
+        $counselorId = Counselor::where('user_id', auth()->id())->value('id');
+
+        if (!$counselorId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'sections admins not found for this counselor.',
+            ], 404);
+        }        $sections = $this->counselorService->getCounselorSections($counselorId, $request->academic_year_id);
         return response()->json(['success' => true, 'data' => $sections]);
     }
 }
