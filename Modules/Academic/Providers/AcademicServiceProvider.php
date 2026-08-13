@@ -7,12 +7,16 @@ use Illuminate\Support\ServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+
 // Repository Contracts
 use Modules\Academic\Contracts\Repositories\TeacherRepositoryInterface;
 use Modules\Academic\Contracts\Repositories\StudentRepositoryInterface;
 use Modules\Academic\Contracts\Repositories\GuardianRepositoryInterface;
 use Modules\Academic\Contracts\Repositories\SubjectRepositoryInterface;
 use Modules\Academic\Contracts\Repositories\TimetableRepositoryInterface;
+use Modules\Academic\Contracts\Repositories\CounselorRepositoryInterface;
+use Modules\Academic\Contracts\Repositories\InspectionProgramRepositoryInterface;
+use Modules\Academic\Contracts\Repositories\StudentPointRepositoryInterface;
 
 // Repository Implementations
 use Modules\Academic\Repositories\TeacherRepository;
@@ -20,20 +24,29 @@ use Modules\Academic\Repositories\StudentRepository;
 use Modules\Academic\Repositories\GuardianRepository;
 use Modules\Academic\Repositories\SubjectRepository;
 use Modules\Academic\Repositories\TimetableRepository;
+use Modules\Academic\Repositories\CounselorRepository;
+use Modules\Academic\Repositories\InspectionProgramRepository;
+use Modules\Academic\Repositories\StudentPointRepository;
 
-// Services Contracts
+// Service Contracts
 use Modules\Academic\Contracts\Services\TeacherServiceInterface;
 use Modules\Academic\Contracts\Services\StudentServiceInterface;
 use Modules\Academic\Contracts\Services\GuardianServiceInterface;
 use Modules\Academic\Contracts\Services\SubjectServiceInterface;
 use Modules\Academic\Contracts\Services\TimetableServiceInterface;
+use Modules\Academic\Contracts\Services\CounselorServiceInterface;
+use Modules\Academic\Contracts\Services\InspectionProgramServiceInterface;
 
-// Services Implementations
+// Service Implementations
 use Modules\Academic\Services\TeacherService;
 use Modules\Academic\Services\StudentService;
 use Modules\Academic\Services\GuardianService;
 use Modules\Academic\Services\SubjectService;
 use Modules\Academic\Services\TimetableService;
+use Modules\Academic\Services\CounselorService;
+use Modules\Academic\Services\InspectionProgramService;
+use Modules\Academic\Services\StudentPointService;
+
 class AcademicServiceProvider extends ServiceProvider
 {
     use PathNamespace;
@@ -65,37 +78,27 @@ class AcademicServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
 
-        // ===== Bind Repositories =====
-        $this->app->bind(TeacherRepositoryInterface::class,   TeacherRepository::class);
-        $this->app->bind(StudentRepositoryInterface::class,   StudentRepository::class);
-        $this->app->bind(GuardianRepositoryInterface::class,  GuardianRepository::class);
-        $this->app->bind(SubjectRepositoryInterface::class,   SubjectRepository::class);
-        $this->app->bind(TimetableRepositoryInterface::class, TimetableRepository::class);
+        // ===== Repositories =====
+        $this->app->bind(TeacherRepositoryInterface::class,           TeacherRepository::class);
+        $this->app->bind(StudentRepositoryInterface::class,           StudentRepository::class);
+        $this->app->bind(GuardianRepositoryInterface::class,          GuardianRepository::class);
+        $this->app->bind(SubjectRepositoryInterface::class,           SubjectRepository::class);
+        $this->app->bind(TimetableRepositoryInterface::class,         TimetableRepository::class);
+        $this->app->bind(CounselorRepositoryInterface::class,         CounselorRepository::class);
+        $this->app->bind(InspectionProgramRepositoryInterface::class, InspectionProgramRepository::class);
+        $this->app->bind(StudentPointRepositoryInterface::class,      StudentPointRepository::class);
 
-        // ===== Bind Services =====
-        $this->app->bind(TeacherServiceInterface::class,   TeacherService::class);
-        $this->app->bind(StudentServiceInterface::class,   StudentService::class);
-        $this->app->bind(GuardianServiceInterface::class,  GuardianService::class);
-        $this->app->bind(SubjectServiceInterface::class,   SubjectService::class);
-        $this->app->bind(TimetableServiceInterface::class, TimetableService::class);
-        $this->app->bind(
-            \Modules\Academic\Contracts\Repositories\CounselorRepositoryInterface::class,
-            \Modules\Academic\Repositories\CounselorRepository::class
-        );
-        $this->app->bind(
-            \Modules\Academic\Contracts\Services\CounselorServiceInterface::class,
-            \Modules\Academic\Services\CounselorService::class
-        );
+        // ===== Services =====
+        $this->app->bind(TeacherServiceInterface::class,           TeacherService::class);
+        $this->app->bind(StudentServiceInterface::class,           StudentService::class);
+        $this->app->bind(GuardianServiceInterface::class,          GuardianService::class);
+        $this->app->bind(SubjectServiceInterface::class,           SubjectService::class);
+        $this->app->bind(TimetableServiceInterface::class,         TimetableService::class);
+        $this->app->bind(CounselorServiceInterface::class,         CounselorService::class);
+        $this->app->bind(InspectionProgramServiceInterface::class, InspectionProgramService::class);
 
-// ===== InspectionProgram =====
-        $this->app->bind(
-            \Modules\Academic\Contracts\Repositories\InspectionProgramRepositoryInterface::class,
-            \Modules\Academic\Repositories\InspectionProgramRepository::class
-        );
-        $this->app->bind(
-            \Modules\Academic\Contracts\Services\InspectionProgramServiceInterface::class,
-            \Modules\Academic\Services\InspectionProgramService::class
-        );
+        // StudentPointService لا يملك Interface — يُحقن مباشرة
+        $this->app->bind(StudentPointService::class, StudentPointService::class);
     }
 
     /**
@@ -122,7 +125,7 @@ class AcademicServiceProvider extends ServiceProvider
      */
     public function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/'.$this->nameLower);
+        $langPath = resource_path('lang/modules/' . $this->nameLower);
 
         if (is_dir($langPath)) {
             $this->loadTranslationsFrom($langPath, $this->nameLower);
@@ -145,11 +148,10 @@ class AcademicServiceProvider extends ServiceProvider
 
             foreach ($iterator as $file) {
                 if ($file->isFile() && $file->getExtension() === 'php') {
-                    $config = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
+                    $config     = str_replace($configPath . DIRECTORY_SEPARATOR, '', $file->getPathname());
                     $config_key = str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $config);
-                    $segments = explode('.', $this->nameLower.'.'.$config_key);
+                    $segments   = explode('.', $this->nameLower . '.' . $config_key);
 
-                    // Remove duplicated adjacent segments
                     $normalized = [];
                     foreach ($segments as $segment) {
                         if (end($normalized) !== $segment) {
@@ -171,7 +173,7 @@ class AcademicServiceProvider extends ServiceProvider
      */
     protected function merge_config_from(string $path, string $key): void
     {
-        $existing = config($key, []);
+        $existing      = config($key, []);
         $module_config = require $path;
 
         config([$key => array_replace_recursive($existing, $module_config)]);
@@ -182,14 +184,14 @@ class AcademicServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/'.$this->nameLower);
+        $viewPath   = resource_path('views/modules/' . $this->nameLower);
         $sourcePath = module_path($this->name, 'resources/views');
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
+        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower . '-module-views']);
 
         $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
 
-        Blade::componentNamespace(config('modules.namespace').'\\' . $this->name . '\\View\\Components', $this->nameLower);
+        Blade::componentNamespace(config('modules.namespace') . '\\' . $this->name . '\\View\\Components', $this->nameLower);
     }
 
     /**
@@ -204,8 +206,8 @@ class AcademicServiceProvider extends ServiceProvider
     {
         $paths = [];
         foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
+            if (is_dir($path . '/modules/' . $this->nameLower)) {
+                $paths[] = $path . '/modules/' . $this->nameLower;
             }
         }
 

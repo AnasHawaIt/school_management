@@ -93,14 +93,15 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::prefix('counselors')->group(function () {
         Route::get('/',                           [CounselorController::class, 'index']);
         Route::post('/',                          [CounselorController::class, 'store']);
-        Route::get('/{id}',                       [CounselorController::class, 'show']);
         Route::put('/{id}',                       [CounselorController::class, 'update']);
         Route::delete('/{id}',                    [CounselorController::class, 'destroy']);
         Route::post('/{id}/restore',              [CounselorController::class, 'restore']);
         Route::patch('/{id}/toggle-status',       [CounselorController::class, 'toggleStatus']);
         Route::post('/{id}/assign-section',       [CounselorController::class, 'assignSection']);
         Route::delete('/{id}/unassign-section',   [CounselorController::class, 'unassignSection']);
-        Route::get('/{id}/sections',              [CounselorController::class, 'sections']);
+        Route::get('/get_sections',              [CounselorController::class, 'sections']);
+        Route::get('/{id}',                       [CounselorController::class, 'show']);
+
         Route::get('/{id}/inspection-programs',   [InspectionProgramController::class, 'counselorPrograms']);
     });
 
