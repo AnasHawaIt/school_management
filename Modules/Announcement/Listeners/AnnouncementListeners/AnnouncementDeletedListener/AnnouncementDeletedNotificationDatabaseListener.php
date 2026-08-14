@@ -5,13 +5,20 @@ namespace Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDelet
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Announcement\Events\AnnouncementDeleted;
-use Modules\Announcement\Notifications\AnnouncementDeletedNotification;
-use Modules\Core\Entities\User;
+use Modules\Notifications\Services\NotificationService;
 
 class AnnouncementDeletedNotificationDatabaseListener implements ShouldQueue
 {
-    public function handle(AnnouncementDeleted $event)
-    {
+    public function __construct(
+        protected NotificationService $notificationService
+    ) {
+    }
+
+    public function handle(AnnouncementDeleted $event){
+
+
+        $announcement = $event->announcement;
+
         $map = [
             'students' => 'student',
             'teachers' => 'teacher',
@@ -19,18 +26,40 @@ class AnnouncementDeletedNotificationDatabaseListener implements ShouldQueue
             'public'   => null,
         ];
 
-        $role = $map[$event->announcement->audience];
+        $audience = $announcement->audience;
 
-        $query = User::query();
+        if (!array_key_exists($audience, $map)) {
+            throw new \InvalidArgumentException(
+                "Invalid announcement audience: {$audience}"
+            );
+        }
+
+        $role = $map[$audience];
+
+        $data = [
+            'entity' => 'announcement',
+            'action' => 'Deleted',
+            'announcement_id' => $announcement->id,
+        ];
 
         if ($role) {
-            $query->where('role', $role);
+
+            $this->notificationService->sendToRole(
+                role: $role,
+                title: $announcement->title,
+                body: $announcement->body,
+                type: 'announcement_deleted',
+                data: $data
+            );
+
+            return;
         }
 
-        $users = $query->get();
-
-        foreach ($users as $user) {
-            $user->notify(new AnnouncementDeletedNotification($event->announcement));
-        }
+        $this->notificationService->sendToAll(
+            title: $announcement->title,
+            body: $announcement->body,
+            type: 'announcement_deleted',
+            data: $data
+        );
     }
 }

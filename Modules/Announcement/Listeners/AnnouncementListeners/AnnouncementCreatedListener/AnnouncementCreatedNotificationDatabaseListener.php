@@ -4,13 +4,19 @@ namespace Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreat
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Announcement\Events\AnnouncementCreated;
-use Modules\Announcement\Notifications\AnnouncementCreatedNotification;
-use Modules\Core\Entities\User;
+use Modules\Notifications\Services\NotificationService;
 
 class AnnouncementCreatedNotificationDatabaseListener implements ShouldQueue
 {
-    public function handle(AnnouncementCreated $event)
+    public function __construct(
+        protected NotificationService $notificationService
+    ) {
+    }
+
+    public function handle(AnnouncementCreated $event): void
     {
+        $announcement = $event->announcement;
+
         $map = [
             'students' => 'student',
             'teachers' => 'teacher',
@@ -18,7 +24,7 @@ class AnnouncementCreatedNotificationDatabaseListener implements ShouldQueue
             'public'   => null,
         ];
 
-        $audience = $event->announcement->audience;
+        $audience = $announcement->audience;
 
         if (!array_key_exists($audience, $map)) {
             throw new \InvalidArgumentException(
@@ -28,16 +34,30 @@ class AnnouncementCreatedNotificationDatabaseListener implements ShouldQueue
 
         $role = $map[$audience];
 
-        $query = User::query();
+        $data = [
+            'entity' => 'announcement',
+            'action' => 'CREATE',
+            'announcement_id' => $announcement->id,
+        ];
 
         if ($role) {
-            $query->where('role', $role);
+
+            $this->notificationService->sendToRole(
+                role: $role,
+                title: $announcement->title,
+                body: $announcement->body,
+                type: 'announcement_created',
+                data: $data
+            );
+
+            return;
         }
 
-        $users = $query->get();
-
-        foreach ($users as $user) {
-            $user->notify(new AnnouncementCreatedNotification($event->announcement));
-        }
+        $this->notificationService->sendToAll(
+            title: $announcement->title,
+            body: $announcement->body,
+            type: 'announcement_created',
+            data: $data
+        );
     }
 }

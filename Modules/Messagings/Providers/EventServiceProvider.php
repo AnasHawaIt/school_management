@@ -3,14 +3,20 @@
 namespace Modules\Messagings\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\Announcement\Events\AnnouncementUpdated;
 use Modules\Library\Events\MemberEvents\MemberDeleted;
 use Modules\Library\Events\MemberEvents\MemberRestored;
+use Modules\Messagings\Events\AttachmentDeleted;
 use Modules\Messagings\Events\MessageCreated;
+use Modules\Messagings\Events\MessageFailed;
 use Modules\Messagings\Events\MessageForwarded;
 use Modules\Messagings\Events\MessageRead;
 use Modules\Messagings\Events\MessageReplied;
+use Modules\Messagings\Events\MessageSent;
+use Modules\Messagings\Listeners\LogAttachmentUploadedEventListener;
 use Modules\Messagings\Listeners\LogMessageCreatedEventListener;
 use Modules\Messagings\Listeners\LogMessageDeletedEventListener;
+use Modules\Messagings\Listeners\LogMessageFailedEventListener;
 use Modules\Messagings\Listeners\LogMessageForwardedEventListener;
 use Modules\Messagings\Listeners\LogMessageReadEventListener;
 use Modules\Messagings\Listeners\LogMessageRepliedEventListener;
@@ -27,11 +33,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
+        MessageSent::class=>[
+            SendMessageNotificationListener::class,
+            SendEmailListener::class,
+        ],
+
         MessageCreated::class => [
             LogMessageCreatedEventListener::class,
             StoreMessageStatisticsListener::class,
-            SendMessageNotificationListener::class,
-            SendEmailListener::class,
         ],
 
         MemberDeleted::class=>[
@@ -46,6 +55,10 @@ class EventServiceProvider extends ServiceProvider
             LogMessageForwardedEventListener::class,
         ],
 
+        MessageFailed::class=>[
+            LogMessageFailedEventListener::class,
+        ],
+
         MessageRead::class=>[
             LogMessageReadEventListener::class,
         ],
@@ -54,6 +67,14 @@ class EventServiceProvider extends ServiceProvider
             LogMessageRepliedEventListener::class,
             SendMessageNotificationListener::class
         ],
+
+        AttachmentDeleted::class=>[
+            LogMessageDeletedEventListener::class,
+        ],
+
+        AnnouncementUpdated::class=>[
+            LogAttachmentUploadedEventListener::class,
+        ]
 
 
     ];

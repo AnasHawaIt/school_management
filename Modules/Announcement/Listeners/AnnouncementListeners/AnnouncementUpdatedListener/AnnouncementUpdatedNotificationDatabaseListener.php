@@ -5,13 +5,19 @@ namespace Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdat
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Announcement\Events\AnnouncementUpdated;
-use Modules\Announcement\Notifications\AnnouncementUpdateNotification;
-use Modules\Core\Entities\User;
+use Modules\Notifications\Services\NotificationService;
 
 class AnnouncementUpdatedNotificationDatabaseListener implements ShouldQueue
 {
+    public function __construct(
+        protected NotificationService $notificationService
+    ) {
+    }
+
     public function handle(AnnouncementUpdated $event)
     {
+        $announcement = $event->announcement;
+
         $map = [
             'students' => 'student',
             'teachers' => 'teacher',
@@ -19,18 +25,40 @@ class AnnouncementUpdatedNotificationDatabaseListener implements ShouldQueue
             'public'   => null,
         ];
 
-        $role = $map[$event->announcement->audience];
+        $audience = $announcement->audience;
 
-        $query = User::query();
+        if (!array_key_exists($audience, $map)) {
+            throw new \InvalidArgumentException(
+                "Invalid announcement audience: {$audience}"
+            );
+        }
+
+        $role = $map[$audience];
+
+        $data = [
+            'entity' => 'announcement',
+            'action' => 'Update',
+            'announcement_id' => $announcement->id,
+        ];
 
         if ($role) {
-            $query->where('role', $role);
+
+            $this->notificationService->sendToRole(
+                role: $role,
+                title: $announcement->title,
+                body: $announcement->body,
+                type: 'announcement_updated',
+                data: $data
+            );
+
+            return;
         }
 
-        $users = $query->get();
-
-        foreach ($users as $user) {
-            $user->notify(new AnnouncementUpdateNotification($event->announcement));
-        }
+        $this->notificationService->sendToAll(
+            title: $announcement->title,
+            body: $announcement->body,
+            type: 'announcement_updated',
+            data: $data
+        );
     }
-}
+    }
