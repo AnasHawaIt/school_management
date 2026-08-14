@@ -2,7 +2,6 @@
 
 namespace Modules\Transport\Listeners\BusListeners\BusUpdateListeners;
 
-use Modules\Transport\Entities\EventLog;
 use Modules\Transport\Events\BusEvents\BusUpdated;
 
 class BusUpdateLogEventListener

@@ -2,19 +2,31 @@
 
 namespace Modules\Transport\Listeners\BusListeners\BusCreatedListeners;
 
-use Modules\Core\Entities\User;
+use Modules\Notifications\Services\NotificationService;
 use Modules\Transport\Events\BusEvents\BusCreated;
-use Modules\Transport\Notifications\BusCreatedNotification;
 
 class BusCreatedNotificationDatabaseListener
 {
-        public function handle(BusCreated $event)
+    public function __construct(
+        protected NotificationService $notificationService
+    )
     {
-        $users = User::all();
+    }
 
-        foreach ($users as $user) {
-            $user->notify(new BusCreatedNotification($event->bus));
-        }
+    public function handle(BusCreated $event): void
+    {
+        $bus = $event->bus;
+
+        $this->notificationService->sendToAll(
+            title: 'new sbus',
+            body: 'new bus has been created. .',
+            type: 'Transport',
+            data: [
+                'entity' => 'Bus',
+                'action' => 'Create',
+                'bus_id' => $bus->id,
+            ]
+        );
     }
 
 }

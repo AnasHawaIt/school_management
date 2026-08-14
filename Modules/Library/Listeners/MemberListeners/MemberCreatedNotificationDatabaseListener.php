@@ -4,18 +4,29 @@ namespace Modules\Library\Listeners\MemberListeners;
 
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Core\Entities\User;
 use Modules\Library\Events\MemberEvents\MemberCreated;
-use Modules\Library\Notifications\MemberCreatedNotification;
+use Modules\Notifications\Services\NotificationService;
 
 class MemberCreatedNotificationDatabaseListener implements ShouldQueue
 {
-    public function handle(MemberCreated $event)
-    {
-        $users = User::all();
+    public function __construct(
+        protected NotificationService $notificationService
+    ) {
+    }
 
-        foreach ($users as $user) {
-            $user->notify(new MemberCreatedNotification($event->member));
-        }
+    public function handle(MemberCreated $event): void
+    {
+        $member = $event->member;
+
+        $this->notificationService->sendToAll(
+            title: ' عضو حديد  ',
+            body: "تمت انضمام عضو جديد ",
+            type: 'Library',
+            data: [
+                'entity' => 'Member',
+                'action' => 'Create',
+                'Member_id' => $member->id,
+            ]
+        );
     }
 }

@@ -2,20 +2,30 @@
 
 namespace Modules\Transport\Listeners\RouteListeners;
 
-
-use Illuminate\Support\Facades\Notification;
-use Modules\Core\Entities\User;
+use Modules\Notifications\Services\NotificationService;
 use Modules\Transport\Events\RouteEvents\RouteCreated;
-use Modules\Transport\Notifications\RouteCreatedNotification;
 
 class RouteCreatedNotificationDatabaseListener
 {
-    public function handle(RouteCreated $event)
+    public function __construct(
+        protected NotificationService $notificationService
+    )
     {
-        $users = User::all();
+    }
 
-        foreach ($users as $user) {
-            $user->notify(new RouteCreatedNotification($event ->route));
-        }
+    public function handle(RouteCreated $event): void
+    {
+        $route = $event->route;
+
+        $this->notificationService->sendToAll(
+            title: 'new Rute',
+            body: 'new route has been created. .',
+            type: 'Transport',
+            data: [
+                'entity' => 'Route',
+                'action' => 'Create',
+                'Route_id' => $route->id,
+            ]
+        );
     }
 }

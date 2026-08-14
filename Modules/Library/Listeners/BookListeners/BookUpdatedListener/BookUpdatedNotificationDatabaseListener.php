@@ -4,18 +4,29 @@ namespace Modules\Library\Listeners\BookListeners\BookUpdatedListener;
 
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Core\Entities\User;
 use Modules\Library\Events\BookEvents\BookUpdated;
-use Modules\Library\Notifications\BookUpdatedNotification;
+use Modules\Notifications\Services\NotificationService;
 
 class BookUpdatedNotificationDatabaseListener implements ShouldQueue
 {
-    public function handle(BookUpdated $event)
-    {
-        $users = User::all();
+    public function __construct(
+    protected NotificationService $notificationService
+    ) {
+    }
 
-        foreach ($users as $user) {
-            $user->notify(new BookUpdatedNotification($event->book));
-        }
+        public function handle(BookUpdated $event): void
+    {
+        $book = $event->book;
+
+        $this->notificationService->sendToAll(
+            title: 'تحديث كتاب ',
+            body: "تمت تحديث كتاب : {$book->title}",
+            type: 'Library',
+            data: [
+                'entity' => 'Book',
+                'action' => 'Delete',
+                'book_id' => $book->id,
+            ]
+        );
     }
 }

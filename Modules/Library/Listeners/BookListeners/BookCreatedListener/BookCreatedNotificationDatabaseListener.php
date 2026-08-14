@@ -1,20 +1,31 @@
 <?php
 
-namespace Modules\Library\Listeners\BookListeners\BookCreatedListener;
+namespace Modules\Library\Listeners\BookListeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Core\Entities\User;
 use Modules\Library\Events\BookEvents\BookCreated;
-use Modules\Library\Notifications\BookCreatedNotification;
+use Modules\Notifications\Services\NotificationService;
 
-class BookCreatedNotificationDatabaseListener  implements ShouldQueue
+class BookCreatedNotificationDatabaseListener implements ShouldQueue
 {
-    public function handle(BookCreated $event)
-    {
-        $users = User::all();
+    public function __construct(
+        protected NotificationService $notificationService
+    ) {
+    }
 
-        foreach ($users as $user) {
-            $user->notify(new BookCreatedNotification($event->book));
-        }
+    public function handle(BookCreated $event): void
+    {
+        $book = $event->book;
+
+        $this->notificationService->sendToAll(
+            title: 'كتاب جديد',
+            body: "تمت إضافة كتاب جديد: {$book->title}",
+            type: 'Library',
+            data: [
+                'entity' => 'Book',
+                'action' => 'Created',
+                'book_id' => $book->id,
+            ]
+        );
     }
 }

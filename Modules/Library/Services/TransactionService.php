@@ -3,10 +3,9 @@
 namespace Modules\Library\Services;
 
 use Modules\Library\Entities\Member;
+use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
 use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
-use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
-use Modules\Library\Events\BorrowingEvents\BorrowingApproved;
-use Modules\Library\Events\BorrowingEvents\TransactionUpdated;
+use Modules\Library\Events\BorrowingEvents\BorrowingUpdateed;
 use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 
 class TransactionService
@@ -27,16 +26,14 @@ class TransactionService
     {
         $transaction= $this->repo->restore($id);
 
-        event(new BorrowingApproved($transaction));
-
         return $transaction;
     }
 
     public function forceDelete($id)
     {
-        $transaction= $this->repo->forceDelete($id);
+        $Transaction= $this->repo->forceDelete($id);
 
-        event(new BorrowingRejected($transaction));
+        event(new BorrowingRejected($Transaction));
 
         return true;
     }
@@ -56,7 +53,7 @@ class TransactionService
 
         $transaction = $this->repo->create($data);
 
-        event(new BorrowingRejected($transaction), auth()->id());
+        event(new BorrowingCreated($transaction), auth()->id());
 
         return $transaction;
     }
@@ -70,7 +67,7 @@ class TransactionService
     {
         $Transaction= $this->repo->update($id, $data);
 
-        event(new TransactionUpdated($Transaction),auth()->id());
+        event(new BorrowingUpdateed($Transaction),auth()->id());
 
         return $Transaction;
     }

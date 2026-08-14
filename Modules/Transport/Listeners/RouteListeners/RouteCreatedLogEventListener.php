@@ -2,7 +2,6 @@
 
 namespace Modules\Transport\Listeners\RouteListeners;
 
-use Modules\Transport\Entities\EventLog;
 use Modules\Transport\Events\RouteEvents\RouteCreated;
 
 class RouteCreatedLogEventListener

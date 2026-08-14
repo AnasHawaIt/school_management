@@ -4,18 +4,29 @@ namespace Modules\Library\Listeners\MemberListeners;
 
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Core\Entities\User;
 use Modules\Library\Events\MemberEvents\MemberDeleted;
-use Modules\Library\Notifications\MemberDeletedNotification;
+use Modules\Notifications\Services\NotificationService;
 
 class MemberDeletedNotificationDatabaseListener  implements ShouldQueue
 {
-    public function handle(MemberDeleted $event)
-    {
-        $users = User::all();
+    public function __construct(
+        protected NotificationService $notificationService
+    ) {
+    }
 
-        foreach ($users as $user) {
-            $user->notify(new MemberDeletedNotification($event->member));
-        }
+    public function handle(MemberDeleted $event): void
+    {
+        $member = $event->member;
+
+        $this->notificationService->sendToAll(
+            title: ' مغادرة عضو   ',
+            body: "تمت مغادرة عضو  ",
+            type: 'Library',
+            data: [
+                'entity' => 'Member',
+                'action' => 'Deleted',
+                'Member_id' => $member->id,
+            ]
+        );
     }
 }

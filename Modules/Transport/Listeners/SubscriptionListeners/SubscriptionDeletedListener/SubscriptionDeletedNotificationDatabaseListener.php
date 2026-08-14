@@ -2,18 +2,30 @@
 
 namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedListener;
 
-use Modules\Core\Entities\User;
+use Modules\Notifications\Services\NotificationService;
 use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
-use Modules\Transport\Notifications\SubscriptionDeletedNotification;
 
 class SubscriptionDeletedNotificationDatabaseListener
 {
-    public function handle(SubscriptionDeleted $event)
+    public function __construct(
+        protected NotificationService $notificationService
+    )
     {
-        $users = User::all();
+    }
 
-        foreach ($users as $user) {
-            $user->notify(new SubscriptionDeletedNotification($event->subscription));
-        }
+    public function handle(SubscriptionDeleted $event): void
+    {
+        $subscription = $event->subscription;
+
+        $this->notificationService->sendToAll(
+            title: 'Deleted subscription',
+            body: 'Deleted subscription',
+            type: 'Transport',
+            data: [
+                'entity' => 'subscription',
+                'action' => 'DELETE',
+                'subscription_id' => $subscription->id,
+            ]
+        );
     }
 }

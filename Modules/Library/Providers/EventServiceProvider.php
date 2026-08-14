@@ -25,6 +25,7 @@ use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 
 // Categories
 use Modules\Library\Events\BorrowingEvents\BorrowingReturned;
+use Modules\Library\Events\BorrowingEvents\BorrowingUpdateed;
 use Modules\Library\Events\CategoryEvents\CategoryCreated;
 use Modules\Library\Events\CategoryEvents\CategoryDeleted;
 use Modules\Library\Events\CategoryEvents\CategoryUpdated;
@@ -47,7 +48,6 @@ use Modules\Library\Listeners\AuthorListeners\AuthorUpdateLogEventListener;
 // Book Listeners
 use Modules\Library\Listeners\BookListeners\BookCreatedListener\BookCreatedBroadcastEventListener;
 use Modules\Library\Listeners\BookListeners\BookCreatedListener\BookCreatedLogEventListener;
-use Modules\Library\Listeners\BookListeners\BookCreatedListener\BookCreatedNotificationDatabaseListener;
 
 use Modules\Library\Listeners\BookListeners\BookDeletedListener\BookDeletedBroadcastEventListener;
 use Modules\Library\Listeners\BookListeners\BookDeletedListener\BookDeletedLogEventListener;
@@ -58,18 +58,23 @@ use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedLogEv
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedNotificationDatabaseListener;
 
 // Borrowing Listeners
-use Modules\Library\Listeners\TransactionListeners\LogBorrowingApproved;
-use Modules\Library\Listeners\TransactionListeners\LogBorrowingCancelled;
-use Modules\Library\Listeners\TransactionListeners\LogBorrowingCreated;
-use Modules\Library\Listeners\TransactionListeners\LogBorrowingLost;
-use Modules\Library\Listeners\TransactionListeners\LogBorrowingOverdue;
-use Modules\Library\Listeners\TransactionListeners\LogBorrowingPickedUp;
-use Modules\Library\Listeners\TransactionListeners\LogBorrowingRejected;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingApproved;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingCancelled;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingCreated;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingLost;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingOverdue;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingPickedUp;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingRejected;
 
-use Modules\Library\Listeners\TransactionListeners\LogBorrowingReturned;
-use Modules\Library\Listeners\TransactionListeners\TransactionCreatedNotificationDatabaseListener;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingReturned;
+use Modules\Library\Listeners\BorrowingListeners\LogBorrowingUpdated;
+use Modules\Library\Listeners\BorrowingListeners\SendBorrowingApprovedNotification;
+use Modules\Library\Listeners\BorrowingListeners\SendBorrowingCreatedNotification;
 
 // Category Listeners
+use Modules\Library\Listeners\BorrowingListeners\SendBorrowingOverdueNotification;
+use Modules\Library\Listeners\BorrowingListeners\SendBorrowingRejectedNotification;
+use Modules\Library\Listeners\BorrowingListeners\SendBorrowingReturnedNotification;
 use Modules\Library\Listeners\CategoryListeners\CategoryCreatedLogEventListener;
 use Modules\Library\Listeners\CategoryListeners\CategoryDeletedLogEventListener;
 use Modules\Library\Listeners\CategoryListeners\CategoryUpdateLogEventListener;
@@ -80,7 +85,6 @@ use Modules\Library\Listeners\MemberListeners\MemberCreatedNotificationDatabaseL
 use Modules\Library\Listeners\MemberListeners\MemberDeletedLogEventListener;
 use Modules\Library\Listeners\MemberListeners\MemberDeletedNotificationDatabaseListener;
 use Modules\Library\Listeners\MemberListeners\MemberUpdatedLogEventListener;
-use Modules\Library\Listeners\MemberListeners\MemberUpdatedNotificationDatabaseListener;
 
 // Publisher Listeners
 use Modules\Library\Listeners\PublishersListeners\PublishersCreatedLogEventListener;
@@ -137,7 +141,6 @@ class EventServiceProvider extends ServiceProvider
 
         MemberUpdated::class => [
             MemberUpdatedLogEventListener::class,
-            MemberUpdatedNotificationDatabaseListener::class,
         ],
 
         MemberDeleted::class => [
@@ -148,7 +151,6 @@ class EventServiceProvider extends ServiceProvider
 
         BookCreated::class => [
             BookCreatedLogEventListener::class,
-            BookCreatedNotificationDatabaseListener::class,
             BookCreatedBroadcastEventListener::class,
         ],
 
@@ -167,15 +169,17 @@ class EventServiceProvider extends ServiceProvider
 
         BorrowingCreated::class => [
             LogBorrowingCreated::class,
-            TransactionCreatedNotificationDatabaseListener::class,
+            SendBorrowingCreatedNotification::class,
         ],
 
         BorrowingApproved::class => [
             LogBorrowingApproved::class,
+            SendBorrowingApprovedNotification::class,
         ],
 
         BorrowingRejected::class => [
             LogBorrowingRejected::class,
+            SendBorrowingRejectedNotification::class,
         ],
 
         BorrowingCancelled::class=>[
@@ -186,8 +190,13 @@ class EventServiceProvider extends ServiceProvider
             LogBorrowingLost::class,
         ],
 
+        BorrowingUpdateed::class=>[
+            LogBorrowingUpdated::class,
+        ],
+
         BorrowingReturned::class=>[
             LogBorrowingReturned::class,
+            SendBorrowingReturnedNotification::class
         ],
 
         BorrowingPickedUp::class=>[
@@ -195,7 +204,8 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         BorrowingOverdue::class=>[
-            LogBorrowingOverdue::class
+            LogBorrowingOverdue::class,
+            SendBorrowingOverdueNotification::class
         ],
 
 

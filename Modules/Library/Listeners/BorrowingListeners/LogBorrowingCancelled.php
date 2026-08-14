@@ -1,13 +1,14 @@
 <?php
 
 
-namespace Modules\Library\Listeners\TransactionListeners;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
+use Modules\Library\Events\BorrowingEvents\BorrowingCancelled;
 use Modules\Library\Events\BorrowingEvents\BorrowingLost;
 
-class LogBorrowingLost
+class LogBorrowingCancelled
 {
-    public function handle(BorrowingLost $event): void
+    public function handle(BorrowingCancelled $event): void
     {
         $borrowing = $event->borrowing;
 
@@ -18,6 +19,6 @@ class LogBorrowingLost
                 'book_id' => $borrowing->book_id,
                 'borrowing_id' => $borrowing->id,
             ])
-            ->log('borrowing.lost');
+            ->log('borrowing.cancelled');
     }
 }

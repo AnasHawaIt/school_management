@@ -32,7 +32,7 @@ class SendFirebaseNotification implements ShouldQueue
 
         try {
 
-            $this->firebase->send(
+            $this->firebase->sendFirebase(
                 token: $user->fcm_token,
                 title: $notification->title,
                 body: $notification->body,

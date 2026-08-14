@@ -2,20 +2,30 @@
 
 namespace Modules\Library\Listeners\BookListeners\BookDeletedListener;
 
-
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Core\Entities\User;
 use Modules\Library\Events\BookEvents\BookDeleted;
-use Modules\Library\Notifications\BookDeletedNotification;
+use Modules\Notifications\Services\NotificationService;
 
 class BookDeletedNotificationDatabaseListener implements ShouldQueue
 {
-    public function handle(BookDeleted $event)
-    {
-        $users = User::all();
+    public function __construct(
+        protected NotificationService $notificationService
+    ) {
+    }
 
-        foreach ($users as $user) {
-            $user->notify(new BookDeletedNotification($event->book));
-        }
+    public function handle(BookDeleted $event): void
+    {
+        $book = $event->book;
+
+        $this->notificationService->sendToAll(
+            title: 'كتاب محذوف',
+            body: "تمت حذف كتاب : {$book->title}",
+            type: 'Library',
+            data: [
+                'entity' => 'Book',
+                'action' => 'Delete',
+                'book' => $book,
+            ]
+        );
     }
 }

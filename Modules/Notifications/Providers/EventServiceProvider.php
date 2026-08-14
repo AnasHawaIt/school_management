@@ -4,6 +4,7 @@ namespace Modules\Notifications\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Modules\Notifications\Events\NotificationCreated;
+use Modules\Notifications\Listeners\NotificationCreatedLogEventListener;
 use Modules\Notifications\Listeners\SendFirebaseNotification;
 
 class EventServiceProvider extends ServiceProvider
@@ -14,6 +15,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         NotificationCreated::class => [
             SendFirebaseNotification::class,
+            NotificationCreatedLogEventListener::class,
         ],
     ];
 

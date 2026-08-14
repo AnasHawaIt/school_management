@@ -3,6 +3,21 @@
 namespace Modules\Messagings\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\Library\Events\MemberEvents\MemberDeleted;
+use Modules\Library\Events\MemberEvents\MemberRestored;
+use Modules\Messagings\Events\MessageCreated;
+use Modules\Messagings\Events\MessageForwarded;
+use Modules\Messagings\Events\MessageRead;
+use Modules\Messagings\Events\MessageReplied;
+use Modules\Messagings\Listeners\LogMessageCreatedEventListener;
+use Modules\Messagings\Listeners\LogMessageDeletedEventListener;
+use Modules\Messagings\Listeners\LogMessageForwardedEventListener;
+use Modules\Messagings\Listeners\LogMessageReadEventListener;
+use Modules\Messagings\Listeners\LogMessageRepliedEventListener;
+use Modules\Messagings\Listeners\LogMessageRestoredEventListener;
+use Modules\Messagings\Listeners\SendEmailListener;
+use Modules\Messagings\Listeners\SendMessageNotificationListener;
+use Modules\Messagings\Listeners\StoreMessageStatisticsListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -12,11 +27,35 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
-        AnnouncementCreated::class => [
-            AnnouncementCreatedLogEventListener::class,
-            AnnouncementCreatedNotificationDatabaseListener::class,
-            AnnouncementCreatedBroadcastEventListener::class,
-       ],
+        MessageCreated::class => [
+            LogMessageCreatedEventListener::class,
+            StoreMessageStatisticsListener::class,
+            SendMessageNotificationListener::class,
+            SendEmailListener::class,
+        ],
+
+        MemberDeleted::class=>[
+            LogMessageDeletedEventListener::class,
+        ],
+
+        MemberRestored::class=>[
+            LogMessageRestoredEventListener::class,
+        ],
+
+        MessageForwarded::class=>[
+            LogMessageForwardedEventListener::class,
+        ],
+
+        MessageRead::class=>[
+            LogMessageReadEventListener::class,
+        ],
+
+        MessageReplied::class=>[
+            LogMessageRepliedEventListener::class,
+            SendMessageNotificationListener::class
+        ],
+
+
     ];
 
     /**

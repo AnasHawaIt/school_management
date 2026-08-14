@@ -152,7 +152,7 @@ class NotificationService
     {
         return Notification::query()
             ->where('user_id', $user->id)
-            ->whereNull('read_at')
+            ->where('is_read', false)
             ->latest()
             ->get();
     }
@@ -161,7 +161,7 @@ class NotificationService
     {
         return Notification::query()
             ->where('user_id', $user->id)
-            ->whereNull('read_at')
+            ->where('is_read', false)
             ->count();
     }
 
@@ -178,8 +178,9 @@ class NotificationService
     {
         $notification = $this->find($id);
 
-        if ($notification->read_at === null) {
+        if (!$notification->is_read) {
             $notification->update([
+                'is_read' => true,
                 'read_at' => now(),
             ]);
         }
@@ -187,12 +188,14 @@ class NotificationService
         return $notification->fresh();
     }
 
+
     public function markAllAsRead(User $user): int
     {
         return Notification::query()
             ->where('user_id', $user->id)
-            ->whereNull('read_at')
+            ->where('is_read', false)
             ->update([
+                'is_read' => true,
                 'read_at' => now(),
             ]);
     }

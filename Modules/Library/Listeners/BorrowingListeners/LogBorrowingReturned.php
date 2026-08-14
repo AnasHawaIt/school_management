@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Library\Listeners\TransactionListeners;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
 use Modules\Library\Events\BorrowingEvents\BorrowingReturned;
 

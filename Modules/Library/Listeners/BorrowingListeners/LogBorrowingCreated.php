@@ -1,12 +1,13 @@
 <?php
 
-namespace Modules\Library\Listeners\TransactionListeners;
 
-use Modules\Library\Events\BorrowingEvents\BorrowingApproved;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
-class LogBorrowingApproved
+use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
+
+class LogBorrowingCreated
 {
-    public function handle(BorrowingApproved $event): void
+    public function handle(BorrowingRejected $event): void
     {
         $borrowing = $event->borrowing;
 
@@ -17,6 +18,6 @@ class LogBorrowingApproved
                 'book_id' => $borrowing->book_id,
                 'borrowing_id' => $borrowing->id,
             ])
-            ->log('borrowing.approved');
+            ->log('borrowing.created');
     }
 }

@@ -1,23 +1,24 @@
 <?php
 
 
-namespace Modules\Library\Listeners\TransactionListeners;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
+use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
 use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 
-class LogBorrowingRejected
+class LogBorrowingOverdue
 {
-    public function handle(BorrowingRejected $event): void
+    public function handle(BorrowingOverdue $event): void
     {
         $borrowing = $event->borrowing;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($borrowing)
             ->withProperties([
                 'book_id' => $borrowing->book_id,
                 'borrowing_id' => $borrowing->id,
             ])
-            ->log('borrowing.rejected');
+            ->log('borrowing.overdue');
     }
 }
