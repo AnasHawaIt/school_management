@@ -58,6 +58,15 @@ class Activity extends Model
         );
     }
 
+    public function activeParticipants(): HasMany
+    {
+        return $this->participants()
+            ->whereIn('status', [
+                'registered',
+                'confirmed',
+            ]);
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(
