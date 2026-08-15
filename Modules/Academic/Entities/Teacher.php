@@ -3,11 +3,14 @@
 namespace Modules\Academic\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Modules\Activities\Entities\ActivityParticipant;
+use Modules\Activities\Entities\ActivitySupervisor;
 use Modules\Core\Entities\User;
 
 class Teacher extends Model
@@ -89,5 +92,21 @@ class Teacher extends Model
     public function scopeBySpecialization($query, string $specialization)
     {
         return $query->where('specialization', $specialization);
+    }
+
+    public function activityParticipations(): MorphMany
+    {
+        return $this->morphMany(
+            ActivityParticipant::class,
+            'participant'
+        );
+    }
+
+    public function activitySupervisions(): HasMany
+    {
+        return $this->hasMany(
+            ActivitySupervisor::class,
+            'teacher_id'
+        );
     }
 }

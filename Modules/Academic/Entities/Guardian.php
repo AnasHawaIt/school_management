@@ -3,12 +3,14 @@
 namespace Modules\Academic\Entities;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\User;
 use Modules\Academic\Entities\Student;
+use Modules\Activities\Entities\ActivityParticipant;
 
 class Guardian extends Model
 {
@@ -48,6 +50,14 @@ class Guardian extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
+    }
+
+    public function activityParticipations(): MorphMany
+    {
+        return $this->morphMany(
+            ActivityParticipant::class,
+            'participant'
+        );
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\School\Database\Seeders;
+namespace Modules\School\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\School\Entities\Semester;

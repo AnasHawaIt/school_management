@@ -10,5 +10,6 @@
     "Messaging": true,
     "Examination": true,
     "Messagings": true,
-    "Notifications": true
+    "Notifications": true,
+    "Activities": true
 }

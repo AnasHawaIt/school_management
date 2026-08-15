@@ -3,9 +3,12 @@
 namespace Modules\Announcement\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+
 use Modules\Announcement\Events\AnnouncementCreated;
 use Modules\Announcement\Events\AnnouncementDeleted;
 use Modules\Announcement\Events\AnnouncementUpdated;
+
+
 use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedBroadcastEventListener;
 use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedLogEventListener;
 use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedNotificationDatabaseListener;
