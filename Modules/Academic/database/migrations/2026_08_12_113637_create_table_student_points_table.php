@@ -35,7 +35,7 @@ return new class extends Migration
             $table->date('date');
 
 
-            $table->enum('given_by_type', ['counselor', 'teacher']);
+            $table->enum('given_by_type', ['counselor', 'teacher','admin']);
             $table->unsignedBigInteger('given_by_id');
 
 

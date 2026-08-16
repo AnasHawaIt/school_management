@@ -25,6 +25,7 @@ class StudentPointController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $user = auth()->user();
         $data = $request->validate([
             'student_id'              => 'required|exists:students,id',
             'point_category_id'       => 'required|exists:point_categories,id',
@@ -33,18 +34,18 @@ class StudentPointController extends Controller
             'points'                  => 'nullable|integer|min:1',
             'reason'                  => 'required|string|max:500',
             'date'                    => 'nullable|date',
-            'given_by_type'           => 'required|in:counselor,teacher',
-            'given_by_id'             => 'required|integer',
             'inspection_program_id'   => 'nullable|exists:inspection_programs,id',
             'notes'                   => 'nullable|string|max:500',
         ]);
-
+        $data['given_by_type'] = $user->user_type;
+        $data['given_by_id'] = $user->id;
         $point = $this->pointService->givePoint($data);
         return response()->json(['success' => true, 'message' => 'Point assigned successfully.', 'data' => $point], 201);
     }
 
     public function bulk(Request $request): JsonResponse
     {
+        $user = auth()->user();
         $data = $request->validate([
             'student_ids'             => 'required|array|min:1',
             'student_ids.*'           => 'required|exists:students,id',
@@ -54,12 +55,11 @@ class StudentPointController extends Controller
             'points'                  => 'nullable|integer|min:1',
             'reason'                  => 'required|string|max:500',
             'date'                    => 'nullable|date',
-            'given_by_type'           => 'required|in:counselor,teacher',
-            'given_by_id'             => 'required|integer',
             'inspection_program_id'   => 'nullable|exists:inspection_programs,id',
             'notes'                   => 'nullable|string|max:500',
         ]);
-
+        $data['given_by_type'] = $user->user_type;
+        $data['given_by_id'] = $user->id;
         $this->pointService->bulkGive($data);
         return response()->json([
             'success' => true,
