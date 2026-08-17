@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Activities\Listeners;
+namespace Modules\Activities\Listeners\Supervisor;
 
 use Modules\Activities\Events\ActivitySupervisorRemoved;
 

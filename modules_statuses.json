@@ -11,9 +11,6 @@
     "Examination": true,
     "Messagings": true,
     "Notifications": true,
-<<<<<<< Updated upstream
-    "Activities": true
-=======
+    "Activities": true,
     "Finance": true
->>>>>>> Stashed changes
 }

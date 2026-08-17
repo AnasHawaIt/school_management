@@ -10,147 +10,39 @@ use Modules\Activities\Http\Controllers\ActivityAttachmentController;
 Route::middleware('auth:sanctum')
     ->prefix('activities')
     ->group(function () {
+    Route::get('/', [ActivityController::class, 'index']);
+    Route::post('/', [ActivityController::class, 'store']);
+    Route::get('/{id}', [ActivityController::class, 'show']);
+    Route::post('/{id}', [ActivityController::class, 'update']);
+    Route::delete('/{id}', [ActivityController::class, 'destroy']);
+    Route::post('/{id}/publish', [ActivityController::class, 'publish']);
+    Route::post('/{id}/start', [ActivityController::class, 'start']);
+    Route::post('/{id}/cancel', [ActivityController::class, 'cancel']);
+    Route::post('/{id}/complete', [ActivityController::class, 'complete']);
+    Route::post('/{id}/participants', [ActivityParticipantController::class, 'register']);
+    Route::post('/{id}/supervisors', [ActivitySupervisorController::class, 'store']);
+    Route::post('/{id}/attachments', [ActivityAttachmentController::class, 'store']);
+    });
 
-        /*
-        |--------------------------------------------------------------------------
-        | Activities
-        |--------------------------------------------------------------------------
-        */
+Route::middleware('auth:sanctum')
+    ->prefix('participants')
+    ->group(function () {
+        Route::post('/{id}/confirm', [ActivityParticipantController::class, 'confirm']);
+        Route::post('/{id}/cancel', [ActivityParticipantController::class, 'cancel']);
+        Route::post('/{id}/attend', [ActivityParticipantController::class, 'attend']);
+        Route::post('/{id}/absent', [ActivityParticipantController::class, 'absent']);
+});
 
-        Route::get('/', [
-            ActivityController::class,
-            'index'
-        ]);
+Route::middleware('auth:sanctum')
+    ->prefix('supervisors')
+    ->group(function () {
+        Route::post('/{id}/primary', [ActivitySupervisorController::class, 'primary']);
+        Route::delete('/{id}', [ActivitySupervisorController::class, 'destroy']);
+    });
 
-        Route::post('/', [
-            ActivityController::class,
-            'store'
-        ]);
-
-        Route::get('/{activity}', [
-            ActivityController::class,
-            'show'
-        ]);
-
-        Route::put('/{activity}', [
-            ActivityController::class,
-            'update'
-        ]);
-
-        Route::delete('/{activity}', [
-            ActivityController::class,
-            'destroy'
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Activity Status
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/{activity}/publish', [
-            ActivityController::class,
-            'publish'
-        ]);
-
-        Route::post('/{activity}/start', [
-            ActivityController::class,
-            'start'
-        ]);
-
-        Route::post('/{activity}/cancel', [
-            ActivityController::class,
-            'cancel'
-        ]);
-
-        Route::post('/{activity}/complete', [
-            ActivityController::class,
-            'complete'
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Participants
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/{activity}/participants', [
-            ActivityParticipantController::class,
-            'register'
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Supervisors
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/{activity}/supervisors', [
-            ActivitySupervisorController::class,
-            'store'
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Attachments
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/{activity}/attachments', [
-            ActivityAttachmentController::class,
-            'store'
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Participant Actions
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/participants/{participant}/confirm', [
-            ActivityParticipantController::class,
-            'confirm'
-        ]);
-
-        Route::post('/participants/{participant}/cancel', [
-            ActivityParticipantController::class,
-            'cancel'
-        ]);
-
-        Route::post('/participants/{participant}/attend', [
-            ActivityParticipantController::class,
-            'attend'
-        ]);
-
-        Route::post('/participants/{participant}/absent', [
-            ActivityParticipantController::class,
-            'absent'
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Supervisor Actions
-        |--------------------------------------------------------------------------
-        */
-
-        Route::post('/supervisors/{supervisor}/primary', [
-            ActivitySupervisorController::class,
-            'primary'
-        ]);
-
-        Route::delete('/supervisors/{supervisor}', [
-            ActivitySupervisorController::class,
-            'destroy'
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Attachments Actions
-        |--------------------------------------------------------------------------
-        */
-
-        Route::delete('/attachments/{attachment}', [
-            ActivityAttachmentController::class,
-            'destroy'
-        ]);
+Route::middleware('auth:sanctum')
+    ->prefix('attachments')
+    ->group(function () {
+        Route::post('/{id}/upload', [ActivityAttachmentController::class, 'store']);
+        Route::delete('/{id}', [ActivityAttachmentController::class, 'destroy']);
     });

@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Modules\Activities\Listeners;
+namespace Modules\Activities\Listeners\Activity;
 
-use Modules\Activities\Events\ActivityCreated;
+use Modules\Activities\Events\ActivityPublished;
 
-class LogActivityCreated
+class LogActivityPublished
 {
     public function handle(
-        ActivityCreated $event
+        ActivityPublished $event
     ): void
     {
         $activity = $event->activity;
@@ -20,6 +20,6 @@ class LogActivityCreated
                 'activity_id' => $activity->id,
                 'title' => $activity->title,
             ])
-            ->log('Activity.created');
+            ->log('Activity.Published');
     }
 }

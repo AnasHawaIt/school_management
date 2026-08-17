@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Activities\Listeners;
+namespace Modules\Activities\Listeners\Participant;
 
-use Modules\Activities\Events\ActivityParticipantRegistered;
+use Modules\Activities\Events\ActivityParticipantCancelled;
 
-class LogActivityParticipantRegistered
+class LogActivityParticipantCancelled
 {
     public function handle(
-        ActivityParticipantRegistered $event
+        ActivityParticipantCancelled $event
     ): void {
         $participant = $event->participant;
 
@@ -22,6 +22,6 @@ class LogActivityParticipantRegistered
                 'participant_type' => $participant->participant_type,
                 'participant_user_id' => $participant->participant_id,
             ])
-            ->log('Activity participant registered');
+            ->log('Activity participant cancelled.');
     }
 }

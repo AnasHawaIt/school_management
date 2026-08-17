@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Activities\Listeners;
+namespace Modules\Activities\Listeners\Activity;
 
 
 use Modules\Activities\Events\ActivityUpdated;

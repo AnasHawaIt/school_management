@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Activities\Listeners;
+namespace Modules\Activities\Listeners\Participant;
 
 use Modules\Activities\Events\ActivityParticipantConfirmed;
 

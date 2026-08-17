@@ -1,14 +1,16 @@
 <?php
 
-namespace Modules\Activities\Listeners;
 
-use Modules\Activities\Events\ActivitySupervisorAdded;
+namespace Modules\Activities\Listeners\Supervisor;
 
-class LogActivitySupervisorAdded
+use Modules\Activities\Events\ActivityPrimarySupervisorChanged;
+
+class LogActivityPrimarySupervisorChanged
 {
     public function handle(
-        ActivitySupervisorAdded $event
-    ): void {
+        ActivityPrimarySupervisorChanged $event
+    ): void
+    {
         $supervisor = $event->supervisor;
 
         $activity = $supervisor->activity;
@@ -20,9 +22,8 @@ class LogActivitySupervisorAdded
                 'activity_id' => $activity->id,
                 'supervisor_id' => $supervisor->id,
                 'teacher_id' => $supervisor->teacher_id,
-                'role' => $supervisor->role,
                 'is_primary' => $supervisor->is_primary,
             ])
-            ->log('Activity supervisor added');
+            ->log('Activity primary supervisor changed');
     }
 }

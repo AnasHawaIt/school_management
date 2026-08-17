@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Modules\Activities\Listeners;
+namespace Modules\Activities\Listeners\Activity;
 
 
-use Modules\Activities\Events\ActivityCompleted;
+use Modules\Activities\Events\ActivityCancelled;
 
-class LogActivityCompleted
+class LogActivityCancelled
 {
     public function handle(
-        ActivityCompleted $event
+        ActivityCancelled $event
     ): void
     {
         $activity = $event->activity;
@@ -21,6 +21,6 @@ class LogActivityCompleted
                 'activity_id' => $activity->id,
                 'title' => $activity->title,
             ])
-            ->log('Activity.Completed');
+            ->log('Activity.Canceled');
     }
 }

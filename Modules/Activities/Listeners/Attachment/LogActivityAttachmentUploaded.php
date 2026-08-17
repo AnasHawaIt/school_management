@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Activities\Listeners;
+namespace Modules\Activities\Listeners\Attachment;
 
 use Modules\Activities\Events\ActivityAttachmentUploaded;
 

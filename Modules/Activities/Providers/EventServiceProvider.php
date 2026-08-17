@@ -19,22 +19,38 @@ use Modules\Activities\Events\ActivityStarted;
 use Modules\Activities\Events\ActivitySupervisorAdded;
 use Modules\Activities\Events\ActivitySupervisorRemoved;
 use Modules\Activities\Events\ActivityUpdated;
-use Modules\Activities\Listeners\LogActivityAttachmentDeleted;
-use Modules\Activities\Listeners\LogActivityAttachmentUploaded;
-use Modules\Activities\Listeners\LogActivityCancelled;
-use Modules\Activities\Listeners\LogActivityCompleted;
-use Modules\Activities\Listeners\LogActivityCreated;
-use Modules\Activities\Listeners\LogActivityParticipantAbsent;
-use Modules\Activities\Listeners\LogActivityParticipantAttended;
-use Modules\Activities\Listeners\LogActivityParticipantCancelled;
-use Modules\Activities\Listeners\LogActivityParticipantConfirmed;
-use Modules\Activities\Listeners\LogActivityParticipantRegistered;
-use Modules\Activities\Listeners\LogActivityPrimarySupervisorChanged;
-use Modules\Activities\Listeners\LogActivityPublished;
-use Modules\Activities\Listeners\LogActivityStarted;
-use Modules\Activities\Listeners\LogActivitySupervisorAdded;
-use Modules\Activities\Listeners\LogActivitySupervisorRemoved;
-use Modules\Activities\Listeners\LogActivityUpdated;
+use Modules\Activities\Listeners\Activity\ActivityCancelledNotificationListener;
+use Modules\Activities\Listeners\Activity\ActivityCompletedNotificationListener;
+use Modules\Activities\Listeners\Activity\ActivityCreatedNotificationListener;
+use Modules\Activities\Listeners\Activity\ActivityPublishedNotificationListener;
+use Modules\Activities\Listeners\Activity\ActivityStartedNotificationListener;
+use Modules\Activities\Listeners\Activity\ActivityUpdatedNotificationListener;
+use Modules\Activities\Listeners\Activity\LogActivityCancelled;
+use Modules\Activities\Listeners\Activity\LogActivityCompleted;
+use Modules\Activities\Listeners\Activity\LogActivityCreated;
+use Modules\Activities\Listeners\Activity\LogActivityPublished;
+use Modules\Activities\Listeners\Activity\LogActivityStarted;
+use Modules\Activities\Listeners\Activity\LogActivityUpdated;
+use Modules\Activities\Listeners\Attachment\ActivityAttachmentDeletedNotificationDatabaseListener;
+use Modules\Activities\Listeners\Attachment\ActivityAttachmentUploadedNotificationDatabaseListener;
+use Modules\Activities\Listeners\Attachment\LogActivityAttachmentDeleted;
+use Modules\Activities\Listeners\Attachment\LogActivityAttachmentUploaded;
+use Modules\Activities\Listeners\Participant\ActivityParticipantAbsentNotificationDatabaseListener;
+use Modules\Activities\Listeners\Participant\ActivityParticipantAttendedNotificationDatabaseListener;
+use Modules\Activities\Listeners\Participant\ActivityParticipantCancelledNotificationDatabaseListener;
+use Modules\Activities\Listeners\Participant\ActivityParticipantConfirmedNotificationDatabaseListener;
+use Modules\Activities\Listeners\Participant\ActivityParticipantRegisteredNotificationDatabaseListener;
+use Modules\Activities\Listeners\Participant\LogActivityParticipantAbsent;
+use Modules\Activities\Listeners\Participant\LogActivityParticipantAttended;
+use Modules\Activities\Listeners\Participant\LogActivityParticipantCancelled;
+use Modules\Activities\Listeners\Participant\LogActivityParticipantConfirmed;
+use Modules\Activities\Listeners\Participant\LogActivityParticipantRegistered;
+use Modules\Activities\Listeners\Supervisor\ActivityPrimarySupervisorChangedNotificationDatabaseListener;
+use Modules\Activities\Listeners\Supervisor\ActivitySupervisorAddedNotificationDatabaseListener;
+use Modules\Activities\Listeners\Supervisor\ActivitySupervisorRemovedNotificationDatabaseListener;
+use Modules\Activities\Listeners\Supervisor\LogActivityPrimarySupervisorChanged;
+use Modules\Activities\Listeners\Supervisor\LogActivitySupervisorAdded;
+use Modules\Activities\Listeners\Supervisor\LogActivitySupervisorRemoved;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -53,26 +69,32 @@ class EventServiceProvider extends ServiceProvider
 
         ActivityCreated::class => [
             LogActivityCreated::class,
+            ActivityCreatedNotificationListener::class
         ],
 
         ActivityUpdated::class => [
             LogActivityUpdated::class,
+            ActivityUpdatedNotificationListener::class
         ],
 
         ActivityPublished::class => [
             LogActivityPublished::class,
+            ActivityPublishedNotificationListener::class
         ],
 
         ActivityStarted::class => [
             LogActivityStarted::class,
+            ActivityStartedNotificationListener::class
         ],
 
         ActivityCompleted::class => [
             LogActivityCompleted::class,
+            ActivityCompletedNotificationListener::class
         ],
 
         ActivityCancelled::class => [
             LogActivityCancelled::class,
+            ActivityCancelledNotificationListener::class
         ],
 
 
@@ -84,22 +106,27 @@ class EventServiceProvider extends ServiceProvider
 
         ActivityParticipantRegistered::class => [
             LogActivityParticipantRegistered::class,
+            ActivityParticipantRegisteredNotificationDatabaseListener::class
         ],
 
         ActivityParticipantConfirmed::class => [
             LogActivityParticipantConfirmed::class,
+            ActivityParticipantConfirmedNotificationDatabaseListener::class
         ],
 
         ActivityParticipantCancelled::class => [
             LogActivityParticipantCancelled::class,
+            ActivityParticipantCancelledNotificationDatabaseListener::class
         ],
 
         ActivityParticipantAttended::class => [
             LogActivityParticipantAttended::class,
+            ActivityParticipantAttendedNotificationDatabaseListener::class
         ],
 
         ActivityParticipantAbsent::class => [
             LogActivityParticipantAbsent::class,
+            ActivityParticipantAbsentNotificationDatabaseListener::class
         ],
 
 
@@ -111,14 +138,17 @@ class EventServiceProvider extends ServiceProvider
 
         ActivitySupervisorAdded::class => [
             LogActivitySupervisorAdded::class,
+            ActivitySupervisorAddedNotificationDatabaseListener::class
         ],
 
         ActivitySupervisorRemoved::class => [
             LogActivitySupervisorRemoved::class,
+            ActivitySupervisorRemovedNotificationDatabaseListener::class
         ],
 
         ActivityPrimarySupervisorChanged::class => [
             LogActivityPrimarySupervisorChanged::class,
+            ActivityPrimarySupervisorChangedNotificationDatabaseListener::class
         ],
 
 
@@ -130,10 +160,12 @@ class EventServiceProvider extends ServiceProvider
 
         ActivityAttachmentUploaded::class => [
             LogActivityAttachmentUploaded::class,
+            ActivityAttachmentUploadedNotificationDatabaseListener::class
         ],
 
         ActivityAttachmentDeleted::class => [
             LogActivityAttachmentDeleted::class,
+            ActivityAttachmentDeletedNotificationDatabaseListener::class
         ],
 
     ];
