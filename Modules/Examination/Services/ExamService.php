@@ -2,8 +2,14 @@
 
 namespace Modules\Examination\Services;
 
+use Illuminate\Support\Facades\DB;
 use Modules\Examination\Contracts\Services\ExamServiceInterface;
 use Modules\Examination\Contracts\Repositories\ExamRepositoryInterface;
+use Modules\Examination\Events\ExamCreated;
+use Modules\Examination\Events\ExamDeleted;
+use Modules\Examination\Events\ExamRestored;
+use Modules\Examination\Events\ExamStatusUpdated;
+use Modules\Examination\Events\ExamUpdated;
 
 class ExamService implements ExamServiceInterface
 {
@@ -21,7 +27,13 @@ class ExamService implements ExamServiceInterface
 
     public function createExam(array $data): object
     {
-        return $this->repository->create($data);
+        $exam = DB::transaction(function () use ($data) {
+            return $this->repository->create($data);
+        });
+
+        ExamCreated::dispatch($exam);
+
+        return $exam;
     }
 
     public function updateExam(int $id, array $data): object
@@ -29,10 +41,18 @@ class ExamService implements ExamServiceInterface
         $exam = $this->repository->findById($id);
 
         if ($exam->status === 'completed') {
-            throw new \Exception('Cannot edit a completed exam.');
+            throw new \Exception(
+                'Cannot edit a completed exam.'
+            );
         }
 
-        return $this->repository->update($id, $data);
+        $exam = DB::transaction(function () use ($id, $data) {
+            return $this->repository->update($id, $data);
+        });
+
+        ExamUpdated::dispatch($exam);
+
+        return $exam;
     }
 
     public function deleteExam(int $id): bool
@@ -40,20 +60,69 @@ class ExamService implements ExamServiceInterface
         $exam = $this->repository->findById($id);
 
         if ($exam->status === 'completed') {
-            throw new \Exception('Cannot delete a completed exam.');
+            throw new \Exception(
+                'Cannot delete a completed exam.'
+            );
         }
 
-        return $this->repository->delete($id);
+        $deleted = DB::transaction(function () use ($id) {
+            return $this->repository->delete($id);
+        });
+
+        if ($deleted) {
+            ExamDeleted::dispatch($exam);
+        }
+
+        return $deleted;
     }
 
     public function restoreExam(int $id): bool
     {
-        return $this->repository->restore($id);
+        $exam = $this->repository
+            ->findTrashedById($id);
+
+        $restored = DB::transaction(function () use ($id) {
+            return $this->repository->restore($id);
+        });
+
+        if ($restored) {
+            $exam->restore();
+
+            ExamRestored::dispatch($exam);
+        }
+
+        return $restored;
     }
 
-    public function updateStatus(int $id, string $status): object
-    {
-        return $this->repository->updateStatus($id, $status);
+
+    public function updateStatus(
+        int $id,
+        string $status
+    ): object {
+
+        $exam = $this->repository->findById($id);
+
+        $oldStatus = $exam->status;
+
+        $exam = DB::transaction(function () use (
+            $id,
+            $status
+        ) {
+            return $this->repository->updateStatus(
+                $id,
+                $status
+            );
+        });
+
+        if ($oldStatus !== $status) {
+            ExamStatusUpdated::dispatch(
+                $exam,
+                $oldStatus,
+                $status
+            );
+        }
+
+        return $exam;
     }
 
     public function getSectionExams(int $sectionId, int $semesterId)
