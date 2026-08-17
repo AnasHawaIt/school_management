@@ -6,15 +6,17 @@ namespace Modules\Activities\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Activities\app\Requests\StoreActivityRequest;
+use Modules\Activities\app\Requests\UpdateActivityRequest;
 use Modules\Activities\Entities\Activity;
 use Modules\Activities\Services\ActivityService;
+
 
 class ActivityController extends Controller
 {
     public function __construct(
         protected ActivityService $activityService
-    )
-    {
+    ) {
     }
 
     /**
@@ -27,18 +29,21 @@ class ActivityController extends Controller
                 'category',
                 'participants',
                 'supervisors',
+                'attachments',
             ])
             ->when(
-                $request->status,
-                fn($query, $status) => $query->where('status', $status)
+                $request->filled('status'),
+                fn ($query) =>
+                $query->where('status', $request->status)
             )
             ->when(
-                $request->category_id,
-                fn($query, $categoryId) => $query->where('category_id', $categoryId)
+                $request->filled('category_id'),
+                fn ($query) =>
+                $query->where('category_id', $request->category_id)
             )
             ->latest()
             ->paginate(
-                $request->integer('per_page', 15)
+                min($request->integer('per_page', 15), 100)
             );
 
         return response()->json([
@@ -49,81 +54,34 @@ class ActivityController extends Controller
     }
 
     /**
-     * Store a new activity.
+     * Store activity.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreActivityRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'category_id' => [
-                'required',
-                'integer',
-                'exists:activity_categories,id',
-            ],
+        $data = $request->validated();
 
-            'title' => [
-                'required',
-                'string',
-                'max:255',
-            ],
-
-            'description' => [
-                'nullable',
-                'string',
-            ],
-
-            'location' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-
-            'start_at' => [
-                'required',
-                'date',
-            ],
-
-            'end_at' => [
-                'nullable',
-                'date',
-                'after:start_at',
-            ],
-
-            'registration_required' => [
-                'boolean',
-            ],
-
-            'registration_deadline' => [
-                'nullable',
-                'date',
-                'before_or_equal:start_at',
-            ],
-
-            'capacity' => [
-                'nullable',
-                'integer',
-                'min:1',
-            ],
-        ]);
+        $data['created_by'] = auth()->id();
 
         $activity = $this->activityService->create($data);
 
         return response()->json([
             'success' => true,
             'message' => 'Activity created successfully.',
-            'data' => $activity,
+            'data' => $activity->load('category'),
         ], 201);
     }
 
     /**
-     * Display a specific activity.
+     * Display activity.
      */
     public function show(Activity $activity): JsonResponse
     {
         $activity->load([
             'category',
-            'participants',
-            'supervisors',
-            'attachments',
+            'creator',
+            'participants.participant',
+            'supervisors.teacher.user',
+            'attachments.uploader',
         ]);
 
         return response()->json([
@@ -137,61 +95,10 @@ class ActivityController extends Controller
      * Update activity.
      */
     public function update(
-        Request  $request,
+        UpdateActivityRequest $request,
         Activity $activity
-    ): JsonResponse
-    {
-
-        $data = $request->validate([
-            'category_id' => [
-                'sometimes',
-                'integer',
-                'exists:activity_categories,id',
-            ],
-
-            'title' => [
-                'sometimes',
-                'string',
-                'max:255',
-            ],
-
-            'description' => [
-                'nullable',
-                'string',
-            ],
-
-            'location' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-
-            'start_at' => [
-                'sometimes',
-                'date',
-            ],
-
-            'end_at' => [
-                'nullable',
-                'date',
-            ],
-
-            'registration_required' => [
-                'sometimes',
-                'boolean',
-            ],
-
-            'registration_deadline' => [
-                'nullable',
-                'date',
-            ],
-
-            'capacity' => [
-                'nullable',
-                'integer',
-                'min:1',
-            ],
-        ]);
+    ): JsonResponse {
+        $data = $request->validated();
 
         $activity = $this->activityService->update(
             $activity,
@@ -210,9 +117,7 @@ class ActivityController extends Controller
      */
     public function publish(Activity $activity): JsonResponse
     {
-        $activity = $this->activityService->publish(
-            $activity
-        );
+        $activity = $this->activityService->publish($activity);
 
         return response()->json([
             'success' => true,
@@ -226,9 +131,7 @@ class ActivityController extends Controller
      */
     public function cancel(Activity $activity): JsonResponse
     {
-        $activity = $this->activityService->cancel(
-            $activity
-        );
+        $activity = $this->activityService->cancel($activity);
 
         return response()->json([
             'success' => true,
@@ -242,9 +145,7 @@ class ActivityController extends Controller
      */
     public function start(Activity $activity): JsonResponse
     {
-        $activity = $this->activityService->start(
-            $activity
-        );
+        $activity = $this->activityService->start($activity);
 
         return response()->json([
             'success' => true,
@@ -258,9 +159,7 @@ class ActivityController extends Controller
      */
     public function complete(Activity $activity): JsonResponse
     {
-        $activity = $this->activityService->complete(
-            $activity
-        );
+        $activity = $this->activityService->complete($activity);
 
         return response()->json([
             'success' => true,
@@ -274,9 +173,7 @@ class ActivityController extends Controller
      */
     public function destroy(Activity $activity): JsonResponse
     {
-        $this->activityService->delete(
-            $activity
-        );
+        $this->activityService->delete($activity);
 
         return response()->json([
             'success' => true,

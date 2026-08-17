@@ -1,18 +1,14 @@
 <?php
 
-
 namespace Modules\Activities\Listeners;
 
-
-use Modules\Activities\Events\ActivityCompleted;
 use Modules\Activities\Events\ActivityStarted;
 
 class LogActivityStarted
 {
     public function handle(
         ActivityStarted $event
-    ): void
-    {
+    ): void {
         $activity = $event->activity;
 
         activity()

@@ -79,6 +79,11 @@ class ActivityParticipant extends Model
         return $query->where('status', 'absent');
     }
 
+    public function scopeCancelled(Builder $query): Builder
+    {
+        return $query->where('status', 'cancelled');
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->whereIn('status', [

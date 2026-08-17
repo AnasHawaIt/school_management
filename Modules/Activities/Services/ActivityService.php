@@ -447,6 +447,8 @@ class ActivityService
             );
         }
 
+        $supervisor->load('activity');
+
         $deleted = DB::transaction(function () use ($supervisor) {
             return $this->supervisorRepository->delete(
                 $supervisor

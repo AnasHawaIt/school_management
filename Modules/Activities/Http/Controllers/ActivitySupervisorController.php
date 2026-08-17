@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Modules\Activities\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Modules\Activities\app\Requests\AddSupervisorRequest;
 use Modules\Activities\Entities\Activity;
 use Modules\Activities\Entities\ActivitySupervisor;
 use Modules\Activities\Services\ActivityService;
@@ -14,42 +13,17 @@ class ActivitySupervisorController extends Controller
 {
     public function __construct(
         protected ActivityService $activityService
-    )
-    {
+    ) {
     }
 
     /**
      * Add supervisor.
      */
     public function store(
-        Request  $request,
+        AddSupervisorRequest $request,
         Activity $activity
-    ): JsonResponse
-    {
-
-        $data = $request->validate([
-            'teacher_id' => [
-                'required',
-                'integer',
-                'exists:teachers,id',
-            ],
-
-            'role' => [
-                'nullable',
-                'string',
-                'max:100',
-            ],
-
-            'is_primary' => [
-                'sometimes',
-                'boolean',
-            ],
-
-            'notes' => [
-                'nullable',
-                'string',
-            ],
-        ]);
+    ): JsonResponse {
+        $data = $request->validated();
 
         $supervisor = $this->activityService->addSupervisor(
             $activity,
@@ -62,7 +36,7 @@ class ActivitySupervisorController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Supervisor added successfully.',
-            'data' => $supervisor,
+            'data' => $supervisor->load('teacher.user'),
         ], 201);
     }
 
@@ -71,16 +45,14 @@ class ActivitySupervisorController extends Controller
      */
     public function primary(
         ActivitySupervisor $supervisor
-    ): JsonResponse
-    {
-
+    ): JsonResponse {
         $supervisor = $this->activityService
             ->setPrimarySupervisor($supervisor);
 
         return response()->json([
             'success' => true,
             'message' => 'Primary supervisor changed successfully.',
-            'data' => $supervisor,
+            'data' => $supervisor->load('teacher.user'),
         ]);
     }
 
@@ -89,15 +61,16 @@ class ActivitySupervisorController extends Controller
      */
     public function destroy(
         ActivitySupervisor $supervisor
-    ): JsonResponse
-    {
-
-        $this->activityService
+    ): JsonResponse {
+        $deleted = $this->activityService
             ->removeSupervisor($supervisor);
 
         return response()->json([
             'success' => true,
             'message' => 'Supervisor removed successfully.',
+            'data' => [
+                'deleted' => $deleted,
+            ],
         ]);
     }
 }

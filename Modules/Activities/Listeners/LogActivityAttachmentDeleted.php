@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Modules\Activities\Listeners;
 
 use Modules\Activities\Events\ActivityAttachmentDeleted;
@@ -9,8 +8,7 @@ class LogActivityAttachmentDeleted
 {
     public function handle(
         ActivityAttachmentDeleted $event
-    ): void
-    {
+    ): void {
         $attachment = $event->attachment;
 
         $activity = $attachment->activity;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Modules\Activities\Listeners;
 
 use Modules\Activities\Events\ActivityAttachmentUploaded;
@@ -9,8 +8,7 @@ class LogActivityAttachmentUploaded
 {
     public function handle(
         ActivityAttachmentUploaded $event
-    ): void
-    {
+    ): void {
         $attachment = $event->attachment;
 
         $activity = $attachment->activity;

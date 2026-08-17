@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Modules\Activities\Listeners;
 
 use Modules\Activities\Events\ActivitySupervisorAdded;
@@ -9,8 +8,7 @@ class LogActivitySupervisorAdded
 {
     public function handle(
         ActivitySupervisorAdded $event
-    ): void
-    {
+    ): void {
         $supervisor = $event->supervisor;
 
         $activity = $supervisor->activity;
