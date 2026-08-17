@@ -134,9 +134,7 @@ class SectionService implements SectionServiceInterface
         return $deleted;
     }
 
-    /**
-     * Get sections by class.
-     */
+
     public function getByClass(int $classId): Collection
     {
         return $this->repository->getByClass($classId);
