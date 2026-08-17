@@ -12,7 +12,8 @@ class ActivityCancelled
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public Activity $activity
+        public Activity $activity,
+        public ?int $causedBy = null
     )
     {
     }

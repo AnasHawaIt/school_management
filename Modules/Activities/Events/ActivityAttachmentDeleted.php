@@ -13,7 +13,8 @@ class ActivityAttachmentDeleted
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public ActivityAttachment $attachment
+        public ActivityAttachment $attachment,
+        public ?int $causedBy = null
     ) {
     }
 }

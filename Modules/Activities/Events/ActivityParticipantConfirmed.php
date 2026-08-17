@@ -12,7 +12,8 @@ class ActivityParticipantConfirmed
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public ActivityParticipant $participant
+        public ActivityParticipant $participant,
+        public ?int $causedBy = null
     )
     {
     }

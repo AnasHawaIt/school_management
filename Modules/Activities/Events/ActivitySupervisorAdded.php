@@ -13,7 +13,8 @@ class ActivitySupervisorAdded
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public ActivitySupervisor $supervisor
+        public ActivitySupervisor $supervisor,
+        public ?int $causedBy = null
     )
     {
     }
