@@ -4,12 +4,16 @@ namespace Modules\Activities\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Activities\Repositories\Eloquent\ActivityAttachmentRepository;
 use Modules\Activities\Repositories\Eloquent\ActivityCategoryRepository;
 use Modules\Activities\Repositories\Eloquent\ActivityParticipantRepository;
 use Modules\Activities\Repositories\Eloquent\ActivityRepository;
+use Modules\Activities\Repositories\Eloquent\ActivitySupervisorRepository;
+use Modules\Activities\Repositories\Interfaces\ActivityAttachmentRepositoryInterface;
 use Modules\Activities\Repositories\Interfaces\ActivityCategoryRepositoryInterface;
 use Modules\Activities\Repositories\Interfaces\ActivityParticipantRepositoryInterface;
 use Modules\Activities\Repositories\Interfaces\ActivityRepositoryInterface;
+use Modules\Activities\Repositories\Interfaces\ActivitySupervisorRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -46,6 +50,11 @@ class ActivitiesServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
 
         $this->app->bind(
+            ActivityAttachmentRepositoryInterface::class,
+            ActivityAttachmentRepository::class
+        );
+
+        $this->app->bind(
             ActivityRepositoryInterface::class,
             ActivityRepository::class
         );
@@ -58,6 +67,12 @@ class ActivitiesServiceProvider extends ServiceProvider
         $this->app->bind(
             ActivityParticipantRepositoryInterface::class,
             ActivityParticipantRepository::class
+        );
+
+
+        $this->app->bind(
+            ActivitySupervisorRepositoryInterface::class,
+            ActivitySupervisorRepository::class
         );
 
     }

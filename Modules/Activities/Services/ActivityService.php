@@ -4,16 +4,34 @@
 namespace Modules\Activities\Services;
 
 use Illuminate\Support\Facades\DB;
+use Modules\Academic\Entities\Teacher;
 use Modules\Activities\Entities\Activity;
 use Modules\Activities\Entities\ActivityParticipant;
+use Modules\Activities\Entities\ActivitySupervisor;
+use Modules\Activities\Events\ActivityCancelled;
+use Modules\Activities\Events\ActivityCompleted;
+use Modules\Activities\Events\ActivityCreated;
+use Modules\Activities\Events\ActivityParticipantAbsent;
+use Modules\Activities\Events\ActivityParticipantAttended;
+use Modules\Activities\Events\ActivityParticipantCancelled;
+use Modules\Activities\Events\ActivityParticipantConfirmed;
+use Modules\Activities\Events\ActivityParticipantRegistered;
+use Modules\Activities\Events\ActivityPrimarySupervisorChanged;
+use Modules\Activities\Events\ActivityPublished;
+use Modules\Activities\Events\ActivityStarted;
+use Modules\Activities\Events\ActivitySupervisorAdded;
+use Modules\Activities\Events\ActivitySupervisorRemoved;
+use Modules\Activities\Events\ActivityUpdated;
 use Modules\Activities\Repositories\Interfaces\ActivityParticipantRepositoryInterface;
 use Modules\Activities\Repositories\Interfaces\ActivityRepositoryInterface;
+use Modules\Activities\Repositories\Interfaces\ActivitySupervisorRepositoryInterface;
 
 class ActivityService
 {
     public function __construct(
         protected ActivityRepositoryInterface $activityRepository,
-        protected ActivityParticipantRepositoryInterface $participantRepository
+        protected ActivityParticipantRepositoryInterface $participantRepository,
+        protected ActivitySupervisorRepositoryInterface $supervisorRepository
     ) {
     }
 
@@ -21,9 +39,13 @@ class ActivityService
     {
         $data['status'] ??= 'draft';
 
-        return DB::transaction(function () use ($data) {
+        $activity = DB::transaction(function () use ($data) {
             return $this->activityRepository->create($data);
         });
+
+        ActivityCreated::dispatch($activity);
+
+        return $activity;
     }
 
     public function registerParticipant(
@@ -54,7 +76,6 @@ class ActivityService
             );
         }
 
-        // 4. التحقق من التسجيل السابق
         $existing = $this->participantRepository->findForActivity(
             $activity->id,
             $participantType,
@@ -67,7 +88,6 @@ class ActivityService
             );
         }
 
-        // 5. التحقق من السعة
         if ($activity->capacity !== null) {
             $count = $this->participantRepository
                 ->countActiveParticipants($activity->id);
@@ -79,7 +99,7 @@ class ActivityService
             }
         }
 
-        return DB::transaction(function () use (
+        $participant = DB::transaction(function () use (
             $activity,
             $participantType,
             $participantId,
@@ -108,15 +128,18 @@ class ActivityService
                 'registered_at' => now(),
             ]);
         });
+
+        ActivityParticipantRegistered::dispatch($participant);
+
+        return $participant;
+
     }
 
     public function update(
         Activity $activity,
         array $data
     ): Activity {
-        unset($data['status']);
-
-        return DB::transaction(function () use (
+        $activity = DB::transaction(function () use (
             $activity,
             $data
         ) {
@@ -125,34 +148,15 @@ class ActivityService
                 $data
             );
         });
+
+        ActivityUpdated::dispatch($activity);
+
+        return $activity;
     }
 
-    public function publish(Activity $activity): Activity
-    {
-        if ($activity->status !== 'draft') {
-            throw new \DomainException(
-                'Only draft activities can be published.'
-            );
-        }
-
-        if ($activity->start_at->isPast()) {
-            throw new \DomainException(
-                'An activity with a past start date cannot be published.'
-            );
-        }
-
-        return DB::transaction(function () use ($activity) {
-            return $this->activityRepository->update(
-                $activity,
-                [
-                    'status' => 'published',
-                ]
-            );
-        });
-    }
-
-    public function cancel(Activity $activity): Activity
-    {
+    public function cancel(
+        Activity $activity
+    ): Activity {
         if ($activity->status === 'completed') {
             throw new \DomainException(
                 'Completed activities cannot be cancelled.'
@@ -165,7 +169,7 @@ class ActivityService
             );
         }
 
-        return DB::transaction(function () use ($activity) {
+        $activity = DB::transaction(function () use ($activity) {
             return $this->activityRepository->update(
                 $activity,
                 [
@@ -173,24 +177,65 @@ class ActivityService
                 ]
             );
         });
+
+        ActivityCancelled::dispatch($activity);
+
+        return $activity;
     }
 
-    public function start(Activity $activity): Activity
+    public function publish(Activity $activity): Activity
     {
+        if ($activity->status !== 'draft') {
+            throw new \DomainException(
+                'Only draft activities can be published.'
+            );
+        }
+
+        if (
+            $activity->start_at &&
+            $activity->start_at->isPast()
+        ) {
+            throw new \DomainException(
+                'An activity with a past start date cannot be published.'
+            );
+        }
+
+        $activity = DB::transaction(function () use ($activity) {
+            return $this->activityRepository->update(
+                $activity,
+                [
+                    'status' => 'published',
+                ]
+            );
+        });
+
+        ActivityPublished::dispatch($activity);
+
+        return $activity;
+    }
+
+    public function start(
+        Activity $activity
+    ): Activity {
         if ($activity->status !== 'published') {
             throw new \DomainException(
                 'Only published activities can be started.'
             );
         }
 
-        return DB::transaction(function () use ($activity) {
+        $activity = DB::transaction(function () use ($activity) {
             return $this->activityRepository->update(
                 $activity,
                 [
                     'status' => 'ongoing',
+                    'started_at' => now(),
                 ]
             );
         });
+
+        ActivityStarted::dispatch($activity);
+
+        return $activity;
     }
 
     public function markAttendance(
@@ -206,7 +251,7 @@ class ActivityService
             );
         }
 
-        return DB::transaction(function () use ($participant) {
+        $participant = DB::transaction(function () use ($participant) {
             return $this->participantRepository->update(
                 $participant,
                 [
@@ -215,6 +260,10 @@ class ActivityService
                 ]
             );
         });
+
+        ActivityParticipantAttended::dispatch($participant);
+
+        return $participant;
     }
 
     public function markAbsent(
@@ -230,7 +279,7 @@ class ActivityService
             );
         }
 
-        return DB::transaction(function () use ($participant) {
+        $participant = DB::transaction(function () use ($participant) {
             return $this->participantRepository->update(
                 $participant,
                 [
@@ -238,6 +287,10 @@ class ActivityService
                 ]
             );
         });
+
+        ActivityParticipantAbsent::dispatch($participant);
+
+        return $participant;
     }
 
     public function cancelParticipant(
@@ -253,7 +306,7 @@ class ActivityService
             );
         }
 
-        return DB::transaction(function () use ($participant) {
+        $participant = DB::transaction(function () use ($participant) {
             return $this->participantRepository->update(
                 $participant,
                 [
@@ -261,8 +314,11 @@ class ActivityService
                 ]
             );
         });
-    }
 
+        ActivityParticipantCancelled::dispatch($participant);
+
+        return $participant;
+    }
 
     public function confirmParticipant(
         ActivityParticipant $participant
@@ -273,7 +329,7 @@ class ActivityService
             );
         }
 
-        return DB::transaction(function () use ($participant) {
+        $participant = DB::transaction(function () use ($participant) {
             return $this->participantRepository->update(
                 $participant,
                 [
@@ -282,24 +338,152 @@ class ActivityService
                 ]
             );
         });
+
+        ActivityParticipantConfirmed::dispatch($participant);
+
+        return $participant;
     }
 
-    public function complete(Activity $activity): Activity
-    {
+    public function addSupervisor(
+        Activity $activity,
+        int $teacherId,
+        ?string $role = null,
+        bool $isPrimary = false,
+        ?string $notes = null
+    ): ActivitySupervisor {
+        $teacher = Teacher::find($teacherId);
+
+        if (!$teacher) {
+            throw new \DomainException(
+                'Teacher not found.'
+            );
+        }
+
+        if ($teacher->status !== 'active') {
+            throw new \DomainException(
+                'Only active teachers can supervise activities.'
+            );
+        }
+
+        $existing = $this->supervisorRepository
+            ->findForActivity(
+                $activity->id,
+                $teacherId
+            );
+
+        if ($existing && !$existing->trashed()) {
+            throw new \DomainException(
+                'Teacher is already a supervisor for this activity.'
+            );
+        }
+
+        $supervisor = DB::transaction(function () use (
+            $activity,
+            $teacherId,
+            $role,
+            $isPrimary,
+            $notes,
+            $existing
+        ) {
+            if ($isPrimary) {
+                $this->supervisorRepository
+                    ->removePrimary($activity->id);
+            }
+
+            if ($existing) {
+                $existing->restore();
+
+                return $this->supervisorRepository->update(
+                    $existing,
+                    [
+                        'role' => $role,
+                        'is_primary' => $isPrimary,
+                        'notes' => $notes,
+                    ]
+                );
+            }
+
+            return $this->supervisorRepository->create([
+                'activity_id' => $activity->id,
+                'teacher_id' => $teacherId,
+                'role' => $role,
+                'is_primary' => $isPrimary,
+                'notes' => $notes,
+            ]);
+        });
+
+        ActivitySupervisorAdded::dispatch($supervisor);
+
+        return $supervisor;
+    }
+
+    public function setPrimarySupervisor(
+        ActivitySupervisor $supervisor
+    ): ActivitySupervisor {
+        $supervisor = DB::transaction(function () use ($supervisor) {
+
+            $this->supervisorRepository
+                ->removePrimary($supervisor->activity_id);
+
+            return $this->supervisorRepository->update(
+                $supervisor,
+                [
+                    'is_primary' => true,
+                ]
+            );
+        });
+
+        ActivityPrimarySupervisorChanged::dispatch($supervisor);
+
+        return $supervisor;
+    }
+
+    public function removeSupervisor(
+        ActivitySupervisor $supervisor
+    ): bool {
+        if ($supervisor->is_primary) {
+            throw new \DomainException(
+                'The primary supervisor cannot be removed. Assign another primary supervisor first.'
+            );
+        }
+
+        $supervisor->load('activity');
+
+        $deleted = DB::transaction(function () use ($supervisor) {
+            return $this->supervisorRepository->delete(
+                $supervisor
+            );
+        });
+
+        if ($deleted) {
+            ActivitySupervisorRemoved::dispatch($supervisor);
+        }
+
+        return $deleted;
+    }
+
+    public function complete(
+        Activity $activity
+    ): Activity {
         if ($activity->status !== 'ongoing') {
             throw new \DomainException(
                 'Only ongoing activities can be completed.'
             );
         }
 
-        return DB::transaction(function () use ($activity) {
+        $activity = DB::transaction(function () use ($activity) {
             return $this->activityRepository->update(
                 $activity,
                 [
                     'status' => 'completed',
+                    'completed_at' => now(),
                 ]
             );
         });
+
+        ActivityCompleted::dispatch($activity);
+
+        return $activity;
     }
 
     public function delete(Activity $activity): bool
