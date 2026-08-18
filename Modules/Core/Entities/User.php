@@ -70,7 +70,7 @@ class User extends Authenticatable
 
     public function activityLogs()
     {
-        return $this->hasMany(ActivityLog::class);
+        return $this->hasMany(EventLogs::class);
     }
     public function teacher() { return $this->hasOne(Teacher::class); }
     public function student() { return $this->hasOne(Student::class); }

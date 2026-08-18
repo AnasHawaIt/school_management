@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('fee_type_id')->constrained('fee_types')->onDelete('cascade');
             $table->foreignId('academic_year_id')->constrained('academic_years')->onDelete('cascade');
             $table->foreignId('grade_id')->nullable()->constrained('grades')->onDelete('set null');
-            $table->foreignId('class_id')->nullable()->constrained('classes')->onDelete('set null');
+            $table->foreignId('section_id')->nullable()->constrained('sections')->onDelete('set null');
             $table->decimal('amount', 10, 2);
             $table->enum('frequency', ['once', 'monthly', 'semester', 'annual'])->default('annual');
             $table->date('due_date')->nullable();
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->unique(['fee_type_id', 'academic_year_id', 'grade_id', 'class_id'], 'fee_structure_unique');
+            $table->unique(['fee_type_id', 'academic_year_id', 'grade_id', 'section_id'], 'fee_structure_unique');
             $table->index(['academic_year_id', 'grade_id']);
         });
     }

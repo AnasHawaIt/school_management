@@ -5,7 +5,7 @@ namespace Modules\Core\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ActivityLog extends Model
+class EventLogs extends Model
 {
 
     const UPDATED_AT = null; // لا نحتاج updated_at

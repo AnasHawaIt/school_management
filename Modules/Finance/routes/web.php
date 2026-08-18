@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Finance\Http\Controllers\FinanceController;
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('finances', FinanceController::class)->names('finance');
+// Finance is currently API-first. Keep this file available for future web routes.
+Route::middleware(['web', 'auth'])->group(function () {
+    // Add Finance web routes here when a server-rendered UI is introduced.
 });

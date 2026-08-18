@@ -17,7 +17,7 @@ use Modules\Finance\Http\Controllers\FinanceReportController;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    // Fee Types
+
     Route::prefix('finance/fee-types')->group(function () {
         Route::get('/',        [FeeTypeController::class, 'index']);
         Route::post('/',       [FeeTypeController::class, 'store']);
@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [FeeTypeController::class, 'destroy']);
     });
 
-    // Fee Structures (رسوم حسب الصف/المرحلة)
+
     Route::prefix('finance/fee-structures')->group(function () {
         Route::get('/',        [FeeStructureController::class, 'index']);
         Route::post('/',       [FeeStructureController::class, 'store']);
@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [FeeStructureController::class, 'destroy']);
     });
 
-    // Discounts
+
     Route::prefix('finance/discounts')->group(function () {
         Route::get('/',        [DiscountController::class, 'index']);
         Route::post('/',       [DiscountController::class, 'store']);
@@ -44,7 +44,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [DiscountController::class, 'destroy']);
     });
 
-    // Student Fees
     Route::prefix('finance/student-fees')->group(function () {
         Route::get('/',                       [StudentFeeController::class, 'index']);
         Route::post('/',                      [StudentFeeController::class, 'store']);
@@ -56,7 +55,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/student/{studentId}',    [StudentFeeController::class, 'byStudent']);
     });
 
-    // Payments
     Route::prefix('finance/payments')->group(function () {
         Route::get('/',                      [PaymentController::class, 'index']);
         Route::post('/',                     [PaymentController::class, 'store']);
@@ -66,15 +64,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/student/{studentId}',   [PaymentController::class, 'byStudent']);
     });
 
-    // Invoices
     Route::prefix('finance/invoices')->group(function () {
         Route::get('/',                    [InvoiceController::class, 'index']);
         Route::post('/generate',           [InvoiceController::class, 'generate']);
         Route::get('/overdue',             [InvoiceController::class, 'overdue']);
-        Route::get('/{id}',                [InvoiceController::class, 'show']);
-        Route::post('/{id}/send',          [InvoiceController::class, 'send']);
-        Route::post('/{id}/cancel',        [InvoiceController::class, 'cancel']);
         Route::get('/student/{studentId}', [InvoiceController::class, 'byStudent']);
+        Route::post('/{id}/send',          [InvoiceController::class, 'send'])->whereNumber('id');
+        Route::post('/{id}/cancel',        [InvoiceController::class, 'cancel'])->whereNumber('id');
+        Route::get('/{id}',                [InvoiceController::class, 'show'])->whereNumber('id');
     });
 
 

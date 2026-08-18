@@ -3,8 +3,11 @@
 namespace Modules\Finance\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Finance\Contracts\Services\FeeTypeServiceInterface;
+use Modules\Finance\Http\Requests\StoreFeeTypeRequest;
+use Modules\Finance\Http\Requests\UpdateFeeTypeRequest;
 use Modules\Finance\Http\Resources\FeeTypeResource;
 
 class FeeTypeController extends Controller
@@ -31,7 +34,7 @@ class FeeTypeController extends Controller
         }
     }
 
-    public function store(\Illuminate\Http\Request $request): JsonResponse
+    public function store(StoreFeeTypeRequest $request): JsonResponse
     {
         try {
             $item = $this->service->create($request->validated());
@@ -41,7 +44,7 @@ class FeeTypeController extends Controller
         }
     }
 
-    public function update(\Illuminate\Http\Request $request, int $id): JsonResponse
+    public function update(UpdateFeeTypeRequest $request, int $id): JsonResponse
     {
         try {
             $this->service->update($id, $request->validated());

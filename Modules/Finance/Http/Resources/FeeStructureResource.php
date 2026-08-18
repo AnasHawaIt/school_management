@@ -12,7 +12,7 @@ class FeeStructureResource extends JsonResource
             'fee_type_id'      => $this->fee_type_id,
             'academic_year_id' => $this->academic_year_id,
             'grade_id'         => $this->grade_id,
-            'class_id'         => $this->class_id,
+            'section_id'       => $this->section_id,
             'amount'           => $this->amount,
             'frequency'        => $this->frequency,
             'due_date'         => $this->due_date?->format('Y-m-d'),

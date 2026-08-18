@@ -4,12 +4,12 @@ namespace Modules\Core\Repositories;
 
 use App\Repositories\BaseRepository;
 use Modules\Core\Contracts\Repositories\ActivityLogRepositoryInterface;
-use Modules\Core\Entities\ActivityLog;
+use Modules\Core\Entities\EventLogs;
 use Illuminate\Database\Eloquent\Collection;
 
 class ActivityLogRepository extends BaseRepository implements ActivityLogRepositoryInterface
 {
-    public function __construct(ActivityLog $model)
+    public function __construct(EventLogs $model)
     {
         parent::__construct($model);
     }

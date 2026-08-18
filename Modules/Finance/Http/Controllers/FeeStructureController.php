@@ -5,6 +5,8 @@ namespace Modules\Finance\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 use Modules\Finance\Contracts\Services\FeeStructureServiceInterface;
+use Modules\Finance\Http\Requests\StoreFeeStructureRequest;
+use Modules\Finance\Http\Requests\UpdateFeeStructureRequest;
 use Modules\Finance\Http\Resources\FeeStructureResource;
 
 class FeeStructureController extends Controller
@@ -31,7 +33,7 @@ class FeeStructureController extends Controller
         }
     }
 
-    public function store(\Illuminate\Http\Request $request): JsonResponse
+    public function store(StoreFeeStructureRequest $request): JsonResponse
     {
         try {
             $item = $this->service->create($request->validated());
@@ -41,7 +43,7 @@ class FeeStructureController extends Controller
         }
     }
 
-    public function update(\Illuminate\Http\Request $request, int $id): JsonResponse
+    public function update(UpdateFeeStructureRequest $request, int $id): JsonResponse
     {
         try {
             $this->service->update($id, $request->validated());

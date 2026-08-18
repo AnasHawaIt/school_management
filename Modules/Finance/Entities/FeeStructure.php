@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Grade;
+use Modules\School\Entities\Section;
 
 class FeeStructure extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'fee_type_id', 'academic_year_id', 'grade_id', 'class_id',
+        'fee_type_id', 'academic_year_id', 'grade_id', 'section_id',
         'amount', 'frequency', 'due_date', 'notes', 'is_active',
     ];
 
@@ -36,7 +37,10 @@ class FeeStructure extends Model
     {
         return $this->belongsTo(Grade::class);
     }
-
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
     public function studentFees()
     {
         return $this->hasMany(StudentFee::class);

@@ -54,12 +54,12 @@ class FinanceServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
-        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
     }
 
     public function register(): void
     {
+        $this->app->register(RouteServiceProvider::class);
         $this->registerRepositories();
         $this->registerServices();
     }
@@ -76,6 +76,7 @@ class FinanceServiceProvider extends ServiceProvider
 
     protected function registerServices(): void
     {
+
         $this->app->bind(FeeTypeServiceInterface::class,       FeeTypeService::class);
         $this->app->bind(FeeStructureServiceInterface::class,  FeeStructureService::class);
         $this->app->bind(DiscountServiceInterface::class,      DiscountService::class);
