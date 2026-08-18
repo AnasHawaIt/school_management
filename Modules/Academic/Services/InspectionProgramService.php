@@ -90,4 +90,8 @@ class InspectionProgramService implements InspectionProgramServiceInterface
     {
         return $this->repository->getByCounselor($counselorId, $filters);
     }
+    public function getCurrentCounselorProgram(int $counselorId)
+    {
+        return $this->repository->getCurrentCounselorProgram($counselorId);
+    }
 }

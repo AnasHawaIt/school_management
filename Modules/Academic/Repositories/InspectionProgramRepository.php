@@ -117,4 +117,22 @@ class InspectionProgramRepository implements InspectionProgramRepositoryInterfac
             ->orderBy('inspection_date', 'desc')
             ->get();
     }
+    public function getCurrentCounselorProgram(int $counselorId)
+    {
+        return $this->model
+            ->with([
+                'section.class.grade',
+                'counselors.user',
+                'semester',
+                'academicYear',
+                'creator',
+            ])
+            ->whereHas('counselors', function ($query) use ($counselorId) {
+                $query->where('counselors.id', $counselorId);
+            })
+            ->where('status', 'ongoing')
+            ->whereDate('inspection_date', now()->toDateString())
+            ->orderBy('start_time')
+            ->first();
+    }
 }

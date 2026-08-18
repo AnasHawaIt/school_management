@@ -16,4 +16,5 @@ interface InspectionProgramRepositoryInterface
     public function updateStatus(int $id, string $status): object;
     public function getBySection(int $sectionId, array $filters = []);
     public function getByCounselor(int $counselorId, array $filters = []);
+    public function getCurrentCounselorProgram(int $counselorId);
 }

@@ -130,4 +130,16 @@ class InspectionProgramController extends Controller
             'data'    => InspectionProgramResource::collection($programs),
         ]);
     }
+    public function currentCounselorProgram(): JsonResponse
+    {
+        $counselorId = auth()->user()->id;
+        $program = $this->programService->getCurrentCounselorProgram($counselorId);
+
+        return response()->json([
+            'success' => true,
+            'data' => $program
+                ? new InspectionProgramResource($program)
+                : null,
+        ]);
+    }
 }
