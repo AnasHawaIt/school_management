@@ -4,6 +4,7 @@ namespace Modules\Academic\Repositories;
 
 use Modules\Academic\Contracts\Repositories\InspectionProgramRepositoryInterface;
 use Modules\Academic\Entities\InspectionProgram;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class InspectionProgramRepository implements InspectionProgramRepositoryInterface
@@ -34,6 +35,11 @@ class InspectionProgramRepository implements InspectionProgramRepositoryInterfac
             'academicYear',
             'creator',
         ])->findOrFail($id);
+    }
+
+    public function paginate(int $perPage = 15, array $columns = ['*']): LengthAwarePaginator
+    {
+        return $this->model->paginate($perPage, $columns);
     }
 
     public function create(array $data): object
@@ -104,19 +110,14 @@ class InspectionProgramRepository implements InspectionProgramRepositoryInterfac
     public function getByCounselor(int $counselorId, array $filters = [])
     {
         $query = $this->model->with(['section.class.grade', 'semester'])
-            ->whereHas('counselors', fn($q) => $q->where('counselor_id', $counselorId));
+            ->whereHas('counselors', fn($q) => $q->where('counselors.id', $counselorId));
 
         if (!empty($filters['status']))      $query->where('status', $filters['status']);
         if (!empty($filters['semester_id'])) $query->where('semester_id', $filters['semester_id']);
 
-        return $this->model
-            ->whereHas('counselors', function ($query) use ($counselorId) {
-                $query->where('inspection_program_counselor.counselor_id', $counselorId);
-                // OR: $query->where('counselors.id', $counselorId);
-            })
-            ->orderBy('inspection_date', 'desc')
-            ->get();
+        return $query->orderBy('inspection_date', 'desc')->get();
     }
+
     public function getCurrentCounselorProgram(int $counselorId)
     {
         return $this->model
@@ -130,9 +131,16 @@ class InspectionProgramRepository implements InspectionProgramRepositoryInterfac
             ->whereHas('counselors', function ($query) use ($counselorId) {
                 $query->where('counselors.id', $counselorId);
             })
-            ->where('status', 'ongoing')
-            ->whereDate('inspection_date', now()->toDateString())
-            ->orderBy('start_time')
+            ->where('is_current', true)
             ->first();
+    }
+    public function setCurrent(int $id): bool
+    {
+
+        $this->model->where('is_current', true)->update(['is_current' => false]);
+
+        $this->model->findOrFail($id)->update(['is_current' => true]);
+
+        return true;
     }
 }

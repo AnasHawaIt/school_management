@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class InspectionProgramService implements InspectionProgramServiceInterface
 {
-    public function __construct(
-        protected InspectionProgramRepositoryInterface $repository,
-    ) {}
+    protected $repository;
+
+    public function __construct( InspectionProgramRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
 
     public function getAll(array $filters = [])
     {
@@ -89,6 +92,16 @@ class InspectionProgramService implements InspectionProgramServiceInterface
     public function getCounselorPrograms(int $counselorId, array $filters = [])
     {
         return $this->repository->getByCounselor($counselorId, $filters);
+    }
+    public function setCurrent(int $id): bool
+    {
+        $program = $this->repository->findById($id);
+
+        if (!$program) {
+            throw new \Exception('Inspection program not found.');
+        }
+
+        return $this->repository->setCurrent($id);
     }
     public function getCurrentCounselorProgram(int $counselorId)
     {

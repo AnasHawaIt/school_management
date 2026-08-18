@@ -18,6 +18,7 @@ class InspectionProgramResource extends JsonResource
             'type'            => $this->type,
             'status'          => $this->status,
             'objectives'      => $this->objectives,
+            'is_current'      =>$this->is_current,
             'notes'           => $this->notes,
 
             'section' => $this->whenLoaded('section', fn() => [

@@ -2,10 +2,13 @@
 
 namespace Modules\Academic\Contracts\Repositories;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 interface InspectionProgramRepositoryInterface
 {
     public function getAll(array $filters = []);
     public function findById(int $id);
+    public function paginate(int $perPage = 15, array $columns = ['*']): LengthAwarePaginator;
     public function create(array $data): object;
     public function update(int $id, array $data): object;
     public function delete(int $id): bool;
@@ -17,4 +20,4 @@ interface InspectionProgramRepositoryInterface
     public function getBySection(int $sectionId, array $filters = []);
     public function getByCounselor(int $counselorId, array $filters = []);
     public function getCurrentCounselorProgram(int $counselorId);
-}
+    public function setCurrent(int $id): bool;}

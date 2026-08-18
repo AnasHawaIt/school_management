@@ -18,7 +18,7 @@ class InspectionProgram extends Model
     protected $fillable = [
         'title', 'title_ar', 'section_id', 'academic_year_id', 'semester_id',
         'inspection_date', 'start_time', 'end_time', 'type',
-        'status', 'objectives', 'notes', 'created_by',
+        'status', 'objectives', 'notes', 'created_by','is_current',
     ];
 
     protected $casts = [

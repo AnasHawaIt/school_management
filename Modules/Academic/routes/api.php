@@ -117,6 +117,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::post('/{id}/assign-counselor',                   [InspectionProgramController::class, 'assignCounselor']);
         Route::delete('/{id}/unassign-counselor/{counselorId}', [InspectionProgramController::class, 'unassignCounselor']);
         Route::post('/{id}/observation',                        [InspectionProgramController::class, 'submitObservation']);
+        Route::post('/{id}/set-current', [InspectionProgramController::class, 'setCurrent']);
         Route::get('/counselor/current', [InspectionProgramController::class, 'currentCounselorProgram']
         );
     });

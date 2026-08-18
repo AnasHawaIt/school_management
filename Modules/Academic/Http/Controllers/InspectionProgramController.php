@@ -130,10 +130,26 @@ class InspectionProgramController extends Controller
             'data'    => InspectionProgramResource::collection($programs),
         ]);
     }
+    public function setCurrent(int $id): JsonResponse
+    {
+        try {
+            $this->programService->setCurrent($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'inspection program set as current successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+    }
     public function currentCounselorProgram(): JsonResponse
     {
-        $counselorId = auth()->user()->id;
-        $program = $this->programService->getCurrentCounselorProgram($counselorId);
+        $counselor = \Modules\Academic\Entities\Counselor::where('user_id', auth()->id())->firstOrFail();
+        $program = $this->programService->getCurrentCounselorProgram($counselor->id);
 
         return response()->json([
             'success' => true,
