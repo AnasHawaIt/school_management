@@ -145,4 +145,17 @@ class StudentRepository implements StudentRepositoryInterface
             })->count(),
         ];
     }
+    public function assignStudent(int $sectionId, int $studentId, int $semesterId, int $academicYearId): bool
+    {
+        $student = $this->model->findOrFail($studentId);
+
+        $student->sections()->syncWithoutDetaching([
+            $sectionId => [
+                'semester_id'      => $semesterId,
+                'academic_year_id' => $academicYearId,
+            ],
+        ]);
+
+        return true;
+    }
 }

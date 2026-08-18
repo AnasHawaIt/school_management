@@ -19,6 +19,7 @@ interface StudentPointRepositoryInterface
 
     public function getSectionRanking(int $sectionId, int $semesterId);
 
+    public function assignStudent(int $sectionId, int $studentId, int $semesterId, int $academicYearId): bool;
 
     public function getStats(array $filters = []): array;
 }

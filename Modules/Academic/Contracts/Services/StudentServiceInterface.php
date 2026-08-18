@@ -18,4 +18,5 @@ interface StudentServiceInterface
     public function getStudentsBySection(int $sectionId);
     public function getSectionStats(int $sectionId): array;
     public function toggleStatus(int $id, string $status): object;
+    public function assignStudentToSection(int $sectionId, int $studentId, int $semesterId, int $academicYearId): bool;
 }

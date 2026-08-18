@@ -182,4 +182,33 @@ class StudentController extends Controller
             'data'    => $this->studentService->getSectionStats($sectionId),
         ]);
     }
+    public function assignToSection(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'section_id'       => 'required|integer|exists:sections,id',
+            'student_id'       => 'required|integer|exists:students,id',
+            'semester_id'      => 'required|integer|exists:semesters,id',
+            'academic_year_id' => 'required|integer|exists:academic_years,id',
+        ]);
+
+        try {
+            $this->studentService->assignStudentToSection(
+                $validated['section_id'],
+                $validated['student_id'],
+                $validated['semester_id'],
+                $validated['academic_year_id']
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Student assigned to section successfully.'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 400);
+        }
+    }
 }

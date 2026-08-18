@@ -39,6 +39,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::post('/{student}/transfer',      [StudentController::class, 'transfer']);
         Route::patch('/{student}/status',       [StudentController::class, 'updateStatus']);
         Route::get('/{student}/parents',        [StudentController::class, 'parents']);
+        Route::post('/assign-student_section', [StudentController::class, 'assignToSection']);
         Route::get('/{student}/medical-record', [StudentController::class, 'medicalRecord']);
         Route::put('/{student}/medical-record', [StudentController::class, 'updateMedicalRecord']);
     });

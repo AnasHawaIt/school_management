@@ -104,4 +104,10 @@ class Student extends Model
             'participant'
         );
     }
+    public function sections(): BelongsToMany
+    {
+        return $this->belongsToMany(Section::class, 'section_student') // اسم الجدول الوسيط لديك
+        ->withPivot(['semester_id', 'academic_year_id'])
+            ->withTimestamps();
+    }
 }

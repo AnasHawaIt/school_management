@@ -159,4 +159,23 @@ class StudentService implements StudentServiceInterface
     {
         return $this->studentRepository->update($id, ['status' => $status]);
     }
+    public function assignStudentToSection(int $sectionId, int $studentId, int $semesterId, int $academicYearId): bool
+    {
+        return DB::transaction(function () use ($sectionId, $studentId, $semesterId, $academicYearId) {
+            $section = Section::findOrFail($sectionId);
+
+            if ($section->current_students >= $section->max_students) {
+                throw new \Exception('Section is full. Maximum capacity reached.');
+            }
+
+            $assigned = $this->studentRepository->assignStudent($sectionId, $studentId, $semesterId, $academicYearId);
+
+            if ($assigned) {
+                $this->studentRepository->update($studentId, ['current_section_id' => $sectionId]);
+                $section->increment('current_students');
+            }
+
+            return $assigned;
+        });
+    }
 }
