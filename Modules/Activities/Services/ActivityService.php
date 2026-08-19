@@ -185,6 +185,14 @@ class ActivityService
 
     public function publish(Activity $activity): Activity
     {
+        dd([
+            'id' => $activity->id,
+            'status' => $activity->status,
+            'status_type' => gettype($activity->status),
+            'status_raw' => $activity->getRawOriginal('status'),
+            'exists' => $activity->exists,
+        ]);
+
         if ($activity->status !== 'draft') {
             throw new \DomainException(
                 'Only draft activities can be published.'
@@ -491,5 +499,10 @@ class ActivityService
         return DB::transaction(function () use ($activity) {
             return $this->activityRepository->delete($activity);
         });
+    }
+
+    public function find($id)
+    {
+        return $this->activityRepository->findById($id);
     }
 }

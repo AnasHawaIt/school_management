@@ -8,6 +8,8 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
+use Modules\Activities\Entities\Activity;
+use Modules\Core\Entities\User;
 use Modules\Messagings\app\Policies\MessagePolicy;
 use Modules\Messagings\Entities\Message;
 
@@ -37,6 +39,8 @@ class AppServiceProvider extends ServiceProvider
             'student' => Student::class,
             'teacher' => Teacher::class,
             'guardian' => Guardian::class,
+            'user' => User::class,
+            'activity' => Activity::class,
         ]);
     }
 }

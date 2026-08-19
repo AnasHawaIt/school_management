@@ -74,15 +74,10 @@ class ActivityController extends Controller
     /**
      * Display activity.
      */
-    public function show(Activity $activity): JsonResponse
+    public function show($id): JsonResponse
     {
-        $activity->load([
-            'category',
-            'creator',
-            'participants.participant',
-            'supervisors.teacher.user',
-            'attachments.uploader',
-        ]);
+
+        $activity=$this->activityService->find($id);
 
         return response()->json([
             'success' => true,
@@ -96,22 +91,20 @@ class ActivityController extends Controller
      */
     public function update(
         UpdateActivityRequest $request,
-        Activity $activity
-    ): JsonResponse {
-        $data = $request->validated();
+        int $id
+    ) {
+        $activity = $this->activityService->find($id);
 
         $activity = $this->activityService->update(
             $activity,
-            $data
+            $request->validated()
         );
 
         return response()->json([
-            'success' => true,
-            'message' => 'Activity updated successfully.',
+            'message' => 'Activity updated successfully',
             'data' => $activity,
         ]);
     }
-
     /**
      * Publish activity.
      */

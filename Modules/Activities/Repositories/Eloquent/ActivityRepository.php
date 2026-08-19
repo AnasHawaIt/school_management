@@ -86,13 +86,14 @@ class ActivityRepository implements ActivityRepositoryInterface
 
     public function update(
         Activity $activity,
-        array    $data
+        array $data
     ): Activity
     {
         $activity->update($data);
 
         return $activity->refresh();
     }
+
 
     public function delete(Activity $activity): bool
     {

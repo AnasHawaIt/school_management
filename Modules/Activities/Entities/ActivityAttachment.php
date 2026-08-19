@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Activities\Models;
+namespace Modules\Activities\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
