@@ -7,7 +7,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 interface CounselorRepositoryInterface
 {
     public function getAll(array $filters = []);
-    public function paginate(int $perPage = 15, array $columns = ['*']): LengthAwarePaginator;
     public function findById(int $id);
     public function create(array $data): object;
     public function update(int $id, array $data): object;
