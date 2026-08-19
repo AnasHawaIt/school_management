@@ -55,7 +55,6 @@ class StudentPoint extends Model
         return $this->belongsTo(StudentAttendance::class, 'student_attendance_id');
     }
 
-    // الموجه أو المعلم اللي أعطى النقطة
     public function givenBy()
     {
         if ($this->given_by_type === 'counselor') {
@@ -66,7 +65,6 @@ class StudentPoint extends Model
 
     // ===================== Accessors =====================
 
-    // النقاط الفعلية: سالبة إن كانت negative
     public function getEffectivePointsAttribute(): int
     {
         return $this->type === 'negative' ? -$this->points : $this->points;

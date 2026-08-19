@@ -101,11 +101,12 @@ class InspectionProgramController extends Controller
 
     public function submitObservation(Request $request, int $id): JsonResponse
     {
+        $user = auth()->user();
         $data = $request->validate([
-            'counselor_id' => 'required|exists:counselors,id',
             'objectives'  => 'required|string',
             'result'       => 'nullable|in:excellent,good,average,weak',
         ]);
+        $data['counselor_id'] = $user->id;
         $counselorId = $data['counselor_id'];
         unset($data['counselor_id']);
 
