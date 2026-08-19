@@ -6,6 +6,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\Core\Contracts\Services\RoleServiceInterface;
+use Modules\Core\Entities\Permission;
 use Modules\Core\Http\Requests\StoreRoleRequest;
 use Modules\Core\Http\Requests\UpdateRoleRequest;
 use Modules\Core\Http\Resources\RoleResource;
@@ -203,5 +204,25 @@ class RoleController extends Controller
                 'message' => $e->getMessage(),
             ], 400);
         }
+    }
+    public function create_permission(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'unique:permissions,name'],
+            'display_name' => ['nullable', 'string'],
+            'description'=>'nullable','string'
+        ]);
+
+        $permission = Permission::create([
+            'name' => $validated['name'],
+            'display_name' => $validated['display_name'] ?? 'sanctum',
+            'description' => $validated['description'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Permission created successfully.',
+            'data' => $permission,
+        ], 201);
     }
 }
