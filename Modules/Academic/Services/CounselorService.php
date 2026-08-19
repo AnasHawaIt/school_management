@@ -35,11 +35,10 @@ class CounselorService implements CounselorServiceInterface
 
                 $fileName = time() . '_' . uniqid() . '.' . $data['avatar']->getClientOriginalExtension();
 
-                $destinationPath = public_path('avatars/counselors');
+                $path = $data['avatar']->storeAs('avatars/counselors', $fileName, 'public');
 
-                $data['avatar']->move($destinationPath, $fileName);
+                $avatarPath = '/' . $path;
 
-                $avatarPath = 'avatars/counselors/' . $fileName;
             }
             $user = User::create([
                 'first_name' => $data['first_name'],
