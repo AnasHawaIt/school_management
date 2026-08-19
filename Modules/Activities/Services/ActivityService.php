@@ -185,14 +185,6 @@ class ActivityService
 
     public function publish(Activity $activity): Activity
     {
-        dd([
-            'id' => $activity->id,
-            'status' => $activity->status,
-            'status_type' => gettype($activity->status),
-            'status_raw' => $activity->getRawOriginal('status'),
-            'exists' => $activity->exists,
-        ]);
-
         if ($activity->status !== 'draft') {
             throw new \DomainException(
                 'Only draft activities can be published.'

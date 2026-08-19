@@ -4,7 +4,6 @@
 namespace Modules\Activities\app\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\File;
 
 class UploadActivityAttachmentRequest extends FormRequest
 {

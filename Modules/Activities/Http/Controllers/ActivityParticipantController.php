@@ -5,9 +5,9 @@ namespace Modules\Activities\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Modules\Activities\app\Requests\RegisterParticipantRequest;
 use Modules\Activities\Entities\Activity;
 use Modules\Activities\Entities\ActivityParticipant;
-use Modules\Activities\Http\Requests\RegisterParticipantRequest;
 use Modules\Activities\Services\ActivityService;
 
 class ActivityParticipantController extends Controller

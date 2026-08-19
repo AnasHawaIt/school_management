@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Modules\Activities\app\Requests\UploadActivityAttachmentRequest;
 use Modules\Activities\Entities\Activity;
-use Modules\Activities\Models\ActivityAttachment;
+use Modules\Activities\Entities\ActivityAttachment;
 use Modules\Activities\Services\ActivityAttachmentService;
 
 class ActivityAttachmentController extends Controller

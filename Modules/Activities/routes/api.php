@@ -15,13 +15,13 @@ Route::middleware('auth:sanctum')
     Route::get('/{id}', [ActivityController::class, 'show']);
     Route::post('/{id}', [ActivityController::class, 'update']);
     Route::delete('/{id}', [ActivityController::class, 'destroy']);
-    Route::post('/{id}/publish', [ActivityController::class, 'publish']);
-    Route::post('/{id}/start', [ActivityController::class, 'start']);
-    Route::post('/{id}/cancel', [ActivityController::class, 'cancel']);
-    Route::post('/{id}/complete', [ActivityController::class, 'complete']);
-    Route::post('/{id}/participants', [ActivityParticipantController::class, 'register']);
-    Route::post('/{id}/supervisors', [ActivitySupervisorController::class, 'store']);
-    Route::post('/{id}/attachments', [ActivityAttachmentController::class, 'store']);
+    Route::post('/{activity}/publish', [ActivityController::class, 'publish']);
+    Route::post('/{activity}/start', [ActivityController::class, 'start']);
+    Route::post('/{activity}/cancel', [ActivityController::class, 'cancel']);
+    Route::post('/{activity}/complete', [ActivityController::class, 'complete']);
+    Route::post('/{activity}/participants', [ActivityParticipantController::class, 'register']);
+    Route::post('/{activity}/supervisors', [ActivitySupervisorController::class, 'store']);
+    Route::post('/{activity}/attachments', [ActivityAttachmentController::class, 'store']);
     });
 
 Route::middleware('auth:sanctum')
