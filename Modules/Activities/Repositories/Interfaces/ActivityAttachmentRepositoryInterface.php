@@ -4,7 +4,7 @@
 namespace Modules\Activities\Repositories\Interfaces;
 
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Activities\Models\ActivityAttachment;
+use Modules\Activities\Entities\ActivityAttachment;
 
 interface ActivityAttachmentRepositoryInterface
 {

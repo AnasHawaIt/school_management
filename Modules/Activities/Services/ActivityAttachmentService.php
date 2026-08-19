@@ -6,9 +6,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Modules\Activities\Entities\Activity;
+use Modules\Activities\Entities\ActivityAttachment;
 use Modules\Activities\Events\ActivityAttachmentDeleted;
 use Modules\Activities\Events\ActivityAttachmentUploaded;
-use Modules\Activities\Models\ActivityAttachment;
 use Modules\Activities\Repositories\Interfaces\ActivityAttachmentRepositoryInterface;
 
 class ActivityAttachmentService

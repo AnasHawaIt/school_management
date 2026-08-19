@@ -5,7 +5,7 @@ namespace Modules\Activities\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Activities\Models\ActivityAttachment;
+use Modules\Activities\Entities\ActivityAttachment;
 
 
 class ActivityAttachmentUploaded

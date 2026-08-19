@@ -22,27 +22,23 @@ Route::middleware('auth:sanctum')
     Route::post('/{activity}/participants', [ActivityParticipantController::class, 'register']);
     Route::post('/{activity}/supervisors', [ActivitySupervisorController::class, 'store']);
     Route::post('/{activity}/attachments', [ActivityAttachmentController::class, 'store']);
+    Route::delete('attachments/{attachment}', [ActivityAttachmentController::class, 'destroy']);
+    Route::middleware('auth:sanctum')
+        ->prefix('participants')
+        ->group(function () {
+            Route::post('/{participant}/confirm', [ActivityParticipantController::class, 'confirm']);
+            Route::post('/{participant}/cancel', [ActivityParticipantController::class, 'cancel']);
+            Route::post('/{participant}/attend', [ActivityParticipantController::class, 'attend']);
+            Route::post('/{participant}/absent', [ActivityParticipantController::class, 'absent']);
+        });
     });
 
-Route::middleware('auth:sanctum')
-    ->prefix('participants')
-    ->group(function () {
-        Route::post('/{id}/confirm', [ActivityParticipantController::class, 'confirm']);
-        Route::post('/{id}/cancel', [ActivityParticipantController::class, 'cancel']);
-        Route::post('/{id}/attend', [ActivityParticipantController::class, 'attend']);
-        Route::post('/{id}/absent', [ActivityParticipantController::class, 'absent']);
-});
+
 
 Route::middleware('auth:sanctum')
     ->prefix('supervisors')
     ->group(function () {
-        Route::post('/{id}/primary', [ActivitySupervisorController::class, 'primary']);
-        Route::delete('/{id}', [ActivitySupervisorController::class, 'destroy']);
+        Route::post('/{supervisor}/primary', [ActivitySupervisorController::class, 'primary']);
+        Route::delete('/{supervisor}', [ActivitySupervisorController::class, 'destroy']);
     });
 
-Route::middleware('auth:sanctum')
-    ->prefix('attachments')
-    ->group(function () {
-        Route::post('/{id}/upload', [ActivityAttachmentController::class, 'store']);
-        Route::delete('/{id}', [ActivityAttachmentController::class, 'destroy']);
-    });
