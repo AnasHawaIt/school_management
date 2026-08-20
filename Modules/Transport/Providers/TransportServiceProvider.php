@@ -4,10 +4,12 @@ namespace Modules\Transport\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Transport\Repositories\Eloquent\BusLocationRepository;
 use Modules\Transport\Repositories\Eloquent\BusRepository;
 use Modules\Transport\Repositories\Eloquent\RouteRepository;
 use Modules\Transport\Repositories\Eloquent\RouteStopRepository;
 use Modules\Transport\Repositories\Eloquent\SubscriptionRepository;
+use Modules\Transport\Repositories\Interfaces\BusLocationRepositoryInterface;
 use Modules\Transport\Repositories\Interfaces\BusRepositoryInterface;
 use Modules\Transport\Repositories\Interfaces\RouteRepositoryInterface;
 use Modules\Transport\Repositories\Interfaces\RouteStopRepositoryInterface;
@@ -48,7 +50,10 @@ class TransportServiceProvider extends ServiceProvider
         $this->app->bind(RouteRepositoryInterface::class, RouteRepository::class);
         $this->app->bind(BusRepositoryInterface::class, BusRepository::class);
         $this->app->bind(RouteStopRepositoryInterface::class, RouteStopRepository::class);
-
+        $this->app->bind(
+            BusLocationRepositoryInterface::class,
+            BusLocationRepository::class
+        );
     }
 
     /**

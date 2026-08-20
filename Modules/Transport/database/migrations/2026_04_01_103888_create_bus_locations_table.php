@@ -11,26 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('route_stops', function (Blueprint $table) {
+        Schema::create('bus_locations', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('route_id')
+            $table->foreignId('bus_id')
                 ->constrained()
                 ->cascadeOnDelete();
-
-            $table->string('stop_name');
-
             $table->decimal('latitude', 10, 7);
             $table->decimal('longitude', 10, 7);
-
-            $table->unsignedInteger('sequence');
-
-            $table->time('estimated_arrival_time')->nullable();
-
-            $table->softDeletes();
+            $table->decimal('speed', 8, 2)->nullable();
+            $table->decimal('heading', 8, 2)->nullable();
+            $table->decimal('accuracy', 8, 2)->nullable();
+            $table->timestamp('recorded_at');
             $table->timestamps();
-
-            $table->unique(['route_id', 'sequence']);
+            $table->index(['bus_id', 'recorded_at']);
         });
     }
 
@@ -39,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('route_stops');
+        Schema::dropIfExists('bus_locations');
     }
 };

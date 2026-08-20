@@ -32,6 +32,7 @@ class User extends Authenticatable
         'user_type',
         'is_active',
         'email_verified_at',
+        'fcm_token',
     ];
 
     protected $hidden = [

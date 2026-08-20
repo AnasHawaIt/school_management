@@ -16,6 +16,6 @@ class RouteUpdatedLogEventListener
             ->withProperties([
                 'Route_id' => $route->id,
             ])
-            ->log('Route.created');
+            ->log('Route.Updated');
     }
 }

@@ -3,13 +3,12 @@
 namespace Modules\Transport\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\Library\Listeners\BookListeners\BookCreatedListener\BookCreatedLogEventListener;
 use Modules\Library\Listeners\BookListeners\BookDeletedListener\BookDeletedLogEventListener;
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedLogEventListener;
 
-
 use Modules\Transport\Events\BusEvents\BusCreated;
 use Modules\Transport\Events\BusEvents\BusDeleted;
+use Modules\Transport\Events\BusEvents\BusStopStageChanged;
 use Modules\Transport\Events\BusEvents\BusUpdated;
 
 
@@ -29,8 +28,10 @@ use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
 
 
 use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedBroadcastEventListener;
+use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedLogEventListener;
 use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedNotificationDatabaseListener;
 use Modules\Transport\Listeners\BusListeners\BusDeletedListeners\BusDeletedBroadcastEventListener;
+use Modules\Transport\Listeners\BusListeners\BusStopStageChangedListener;
 use Modules\Transport\Listeners\BusListeners\BusUpdateListeners\BusUpdateBroadcastEventListener;
 
 use Modules\Transport\Listeners\RouteListeners\RouteCreatedLogEventListener;
@@ -62,17 +63,22 @@ class EventServiceProvider extends ServiceProvider
         BusCreated::class => [
            BusCreatedNotificationDatabaseListener::class,
             BusCreatedBroadcastEventListener::class,
-            BookCreatedLogEventListener::class
+
         ],
 
         BusUpdated::class => [
             BusUpdateBroadcastEventListener::class,
             BookUpdatedLogEventListener::class,
+            BusCreatedLogEventListener::class,
         ],
 
         BusDeleted::class => [
             BusDeletedBroadcastEventListener::class,
             BookDeletedLogEventListener::class,
+        ],
+
+        BusStopStageChanged::class => [
+            BusStopStageChangedListener::class,
         ],
 
         RouteCreated::class => [

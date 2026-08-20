@@ -12,7 +12,7 @@ class Notification extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'notifications';
+    protected $table = 'notification';
 
     protected $fillable = [
         'user_id',

@@ -14,11 +14,28 @@ class Bus extends Model
 
     protected $dates = ['deleted_at'];
 
-    protected $fillable = ['plate_number', 'capacity'];
+    protected $fillable = [
+        'plate_number',
+        'status',
+        'capacity',
+    ];
 
     public function routes()
     {
         return $this->hasMany(Route::class);
+    }
+
+    public function locations()
+    {
+        return $this->hasMany(BusLocation::class);
+    }
+
+    public function trackingStates()
+    {
+        return $this->hasMany(
+            BusTrackingState::class,
+            'bus_id'
+        );
     }
 
     // protected static function newFactory(): BusFactory

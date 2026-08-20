@@ -33,8 +33,6 @@ Route::middleware('auth:sanctum')
         });
     });
 
-
-
 Route::middleware('auth:sanctum')
     ->prefix('supervisors')
     ->group(function () {

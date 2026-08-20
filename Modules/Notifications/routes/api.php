@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Notifications\Http\Controllers\FcmTokenController;
 use Modules\Notifications\Http\Controllers\NotificationController;
 
 Route::middleware(['auth:sanctum'])->prefix('Notifications')->group(function () {
@@ -16,4 +17,9 @@ Route::middleware(['auth:sanctum'])->prefix('Notifications')->group(function () 
     Route::delete('/{id}/force', [NotificationController::class, 'forceDelete']);
     Route::post('/{id}/resend', [NotificationController::class, 'resend']);
     Route::post('/', [NotificationController::class, 'store']);
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('notifications/fcm-token', [FcmTokenController::class, 'update']);
 });

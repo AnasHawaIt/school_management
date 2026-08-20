@@ -13,11 +13,22 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
-            $table->foreignId('route_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('student_id')
+                ->constrained('students')
+                ->cascadeOnDelete();
+            $table->foreignId('route_id')
+                ->constrained()
+                ->cascadeOnDelete();
+            $table->foreignId('route_stop_id')
+                ->nullable()
+                ->constrained('route_stops')
+                ->nullOnDelete();
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('status', ['active', 'expired'])->default('active');
+            $table->enum('status', [
+                'active',
+                'expired'
+            ])->default('active');
             $table->softDeletes();
             $table->timestamps();
         });

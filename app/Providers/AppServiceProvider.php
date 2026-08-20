@@ -12,6 +12,8 @@ use Modules\Activities\Entities\Activity;
 use Modules\Core\Entities\User;
 use Modules\Messagings\app\Policies\MessagePolicy;
 use Modules\Messagings\Entities\Message;
+use Modules\Notifications\Entities\Notification;
+use Modules\Transport\Entities\Bus;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,7 +42,9 @@ class AppServiceProvider extends ServiceProvider
             'teacher' => Teacher::class,
             'guardian' => Guardian::class,
             'user' => User::class,
-            'activity' => Activity::class,
+            'notification' => Notification::class,
+            'activity'     => Activity::class,
+            'bus'          => Bus::class,
         ]);
     }
 }
