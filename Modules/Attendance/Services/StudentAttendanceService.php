@@ -25,10 +25,7 @@ class StudentAttendanceService implements StudentAttendanceServiceInterface
     public function recordAttendance(array $data): object
     {
         $data['recorded_by'] = Auth::id();
-
-        // إذا موجود — حدّث، إذا مو موجود — أنشئ
         $existing = $this->repository->findByStudentAndDate($data['student_id'], $data['date']);
-
         return $existing
             ? $this->repository->update($existing->id, $data)
             : $this->repository->create($data);

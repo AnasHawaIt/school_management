@@ -17,7 +17,6 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
         Route::delete('/{id}', [StudentAttendanceController::class, 'destroy']);
     });
 
-    // حضور الطلاب بالشعبة
     Route::prefix('sections/{section}')->group(function () {
         Route::get('/attendance',       [StudentAttendanceController::class, 'sectionAttendance']);
         Route::get('/attendance-stats', [StudentAttendanceController::class, 'sectionStats']);

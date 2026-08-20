@@ -15,11 +15,11 @@ class StudentAttendanceResource extends JsonResource
             'late_minutes'  => $this->late_minutes,
             'notes'         => $this->notes,
 
-            // البيانات الشخصية عبر student->user
             'student' => $this->whenLoaded('student', fn() => [
                 'id'         => $this->student->id,
                 'student_id' => $this->student->student_id,
                 'full_name'  => $this->student->user->first_name . ' ' . $this->student->user->last_name,
+                'full_name_ar'=>$this->student->user->first_name_ar . ' ' . $this->student->user->last_name_ar,
                 'gender'     => $this->student->user->gender,
                 'avatar'     => $this->student->user->avatar
                     ? asset('storage/' . $this->student->user->avatar)

@@ -5,6 +5,7 @@ namespace Modules\Attendance\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Academic\Services\StudentPointService;
 use Modules\Attendance\Contracts\Services\StudentAttendanceServiceInterface;
 use Modules\Attendance\Http\Requests\RecordStudentAttendanceRequest;
 use Modules\Attendance\Http\Requests\BulkRecordAttendanceRequest;
@@ -13,7 +14,7 @@ use Modules\Attendance\Http\Resources\StudentAttendanceResource;
 class StudentAttendanceController extends Controller
 {
     public function __construct(
-        protected StudentAttendanceServiceInterface $attendanceService,
+        protected StudentAttendanceServiceInterface $attendanceService,protected StudentPointService $pointService
     ) {}
 
     public function index(Request $request): JsonResponse
@@ -46,6 +47,7 @@ class StudentAttendanceController extends Controller
     public function store(RecordStudentAttendanceRequest $request): JsonResponse
     {
         $record = $this->attendanceService->recordAttendance($request->validated());
+        $this->pointService->autoAssignFromAttendance($record);
         return response()->json([
             'success' => true,
             'message' => 'Attendance recorded successfully.',

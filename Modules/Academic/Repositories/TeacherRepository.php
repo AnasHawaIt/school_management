@@ -82,11 +82,9 @@ class TeacherRepository implements TeacherRepositoryInterface
 
     public function  getTeacherTimetable(int $teacherId, int $semesterId): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|Teacher|null
     {
-        //استخدام دالة with هنا يسمى في لارافل Eager Loading. ميزته الأساسية هي حل مشكلة الـ (N+1 query) في قواعد البيانات، حيث يقوم بجلب المعلم وجدوله والعلاقات المرتبطة به دفعة واحدة في استعلامات محدودة بدلاً من عمل استعلام لكل سطر.
         return $this->model->with([
             'timetables' => fn($q) => $q
                 ->where('semester_id', $semesterId)
-                ->with(['subject', 'section.class.grade'])
                 ->orderBy('day_of_week')
                 ->orderBy('period_number'),
         ])->findOrFail($teacherId);

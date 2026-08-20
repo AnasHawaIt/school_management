@@ -4,6 +4,7 @@ namespace Modules\Academic\Services;
 
 use Modules\Academic\Contracts\Repositories\StudentPointRepositoryInterface;
 use Modules\Academic\Entities\PointCategory;
+use Modules\Academic\Entities\StudentPoint;
 use Modules\Attendance\Entities\StudentAttendance;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,7 +72,7 @@ class StudentPointService
             if (!$shouldAssign) continue;
 
 
-            $exists = \Modules\Academic\Entities\StudentPoint::where([
+            $exists = StudentPoint::where([
                 'student_id'           => $attendance->student_id,
                 'student_attendance_id'=> $attendance->id,
                 'point_category_id'    => $category->id,

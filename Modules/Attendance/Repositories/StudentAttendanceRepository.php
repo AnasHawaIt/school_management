@@ -12,7 +12,7 @@ class StudentAttendanceRepository implements StudentAttendanceRepositoryInterfac
     public function getAll(array $filters = [])
     {
         $query = $this->model->with([
-            'student.user', // الاسم عبر user
+            'student.user',
             'section',
             'status',
             'recorder',
@@ -56,7 +56,7 @@ class StudentAttendanceRepository implements StudentAttendanceRepositoryInterfac
     {
         if (empty($records)) return false;
 
-        // حذف سجلات نفس الشعبة ونفس اليوم ثم إعادة الإدراج
+
         $this->model
             ->where('section_id', $records[0]['section_id'])
             ->where('date', $records[0]['date'])

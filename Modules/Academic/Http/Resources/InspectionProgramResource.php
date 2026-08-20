@@ -41,6 +41,7 @@ class InspectionProgramResource extends JsonResource
                 'role'         => $c->pivot->role,
                 'observation'  => $c->pivot->observation,
                 'result'       => $c->pivot->result,
+                'user_id'      => $c->user_id,
             ])
             ),
 

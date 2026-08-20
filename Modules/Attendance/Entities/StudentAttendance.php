@@ -29,7 +29,6 @@ class StudentAttendance extends Model
 
     public function student(): BelongsTo
     {
-        // البيانات الشخصية عبر student->user
         return $this->belongsTo(Student::class);
     }
 
