@@ -54,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [RoleController::class, 'update']);
         Route::delete('/{id}', [RoleController::class, 'destroy']);
 
+        Route::post('/create_permission', [RoleController::class, 'create_permission']);
+
         // Role permissions
         Route::post('/{id}/permissions', [RoleController::class, 'attachPermissions']);
         Route::delete('/{id}/permissions/{permissionId}', [RoleController::class, 'detachPermission']);
