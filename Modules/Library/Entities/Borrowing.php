@@ -14,6 +14,8 @@ class Borrowing extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $table = 'transactions';
+
 
     protected $fillable = [
         'member_id',
