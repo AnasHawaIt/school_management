@@ -55,8 +55,6 @@ class StudentPointService
         return $this->repository->bulkCreate($records);
     }
 
-    // ربط النقاط بالحضور تلقائياً
-    // يُستدعى بعد تسجيل الحضور
     public function autoAssignFromAttendance(StudentAttendance $attendance): void
     {
         $categories = PointCategory::where('auto_assign', true)->where('is_active', true)->get();
