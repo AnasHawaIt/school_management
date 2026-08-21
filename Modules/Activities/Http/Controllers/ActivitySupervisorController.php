@@ -19,6 +19,10 @@ class ActivitySupervisorController extends Controller
     /**
      * Add supervisor.
      */
+
+    public function index(){
+            return ActivitySupervisor::all();
+    }
     public function store(
         AddSupervisorRequest $request,
         Activity $activity

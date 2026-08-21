@@ -11,6 +11,13 @@ class TransportDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            BusSeeder::class,
+            RouteSeeder::class,
+            RouteStopSeeder::class,
+            SubscriptionSeeder::class,
+            BusLocationSeeder::class,
+            BusTrackingStateSeeder::class,
+        ]);
     }
 }

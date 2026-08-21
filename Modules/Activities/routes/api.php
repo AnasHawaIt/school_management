@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')
 Route::middleware('auth:sanctum')
     ->prefix('supervisors')
     ->group(function () {
+        Route::get('/', [ActivitySupervisorController::class, 'index']);
         Route::post('/{supervisor}/primary', [ActivitySupervisorController::class, 'primary']);
         Route::delete('/{supervisor}', [ActivitySupervisorController::class, 'destroy']);
     });
