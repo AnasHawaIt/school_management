@@ -29,7 +29,5 @@ return [
         'key' => env('TRACCER_SMS_API_KEY'),
     ],
 
-    'geoapify' => [
-        'key' => env('GEOAPIFY_API_KEY'),
-    ],
+
 ];

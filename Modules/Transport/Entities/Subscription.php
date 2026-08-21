@@ -16,12 +16,18 @@ class Subscription extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-            'student_id',
-            'route_id',
-            'start_date',
-            'end_date',
-            'status'
-        ];
+        'student_id',
+        'route_id',
+        'route_stop_id',
+        'start_date',
+        'end_date',
+        'status',
+    ];
+
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+    ];
 
     public function student()
     {
@@ -31,6 +37,11 @@ class Subscription extends Model
     public function route()
     {
         return $this->belongsTo(Route::class);
+    }
+
+    public function routeStop()
+    {
+        return $this->belongsTo(RouteStop::class);
     }
 
     // protected static function newFactory(): SubscriptionFactory

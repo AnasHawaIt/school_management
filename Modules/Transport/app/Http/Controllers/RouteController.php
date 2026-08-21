@@ -4,14 +4,10 @@ namespace Modules\Transport\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Library\Services\CategoryService;
 use Modules\Transport\app\Http\Requests\StoreRouteRequest;
 use Modules\Transport\app\Http\Requests\UpdateRouteRequest;
 use Modules\Transport\app\Http\Resources\RouteResource;
-use Modules\Transport\Events\BusEvents\CategoryDeleted;
-use Modules\Transport\Events\BusEvents\CategoryRestored;
-use Modules\Transport\Events\RouteEvents\AuthorDeleted;
-use Modules\Transport\Events\RouteEvents\AuthorRestored;
-use Modules\Transport\Services\CategoryService;
 
 class RouteController extends Controller
 {

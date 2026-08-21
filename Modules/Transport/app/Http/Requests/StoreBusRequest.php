@@ -16,7 +16,7 @@ class StoreBusRequest extends FormRequest
         return [
             'plate_number' => 'required|max:255',
             'capacity' => 'required|integer|min:1',
-        ];
+            ];
     }
 
     public function messages(): array

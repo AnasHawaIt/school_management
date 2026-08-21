@@ -59,4 +59,5 @@ class BusRepository implements BusRepositoryInterface
         $bus = Bus::withTrashed()->findOrFail($id);
         return $bus->forceDelete();
     }
+
 }

@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'firebase' => [
+        'api_key' => env('FIREBASE_API_KEY'),
+    ],
+
+    'geoapify' => [
+        'key' => env('GEOAPIFY_API_KEY'),
+    ],
+
 ];

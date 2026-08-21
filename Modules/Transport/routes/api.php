@@ -2,10 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Transport\app\Http\Controllers\BusController;
+use Modules\Transport\app\Http\Controllers\BusLocationController;
+use Modules\Transport\app\Http\Controllers\BusTrackingController;
 use Modules\Transport\app\Http\Controllers\RouteController;
 use Modules\Transport\app\Http\Controllers\RouteStopController;
 use Modules\Transport\app\Http\Controllers\SubscriptionController;
 use Modules\Transport\app\Http\Controllers\TransportController;
+use Modules\Transport\Services\GeoapifyService;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('transports', TransportController::class)->names('transport');
@@ -62,4 +65,16 @@ Route::prefix('transport')->group(function() {
         route::delete('/{id}/force', [SubscriptionController::class, 'forceDelete']);
         Route::get('/AllOnlyTrashed', [BusController::class, 'AllOnlyTrashed']);
     });
+
+    Route::get('bus-locations', [BusLocationController::class, 'index']);
+    Route::post('/{bus}/location', [BusLocationController::class, 'store']);
+    Route::get('/{bus}/location/latest', [BusLocationController::class, 'latest']);
+    Route::get('/{bus}/locations', [BusLocationController::class, 'history']);
+    Route::delete('bus-locations/{id}', [BusLocationController::class, 'destroy']);
+
+    Route::get(
+        '/{bus}/tracking',
+        [BusTrackingController::class, 'currentStatus']
+    );
 });
+

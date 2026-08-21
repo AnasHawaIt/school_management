@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 use Modules\Transport\app\Http\Requests\StoreBusRequest;
 use Modules\Transport\app\Http\Requests\UpdateBusRequest;
 use Modules\Transport\app\Http\Resources\BusResource;
-use Modules\Transport\Services\AuthorService;
+use Modules\Transport\Services\BusService;
 
 class BusController extends Controller
 {
     protected $service;
 
-    public function __construct(AuthorService $service)
+    public function __construct(BusService $service)
     {
         $this->service = $service;
     }

@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('buses', function (Blueprint $table) {
             $table->id();
             $table->string('plate_number')->unique();
+            $table->enum('status', [
+                'active',
+                'inactive',
+                'maintenance'
+            ])->default('active');
             $table->integer('capacity');
             $table->softDeletes();
             $table->timestamps();
