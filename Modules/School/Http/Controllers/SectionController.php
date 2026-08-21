@@ -2,10 +2,13 @@
 
 namespace Modules\School\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Modules\School\Contracts\Services\SectionServiceInterface;
+use Modules\School\Entities\Section;
 use Modules\School\Http\Requests\StoreSectionRequest;
 use Modules\School\Http\Requests\UpdateSectionRequest;
 use Modules\School\Http\Resources\SectionResource;
@@ -113,6 +116,49 @@ class SectionController extends Controller
                 'success' => false,
                 'message' => $e->getMessage(),
             ], 400);
+        }
+    }
+
+    public function getSectionByTeacher(Request $request): JsonResponse
+    {
+        try {
+            // استخراج class_id من الـ Request
+            $classId = $request->input('class_id') ?? $request->input('classId');
+
+            if (!$classId) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Class ID is required.',
+                ], 422);
+            }
+
+            $teacherId = Auth::id();
+
+            $sections = Section::where('teacher_id', $teacherId)
+                ->where('class_id', $classId)
+                ->select('id', 'name')
+                ->get();
+
+            if ($sections->isEmpty()) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'No sections found for this teacher in the selected class.',
+                    'data'    => []
+                ], 404);
+            }
+
+            return response()->json([
+                'status'  => true,
+                'message' => 'Sections retrieved successfully.',
+                'data'    => $sections
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'An error occurred while fetching sections.',
+                'error'   => $e->getMessage()
+            ], 500);
         }
     }
 }

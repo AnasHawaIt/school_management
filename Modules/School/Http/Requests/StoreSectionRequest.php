@@ -20,6 +20,7 @@ class StoreSectionRequest extends FormRequest
             'current_students' => 'integer|min:0',
             'room_number' => 'nullable|string|max:50',
             'is_active' => 'boolean',
+            'teacher_id' => 'required|exists:teachers,id',
         ];
     }
 

@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [SectionController::class, 'show']);
         Route::put('/{id}', [SectionController::class, 'update']);
         Route::delete('/{id}', [SectionController::class, 'destroy']);
+        Route::get('get/sections', [SectionController::class, 'getSectionByTeacher']);
     });
 
     // Holidays

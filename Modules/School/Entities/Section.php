@@ -4,6 +4,7 @@ namespace Modules\School\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Academic\Entities\Teacher;
 
 class Section extends Model
 {
@@ -16,6 +17,7 @@ class Section extends Model
         'current_students',
         'room_number',
         'is_active',
+        'teacher_id',
     ];
 
     protected $casts = [
@@ -30,6 +32,10 @@ class Section extends Model
     public function class()
     {
         return $this->belongsTo(SchoolClass::class, 'class_id');
+    }
+    public function teachers()
+    {
+        return $this->belongsTo(Teacher::class, 'teacher_id');
     }
 
     /**
