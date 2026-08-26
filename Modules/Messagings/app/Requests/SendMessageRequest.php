@@ -14,6 +14,11 @@ class SendMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'conversation_id'=>[
+                'required',
+                'integer',
+                'exists:conversations,id'],
+
             'subject' => [
                 'required',
                 'string',
@@ -38,6 +43,7 @@ class SendMessageRequest extends FormRequest
 
             'recipients.*' => [
                 'integer',
+                'distinct',
                 'exists:users,id',
             ],
         ];

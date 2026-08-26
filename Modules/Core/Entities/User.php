@@ -11,6 +11,8 @@ use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Library\Entities\Member;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\Message;
 use Modules\Notifications\Entities\Notification;
 use Modules\SMS\Entities\SmsOtp;
 
@@ -188,5 +190,26 @@ class User extends Authenticatable
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function conversations()
+    {
+        return $this->belongsToMany(
+            Conversation::class,
+            'conversation_participants'
+        )->withPivot([
+            'joined_at',
+            'last_read_at',
+            'is_muted',
+            'is_archived',
+        ])->withTimestamps();
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(
+            Message::class,
+            'sender_id'
+        );
     }
 }

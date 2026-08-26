@@ -64,6 +64,7 @@ class MessageRepository implements MessageRepositoryInterface
         $message->recipients()
             ->where('recipient_id', $userId)
             ->update([
+                'is_read' => true,
                 'read_at' => now(),
             ]);
 

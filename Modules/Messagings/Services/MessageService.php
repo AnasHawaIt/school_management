@@ -5,6 +5,7 @@ namespace Modules\Messagings\Services;
 use App\Services\ImageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Events\AttachmentDeleted;
 use Modules\Messagings\Events\AttachmentUploaded;
 use Modules\Messagings\Events\MessageCreated;
@@ -55,37 +56,73 @@ class MessageService
         DB::beginTransaction();
 
         try {
+            $senderId = auth()->id();
+
+            $conversation = Conversation::findOrFail(
+                $data['conversation_id']
+            );
+
+            // المرسل يجب أن يكون عضواً في المحادثة
+            $isParticipant = $conversation
+                ->participants()
+                ->where('users.id', $senderId)
+                ->exists();
+
+            if (! $isParticipant) {
+                abort(403, 'You are not a participant in this conversation.');
+            }
 
             $message = $this->repo->create([
-                'sender_id' => auth()->id(),
-                'subject'   => $data['subject'],
-                'body'      => $data['body'],
-                'priority'  => $data['priority'] ?? 'normal',
+                'conversation_id' => $conversation->id,
+                'sender_id'       => $senderId,
+                'subject'         => $data['subject'],
+                'body'            => $data['body'],
+                'priority'        => $data['priority'] ?? 'normal',
             ]);
 
             foreach ($data['recipients'] as $recipientId) {
+
+                $recipientIsParticipant = $conversation
+                    ->participants()
+                    ->where('users.id', $recipientId)
+                    ->exists();
+
+                if (! $recipientIsParticipant) {
+                    abort(
+                        422,
+                        "User {$recipientId} is not a participant in this conversation."
+                    );
+                }
+
+                if ($recipientId == $senderId) {
+                    continue;
+                }
+
                 $message->recipients()->create([
                     'recipient_id' => $recipientId,
+                    'is_read'      => false,
                 ]);
             }
 
+            $conversation->update([
+                'last_message_at' => now(),
+            ]);
+
             DB::commit();
 
-            event(new MessageCreated($message,auth()->id()));
+            event(new MessageCreated($message, $senderId));
 
-            return $message;
+            return $message->load([
+                'sender',
+                'recipients',
+                'conversation',
+            ]);
 
-        }catch (\Throwable $e) {
+        } catch (\Throwable $e) {
 
             DB::rollBack();
 
-            return response()->json([
-                'message' => $e->getMessage(),
-                'file'    => $e->getFile(),
-                'line'    => $e->getLine(),
-                'trace'   => $e->getTraceAsString(),
-            ], 500);
-
+            throw $e;
         }
     }
 
@@ -146,39 +183,54 @@ class MessageService
     {
         $message = $this->repo->find($messageId);
 
-        Gate::authorize('reply', $message);
+        //Gate::authorize('reply', $message);
 
-        $message= $this->send([
-            'subject' => 'RE: '.$message->subject,
+        $newMessage = $this->send([
+            'conversation_id' => $message->conversation_id,
+
+            'subject' => 'RE: ' . $message->subject,
+
             'body' => $data['body'],
-            'recipients' => [$message->sender_id]
+
+            'recipients' => [
+                $message->sender_id,
+            ],
         ]);
 
-        event(new MessageReplied($message,auth()->id()));
+        event(
+            new MessageReplied(
+                $newMessage,
+                auth()->id()
+            )
+        );
 
-        return $message;
+        return $newMessage;
     }
 
-    public function forward(int $messageId,  array $recipients)
+    public function forward(int $messageId, array $recipients)
     {
         $message = $this->repo->find($messageId);
 
-        Gate::authorize('forward', $message);
+       // Gate::authorize('forward', $message);
 
-        $message= $this->send([
-            'subject' =>
-                'FW: '.$message->subject,
+        $newMessage = $this->send([
+            'conversation_id' => $message->conversation_id,
 
-            'body' =>
-                $message->body,
+            'subject' => 'FW: ' . $message->subject,
 
-            'recipients' =>
-                $recipients
+            'body' => $message->body,
+
+            'recipients' => $recipients,
         ]);
 
-        event(new MessageForwarded($message, auth()->id()));
+        event(
+            new MessageForwarded(
+                $newMessage,
+                auth()->id()
+            )
+        );
 
-        return $message;
+        return $newMessage;
     }
 
     public function unreadCount(int $userId)
@@ -190,7 +242,7 @@ class MessageService
     {
         $message = $this->repo->find($id);
 
-        Gate::authorize('delete', $message);
+       // Gate::authorize('delete', $message);
 
         $this->imageService->deleteAll($message);
 

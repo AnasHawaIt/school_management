@@ -8,6 +8,7 @@ namespace Modules\Messagings\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class MessageAttachment extends Model
 {
@@ -22,6 +23,15 @@ class MessageAttachment extends Model
         'mime_type',
         'file_size'
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'file_path' => 'encrypted',
+            'file_name' => 'encrypted',
+
+        ];
+    }
 
     public function message()
     {

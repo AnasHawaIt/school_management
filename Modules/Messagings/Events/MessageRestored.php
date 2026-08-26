@@ -13,6 +13,7 @@ class MessageRestored
 
     public function __construct(
         public Message $message,
+        public int $userId,
         public ?string $socketId = null
     ) {}
 

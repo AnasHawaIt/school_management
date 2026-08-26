@@ -2,14 +2,17 @@
 
 namespace Modules\Messagings\Listeners;
 
+use Modules\Core\Entities\User;
 use Modules\Messagings\Events\MessageReplied;
 
 class LogMessageRepliedEventListener
 {
     public function handle(MessageReplied $event): void
     {
+        $user = User::find($event->userId);
+
         activity()
-            ->causedBy($event->userId)
+            ->causedBy($user)
             ->performedOn($event->message)
             ->log('Message.Replied');
     }

@@ -17,11 +17,28 @@ class Message extends Model
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
+        'conversation_id',
         'sender_id',
         'subject',
         'body',
-        'priority'
+        'priority',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'subject' => 'encrypted',
+            'body' => 'encrypted',
+        ];
+    }
+
+    public function conversation()
+    {
+        return $this->belongsTo(
+            Conversation::class,
+            'conversation_id'
+        );
+    }
 
     public function sender()
     {

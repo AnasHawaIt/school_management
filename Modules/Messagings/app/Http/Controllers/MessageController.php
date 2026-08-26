@@ -66,6 +66,18 @@ class MessageController extends Controller
         ]);
     }
 
+    public function inbox()
+    {
+        $messages = $this->messageService->getInbox(
+            auth()->id()
+        );
+
+        return response()->json([
+            'success' => true,
+            'data' => $messages,
+        ]);
+    }
+
     public function restore($id)
     {
         return new MessageResource( $this->messageService->restore($id));
@@ -110,7 +122,7 @@ class MessageController extends Controller
         ]);
     }
 
-    public function sent()
+    public function getSent()
     {
         $messages = $this->messageService
                 ->getSent(

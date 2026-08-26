@@ -9,6 +9,7 @@ class MessageSent
 {
     public function __construct(
         public Message $message,
+        public int $userId,
         public ?string $socketId = null
     ) {}
 }

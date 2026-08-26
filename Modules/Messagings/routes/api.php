@@ -1,12 +1,21 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Messagings\app\Http\Controllers\ConversationController;
 use Modules\Messagings\app\Http\Controllers\MessageController;
 
-//
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/conversations', [ConversationController::class, 'index']);
+    Route::post('/conversations', [ConversationController::class, 'store']);
+    Route::get('/conversations/{conversation}', [ConversationController::class, 'show']);
+    Route::get('/conversations/{conversation}/messages', [MessageController::class, 'index']);
+    Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store']);
+});
+
 Route::prefix('Message')->middleware(["auth:sanctum"])->group(function () {
     Route::get('/inbox', [MessageController::class, 'inbox']);
-    Route::get('/sent', [MessageController::class, 'sent']);
+    Route::get('/getSent', [MessageController::class, 'getSent']);
     Route::get('/{id}', [MessageController::class, 'show'])->whereNumber('id');
     Route::get('/unread-count', [MessageController::class, 'unreadCount']);
     Route::get('/AllOnlyTrashed', [MessageController::class, 'AllOnlyTrashed']);

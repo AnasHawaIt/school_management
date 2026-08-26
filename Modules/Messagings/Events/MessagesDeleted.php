@@ -13,6 +13,7 @@ class MessagesDeleted
 
     public function __construct(
         public Message $Message,
+        public int $userId,
         public ?string $socketId = null
     ) {}
 }

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
-            $table->string('subject');
+            $table->foreignId('conversation_id')->constrained('conversations')->cascadeOnDelete();
+            $table->string('subject')->nullable();
             $table->longText('body');
             $table->enum('priority', [
                 'normal',
