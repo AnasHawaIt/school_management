@@ -14,10 +14,6 @@ class SendMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'conversation_id'=>[
-                'required',
-                'integer',
-                'exists:conversations,id'],
 
             'subject' => [
                 'required',

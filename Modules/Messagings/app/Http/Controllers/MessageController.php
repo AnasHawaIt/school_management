@@ -66,9 +66,22 @@ class MessageController extends Controller
         ]);
     }
 
-    public function inbox()
+    public function inbox(int $conversation)
     {
         $messages = $this->messageService->getInbox(
+            $conversation,
+            auth()->id()
+        );
+
+        return response()->json([
+            'success' => true,
+            'data' => $messages,
+        ]);
+    }
+
+    public function index()
+    {
+        $messages = $this->messageService->getIndex(
             auth()->id()
         );
 
@@ -86,8 +99,10 @@ class MessageController extends Controller
     public function unreadCount()
     {
         return response()->json([
-            'count' => $this->messageService
-                ->unreadCount(auth()->id())
+            'success' => true,
+            'count' => $this->messageService->unreadCount(
+                auth()->id()
+            ),
         ]);
     }
 
@@ -108,18 +123,22 @@ class MessageController extends Controller
 
     }
 
-    public function store(SendMessageRequest $request)
-    {
-        $message = $this->messageService
-            ->send(
-                $request->validated()
-            );
+    public function store(
+        SendMessageRequest $request,
+        int $conversation
+    ) {
+        $data = $request->validated();
+
+        // conversation_id يأتي من URL
+        $data['conversation_id'] = $conversation;
+
+        $message = $this->messageService->send($data);
 
         return response()->json([
             'success' => true,
             'message' => 'Message sent successfully',
-            'data' => $message
-        ]);
+            'data' => $message,
+        ], 201);
     }
 
     public function getSent()

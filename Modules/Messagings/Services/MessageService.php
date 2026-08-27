@@ -6,6 +6,7 @@ use App\Services\ImageService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\MessageStatistic;
 use Modules\Messagings\Events\AttachmentDeleted;
 use Modules\Messagings\Events\AttachmentUploaded;
 use Modules\Messagings\Events\MessageCreated;
@@ -53,48 +54,85 @@ class MessageService
 
     public function send(array $data)
     {
-        DB::beginTransaction();
+        return DB::transaction(function () use ($data) {
 
-        try {
             $senderId = auth()->id();
+
+            /*
+            |--------------------------------------------------------------------------
+            | 1. Find conversation
+            |--------------------------------------------------------------------------
+            */
 
             $conversation = Conversation::findOrFail(
                 $data['conversation_id']
             );
 
-            // المرسل يجب أن يكون عضواً في المحادثة
-            $isParticipant = $conversation
+            /*
+            |--------------------------------------------------------------------------
+            | 2. Check sender is participant
+            |--------------------------------------------------------------------------
+            */
+
+            $isSenderParticipant = $conversation
                 ->participants()
                 ->where('users.id', $senderId)
                 ->exists();
 
-            if (! $isParticipant) {
-                abort(403, 'You are not a participant in this conversation.');
+            if (! $isSenderParticipant) {
+                abort(
+                    403,
+                    'You are not a participant in this conversation.'
+                );
             }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 3. Create message
+            |--------------------------------------------------------------------------
+            */
 
             $message = $this->repo->create([
                 'conversation_id' => $conversation->id,
                 'sender_id'       => $senderId,
-                'subject'         => $data['subject'],
+                'subject'         => $data['subject'] ?? null,
                 'body'            => $data['body'],
                 'priority'        => $data['priority'] ?? 'normal',
             ]);
 
+            /*
+            |--------------------------------------------------------------------------
+            | 4. Get conversation participants
+            |--------------------------------------------------------------------------
+            */
+
+            $participantIds = $conversation
+                ->participants()
+                ->pluck('users.id')
+                ->toArray();
+
+            /*
+            |--------------------------------------------------------------------------
+            | 5. Create recipients
+            |--------------------------------------------------------------------------
+            */
+
             foreach ($data['recipients'] as $recipientId) {
 
-                $recipientIsParticipant = $conversation
-                    ->participants()
-                    ->where('users.id', $recipientId)
-                    ->exists();
-
-                if (! $recipientIsParticipant) {
+                /*
+                 * Recipient must belong to conversation
+                 */
+                if (! in_array($recipientId, $participantIds)) {
                     abort(
                         422,
                         "User {$recipientId} is not a participant in this conversation."
                     );
                 }
 
-                if ($recipientId == $senderId) {
+                /*
+                 * Do not create recipient record for sender
+                 */
+                if ((int) $recipientId === (int) $senderId) {
                     continue;
                 }
 
@@ -104,26 +142,55 @@ class MessageService
                 ]);
             }
 
+            /*
+            |--------------------------------------------------------------------------
+            | 6. Update conversation
+            |--------------------------------------------------------------------------
+            */
+
             $conversation->update([
                 'last_message_at' => now(),
             ]);
 
-            DB::commit();
+            /*
+            |--------------------------------------------------------------------------
+            | 7. Create statistics
+            |--------------------------------------------------------------------------
+            */
 
-            event(new MessageCreated($message, $senderId));
+            $message->statistic()->create([
+                'sender_id'     => $senderId,
+                'read_count'    => 0,
+                'reply_count'   => 0,
+                'forward_count' => 0,
+            ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | 8. Event
+            |--------------------------------------------------------------------------
+            */
+
+            event(
+                new MessageCreated(
+                    $message,
+                    $senderId
+                )
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | 9. Return message
+            |--------------------------------------------------------------------------
+            */
 
             return $message->load([
                 'sender',
-                'recipients',
                 'conversation',
+                'recipients',
+                'statistic',
             ]);
-
-        } catch (\Throwable $e) {
-
-            DB::rollBack();
-
-            throw $e;
-        }
+        });
     }
 
     public function markAsRead(int $messageId, int $userId)
@@ -135,9 +202,17 @@ class MessageService
         return $Messages;
     }
 
-    public function getInbox(int $userId)
+    public function getIndex(int $userId)
     {
-        return $this->repo->getInbox($userId);
+        return $this->repo->getIndex($userId);
+    }
+
+    public function getInbox(int $conversationId, int $userId)
+    {
+        return $this->repo->getInbox(
+            $conversationId,
+            $userId
+        );
     }
 
     public function getSent(int $userId)
@@ -148,6 +223,14 @@ class MessageService
     public function find(int $id)
     {
         return $this->repo->find($id);
+    }
+
+    public function statistic()
+    {
+        return $this->hasOne(
+            MessageStatistic::class,
+            'message_id'
+        );
     }
 
     public function uploadAttachment($id, $file)

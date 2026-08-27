@@ -3,7 +3,8 @@ namespace Modules\Messagings\Repositories\Interfaces;
 
 interface MessageRepositoryInterface
 {
-    public function getInbox(int $userId);
+    public function getIndex(int $userId);
+    public function getInbox(int $conversationId, int $userId);
     public function unreadCount(int $userId);
     public function getSent(int $userId);
     public function markAsRead(int $messageId, int $userId);

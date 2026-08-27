@@ -72,4 +72,9 @@ class Message extends Model
     {
         return $this->morphMany(Images::class, 'imageable');
     }
+
+    public function statistic()
+    {
+        return $this->hasOne(MessageStatistic::class);
+    }
 }

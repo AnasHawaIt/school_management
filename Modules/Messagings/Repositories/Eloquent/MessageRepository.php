@@ -32,16 +32,40 @@ class MessageRepository implements MessageRepositoryInterface
         return $message;
     }
 
-    public function getInbox(int $userId)
+    public function getIndex(int $userId)
     {
         return MessageRecipient::query()
+            ->where('recipient_id', $userId)
+            ->where('is_deleted', false)
             ->with([
                 'message.sender',
-                'message.images'
+                'message.conversation',
+                'message.attachments',
             ])
-            ->where('recipient_id', $userId)
             ->latest()
-            ->get();
+            ->paginate(20);
+    }
+
+    public function getInbox(
+        int $conversationId,
+        int $userId
+    ) {
+        return MessageRecipient::query()
+            ->where('recipient_id', $userId)
+            ->where('is_deleted', false)
+            ->whereHas('message', function ($query) use ($conversationId) {
+                $query->where(
+                    'conversation_id',
+                    $conversationId
+                );
+            })
+            ->with([
+                'message.sender',
+                'message.conversation',
+                'message.attachments',
+            ])
+            ->latest()
+            ->paginate(20);
     }
 
     public function getSent(int $userId)
@@ -74,8 +98,9 @@ class MessageRepository implements MessageRepositoryInterface
     public function unreadCount(int $userId)
     {
         return MessageRecipient::query()
-            ->where('recipient_id', $userId)
-            ->where('is_read', false)
+            ->forUser($userId)
+            ->unread()
+            ->where('is_deleted', false)
             ->count();
     }
 

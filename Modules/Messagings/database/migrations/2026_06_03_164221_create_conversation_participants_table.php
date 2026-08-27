@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('is_muted')->default(false);
             $table->boolean('is_archived')->default(false);
             $table->timestamps();
+            $table->softDeletes();
             $table->unique([
                 'conversation_id',
                 'user_id',

@@ -28,6 +28,25 @@ class ConversationController extends Controller
         ]);
     }
 
+    public function join(
+        Request $request,
+        int $conversation
+    ): JsonResponse {
+
+        $user = $request->user();
+
+        $conversation = $this->conversationService->join(
+            $conversation,
+            $user->id
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Joined conversation successfully.',
+            'data' => $conversation,
+        ]);
+    }
+
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([

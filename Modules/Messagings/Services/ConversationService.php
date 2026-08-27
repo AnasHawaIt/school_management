@@ -37,6 +37,35 @@ class ConversationService
         });
     }
 
+    public function join(int $conversationId, int $userId): Conversation
+    {
+        return DB::transaction(function () use ($conversationId, $userId) {
+
+            $conversation = Conversation::findOrFail($conversationId);
+
+            // منع الانضمام إلى private بشكل مباشر
+            if ($conversation->type === 'private') {
+                abort(403, 'You cannot join a private conversation directly.');
+            }
+
+            // هل المستخدم موجود أصلًا؟
+            $alreadyParticipant = $conversation
+                ->participants()
+                ->where('users.id', $userId)
+                ->exists();
+
+            if ($alreadyParticipant) {
+                abort(422, 'You are already a participant in this conversation.');
+            }
+
+            $conversation->participants()->attach($userId, [
+                'joined_at' => now(),
+            ]);
+
+            return $conversation->load('participants');
+        });
+    }
+
     public function getUserConversations(int $userId)
     {
         return Conversation::query()

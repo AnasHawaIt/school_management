@@ -19,11 +19,15 @@
          'recipient_id',
          'is_read',
          'read_at',
+         'is_archived',
+         'is_deleted',
      ];
 
      protected $casts = [
          'is_read' => 'boolean',
          'read_at' => 'datetime',
+         'is_archived' => 'boolean',
+         'is_deleted' => 'boolean',
      ];
 
      public function message()
