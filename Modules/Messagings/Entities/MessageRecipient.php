@@ -47,6 +47,11 @@
          );
      }
 
+     public function statistic()
+     {
+         return $this->hasOne(MessageStatistic::class, 'message_recipient_id');
+     }
+
      public function images()
      {
          return $this->morphMany(Images::class, 'imageable');

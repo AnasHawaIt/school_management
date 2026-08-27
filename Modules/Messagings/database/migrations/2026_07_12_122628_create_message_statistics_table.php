@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('message_statistics', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('message_id')
+            $table->id();$table->foreignId('message_id')
+                ->unique()
                 ->constrained()
                 ->cascadeOnDelete();
             $table->foreignId('sender_id')

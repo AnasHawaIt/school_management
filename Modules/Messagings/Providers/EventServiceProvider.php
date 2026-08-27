@@ -24,6 +24,8 @@ use Modules\Messagings\Listeners\LogMessageRestoredEventListener;
 use Modules\Messagings\Listeners\SendEmailListener;
 use Modules\Messagings\Listeners\SendMessageNotificationListener;
 use Modules\Messagings\Listeners\StoreMessageStatisticsListener;
+use Modules\Messagings\Listeners\UpdateMessageForwardStatistic;
+use Modules\Messagings\Listeners\UpdateMessageReplyStatistic;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -53,6 +55,7 @@ class EventServiceProvider extends ServiceProvider
 
         MessageForwarded::class=>[
             LogMessageForwardedEventListener::class,
+            UpdateMessageForwardStatistic::class
         ],
 
         MessageFailed::class=>[
@@ -65,7 +68,8 @@ class EventServiceProvider extends ServiceProvider
 
         MessageReplied::class=>[
             LogMessageRepliedEventListener::class,
-            SendMessageNotificationListener::class
+            UpdateMessageReplyStatistic::class
+
         ],
 
         AttachmentDeleted::class=>[

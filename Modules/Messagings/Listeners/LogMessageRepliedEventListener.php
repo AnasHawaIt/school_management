@@ -13,7 +13,7 @@ class LogMessageRepliedEventListener
 
         activity()
             ->causedBy($user)
-            ->performedOn($event->message)
+            ->performedOn($event->reply)
             ->log('Message.Replied');
     }
 }

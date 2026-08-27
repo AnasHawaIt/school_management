@@ -38,6 +38,12 @@ class MessageStatistic extends Model
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
+
+    public function recipients()
+    {
+        return $this->hasMany(MessageRecipient::class);
+    }
+
 // protected static function newFactory(): EventLogFactory
     // {
     //     // return EventLogFactory::new();

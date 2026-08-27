@@ -11,7 +11,8 @@ class MessageForwarded
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public Message $message,
+        public Message $originalMessage,
+        public Message $forwardedMessage,
         public int $userId
     ) {}
 }

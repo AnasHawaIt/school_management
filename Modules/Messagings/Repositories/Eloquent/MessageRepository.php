@@ -41,15 +41,13 @@ class MessageRepository implements MessageRepositoryInterface
                 'message.sender',
                 'message.conversation',
                 'message.attachments',
+                'message.statistic'
             ])
             ->latest()
             ->paginate(20);
     }
 
-    public function getInbox(
-        int $conversationId,
-        int $userId
-    ) {
+    public function getInbox(int $conversationId, int $userId) {
         return MessageRecipient::query()
             ->where('recipient_id', $userId)
             ->where('is_deleted', false)
@@ -83,16 +81,24 @@ class MessageRepository implements MessageRepositoryInterface
 
     public function markAsRead(int $messageId, int $userId)
     {
-        $message = Message::findOrFail($messageId);
-
-        $message->recipients()
+        $recipient = MessageRecipient::query()
+            ->where('message_id', $messageId)
             ->where('recipient_id', $userId)
-            ->update([
+            ->where('is_deleted', false)
+            ->with([
+                'message.conversation',
+                'message.sender',
+            ])
+            ->firstOrFail();
+
+        if (! $recipient->is_read) {
+            $recipient->update([
                 'is_read' => true,
                 'read_at' => now(),
             ]);
+        }
 
-        return $message;
+        return $recipient;
     }
 
     public function unreadCount(int $userId)

@@ -12,6 +12,6 @@ class MessageRead
 
     public function __construct(
         public Message $message,
-        public int $readerId
+        public int $userId
     ) {}
 }

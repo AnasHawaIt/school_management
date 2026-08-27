@@ -123,10 +123,7 @@ class MessageController extends Controller
 
     }
 
-    public function store(
-        SendMessageRequest $request,
-        int $conversation
-    ) {
+    public function store(SendMessageRequest $request, int $conversation) {
         $data = $request->validated();
 
         // conversation_id يأتي من URL
@@ -163,25 +160,29 @@ class MessageController extends Controller
 
     public function markAsRead(int $messageId)
     {
-        $this->messageService->markAsRead($messageId, auth()->id());
+        $result = $this->messageService->markAsRead(
+            $messageId,
+            auth()->id()
+        );
 
         return response()->json([
-            'success' => true
+            'success' => true,
+            'message' => 'Message marked as read.',
+            'data' => $result,
         ]);
     }
 
     public function reply(int $messageId, ReplyMessageRequest $request)
     {
-        $message =
-            $this->messageService
-                ->reply(
-                    $messageId,
-                    $request->validated()
-                );
+        $message = $this->messageService->reply(
+            $messageId,
+            $request->validated()
+        );
 
         return response()->json([
             'success' => true,
-            'data' => $message
+            'message' => 'Reply sent successfully.',
+            'data' => $message,
         ]);
     }
 

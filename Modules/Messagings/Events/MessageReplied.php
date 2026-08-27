@@ -11,7 +11,8 @@ class MessageReplied
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public Message $message,
+        public Message $originalMessage,
+        public Message $reply,
         public int $userId
     ) {}
 }

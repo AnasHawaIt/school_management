@@ -9,10 +9,9 @@ class LogMessageReadEventListener
 {
     public function handle(MessageRead $event): void
     {
-        $user = User::find($event->userId);
 
         activity()
-            ->causedBy($user)
+            ->causedBy(auth()->user())
             ->performedOn($event->message)
             ->log('Message.Read');
     }

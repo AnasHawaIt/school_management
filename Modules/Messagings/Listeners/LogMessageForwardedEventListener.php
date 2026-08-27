@@ -13,7 +13,7 @@ class LogMessageForwardedEventListener
 
         activity()
             ->causedBy($user)
-            ->performedOn($event->message)
+            ->performedOn($event->forwardedMessage)
             ->log('Message.Forwarded');
     }
 }

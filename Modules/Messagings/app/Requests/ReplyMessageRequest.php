@@ -16,8 +16,9 @@ class ReplyMessageRequest extends FormRequest
         return [
             'body' => [
                 'required',
-                'string'
-            ]
+                'string',
+                'max:10000',
+            ],
         ];
     }
 

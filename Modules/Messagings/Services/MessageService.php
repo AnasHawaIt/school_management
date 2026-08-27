@@ -4,8 +4,9 @@ namespace Modules\Messagings\Services;
 
 use App\Services\ImageService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\ConversationParticipant;
+use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageStatistic;
 use Modules\Messagings\Events\AttachmentDeleted;
 use Modules\Messagings\Events\AttachmentUploaded;
@@ -193,15 +194,6 @@ class MessageService
         });
     }
 
-    public function markAsRead(int $messageId, int $userId)
-    {
-        $Messages=$this->repo->markAsRead($messageId, $userId);
-
-        event(new MessageRead($Messages,$userId));
-
-        return $Messages;
-    }
-
     public function getIndex(int $userId)
     {
         return $this->repo->getIndex($userId);
@@ -225,12 +217,179 @@ class MessageService
         return $this->repo->find($id);
     }
 
-    public function statistic()
+    public function markAsRead(int $messageId, int $userId)
     {
-        return $this->hasOne(
-            MessageStatistic::class,
-            'message_id'
-        );
+        return DB::transaction(function () use ($messageId, $userId) {
+
+            $message = Message::with([
+                'conversation',
+                'sender',
+            ])->findOrFail($messageId);
+
+            /*
+             * 1. التأكد أن المستخدم Participant
+             */
+            $participant = ConversationParticipant::query()
+                ->where('conversation_id', $message->conversation_id)
+                ->where('user_id', $userId)
+                ->firstOrFail();
+
+            /*
+             * 2. البحث عن Recipient الخاص بهذا المستخدم
+             */
+            $recipient = $message->recipients()
+                ->where('recipient_id', $userId)
+                ->first();
+
+            $alreadyRead = false;
+
+            /*
+             * 3. إذا كان المستخدم Recipient للرسالة
+             */
+            if ($recipient) {
+
+                /*
+                 * أول قراءة فقط
+                 */
+                if (! $recipient->is_read) {
+
+                    $recipient->update([
+                        'is_read' => true,
+                        'read_at' => now(),
+                    ]);
+
+                    /*
+                     * إنشاء الإحصائية إن لم تكن موجودة
+                     */
+                    $statistic = MessageStatistic::firstOrCreate(
+                        [
+                            'message_id' => $message->id,
+                        ],
+                        [
+                            'sender_id' => $message->sender_id,
+                            'read_count' => 0,
+                            'reply_count' => 0,
+                            'forward_count' => 0,
+                        ]
+                    );
+
+                    /*
+                     * أول قراءة للرسالة
+                     */
+                    if (is_null($statistic->first_read_at)) {
+                        $statistic->update([
+                            'first_read_at' => now(),
+                        ]);
+                    }
+
+                    /*
+                     * زيادة العداد مرة واحدة فقط
+                     */
+                    $statistic->increment('read_count');
+
+                } else {
+
+                    $alreadyRead = true;
+
+                    /*
+                     * جلب الإحصائية الموجودة
+                     */
+                    $statistic = MessageStatistic::firstOrCreate(
+                        [
+                            'message_id' => $message->id,
+                        ],
+                        [
+                            'sender_id' => $message->sender_id,
+                            'read_count' => 0,
+                            'reply_count' => 0,
+                            'forward_count' => 0,
+                        ]
+                    );
+                }
+
+                /*
+                 * مهم جدًا:
+                 *
+                 * last_read_at يتحدث في كل مرة
+                 * حتى لو كانت الرسالة مقروءة سابقًا
+                 */
+                $statistic->update([
+                    'last_read_at' => now(),
+                ]);
+
+            } else {
+
+                /*
+                 * المستخدم Participant لكنه ليس Recipient
+                 *
+                 * مثل بعض رسائل Group القديمة
+                 */
+                $statistic = MessageStatistic::where(
+                    'message_id',
+                    $message->id
+                )->first();
+
+                /*
+                 * إذا لم توجد إحصائية ننشئها
+                 */
+                if (! $statistic) {
+                    $statistic = MessageStatistic::create([
+                        'message_id' => $message->id,
+                        'sender_id' => $message->sender_id,
+                        'read_count' => 0,
+                        'reply_count' => 0,
+                        'forward_count' => 0,
+                        'first_read_at' => now(),
+                        'last_read_at' => now(),
+                    ]);
+                } else {
+
+                    /*
+                     * آخر قراءة تتحدث كل مرة
+                     */
+                    $statistic->update([
+                        'last_read_at' => now(),
+                    ]);
+                }
+            }
+
+            /*
+             * 4. آخر قراءة للمستخدم داخل المحادثة
+             *
+             * تتحدث في كل استدعاء
+             */
+            $participant->update([
+                'last_read_at' => now(),
+            ]);
+
+            /*
+             * 5. Event
+             */
+            event(
+                new MessageRead(
+                    $message,
+                    $userId
+                )
+            );
+
+            /*
+             * 6. إرجاع البيانات المحدثة
+             */
+            $message->load([
+                'sender',
+                'recipients',
+                'conversation',
+                'statistic',
+            ]);
+
+            return [
+                'message' => $message,
+                'recipient' => $recipient?->fresh(),
+                'statistic' => $message->statistic?->fresh(),
+                'participant' => $participant->fresh(),
+                'already_read' => $alreadyRead,
+            ];
+        });
     }
 
     public function uploadAttachment($id, $file)
@@ -264,56 +423,56 @@ class MessageService
 
     public function reply(int $messageId, array $data)
     {
-        $message = $this->repo->find($messageId);
+        $originalMessage = $this->repo->find($messageId);
 
-        //Gate::authorize('reply', $message);
+        $reply = $this->send([
+            'conversation_id' => $originalMessage->conversation_id,
 
-        $newMessage = $this->send([
-            'conversation_id' => $message->conversation_id,
-
-            'subject' => 'RE: ' . $message->subject,
+            'subject' => 'RE: ' . $originalMessage->subject,
 
             'body' => $data['body'],
 
             'recipients' => [
-                $message->sender_id,
+                $originalMessage->sender_id,
             ],
         ]);
 
         event(
             new MessageReplied(
-                $newMessage,
+                $originalMessage,
+                $reply,
                 auth()->id()
             )
         );
 
-        return $newMessage;
+        return $reply;
     }
 
     public function forward(int $messageId, array $recipients)
     {
-        $message = $this->repo->find($messageId);
+        $originalMessage = $this->repo->find($messageId);
 
        // Gate::authorize('forward', $message);
 
-        $newMessage = $this->send([
-            'conversation_id' => $message->conversation_id,
+        $forwardedMessage = $this->send([
+            'conversation_id' => $originalMessage->conversation_id,
 
-            'subject' => 'FW: ' . $message->subject,
+            'subject' => 'FW: ' . $originalMessage->subject,
 
-            'body' => $message->body,
+            'body' => $originalMessage->body,
 
             'recipients' => $recipients,
         ]);
 
         event(
             new MessageForwarded(
-                $newMessage,
+                $originalMessage,
+                $forwardedMessage,
                 auth()->id()
             )
         );
 
-        return $newMessage;
+        return $forwardedMessage;
     }
 
     public function unreadCount(int $userId)
