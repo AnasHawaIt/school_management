@@ -12,6 +12,7 @@ use Modules\Activities\Entities\Activity;
 use Modules\Core\Entities\User;
 use Modules\Messagings\app\Policies\MessagePolicy;
 use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageAttachment;
 use Modules\Notifications\Entities\Notification;
 use Modules\Transport\Entities\Bus;
 
@@ -45,6 +46,8 @@ class AppServiceProvider extends ServiceProvider
             'notification' => Notification::class,
             'activity'     => Activity::class,
             'bus'          => Bus::class,
+            'message' => Message::class,
+            'message_attachment' => MessageAttachment::class,
         ]);
     }
 }

@@ -13,6 +13,7 @@ use Modules\Messagings\Events\MessageForwarded;
 use Modules\Messagings\Events\MessageRead;
 use Modules\Messagings\Events\MessageReplied;
 use Modules\Messagings\Events\MessageSent;
+use Modules\Messagings\Listeners\LogAttachmentDeletedEventListener;
 use Modules\Messagings\Listeners\LogAttachmentUploadedEventListener;
 use Modules\Messagings\Listeners\LogMessageCreatedEventListener;
 use Modules\Messagings\Listeners\LogMessageDeletedEventListener;
@@ -73,7 +74,7 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         AttachmentDeleted::class=>[
-            LogMessageDeletedEventListener::class,
+            LogAttachmentDeletedEventListener::class,
         ],
 
         AnnouncementUpdated::class=>[

@@ -11,8 +11,6 @@ interface MessageRepositoryInterface
     public function getMessagesOnlyTrashed();
     public function restore($id);
     public function forceDelete($id);
-    public function uploadAttachment($id, $file);
-    public function deleteAttachment($id);
     public function find($id);
     public function create(array $data);
     public function delete($id);

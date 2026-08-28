@@ -18,20 +18,6 @@ class MessageRepository implements MessageRepositoryInterface
         return Message::findOrFail($id);
     }
 
-    public function uploadAttachment($id, $file)
-    {
-        $message = $this->find($id);
-
-        return $message;
-    }
-
-    public function deleteAttachment($id)
-    {
-        $message = images::query()->find($id);
-
-        return $message;
-    }
-
     public function getIndex(int $userId)
     {
         return MessageRecipient::query()

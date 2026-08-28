@@ -40,10 +40,14 @@ class MessageController extends Controller
         ], 200);
     }
 
-    public function uploadAttachment(Request $request, int $message)
-    {
+    public function uploadAttachment(Request $request, int $message) {
         $request->validate([
-            'attachment' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:5120',
+            'attachment' => [
+                'required',
+                'file',
+                'mimes:jpg,jpeg,png,pdf,doc,docx',
+                'max:5120',
+            ],
         ]);
 
         $attachment = $this->messageService->uploadAttachment(
@@ -52,9 +56,20 @@ class MessageController extends Controller
         );
 
         return response()->json([
+            'success' => true,
             'message' => 'Attachment uploaded successfully.',
             'data' => $attachment,
         ], 201);
+    }
+
+    public function ShowAttachment(int $id)
+    {
+        $attachment = $this->messageService->ShowAttachment($id);
+        return response()->json([
+            'success' => true,
+            'message' => 'Attachment retrieved successfully.',
+            'data'=>$attachment
+        ]);
     }
 
     public function deleteAttachment($id)
@@ -62,6 +77,7 @@ class MessageController extends Controller
         $this->messageService->deleteAttachment($id);
 
         return response()->json([
+            'success' => true,
             'message' => 'Attachment deleted successfully.',
         ]);
     }
@@ -203,6 +219,6 @@ class MessageController extends Controller
     {
         $this->messageService->delete($id);
 
-        return response()->json(['success', 'Message deleted!'],);
+        return response()->json(['success', 'Message deleted!']);
     }
 }

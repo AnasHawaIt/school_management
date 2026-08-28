@@ -2,16 +2,16 @@
 
 namespace Modules\Messagings\Listeners;
 
-use Modules\Messagings\Events\AttachmentDeleted;
+use Modules\Messagings\Events\AttachmentUploaded;
 
 class  LogAttachmentUploadedEventListener
 {
-    public function handle(AttachmentDeleted $event): void
+    public function handle(AttachmentUploaded $event): void
     {
         activity()
             ->causedBy(auth()->user())
-            ->performedOn($event->image)
-            ->log('Attachment.Deleted');
+            ->performedOn($event->attachment)
+            ->log('Attachment.Uploaded');
     }
 
 }

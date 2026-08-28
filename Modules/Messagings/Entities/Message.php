@@ -54,7 +54,6 @@ class Message extends Model
 
             $message->recipients()->delete();
 
-            $message->attachments()->delete();
         });
     }
 

@@ -5,6 +5,7 @@ namespace Modules\Messagings\Events;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageAttachment;
 
 class AttachmentUploaded
 {
@@ -12,6 +13,7 @@ class AttachmentUploaded
 
     public function __construct(
         public Message $message,
-        public array $image
-    ) {}
+        public MessageAttachment $attachment
+    ) {
+    }
 }

@@ -10,7 +10,7 @@ class LogAttachmentDeletedEventListener
     {
         activity()
             ->causedBy(auth()->user())
-            ->performedOn($event->image)
+            ->performedOn($event->attachment)
             ->log('Attachment.Deleted');
     }
 

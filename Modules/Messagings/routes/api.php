@@ -26,7 +26,8 @@ Route::prefix('Message')->middleware(["auth:sanctum"])->group(function () {
     Route::patch('/{id}/read', [MessageController::class, 'markAsRead']);
     route::delete('/{id}/force', [MessageController::class, 'forceDelete']);
     Route::delete('/{id}', [MessageController::class, 'destroy']);
-    Route::post('/{messageID}/attachments', [MessageController::class, 'uploadAttachment']);
-    Route::delete('Attachment/{id}', [MessageController::class, 'deleteAttachment']);
+    Route::post('/{message}/attachments', [MessageController::class, 'uploadAttachment']);
+    Route::delete('attachments/{id}', [MessageController::class, 'deleteAttachment']);
+    Route::get('attachments/{id}', [MessageController::class, 'ShowAttachment']);
     Route::get('index', [MessageController::class, 'indexAttachment']);
 });

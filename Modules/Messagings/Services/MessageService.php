@@ -2,7 +2,6 @@
 
 namespace Modules\Messagings\Services;
 
-use App\Services\ImageService;
 use Illuminate\Support\Facades\DB;
 use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\ConversationParticipant;
@@ -21,11 +20,14 @@ use Modules\Messagings\Repositories\Interfaces\MessageRepositoryInterface;
 class MessageService
 {
     protected $repo;
-    protected $imageService;
+    protected MessageAttachmentService $attachmentService;
 
-    public function __construct(MessageRepositoryInterface $repo, ImageService $imageService) {
+    public function __construct(
+        MessageRepositoryInterface $repo,
+        MessageAttachmentService $attachmentService
+    ) {
         $this->repo = $repo;
-        $this->imageService = $imageService;
+        $this->attachmentService = $attachmentService;
     }
 
     public function getMessageOnlyTrashed()
@@ -394,29 +396,35 @@ class MessageService
 
     public function uploadAttachment($id, $file)
     {
-        $message = $this->repo->uploadAttachment($id, $file);
+        $message = $this->repo->find($id);
 
-        $image = $this->imageService->upload(
+        $attachment = $this->attachmentService->upload(
             $message,
-            $file,
+            $file
         );
 
-        event(new AttachmentUploaded($message, $image));
+        event(
+            new AttachmentUploaded(
+                $message,
+                $attachment
+            )
+        );
 
-        return $image;
+        return $attachment;
     }
 
-    public function deleteAttachment($id)
+    public function ShowAttachment($id)
     {
-        $image = $this->imageService->find($id);
+        return $this->attachmentService->find($id);
+    }
 
-        if (!$image) {
-            return response()->json(['message' => 'image not found'], 404);
-        }
+    public function deleteAttachment(int $id): bool
+    {
+        $attachment = $this->attachmentService->delete($id);
 
-        $this->imageService->delete($id);
-
-        event(new AttachmentDeleted($image));
+        event(
+            new AttachmentDeleted($attachment)
+        );
 
         return true;
     }
@@ -486,12 +494,11 @@ class MessageService
 
        // Gate::authorize('delete', $message);
 
-        $this->imageService->deleteAll($message);
+        $this->attachmentService->deleteAll($message);
 
-        event(new MessagesDeleted($message));
+        event(new MessagesDeleted($message,auth()->id()));
 
         $this->repo->delete($id);
-
 
     }
 }
