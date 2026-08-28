@@ -22,10 +22,7 @@ class MessageService
     protected $repo;
     protected MessageAttachmentService $attachmentService;
 
-    public function __construct(
-        MessageRepositoryInterface $repo,
-        MessageAttachmentService $attachmentService
-    ) {
+    public function __construct(MessageRepositoryInterface $repo, MessageAttachmentService $attachmentService) {
         $this->repo = $repo;
         $this->attachmentService = $attachmentService;
     }
@@ -37,7 +34,7 @@ class MessageService
 
     public function restore($id)
     {
-        $Messages= $this->repo->restore($id);
+        $Messages = $this->repo->restore($id);
 
         event(new MessageRestored($Messages));
 
@@ -460,8 +457,6 @@ class MessageService
     {
         $originalMessage = $this->repo->find($messageId);
 
-       // Gate::authorize('forward', $message);
-
         $forwardedMessage = $this->send([
             'conversation_id' => $originalMessage->conversation_id,
 
@@ -491,8 +486,6 @@ class MessageService
     public function delete(int $id): void
     {
         $message = $this->repo->find($id);
-
-       // Gate::authorize('delete', $message);
 
         $this->attachmentService->deleteAll($message);
 

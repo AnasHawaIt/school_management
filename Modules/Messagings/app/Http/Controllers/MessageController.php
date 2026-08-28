@@ -10,6 +10,8 @@ use Modules\Messagings\app\Requests\ReplyMessageRequest;
 use Modules\Messagings\app\Requests\SendMessageRequest;
 use Modules\Messagings\app\Resources\MessageDetailsResource;
 use Modules\Messagings\app\Resources\MessageResource;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Services\MessageService;
 
 class MessageController extends Controller
@@ -65,15 +67,22 @@ class MessageController extends Controller
     public function ShowAttachment(int $id)
     {
         $attachment = $this->messageService->ShowAttachment($id);
+
+        $this->authorize('view', $attachment);
+
         return response()->json([
             'success' => true,
             'message' => 'Attachment retrieved successfully.',
-            'data'=>$attachment
+            'data' => $attachment
         ]);
     }
 
-    public function deleteAttachment($id)
+    public function deleteAttachment(int $id)
     {
+        $attachment = $this->messageService->ShowAttachment($id);
+
+        $this->authorize('delete', $attachment);
+
         $this->messageService->deleteAttachment($id);
 
         return response()->json([
@@ -107,9 +116,15 @@ class MessageController extends Controller
         ]);
     }
 
-    public function restore($id)
+    public function restore(int $id)
     {
-        return new MessageResource( $this->messageService->restore($id));
+        $message = $this->messageService->findWithTrashed($id);
+
+        $this->authorize('restore', $message);
+
+        $message = $this->messageService->restore($id);
+
+        return new MessageResource($message);
     }
 
     public function unreadCount()
@@ -122,27 +137,39 @@ class MessageController extends Controller
         ]);
     }
 
-    public function forceDelete($id)
+    public function forceDelete(int $id)
     {
+        $message = $this->messageService->findWithTrashed($id);
+
+        $this->authorize('forceDelete', $message);
+
         $this->messageService->forceDelete($id);
 
         return response()->json([
-            'message' => 'Force deleted successfully'
+            'success' => true,
+            'message' => 'Message permanently deleted successfully.',
         ]);
     }
 
     public function AllOnlyTrashed()
     {
+        $this->authorize('viewTrashed', Message::class);
+
         return MessageResource::collection(
             $this->messageService->getMessageOnlyTrashed()
         );
-
     }
 
     public function store(SendMessageRequest $request, int $conversation) {
+        $conversationModel = Conversation::findOrFail($conversation);
+
+        $this->authorize(
+            'send',
+            $conversationModel
+        );
+
         $data = $request->validated();
 
-        // conversation_id يأتي من URL
         $data['conversation_id'] = $conversation;
 
         $message = $this->messageService->send($data);
@@ -171,11 +198,20 @@ class MessageController extends Controller
     {
         $message = $this->messageService->find($id);
 
-        return new MessageDetailsResource($message);
+        $this->authorize('view', $message);
+
+        return response()->json([
+            'success' => true,
+            'data' => $message,
+        ]);
     }
 
     public function markAsRead(int $messageId)
     {
+        $message = $this->messageService->find($messageId);
+
+        $this->authorize('markAsRead', $message);
+
         $result = $this->messageService->markAsRead(
             $messageId,
             auth()->id()
@@ -188,37 +224,52 @@ class MessageController extends Controller
         ]);
     }
 
-    public function reply(int $messageId, ReplyMessageRequest $request)
+    public function reply(int $id, ReplyMessageRequest $request)
     {
-        $message = $this->messageService->reply(
-            $messageId,
+        $message = $this->messageService->find($id);
+
+        $this->authorize('reply', $message);
+
+        $reply = $this->messageService->reply(
+            $id,
             $request->validated()
         );
 
         return response()->json([
             'success' => true,
             'message' => 'Reply sent successfully.',
-            'data' => $message,
+            'data' => $reply,
         ]);
     }
 
-    public function forward(int $messageId, ForwardMessageRequest $request)
-    {
-        $message = $this->messageService->forward(
-            $messageId,
+    public function forward(int $id, ForwardMessageRequest $request) {
+        $message = $this->messageService->find($id);
+
+        $this->authorize('forward', $message);
+
+        $forwarded = $this->messageService->forward(
+            $id,
             $request->validated()['recipients']
         );
 
         return response()->json([
             'success' => true,
-            'data' => $message
+            'message' => 'Message forwarded successfully.',
+            'data' => $forwarded,
         ]);
     }
 
-    public function destroy($id)
+    public function delete(int $id)
     {
+        $message = $this->messageService->find($id);
+
+        $this->authorize('delete', $message);
+
         $this->messageService->delete($id);
 
-        return response()->json(['success', 'Message deleted!']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Message deleted successfully.',
+        ]);
     }
 }

@@ -101,12 +101,13 @@ class MessageRepository implements MessageRepositoryInterface
         return Message::onlyTrashed()->paginate(10);
     }
 
-    public function restore($id)
+    public function restore($id): Message
     {
-        $Messages = Message::withTrashed()->findOrFail($id);
-        $Messages->restore();
+        $message = Message::withTrashed()->findOrFail($id);
 
-        return $Messages;
+        $message->restore();
+
+        return $message->fresh();
     }
 
     public function forceDelete($id)
