@@ -8,8 +8,12 @@ use Modules\Messagings\app\Http\Controllers\MessageController;
 Route::prefix('conversations')->middleware('auth:sanctum')->group(function () {
     Route::get('', [ConversationController::class, 'index']);
     Route::post('', [ConversationController::class, 'store']);
-    Route::post('/{conversation}/join', [ConversationController::class, 'join']);
+    Route::delete('/{conversation}', [ConversationController::class, 'delete']);
     Route::get('/{conversation}', [ConversationController::class, 'show']);
+    Route::post('/{conversation}/join', [ConversationController::class, 'join']);
+    Route::post('/{conversation}/leave', [ConversationController::class, 'leave']);
+    Route::post('/{id}/removeUser/{userId}', [ConversationController::class, 'removeParticipant']);
+    Route::post('/{id}/addUser/request', [ConversationController::class, 'addParticipant']);
     Route::get('/{conversation}/messages', [MessageController::class, 'inbox']);
     Route::post('/{conversation}/messages', [MessageController::class, 'store']);
 });

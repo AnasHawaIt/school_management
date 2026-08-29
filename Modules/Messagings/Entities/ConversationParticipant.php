@@ -5,16 +5,13 @@ namespace Modules\Messagings\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
 
 // use Modules\Messagings\Database\Factories\ConversationParticipantFactory;
 
 class ConversationParticipant extends Model
 {
-    use HasFactory,SoftDeletes;
-
-    protected $dates = ['deleted_at'];
+    use HasFactory;
 
     protected $fillable = [
         'conversation_id',

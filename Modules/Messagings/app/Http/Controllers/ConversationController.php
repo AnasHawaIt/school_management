@@ -2,6 +2,7 @@
 
 namespace Modules\Messagings\app\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -10,6 +11,8 @@ use Modules\Messagings\Services\ConversationService;
 
 class ConversationController extends Controller
 {
+    use AuthorizesRequests;
+
     public function __construct(
         protected ConversationService $conversationService
     ) {
@@ -61,6 +64,29 @@ class ConversationController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Participant removed successfully.',
+        ]);
+    }
+
+    public function leave(
+        Request $request,
+        int $id
+    ): JsonResponse {
+
+        $conversation = $this->conversationService->find($id);
+
+        $this->authorize(
+            'leave',
+            $conversation
+        );
+
+        $this->conversationService->leave(
+            $id,
+            $request->user()->id
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'You left the conversation successfully.',
         ]);
     }
 

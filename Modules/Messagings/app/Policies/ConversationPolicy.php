@@ -31,6 +31,13 @@ class ConversationPolicy
         return $user->hasRole('admin');
     }
 
+    public function leave(
+        User $user,
+        Conversation $conversation
+    ): bool {
+        return $this->isParticipant($user, $conversation);
+    }
+
     public function removeParticipant(
         User $user,
         Conversation $conversation
