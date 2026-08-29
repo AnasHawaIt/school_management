@@ -19,7 +19,12 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
-            $table->timestamp('joined_at')->nullable();
+            $table->enum('conversation_Role', [
+                'member',
+                'admin',
+                'owner',
+            ])->default('member');
+            $table->timestamp('joined_at')->useCurrent();
             $table->timestamp('last_read_at')->nullable();
             $table->boolean('is_muted')->default(false);
             $table->boolean('is_archived')->default(false);

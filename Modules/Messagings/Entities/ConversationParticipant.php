@@ -16,6 +16,7 @@ class ConversationParticipant extends Model
     protected $fillable = [
         'conversation_id',
         'user_id',
+        'conversation_Role',
         'joined_at',
         'last_read_at',
         'is_muted',
@@ -29,18 +30,33 @@ class ConversationParticipant extends Model
         'is_archived' => 'boolean',
     ];
 
-    public function conversation(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(
-            Conversation::class
+            User::class,
+            'user_id'
         );
     }
 
-    public function user(): BelongsTo
+    public function conversation()
     {
         return $this->belongsTo(
-            User::class
+            Conversation::class,
+            'conversation_id'
         );
+    }
+
+    public function isOwner(): bool
+    {
+        return $this->role === 'owner';
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array($this->role, [
+            'admin',
+            'owner',
+        ]);
     }
 
     // protected static function newFactory(): ConversationParticipantFactory

@@ -196,13 +196,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(
             Conversation::class,
-            'conversation_participants'
+            'conversation_participants',
+            'user_id',
+            'conversation_id'
         )->withPivot([
+            'conversation_role',
             'joined_at',
             'last_read_at',
             'is_muted',
             'is_archived',
-        ])->withTimestamps();
+        ]);
     }
 
     public function sentMessages()

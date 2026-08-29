@@ -2,12 +2,20 @@
 
 namespace Modules\Messagings\Repositories\Eloquent;
 
+use Modules\Core\Entities\User;
 use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\ConversationParticipant;
 use Modules\Messagings\Repositories\Interfaces\ConversationRepositoryInterface;
 
 class ConversationRepository implements ConversationRepositoryInterface
 {
+    protected ConversationParticipant $model;
+
+    public function __construct(ConversationParticipant $model)
+    {
+        $this->model = $model;
+    }
+
     public function find(int $id): Conversation
     {
         return Conversation::with([
@@ -62,6 +70,36 @@ class ConversationRepository implements ConversationRepositoryInterface
         ], [
             'joined_at' => now(),
         ]);
+    }
+
+    public function promoteToAdmin(
+        Conversation $conversation,
+        User $user
+    ): ConversationParticipant {
+        $participant = $conversation->participants()
+            ->where('user_id', $user->id)
+            ->firstOrFail();
+
+        $participant->update([
+            'conversation_Role' => 'admin',
+        ]);
+
+        return $participant->refresh();
+    }
+
+    public function demoteToMember(
+        Conversation $conversation,
+        User $user
+    ): ConversationParticipant {
+        $participant = $conversation->participants()
+            ->where('user_id', $user->id)
+            ->firstOrFail();
+
+        $participant->update([
+            'conversation_Role' => 'member',
+        ]);
+
+        return $participant->fresh();
     }
 
     public function removeParticipant(

@@ -14,6 +14,8 @@ Route::prefix('conversations')->middleware('auth:sanctum')->group(function () {
     Route::post('/{conversation}/leave', [ConversationController::class, 'leave']);
     Route::post('/{id}/removeUser/{userId}', [ConversationController::class, 'removeParticipant']);
     Route::post('/{id}/addUser/request', [ConversationController::class, 'addParticipant']);
+    Route::post('/{conversation}/addAdmin/{user}', [ConversationController::class, 'addAdmin']);
+    Route::delete('/{conversation}/removeAdmin/{user}', [ConversationController::class, 'removeAdmin']);
     Route::get('/{conversation}/messages', [MessageController::class, 'inbox']);
     Route::post('/{conversation}/messages', [MessageController::class, 'store']);
 });

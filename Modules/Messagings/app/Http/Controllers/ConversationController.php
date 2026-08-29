@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Core\Entities\User;
 use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Services\ConversationService;
 
@@ -68,27 +69,58 @@ class ConversationController extends Controller
     }
 
     public function leave(
-        Request $request,
-        int $id
-    ): JsonResponse {
+        User $user,
+        Conversation $conversation
+    ): bool {
+        $participant = $conversation->participants()
+            ->where('user_id', $user->id)
+            ->first();
 
-        $conversation = $this->conversationService->find($id);
+        if (!$participant) {
+            return false;
+        }
 
-        $this->authorize(
-            'leave',
-            $conversation
-        );
+        if ($participant->role === 'owner') {
+            return false;
+        }
 
-        $this->conversationService->leave(
-            $id,
-            $request->user()->id
+        return true;
+    }
+
+    public function addAdmin(
+        Conversation $conversation,
+        User $user
+    ) {
+        $this->authorize('addAdmin', $conversation);
+
+        $participant = $this->conversationService->addAdmin(
+            $conversation,
+            $user
         );
 
         return response()->json([
-            'success' => true,
-            'message' => 'You left the conversation successfully.',
+            'message' => 'User has been promoted to admin successfully.',
+            'participant' => $participant,
         ]);
     }
+
+    public function removeAdmin(
+        Conversation $conversation,
+        User $user
+    ) {
+        $this->authorize('removeAdmin', $conversation);
+
+        $participant = $this->conversationService->removeAdmin(
+            $conversation,
+            $user
+        );
+
+        return response()->json([
+            'message' => 'Admin has been demoted to member successfully.',
+            'participant' => $participant,
+        ]);
+    }
+
 
     public function delete(int $id)
     {

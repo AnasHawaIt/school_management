@@ -52,6 +52,27 @@ class ConversationPolicy
         return $user->hasRole('admin');
     }
 
+    public function addAdmin(
+        User $user,
+        Conversation $conversation
+    ): bool {
+        return $conversation->participants()
+            ->where('user_id', $user->id)
+            ->where('conversation_Role', 'owner')
+            ->exists();
+    }
+
+    public function removeAdmin(
+        User $user,
+        Conversation $conversation
+    ): bool {
+        return $conversation->participants()
+            ->where('user_id', $user->id)
+            ->where('conversation_Role', 'owner')
+            ->exists();
+    }
+
+
     protected function isParticipant(
         User $user,
         Conversation $conversation

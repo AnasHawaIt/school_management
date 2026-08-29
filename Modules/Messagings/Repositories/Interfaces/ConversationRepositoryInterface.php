@@ -2,6 +2,9 @@
 
 namespace Modules\Messagings\Repositories\Interfaces;
 
+use Modules\Core\Entities\User;
+use Modules\Messagings\Entities\Conversation;
+
 interface ConversationRepositoryInterface
 {
     public function find(int $id);
@@ -9,6 +12,16 @@ interface ConversationRepositoryInterface
     public function findForUser(
         int $conversationId,
         int $userId
+    );
+
+    public function promoteToAdmin(
+        Conversation $conversation,
+        User $user
+    );
+
+    public function demoteToMember(
+        Conversation $conversation,
+        User $user
     );
 
     public function getUserConversations(int $userId);

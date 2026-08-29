@@ -5,7 +5,6 @@ namespace Modules\Messagings\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
@@ -35,21 +34,12 @@ class Conversation extends Model
         );
     }
 
-    public function participants(): BelongsToMany
+    public function participants(): HasMany
     {
-        return $this->belongsToMany(
-            User::class,
-            'conversation_participants',
-            'conversation_id',
-            'user_id'
-        )
-            ->withPivot([
-                'joined_at',
-                'last_read_at',
-                'is_muted',
-                'is_archived',
-            ])
-            ->withTimestamps();
+        return $this->hasMany(
+            ConversationParticipant::class,
+            'conversation_id'
+        );
     }
 
     public function messages(): HasMany
