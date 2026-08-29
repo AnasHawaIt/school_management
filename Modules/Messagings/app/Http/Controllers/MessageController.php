@@ -3,42 +3,42 @@
 namespace Modules\Messagings\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Images;
 use Illuminate\Http\Request;
 use Modules\Messagings\app\Requests\ForwardMessageRequest;
 use Modules\Messagings\app\Requests\ReplyMessageRequest;
 use Modules\Messagings\app\Requests\SendMessageRequest;
-use Modules\Messagings\app\Resources\MessageDetailsResource;
 use Modules\Messagings\app\Resources\MessageResource;
-use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageAttachment;
+use Modules\Messagings\Services\ConversationService;
 use Modules\Messagings\Services\MessageService;
 
 class MessageController extends Controller
 {
+    protected ConversationService $conversationService;
     protected MessageService $messageService;
-
-    public function __construct(MessageService $messageService)
+    public function __construct(MessageService $messageService,ConversationService $conversationService)
     {
         $this->messageService = $messageService;
+        $this->conversationService = $conversationService;
 
     }
 
     public function indexAttachment()
     {
-        $iamges = Images::query()->get();
+        $Attachment = MessageAttachment::query()->get();
 
-        if (!$iamges) {
+        if (!$Attachment) {
             return response()->json([
                 'status' => false,
-                'message' => 'Not Found Any iamges '
+                'message' => 'Not Found Any Attachment '
             ], 404);
         }
 
         return response()->json([
             'status' => true,
-            'count' => $iamges->count(),
-            'iamgess' => $iamges
+            'count' => $Attachment->count(),
+            'iamgess' => $Attachment
         ], 200);
     }
 
@@ -124,7 +124,11 @@ class MessageController extends Controller
 
         $message = $this->messageService->restore($id);
 
-        return new MessageResource($message);
+        return response()->json([
+            'success' => true,
+            'message' => 'Message restored successfully.',
+            'data' => $message,
+        ]);
     }
 
     public function unreadCount()
@@ -160,8 +164,13 @@ class MessageController extends Controller
         );
     }
 
-    public function store(SendMessageRequest $request, int $conversation) {
-        $conversationModel = Conversation::findOrFail($conversation);
+    public function store(
+        SendMessageRequest $request,
+        int $conversation
+    ) {
+        $conversationModel = $this->conversationService->find(
+            $conversation
+        );
 
         $this->authorize(
             'send',
@@ -171,12 +180,13 @@ class MessageController extends Controller
         $data = $request->validated();
 
         $data['conversation_id'] = $conversation;
+        $data['sender_id'] = auth()->id();
 
         $message = $this->messageService->send($data);
 
         return response()->json([
             'success' => true,
-            'message' => 'Message sent successfully',
+            'message' => 'Message sent successfully.',
             'data' => $message,
         ], 201);
     }

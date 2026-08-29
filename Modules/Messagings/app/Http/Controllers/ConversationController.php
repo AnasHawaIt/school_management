@@ -15,6 +15,72 @@ class ConversationController extends Controller
     ) {
     }
 
+    public function addParticipant(
+        Request $request,
+        int $id
+    ) {
+        $conversation = $this->conversationService->find($id);
+
+        $this->authorize(
+            'addParticipant',
+            $conversation
+        );
+
+        $request->validate([
+            'user_id' => ['required', 'integer', 'exists:users,id'],
+        ]);
+
+        $participant = $this->conversationService->addParticipant(
+            $id,
+            $request->integer('user_id')
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Participant added successfully.',
+            'data' => $participant,
+        ], 201);
+    }
+
+    public function removeParticipant(
+        int $id,
+        int $userId
+    ) {
+        $conversation = $this->conversationService->find($id);
+
+        $this->authorize(
+            'removeParticipant',
+            $conversation
+        );
+
+        $this->conversationService->removeParticipant(
+            $id,
+            $userId
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Participant removed successfully.',
+        ]);
+    }
+
+    public function delete(int $id)
+    {
+        $conversation = $this->conversationService->find($id);
+
+        $this->authorize(
+            'delete',
+            $conversation
+        );
+
+        $this->conversationService->delete($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Conversation deleted successfully.',
+        ]);
+    }
+
     public function index(Request $request): JsonResponse
     {
         $conversations = $this->conversationService

@@ -13,9 +13,28 @@ class MessageRepository implements MessageRepositoryInterface
         return Message::create($data);
     }
 
-    public function find($id)
+    public function find($id): Message
     {
-        return Message::findOrFail($id);
+        return Message::with([
+            'sender',
+            'conversation',
+            'recipients',
+            'attachments',
+            'statistic',
+        ])->findOrFail($id);
+    }
+
+    public function findWithTrashed(int $id): Message
+    {
+        return Message::withTrashed()
+            ->with([
+                'sender',
+                'conversation',
+                'recipients',
+                'attachments',
+                'statistic',
+            ])
+            ->findOrFail($id);
     }
 
     public function getIndex(int $userId)
@@ -101,13 +120,13 @@ class MessageRepository implements MessageRepositoryInterface
         return Message::onlyTrashed()->paginate(10);
     }
 
-    public function restore($id): Message
+    public function restore($id)
     {
         $message = Message::withTrashed()->findOrFail($id);
 
         $message->restore();
 
-        return $message->fresh();
+        return $message;
     }
 
     public function forceDelete($id)

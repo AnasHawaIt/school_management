@@ -35,21 +35,9 @@ class MessageAttachmentService
 
     public function deleteAll(Message $message): void
     {
-        $attachments = MessageAttachment::query()
-            ->where('message_id', $message->id)
-            ->get();
+        $attachments = $message->attachments()->get();
 
         foreach ($attachments as $attachment) {
-
-            if (
-                $attachment->file_path &&
-                Storage::disk('public')->exists($attachment->file_path)
-            ) {
-                Storage::disk('public')->delete(
-                    $attachment->file_path
-                );
-            }
-
             $attachment->delete();
         }
     }
@@ -70,5 +58,37 @@ class MessageAttachmentService
         $attachment->delete();
 
         return $attachment;
+    }
+
+    public function restoreAll(Message $message): void
+    {
+        $attachments = $message->attachments()
+            ->withTrashed()
+            ->get();
+
+        foreach ($attachments as $attachment) {
+            $attachment->restore();
+        }
+    }
+
+    public function forceDeleteAll(Message $message): void
+    {
+        $attachments = $message->attachments()
+            ->withTrashed()
+            ->get();
+
+        foreach ($attachments as $attachment) {
+
+            if (
+                $attachment->file_path &&
+                Storage::disk('public')->exists($attachment->file_path)
+            ) {
+                Storage::disk('public')->delete(
+                    $attachment->file_path
+                );
+            }
+
+            $attachment->forceDelete();
+        }
     }
 }

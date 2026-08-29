@@ -32,24 +32,32 @@ class MessageService
         return $this->repo->getMessagesOnlyTrashed();
     }
 
-    public function restore($id)
+    public function restore(int $id): Message
     {
-        $Messages = $this->repo->restore($id);
+        $message = $this->repo->findWithTrashed($id);
 
-        event(new MessageRestored($Messages));
+        $message->restore();
 
-        return $Messages;
+        $this->attachmentService->restoreAll($message);
+
+        event(new MessageRestored($message,auth()->id()));
+
+        return $message->load([
+            'attachments',
+            'sender',
+            'conversation',
+            'recipients',
+            'statistic',
+        ]);
     }
 
-    public function forceDelete($id)
+    public function forceDelete(int $id): bool
     {
-        $Messages= $this->repo->find($id);
+        $message = $this->repo->findWithTrashed($id);
 
-        event(new MessagesDeleted($Messages));
+        $this->attachmentService->forceDeleteAll($message);
 
-        $Messages->forceDelete();
-
-        return true;
+        return $message->forceDelete();
     }
 
     public function send(array $data)
@@ -211,9 +219,14 @@ class MessageService
         return $this->repo->getSent($userId);
     }
 
-    public function find(int $id)
+    public function find(int $id): Message
     {
         return $this->repo->find($id);
+    }
+
+    public function findWithTrashed(int $id): Message
+    {
+        return $this->repo->findWithTrashed($id);
     }
 
     public function markAsRead(int $messageId, int $userId)

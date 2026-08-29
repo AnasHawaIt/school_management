@@ -5,6 +5,8 @@ namespace Modules\Messagings\Services;
 
 use Illuminate\Support\Facades\DB;
 use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\ConversationParticipant;
+use Modules\Messagings\Repositories\Eloquent\ConversationRepository;
 
 class ConversationService
 {
@@ -99,4 +101,40 @@ class ConversationService
             ])
             ->firstOrFail();
     }
+
+    public function __construct(
+        protected ConversationRepository $repo
+    ) {
+    }
+
+    public function find(int $id): Conversation
+    {
+        return $this->repo->find($id);
+    }
+
+    public function addParticipant(
+        int $conversationId,
+        int $userId
+    ): ConversationParticipant {
+        return $this->repo->addParticipant(
+            $conversationId,
+            $userId
+        );
+    }
+
+    public function removeParticipant(
+        int $conversationId,
+        int $userId
+    ): bool {
+        return $this->repo->removeParticipant(
+            $conversationId,
+            $userId
+        );
+    }
+
+    public function delete(int $id): bool
+    {
+        return $this->repo->delete($id);
+    }
+
 }
