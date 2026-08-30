@@ -200,7 +200,7 @@ class User extends Authenticatable
             'user_id',
             'conversation_id'
         )->withPivot([
-            'conversation_role',
+            'conversation_Role',
             'joined_at',
             'last_read_at',
             'is_muted',

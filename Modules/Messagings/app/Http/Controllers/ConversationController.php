@@ -91,7 +91,10 @@ class ConversationController extends Controller
         Conversation $conversation,
         User $user
     ) {
-        $this->authorize('addAdmin', $conversation);
+        $this->authorize(
+            'addAdmin',
+            $conversation
+        );
 
         $participant = $this->conversationService->addAdmin(
             $conversation,
@@ -99,8 +102,9 @@ class ConversationController extends Controller
         );
 
         return response()->json([
+            'success' => true,
             'message' => 'User has been promoted to admin successfully.',
-            'participant' => $participant,
+            'data' => $participant,
         ]);
     }
 
@@ -108,7 +112,10 @@ class ConversationController extends Controller
         Conversation $conversation,
         User $user
     ) {
-        $this->authorize('removeAdmin', $conversation);
+        $this->authorize(
+            'removeAdmin',
+            $conversation
+        );
 
         $participant = $this->conversationService->removeAdmin(
             $conversation,
@@ -116,8 +123,9 @@ class ConversationController extends Controller
         );
 
         return response()->json([
+            'success' => true,
             'message' => 'Admin has been demoted to member successfully.',
-            'participant' => $participant,
+            'data' => $participant,
         ]);
     }
 

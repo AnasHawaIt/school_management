@@ -18,6 +18,7 @@ Route::prefix('conversations')->middleware('auth:sanctum')->group(function () {
     Route::delete('/{conversation}/removeAdmin/{user}', [ConversationController::class, 'removeAdmin']);
     Route::get('/{conversation}/messages', [MessageController::class, 'inbox']);
     Route::post('/{conversation}/messages', [MessageController::class, 'store']);
+    Route::post('/{conversation}/voice', [MessageController::class, 'sendVoice']);
 });
 
 Route::prefix('Message')->middleware(["auth:sanctum"])->group(function () {

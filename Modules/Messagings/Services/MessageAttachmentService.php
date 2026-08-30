@@ -12,7 +12,7 @@ class MessageAttachmentService
     public function upload(
         Message $message,
         UploadedFile $file
-    ): MessageAttachment {
+    ):  MessageAttachment {
 
         $path = $file->store(
             'messages/' . $message->id,
@@ -25,6 +25,27 @@ class MessageAttachmentService
             'file_path'  => $path,
             'mime_type'  => $file->getMimeType(),
             'file_size'  => $file->getSize(),
+        ]);
+    }
+
+    public function uploadVoice(
+        Message $message,
+        UploadedFile $file,
+        ?int $duration = null
+    ): MessageAttachment {
+
+        $path = $file->store(
+            'messages/' . $message->id . '/voice',
+            'public'
+        );
+
+        return MessageAttachment::create([
+            'message_id' => $message->id,
+            'file_name' => $file->getClientOriginalName(),
+            'file_path' => $path,
+            'mime_type' => $file->getMimeType(),
+            'file_size' => $file->getSize(),
+            'duration' => $duration,
         ]);
     }
 

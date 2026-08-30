@@ -16,14 +16,16 @@ class MessageAttachment extends Model
         'file_path',
         'mime_type',
         'file_size',
+        'duration',
     ];
 
     protected function casts(): array
     {
         return [
-           // 'file_path' => 'encrypted',
-           // 'file_name' => 'encrypted',
+            'file_path' => 'encrypted',
+            'file_name' => 'encrypted',
             'file_size' => 'integer',
+            'duration' => 'integer',
         ];
     }
 

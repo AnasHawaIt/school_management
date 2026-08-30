@@ -16,6 +16,7 @@ use Modules\Messagings\Events\MessageReplied;
 use Modules\Messagings\Events\MessageRestored;
 use Modules\Messagings\Events\MessagesDeleted;
 use Modules\Messagings\Repositories\Interfaces\MessageRepositoryInterface;
+use Illuminate\Http\UploadedFile;
 
 class MessageService
 {
@@ -196,6 +197,115 @@ class MessageService
                 'sender',
                 'conversation',
                 'recipients',
+                'statistic',
+            ]);
+        });
+    }
+
+    public function sendVoice(
+        int $conversationId,
+        array $recipientIds,
+        UploadedFile $file,
+        ?int $duration = null
+    ): Message {
+
+        return DB::transaction(function () use (
+            $conversationId,
+            $recipientIds,
+            $file,
+            $duration
+        ) {
+
+            $senderId = auth()->id();
+
+            $conversation = Conversation::findOrFail(
+                $conversationId
+            );
+
+            $isSenderParticipant = $conversation
+                ->participants()
+                ->where('users.id', $senderId)
+                ->exists();
+
+            if (! $isSenderParticipant) {
+                abort(
+                    403,
+                    'You are not a participant in this conversation.'
+                );
+            }
+
+            $participantIds = $conversation
+                ->participants()
+                ->pluck('users.id')
+                ->toArray();
+
+            foreach ($recipientIds as $recipientId) {
+
+                if (! in_array(
+                    (int) $recipientId,
+                    $participantIds
+                )) {
+                    abort(
+                        422,
+                        "User {$recipientId} is not a participant in this conversation."
+                    );
+                }
+            }
+
+            $message = $this->repo->create([
+                'conversation_id' => $conversationId,
+                'sender_id' => $senderId,
+                'subject' => null,
+                'body' => 'Voice message',
+                'type' => 'voice',
+                'priority' => 'normal',
+            ]);
+
+
+            $attachment = $this->attachmentService->uploadVoice(
+                $message,
+                $file,
+                $duration
+            );
+
+
+            foreach ($recipientIds as $recipientId) {
+
+                if ((int) $recipientId === (int) $senderId) {
+                    continue;
+                }
+
+                $message->recipients()->create([
+                    'recipient_id' => $recipientId,
+                    'is_read' => false,
+                ]);
+            }
+
+
+            $conversation->update([
+                'last_message_at' => now(),
+            ]);
+
+            $message->statistic()->create([
+                'sender_id' => $senderId,
+                'read_count' => 0,
+                'reply_count' => 0,
+                'forward_count' => 0,
+            ]);
+
+
+            event(
+                new MessageCreated(
+                    $message,
+                    $senderId
+                )
+            );
+
+            return $message->load([
+                'sender',
+                'conversation',
+                'recipients',
+                'attachments',
                 'statistic',
             ]);
         });

@@ -7,78 +7,136 @@ use Modules\Messagings\Entities\Conversation;
 
 class ConversationPolicy
 {
+    public function view(
+        User $user,
+        Conversation $conversation
+    ): bool {
+        return $conversation->isParticipant($user->id);
+    }
 
-    public function view(User $user, Conversation $conversation): bool
-    {
+    public function send(
+        User $user,
+        Conversation $conversation
+    ): bool {
+        return $conversation->isParticipant($user->id);
+    }
+
+    public function reply(
+        User $user,
+        Conversation $conversation
+    ): bool {
         return $this->isParticipant($user, $conversation);
     }
 
-    public function send(User $user, Conversation $conversation): bool
-    {
-        return $this->isParticipant($user, $conversation);
+    /*
+    |--------------------------------------------------------------------------
+    | Owner
+    |--------------------------------------------------------------------------
+    */
+
+    public function isOwner(
+        User $user,
+        Conversation $conversation
+    ): bool {
+        return $conversation->isOwner($user->id);
     }
 
-    public function reply(User $user, Conversation $conversation): bool
-    {
-        return $this->isParticipant($user, $conversation);
-    }
-
+    /*
+    |--------------------------------------------------------------------------
+    | Add Participant
+    |--------------------------------------------------------------------------
+    */
 
     public function addParticipant(
         User $user,
         Conversation $conversation
     ): bool {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin')
+            || $conversation->isOwner($user->id);
     }
 
-    public function leave(
-        User $user,
-        Conversation $conversation
-    ): bool {
-        return $this->isParticipant($user, $conversation);
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Remove Participant
+    |--------------------------------------------------------------------------
+    */
 
     public function removeParticipant(
         User $user,
         Conversation $conversation
     ): bool {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin')
+            || $conversation->isOwner($user->id);
     }
 
-    public function delete(
-        User $user,
-        Conversation $conversation
-    ): bool {
-        return $user->hasRole('admin');
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Add Admin
+    |--------------------------------------------------------------------------
+    */
 
     public function addAdmin(
         User $user,
         Conversation $conversation
     ): bool {
-        return $conversation->participants()
-            ->where('user_id', $user->id)
-            ->where('conversation_Role', 'owner')
-            ->exists();
+        return $conversation->isOwner($user->id);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Remove Admin
+    |--------------------------------------------------------------------------
+    */
 
     public function removeAdmin(
         User $user,
         Conversation $conversation
     ): bool {
-        return $conversation->participants()
-            ->where('user_id', $user->id)
-            ->where('conversation_Role', 'owner')
-            ->exists();
+        return $conversation->isOwner($user->id);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Leave
+    |--------------------------------------------------------------------------
+    */
+
+    public function leave(
+        User $user,
+        Conversation $conversation
+    ): bool {
+        return $this->isParticipant(
+            $user,
+            $conversation
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete
+    |--------------------------------------------------------------------------
+    */
+
+    public function delete(
+        User $user,
+        Conversation $conversation
+    ): bool {
+        return $user->hasRole('admin')
+            || $conversation->isOwner($user->id);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Participant Check
+    |--------------------------------------------------------------------------
+    */
 
     protected function isParticipant(
         User $user,
         Conversation $conversation
     ): bool {
         return $conversation->participants()
-            ->where('user_id', $user->id)
+            ->where('users.id', $user->id)
             ->exists();
     }
 }

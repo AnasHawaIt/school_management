@@ -9,12 +9,6 @@ use Modules\Messagings\Repositories\Interfaces\ConversationRepositoryInterface;
 
 class ConversationRepository implements ConversationRepositoryInterface
 {
-    protected ConversationParticipant $model;
-
-    public function __construct(ConversationParticipant $model)
-    {
-        $this->model = $model;
-    }
 
     public function find(int $id): Conversation
     {
@@ -76,7 +70,9 @@ class ConversationRepository implements ConversationRepositoryInterface
         Conversation $conversation,
         User $user
     ): ConversationParticipant {
-        $participant = $conversation->participants()
+
+        $participant = ConversationParticipant::query()
+            ->where('conversation_id', $conversation->id)
             ->where('user_id', $user->id)
             ->firstOrFail();
 
@@ -84,14 +80,16 @@ class ConversationRepository implements ConversationRepositoryInterface
             'conversation_Role' => 'admin',
         ]);
 
-        return $participant->refresh();
+        return $participant->fresh();
     }
 
     public function demoteToMember(
         Conversation $conversation,
         User $user
     ): ConversationParticipant {
-        $participant = $conversation->participants()
+
+        $participant = ConversationParticipant::query()
+            ->where('conversation_id', $conversation->id)
             ->where('user_id', $user->id)
             ->firstOrFail();
 
@@ -107,20 +105,25 @@ class ConversationRepository implements ConversationRepositoryInterface
         int $userId
     ): bool {
 
-        return ConversationParticipant::query()
-                ->where('conversation_id', $conversationId)
-                ->where('user_id', $userId)
-                ->delete() > 0;
+        $conversation = Conversation::findOrFail(
+            $conversationId
+        );
+
+        return $conversation->participants()
+                ->detach($userId) > 0;
     }
 
     public function leave(
         int $conversationId,
         int $userId
     ): bool {
-        return ConversationParticipant::query()
-                ->where('conversation_id', $conversationId)
-                ->where('user_id', $userId)
-                ->delete() > 0;
+
+        $conversation = Conversation::findOrFail(
+            $conversationId
+        );
+
+        return $conversation->participants()
+                ->detach($userId) > 0;
     }
 
     public function existsParticipant(

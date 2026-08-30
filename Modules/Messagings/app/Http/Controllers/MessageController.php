@@ -116,6 +116,58 @@ class MessageController extends Controller
         ]);
     }
 
+    public function sendVoice(Request $request, int $conversation) {
+        $conversationModel = $this->conversationService->find(
+            $conversation
+        );
+
+        $this->authorize(
+            'send',
+            $conversationModel
+        );
+
+        $validated = $request->validate([
+            'audio' => [
+                'required',
+                'file',
+                'mimes:webm,ogg,mp3,wav,m4a,mp4',
+                'max:10240',
+            ],
+
+            'duration' => [
+                'nullable',
+                'integer',
+                'min:1',
+                'max:3600',
+            ],
+
+            'recipients' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+
+            'recipients.*' => [
+                'integer',
+                'distinct',
+                'exists:users,id',
+            ],
+        ]);
+
+        $message = $this->messageService->sendVoice(
+            $conversation,
+            $validated['recipients'],
+            $request->file('audio'),
+            $validated['duration'] ?? null
+        );
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Voice message sent successfully.',
+            'data' => $message,
+        ], 201);
+    }
+
     public function restore(int $id)
     {
         $message = $this->messageService->findWithTrashed($id);
@@ -164,10 +216,7 @@ class MessageController extends Controller
         );
     }
 
-    public function store(
-        SendMessageRequest $request,
-        int $conversation
-    ) {
+    public function store(SendMessageRequest $request, int $conversation) {
         $conversationModel = $this->conversationService->find(
             $conversation
         );

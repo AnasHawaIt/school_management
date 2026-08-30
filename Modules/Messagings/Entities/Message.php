@@ -21,6 +21,7 @@ class Message extends Model
         'sender_id',
         'subject',
         'body',
+        'type',
         'priority',
     ];
 
@@ -29,6 +30,8 @@ class Message extends Model
         return [
             'subject' => 'encrypted',
             'body' => 'encrypted',
+            'type' => 'string',
+            'priority' => 'string',
         ];
     }
 

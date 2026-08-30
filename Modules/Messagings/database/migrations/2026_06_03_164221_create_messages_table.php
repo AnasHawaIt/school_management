@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId('conversation_id')->constrained('conversations')->cascadeOnDelete();
             $table->string('subject')->nullable();
             $table->longText('body');
+            $table->enum('type', [
+                'text',
+                'voice',
+            ])->default('text');
             $table->enum('priority', [
                 'normal',
                 'important',

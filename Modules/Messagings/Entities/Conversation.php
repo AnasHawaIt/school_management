@@ -5,6 +5,7 @@ namespace Modules\Messagings\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
@@ -34,12 +35,19 @@ class Conversation extends Model
         );
     }
 
-    public function participants(): HasMany
+    public function participants(): BelongsToMany
     {
-        return $this->hasMany(
-            ConversationParticipant::class,
-            'conversation_id'
-        );
+        return $this->belongsToMany(
+            User::class,
+            'conversation_participants',
+            'conversation_id',
+            'user_id'
+        )
+            ->withPivot([
+                'conversation_Role',
+                'joined_at',
+            ])
+            ->withTimestamps();
     }
 
     public function messages(): HasMany
@@ -56,6 +64,29 @@ class Conversation extends Model
             Message::class,
             'conversation_id'
         )->latestOfMany();
+    }
+
+    public function isOwner(int $userId): bool
+    {
+        return $this->participants()
+            ->where('users.id', $userId)
+            ->wherePivot('conversation_Role', 'owner')
+            ->exists();
+    }
+
+    public function isParticipant(int $userId): bool
+    {
+        return $this->participants()
+            ->where('users.id', $userId)
+            ->exists();
+    }
+
+    public function isAdmin(int $userId): bool
+    {
+        return $this->participants()
+            ->where('users.id', $userId)
+            ->wherePivot('conversation_Role', 'admin')
+            ->exists();
     }
 
 }

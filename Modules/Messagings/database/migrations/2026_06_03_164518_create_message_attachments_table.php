@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('mime_type')->nullable();
 
             $table->unsignedBigInteger('file_size')->nullable();
+            $table->unsignedInteger('duration')->nullable();
 
             $table->softDeletes();
             $table->timestamps();
