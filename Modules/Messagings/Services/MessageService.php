@@ -2,6 +2,7 @@
 
 namespace Modules\Messagings\Services;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\ConversationParticipant;
@@ -9,14 +10,13 @@ use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageStatistic;
 use Modules\Messagings\Events\AttachmentDeleted;
 use Modules\Messagings\Events\AttachmentUploaded;
-use Modules\Messagings\Events\MessageCreated;
-use Modules\Messagings\Events\MessageForwarded;
-use Modules\Messagings\Events\MessageRead;
-use Modules\Messagings\Events\MessageReplied;
-use Modules\Messagings\Events\MessageRestored;
-use Modules\Messagings\Events\MessagesDeleted;
+use Modules\Messagings\Events\Message\MessageCreated;
+use Modules\Messagings\Events\Message\MessageDeleted;
+use Modules\Messagings\Events\Message\MessageForwarded;
+use Modules\Messagings\Events\Message\MessageRead;
+use Modules\Messagings\Events\Message\MessageReplied;
+use Modules\Messagings\Events\Message\MessageRestored;
 use Modules\Messagings\Repositories\Interfaces\MessageRepositoryInterface;
-use Illuminate\Http\UploadedFile;
 
 class MessageService
 {
@@ -612,7 +612,7 @@ class MessageService
 
         $this->attachmentService->deleteAll($message);
 
-        event(new MessagesDeleted($message,auth()->id()));
+        event(new MessageDeleted($message,auth()->id()));
 
         $this->repo->delete($id);
 

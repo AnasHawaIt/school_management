@@ -105,10 +105,8 @@ class ConversationPolicy
         User $user,
         Conversation $conversation
     ): bool {
-        return $this->isParticipant(
-            $user,
-            $conversation
-        );
+        return $conversation->isParticipant($user->id)
+            && !$conversation->isOwner($user->id);
     }
 
     /*

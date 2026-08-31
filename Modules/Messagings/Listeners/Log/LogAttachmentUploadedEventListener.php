@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Messagings\Listeners;
+namespace Modules\Messagings\Listeners\Log;
 
 use Modules\Messagings\Events\AttachmentUploaded;
 

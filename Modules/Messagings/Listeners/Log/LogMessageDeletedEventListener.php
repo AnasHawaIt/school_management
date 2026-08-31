@@ -1,14 +1,13 @@
 <?php
 
-namespace Modules\Messagings\Listeners;
+namespace Modules\Messagings\Listeners\Log;
 
 
-use Modules\Core\Entities\User;
-use Modules\Messagings\Events\MessagesDeleted;
+use Modules\Messagings\Events\Message\MessageDeleted;
 
 class LogMessageDeletedEventListener
 {
-    public function handle(MessagesDeleted $event): void
+    public function handle(MessageDeleted $event): void
     {
 
         activity()

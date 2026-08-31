@@ -1,17 +1,20 @@
 <?php
 
+
 namespace Modules\Messagings\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\Conversation;
 
-class MessageFailed
+class ConversationDeleted
 {
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public Message $message,
-        public?int $userId=null,
-    ) {}
+        public Conversation $conversation,
+        public int          $userId
+    )
+    {
+    }
 }

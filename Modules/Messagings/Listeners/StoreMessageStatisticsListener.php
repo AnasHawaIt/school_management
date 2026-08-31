@@ -4,7 +4,7 @@ namespace Modules\Messagings\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Messagings\Entities\MessageStatistic;
-use Modules\Messagings\Events\MessageCreated;
+use Modules\Messagings\Events\Message\MessageCreated;
 
 class StoreMessageStatisticsListener implements ShouldQueue
 {

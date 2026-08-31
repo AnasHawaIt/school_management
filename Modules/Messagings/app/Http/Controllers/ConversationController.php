@@ -69,23 +69,28 @@ class ConversationController extends Controller
     }
 
     public function leave(
-        User $user,
         Conversation $conversation
-    ): bool {
-        $participant = $conversation->participants()
-            ->where('user_id', $user->id)
-            ->first();
+    ) {
+        $conversation = $this->conversationService->find($conversation->id);
 
-        if (!$participant) {
-            return false;
-        }
+        $this->authorize(
+            'leave',
+            $conversation
+        );
 
-        if ($participant->role === 'owner') {
-            return false;
-        }
+        $userId = auth()->id();
+        $result = $this->conversationService->leave(
+        $conversation->id,
+        $userId
+    );
 
-        return true;
+    return response()->json([
+         'success' => $result,
+         'message' => 'You have left the conversation.'
+     ]);
+
     }
+
 
     public function addAdmin(
         Conversation $conversation,

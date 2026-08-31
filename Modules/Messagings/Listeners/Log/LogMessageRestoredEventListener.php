@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Messagings\Listeners;
+namespace Modules\Messagings\Listeners\Log;
 
 
 use Modules\Core\Entities\User;
-use Modules\Messagings\Events\MessageRestored;
+use Modules\Messagings\Events\Message\MessageRestored;
 
 class LogMessageRestoredEventListener
 {

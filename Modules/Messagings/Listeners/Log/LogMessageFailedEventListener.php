@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Messagings\Listeners;
+namespace Modules\Messagings\Listeners\Log;
 
 use Modules\Core\Entities\User;
-use Modules\Messagings\Events\MessageFailed;
+use Modules\Messagings\Events\Message\MessageFailed;
 
 class LogMessageFailedEventListener
 {
@@ -12,7 +12,7 @@ class LogMessageFailedEventListener
         $user = User::find($event->userId);
 
         activity()
-            ->causedBy($user) 
+            ->causedBy($user)
             ->performedOn($event->message)
             ->log('Message.Failed');
     }

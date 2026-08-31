@@ -3,15 +3,19 @@
 namespace Modules\Messagings\app\Policies;
 
 use Modules\Core\Entities\User;
+use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\Message;
 
 class MessagePolicy
 {
 
-    public function viewTrashed(User $user): bool
-    {
-        return $user->hasRole('admin');
-    }
+    public function viewTrashed(
+    User $user,
+    Conversation $conversation
+): bool {
+    return $user->hasRole('admin')
+        || $conversation->isOwner($user->id)||$conversation->isAdmin($user->id);
+}
 
     public function view(User $user, Message $message): bool
     {
@@ -55,27 +59,32 @@ class MessagePolicy
 
     public function delete(
         User $user,
-        Message $message
+        Message $message,
+        Conversation $conversation
     ): bool {
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        return $message->sender_id === $user->id;
+        return $user->hasRole('admin')
+            || $conversation->isOwner($user->id)
+            || $conversation->isAdmin($user->id);
     }
 
     public function restore(
         User $user,
-        Message $message
+        Message $message,
+        Conversation $conversation
     ): bool {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin')
+            || $conversation->isOwner($user->id)
+            || $conversation->isAdmin($user->id);
     }
 
     public function forceDelete(
         User $user,
-        Message $message
+        Message $message,
+        Conversation $conversation
     ): bool {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin')
+            || $conversation->isOwner($user->id)
+            || $conversation->isAdmin($user->id);
     }
 
     protected function isConversationParticipant(

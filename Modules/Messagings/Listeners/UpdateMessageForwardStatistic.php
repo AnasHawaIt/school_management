@@ -3,7 +3,7 @@
 namespace Modules\Messagings\Listeners;
 
 use Modules\Messagings\Entities\MessageStatistic;
-use Modules\Messagings\Events\MessageForwarded;
+use Modules\Messagings\Events\Message\MessageForwarded;
 
 class UpdateMessageForwardStatistic
 {

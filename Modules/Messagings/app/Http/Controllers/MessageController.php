@@ -8,6 +8,7 @@ use Modules\Messagings\app\Requests\ForwardMessageRequest;
 use Modules\Messagings\app\Requests\ReplyMessageRequest;
 use Modules\Messagings\app\Requests\SendMessageRequest;
 use Modules\Messagings\app\Resources\MessageResource;
+use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageAttachment;
 use Modules\Messagings\Services\ConversationService;
@@ -77,11 +78,16 @@ class MessageController extends Controller
         ]);
     }
 
-    public function deleteAttachment(int $id)
-    {
+    public function deleteAttachment(
+        Conversation $conversation,
+        int $id
+    ) {
         $attachment = $this->messageService->ShowAttachment($id);
 
-        $this->authorize('delete', $attachment);
+        $this->authorize(
+            'delete',
+            [$attachment, $conversation]
+        );
 
         $this->messageService->deleteAttachment($id);
 
@@ -89,7 +95,9 @@ class MessageController extends Controller
             'success' => true,
             'message' => 'Attachment deleted successfully.',
         ]);
+
     }
+
 
     public function inbox(int $conversation)
     {
@@ -168,11 +176,21 @@ class MessageController extends Controller
         ], 201);
     }
 
-    public function restore(int $id)
-    {
+    public function restore(
+        Conversation $conversation,
+        int $id
+    ) {
         $message = $this->messageService->findWithTrashed($id);
 
-        $this->authorize('restore', $message);
+        // تأكد أن الرسالة تخص هذه المحادثة
+        if ($message->conversation_id !== $conversation->id) {
+            abort(404);
+        }
+
+        $this->authorize(
+            'restore',
+            [$message, $conversation]
+        );
 
         $message = $this->messageService->restore($id);
 
@@ -193,27 +211,40 @@ class MessageController extends Controller
         ]);
     }
 
-    public function forceDelete(int $id)
-    {
+    public function forceDelete(
+        Conversation $conversation,
+        int $id
+    ) {
         $message = $this->messageService->findWithTrashed($id);
 
-        $this->authorize('forceDelete', $message);
+        // تأكد أن الرسالة تخص هذه المحادثة
+        if ($message->conversation_id !== $conversation->id) {
+            abort(404);
+        }
+
+        $this->authorize(
+            'forceDelete',
+            [$message, $conversation]
+        );
 
         $this->messageService->forceDelete($id);
 
         return response()->json([
             'success' => true,
-            'message' => 'Message permanently deleted successfully.',
+            'message' => 'Message restored successfully.',
         ]);
+
     }
 
-    public function AllOnlyTrashed()
-    {
-        $this->authorize('viewTrashed', Message::class);
+    public function AllOnlyTrashed(
+        Conversation $conversation
+    ) {
+        $this->authorize('viewTrashed', [Message::class, $conversation]);
 
         return MessageResource::collection(
-            $this->messageService->getMessageOnlyTrashed()
+          $this->messageService->getMessageOnlyTrashed($conversation->id)
         );
+
     }
 
     public function store(SendMessageRequest $request, int $conversation) {
@@ -318,11 +349,19 @@ class MessageController extends Controller
         ]);
     }
 
-    public function delete(int $id)
-    {
+    public function delete(
+        Conversation $conversation,
+        int $id
+    ) {
         $message = $this->messageService->find($id);
 
-        $this->authorize('delete', $message);
+        if ($message->conversation_id !== $conversation->id) {
+            abort(404);
+        }
+        $this->authorize(
+            'delete',
+            [$message, $conversation]
+        );
 
         $this->messageService->delete($id);
 

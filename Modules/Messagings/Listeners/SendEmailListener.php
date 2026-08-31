@@ -6,7 +6,8 @@ namespace Modules\Messagings\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 use Modules\Messagings\app\Emails\MessageMail;
-use Modules\Messagings\Events\MessageCreated;
+use Modules\Messagings\Events\Message\MessageCreated;
+
 class SendEmailListener implements ShouldQueue
 {
     public function handle(MessageCreated $event): void

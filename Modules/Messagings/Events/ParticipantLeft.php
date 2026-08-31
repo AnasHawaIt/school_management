@@ -1,18 +1,21 @@
 <?php
 
+
 namespace Modules\Messagings\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Core\Entities\User;
 
-class AttachmentDeleted
+class ParticipantLeft
 {
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public int $attachmentId,
-        public int $messageId,
-        public string $fileName,
-        public string $filePath
-    ) {}
+        public Conversation $conversation,
+        public User         $user
+    )
+    {
+    }
 }

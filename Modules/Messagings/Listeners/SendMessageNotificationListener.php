@@ -3,7 +3,7 @@
 namespace Modules\Messagings\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Messagings\Events\MessageCreated;
+use Modules\Messagings\Events\Message\MessageCreated;
 use Modules\Notifications\Services\NotificationService;
 
 class SendMessageNotificationListener implements ShouldQueue
@@ -25,16 +25,24 @@ class SendMessageNotificationListener implements ShouldQueue
             return;
         }
 
+        $notificationBody = match ($message->type) {
+            'voice' => '🎙️ New voice message',
+            default => $message->subject
+                ?: 'You have received a new message',
+        };
+
         $this->notificationService->sendToUsers(
             userIds: $recipientIds,
             title: 'New Message',
-            body: $message->subject,
+            body: $notificationBody,
             type: 'message_created',
             data: [
                 'entity' => 'message',
                 'action' => 'CREATE',
                 'message_id' => $message->id,
+                'conversation_id' => $message->conversation_id,
                 'sender_id' => $message->sender_id,
+                'message_type' => $message->type,
             ]
         );
     }

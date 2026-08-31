@@ -1,18 +1,18 @@
 <?php
 
-namespace Modules\Messagings\Events;
+namespace Modules\Messagings\Events\Message;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Messagings\Entities\Message;
 
-class MessageForwarded
+class MessageReplied
 {
     use Dispatchable, SerializesModels;
 
     public function __construct(
         public Message $originalMessage,
-        public Message $forwardedMessage,
+        public Message $reply,
         public int $userId
     ) {}
 }

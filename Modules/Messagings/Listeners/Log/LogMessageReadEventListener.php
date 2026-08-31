@@ -1,9 +1,8 @@
 <?php
 
-namespace Modules\Messagings\Listeners;
+namespace Modules\Messagings\Listeners\Log;
 
-use Modules\Core\Entities\User;
-use Modules\Messagings\Events\MessageRead;
+use Modules\Messagings\Events\Message\MessageRead;
 
 class LogMessageReadEventListener
 {

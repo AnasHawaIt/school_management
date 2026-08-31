@@ -2,31 +2,54 @@
 
 namespace Modules\Messagings\Services;
 
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Modules\Core\Entities\User;
 use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\ConversationParticipant;
+use Modules\Messagings\Events\AdminDemoted;
+use Modules\Messagings\Events\AdminPromoted;
+use Modules\Messagings\Events\ConversationCreated;
+use Modules\Messagings\Events\ConversationDeleted;
+use Modules\Messagings\Events\ParticipantAdded;
+use Modules\Messagings\Events\ParticipantLeft;
+use Modules\Messagings\Events\ParticipantRemoved;
 use Modules\Messagings\Repositories\Eloquent\ConversationRepository;
 
 class ConversationService
 {
-
     public function __construct(
         protected ConversationRepository $repo
     ) {
     }
 
+    /**
+     * Create a new conversation.
+     */
     public function create(
         array $data,
         int $userId
     ): Conversation {
 
-        return DB::transaction(function () use ($data, $userId) {
+        /*
+        |--------------------------------------------------------------------------
+        | Database Transaction
+        |--------------------------------------------------------------------------
+        */
 
-            $participantIds = collect($data['participants'])
+        $result = DB::transaction(function () use ($data, $userId) {
+
+            $participantIds = collect($data['participants'] ?? [])
+                ->map(fn ($id) => (int) $id)
                 ->unique()
-                ->reject(fn ($id) => (int) $id === $userId)
+                ->reject(fn ($id) => $id === $userId)
                 ->values();
+
+            /*
+            |--------------------------------------------------------------------------
+            | Create Conversation
+            |--------------------------------------------------------------------------
+            */
 
             $conversation = $this->repo->create([
                 'type'       => $data['type'],
@@ -34,37 +57,93 @@ class ConversationService
                 'created_by' => $userId,
             ]);
 
+            /*
+            |--------------------------------------------------------------------------
+            | Add Owner
+            |--------------------------------------------------------------------------
+            */
+
             $conversation->participants()->attach($userId, [
                 'conversation_Role' => 'owner',
-                'joined_at'          => now(),
-                'created_at'         => now(),
-                'updated_at'         => now(),
+                'joined_at'         => now(),
+                'created_at'        => now(),
+                'updated_at'        => now(),
             ]);
 
+            /*
+            |--------------------------------------------------------------------------
+            | Add Initial Participants
+            |--------------------------------------------------------------------------
+            */
+
+            $addedParticipants = [];
+
             foreach ($participantIds as $participantId) {
-                $this->repo->addParticipant(
-                    $conversation->id,
-                    $participantId
+
+                $participant = $this->addParticipant(
+                    conversationId: $conversation->id,
+                    userId: $participantId,
+                    addedBy: $userId,
+                    dispatchEvent: false
                 );
+
+                $addedParticipants[] = $participant;
             }
 
-            return $conversation->load('participants');
+            return [
+                'conversation'       => $conversation->load('participants'),
+                'added_participants' => $addedParticipants,
+            ];
         });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Dispatch Events AFTER Transaction
+        |--------------------------------------------------------------------------
+        |
+        | مهم:
+        | نطلق الأحداث بعد نجاح الـ transaction حتى لا يتم إرسال
+        | Notification أو تسجيل Audit Log لعملية تم rollback لها.
+        |
+        */
+
+        event(new ConversationCreated(
+            conversation: $result['conversation'],
+            userId: $userId
+        ));
+
+        foreach ($result['added_participants'] as $participant) {
+
+            event(new ParticipantAdded(
+                conversation: $result['conversation'],
+                user: $participant->user,
+                addedBy: $userId
+            ));
+        }
+
+        return $result['conversation'];
     }
 
+
+    /**
+     * Join public/group conversation.
+     */
     public function join(
         int $conversationId,
         int $userId
     ): Conversation {
 
-        return DB::transaction(function () use (
+        $result = DB::transaction(function () use (
             $conversationId,
             $userId
         ) {
 
-            $conversation = $this->repo->find($conversationId);
+            $conversation = $this->repo->find(
+                $conversationId
+            );
 
             if ($conversation->type === 'private') {
+
                 abort(
                     403,
                     'You cannot join a private conversation directly.'
@@ -77,31 +156,63 @@ class ConversationService
                     $userId
                 )
             ) {
+
                 abort(
                     422,
                     'You are already a participant in this conversation.'
                 );
             }
 
-            $this->repo->addParticipant(
-                $conversationId,
-                $userId
+            $participant = $this->addParticipant(
+                conversationId: $conversationId,
+                userId: $userId,
+                addedBy: $userId,
+                dispatchEvent: false
             );
 
-            return $conversation->load('participants');
+            return [
+                'conversation' => $conversation->load('participants'),
+                'participant'  => $participant,
+            ];
         });
+
+        /*
+        |--------------------------------------------------------------------------
+        | ParticipantAdded
+        |--------------------------------------------------------------------------
+        */
+
+        event(new ParticipantAdded(
+            conversation: $result['conversation'],
+            user: $result['participant']->user,
+            addedBy: $userId
+        ));
+
+        return $result['conversation'];
     }
 
+
+    /**
+     * Get all conversations for a user.
+     */
     public function getUserConversations(int $userId)
     {
         return $this->repo->getUserConversations($userId);
     }
 
+
+    /**
+     * Find conversation.
+     */
     public function find(int $id): Conversation
     {
         return $this->repo->find($id);
     }
 
+
+    /**
+     * Find conversation accessible by user.
+     */
     public function findForUser(
         int $conversationId,
         int $userId
@@ -113,37 +224,143 @@ class ConversationService
         );
     }
 
+
+    /**
+     * Add participant.
+     *
+     * $addedBy = user who performed the action.
+     */
     public function addParticipant(
         int $conversationId,
-        int $userId
+        int $userId,
+        ?int $addedBy = null,
+        bool $dispatchEvent = true
     ): ConversationParticipant {
 
-        return ConversationParticipant::firstOrCreate(
+        $participant = ConversationParticipant::firstOrCreate(
             [
                 'conversation_id' => $conversationId,
-                'user_id' => $userId,
+                'user_id'         => $userId,
             ],
             [
                 'conversation_Role' => 'member',
-                'joined_at' => now(),
+                'joined_at'         => now(),
             ]
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Dispatch ParticipantAdded only when actually created
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $participant->wasRecentlyCreated &&
+            $dispatchEvent
+        ) {
+
+            $conversation = $this->repo->find(
+                $conversationId
+            );
+
+            $participant->load('user');
+
+            event(new ParticipantAdded(
+                conversation: $conversation,
+                user: $participant->user,
+                addedBy: $addedBy ?? auth()->id()
+            ));
+        }
+
+        return $participant->load('user');
     }
 
+
+    /**
+     * Remove participant from conversation.
+     *
+     * $removedBy = user who performed the action.
+     */
     public function removeParticipant(
         int $conversationId,
-        int $userId
+        int $userId,
+        ?int $removedBy = null
     ): bool {
 
-        return $this->repo->removeParticipant(
+        /*
+        |--------------------------------------------------------------------------
+        | Get participant BEFORE deleting
+        |--------------------------------------------------------------------------
+        */
+
+        $conversation = $this->repo->find(
+            $conversationId
+        );
+
+        $participant = $conversation->participants()
+            ->where('users.id', $userId)
+            ->first();
+
+        if (!$participant) {
+            throw new Exception(
+                'User is not a participant in this conversation.'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Owner protection
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $participant->pivot->conversation_Role === 'owner'
+        ) {
+
+            throw new Exception(
+                'Conversation owner cannot be removed.'
+            );
+        }
+
+        $user = $participant;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Delete participant
+        |--------------------------------------------------------------------------
+        */
+
+        $removed = $this->repo->removeParticipant(
             $conversationId,
             $userId
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Event
+        |--------------------------------------------------------------------------
+        */
+
+        if ($removed) {
+
+            event(new ParticipantRemoved(
+                conversation: $conversation,
+                user: $user,
+                removedBy: $removedBy ?? auth()->id()
+            ));
+        }
+
+        return $removed;
     }
 
+
+    /**
+     * Promote participant to admin.
+     */
     public function addAdmin(
         Conversation $conversation,
-        User $user
+        User $user,
+        ?int $promotedBy = null
     ): ConversationParticipant {
 
         $participant = $conversation->participants()
@@ -151,32 +368,76 @@ class ConversationService
             ->first();
 
         if (!$participant) {
-            throw new \Exception(
+
+            throw new Exception(
                 'User is not a participant in this conversation.'
             );
         }
 
-        if ($participant->pivot->conversation_Role === 'owner') {
-            throw new \Exception(
+        /*
+        |--------------------------------------------------------------------------
+        | Owner cannot be promoted
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $participant->pivot->conversation_Role === 'owner'
+        ) {
+
+            throw new Exception(
                 'Conversation owner cannot be promoted to admin.'
             );
         }
 
-        if ($participant->pivot->conversation_Role === 'admin') {
-            throw new \Exception(
+        /*
+        |--------------------------------------------------------------------------
+        | Already admin
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $participant->pivot->conversation_Role === 'admin'
+        ) {
+
+            throw new Exception(
                 'User is already an admin.'
             );
         }
 
-        return $this->repo->promoteToAdmin(
+        /*
+        |--------------------------------------------------------------------------
+        | Promote
+        |--------------------------------------------------------------------------
+        */
+
+        $result = $this->repo->promoteToAdmin(
             $conversation,
             $user
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Event
+        |--------------------------------------------------------------------------
+        */
+
+        event(new AdminPromoted(
+            conversation: $conversation,
+            user: $user,
+            promotedBy: $promotedBy ?? auth()->id()
+        ));
+
+        return $result;
     }
 
+
+    /**
+     * Demote admin to member.
+     */
     public function removeAdmin(
         Conversation $conversation,
-        User $user
+        User $user,
+        ?int $demotedBy = null
     ): ConversationParticipant {
 
         $participant = $conversation->participants()
@@ -184,35 +445,167 @@ class ConversationService
             ->first();
 
         if (!$participant) {
-            throw new \Exception(
+
+            throw new Exception(
                 'User is not a participant in this conversation.'
             );
         }
 
-        if ($participant->pivot->conversation_Role !== 'admin') {
-            throw new \Exception(
+        /*
+        |--------------------------------------------------------------------------
+        | User must be admin
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $participant->pivot->conversation_Role !== 'admin'
+        ) {
+
+            throw new Exception(
                 'User is not an admin.'
             );
         }
 
-        return $this->repo->demoteToMember(
+        /*
+        |--------------------------------------------------------------------------
+        | Demote
+        |--------------------------------------------------------------------------
+        */
+
+        $result = $this->repo->demoteToMember(
             $conversation,
             $user
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Event
+        |--------------------------------------------------------------------------
+        */
+
+        event(new AdminDemoted(
+            conversation: $conversation,
+            user: $user,
+            demotedBy: $demotedBy ?? auth()->id()
+        ));
+
+        return $result;
     }
 
+
+    /**
+     * Leave conversation.
+     */
     public function leave(
         int $conversationId,
         int $userId
     ): bool {
-        return $this->repo->leave(
+
+        /*
+        |--------------------------------------------------------------------------
+        | Load data BEFORE removing participant
+        |--------------------------------------------------------------------------
+        */
+
+        $conversation = $this->repo->find(
+            $conversationId
+        );
+
+        $participant = $conversation->participants()
+            ->where('users.id', $userId)
+            ->first();
+
+        if (!$participant) {
+
+            throw new Exception(
+                'User is not a participant in this conversation.'
+            );
+        }
+
+        $user = $participant;
+
+        /*
+        |--------------------------------------------------------------------------
+        | Owner cannot simply leave
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $participant->pivot->conversation_role === 'owner'
+        ) {
+
+            throw new Exception(
+                'Conversation owner cannot leave the conversation.'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Leave
+        |--------------------------------------------------------------------------
+        */
+
+        $result = $this->repo->leave(
             $conversationId,
             $userId
         );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Event
+        |--------------------------------------------------------------------------
+        */
+
+        if ($result) {
+
+            event(new ParticipantLeft(
+                conversation: $conversation,
+                user: $user
+            ));
+        }
+
+        return $result;
     }
 
-    public function delete(int $id): bool
-    {
-        return $this->repo->delete($id);
+
+    /**
+     * Delete conversation.
+     */
+    public function delete(
+        int $id,
+        ?int $deletedBy = null
+    ): bool {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Load conversation BEFORE deletion
+        |--------------------------------------------------------------------------
+        */
+
+        $conversation = $this->repo->find($id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Delete
+        |--------------------------------------------------------------------------
+        */
+
+        $result = $this->repo->delete($id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Event
+        |--------------------------------------------------------------------------
+        */
+
+        if ($result) {
+
+            event(new ConversationDeleted(
+                conversation: $conversation,
+                userId: $deletedBy ?? auth()->id()
+            ));
+        }
+
+        return $result;
     }
 }
