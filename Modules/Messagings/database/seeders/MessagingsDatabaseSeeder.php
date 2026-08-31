@@ -11,6 +11,11 @@ class MessagingsDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // $this->call([]);
+        $this->call([
+            ConversationSeeder::class,
+            MessageSeeder::class,
+            MessageAttachmentSeeder::class,
+            MessageStatisticsSeeder::class,
+        ]);
     }
 }
