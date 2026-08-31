@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
+use Modules\Messagings\database\factories\MessageFactory;
 
 
 class Message extends Model
@@ -77,5 +78,10 @@ class Message extends Model
     public function statistic()
     {
         return $this->hasOne(MessageStatistic::class);
+    }
+
+    protected static function newFactory(): MessageFactory
+    {
+        return MessageFactory::new();
     }
 }

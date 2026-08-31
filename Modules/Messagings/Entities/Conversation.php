@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
+use Modules\Messagings\Database\Factories\ConversationFactory;
 
 class Conversation extends Model
 {
@@ -89,4 +90,8 @@ class Conversation extends Model
             ->exists();
     }
 
+    protected static function newFactory(): ConversationFactory
+    {
+        return ConversationFactory::new();
+    }
 }

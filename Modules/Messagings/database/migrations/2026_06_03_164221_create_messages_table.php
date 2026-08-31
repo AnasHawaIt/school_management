@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('conversation_id')->constrained('conversations')->cascadeOnDelete();
-            $table->string('subject')->nullable();
+            $table->text('subject')->nullable();
             $table->longText('body');
             $table->enum('type', [
                 'text',

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
 
+
 class MessageStatistic extends Model
 {
     use SoftDeletes;
@@ -44,8 +45,4 @@ class MessageStatistic extends Model
         return $this->hasMany(MessageRecipient::class);
     }
 
-// protected static function newFactory(): EventLogFactory
-    // {
-    //     // return EventLogFactory::new();
-    // }
 }

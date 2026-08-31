@@ -5,6 +5,7 @@ namespace Modules\Messagings\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Messagings\database\factories\MessageAttachmentFactory;
 
 class MessageAttachment extends Model
 {
@@ -40,5 +41,10 @@ class MessageAttachment extends Model
     public function getFileUrlAttribute()
     {
         return asset('storage/' . $this->file_path);
+    }
+
+    protected static function newFactory(): MessageAttachmentFactory
+    {
+        return MessageAttachmentFactory::new();
     }
 }

@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
+use Modules\Core\Database\Factories\UserFactory;
 use Modules\Library\Entities\Member;
 use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\Message;
@@ -214,5 +215,10 @@ class User extends Authenticatable
             Message::class,
             'sender_id'
         );
+    }
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 }

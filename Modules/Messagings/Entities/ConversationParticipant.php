@@ -43,12 +43,12 @@ class ConversationParticipant extends Model
 
     public function isOwner(): bool
     {
-        return $this->role === 'owner';
+        return $this->conversation_Role === 'owner';
     }
 
     public function isAdmin(): bool
     {
-        return in_array($this->role, [
+        return in_array($this->conversation_Role, [
             'admin',
             'owner',
         ]);
