@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
 
-//use Modules\SMS\Entities\SmsLog;
 
 class Message extends Model
 {
