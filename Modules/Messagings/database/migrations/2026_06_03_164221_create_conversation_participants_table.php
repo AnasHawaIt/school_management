@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
-            $table->enum('conversation_Role', [
+            $table->enum('conversation_role', [
                 'member',
                 'admin',
                 'owner',

@@ -45,7 +45,7 @@ class Conversation extends Model
             'user_id'
         )
             ->withPivot([
-                'conversation_Role',
+                'conversation_role',
                 'joined_at',
             ])
             ->withTimestamps();
@@ -71,7 +71,7 @@ class Conversation extends Model
     {
         return $this->participants()
             ->where('users.id', $userId)
-            ->wherePivot('conversation_Role', 'owner')
+            ->wherePivot('conversation_role', 'owner')
             ->exists();
     }
 
@@ -86,7 +86,7 @@ class Conversation extends Model
     {
         return $this->participants()
             ->where('users.id', $userId)
-            ->wherePivot('conversation_Role', 'admin')
+            ->wherePivot('conversation_role', 'admin')
             ->exists();
     }
 

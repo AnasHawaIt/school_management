@@ -11,7 +11,7 @@ class ConversationParticipant extends Model
     protected $fillable = [
         'conversation_id',
         'user_id',
-        'conversation_Role',
+        'conversation_role',
         'joined_at',
         'last_read_at',
         'is_muted',
@@ -43,12 +43,12 @@ class ConversationParticipant extends Model
 
     public function isOwner(): bool
     {
-        return $this->conversation_Role === 'owner';
+        return $this->conversation_role === 'owner';
     }
 
     public function isAdmin(): bool
     {
-        return in_array($this->conversation_Role, [
+        return in_array($this->conversation_role, [
             'admin',
             'owner',
         ]);

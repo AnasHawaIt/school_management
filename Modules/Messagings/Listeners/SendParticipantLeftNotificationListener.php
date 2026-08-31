@@ -22,7 +22,7 @@ class SendParticipantLeftNotificationListener implements ShouldQueue
 
         $adminIds = $event->conversation
             ->participants()
-            ->whereIn('conversation_Role', [
+            ->whereIn('conversation_role', [
                 'owner',
                 'admin',
             ])

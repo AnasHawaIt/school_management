@@ -77,7 +77,7 @@ class ConversationRepository implements ConversationRepositoryInterface
             ->firstOrFail();
 
         $participant->update([
-            'conversation_Role' => 'admin',
+            'conversation_role' => 'admin',
         ]);
 
         return $participant->fresh();
@@ -94,7 +94,7 @@ class ConversationRepository implements ConversationRepositoryInterface
             ->firstOrFail();
 
         $participant->update([
-            'conversation_Role' => 'member',
+            'conversation_role' => 'member',
         ]);
 
         return $participant->fresh();

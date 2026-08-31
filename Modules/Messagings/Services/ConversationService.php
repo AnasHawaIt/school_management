@@ -64,7 +64,7 @@ class ConversationService
             */
 
             $conversation->participants()->attach($userId, [
-                'conversation_Role' => 'owner',
+                'conversation_role' => 'owner',
                 'joined_at'         => now(),
                 'created_at'        => now(),
                 'updated_at'        => now(),
@@ -314,7 +314,7 @@ class ConversationService
         */
 
         if (
-            $participant->pivot->conversation_Role === 'owner'
+            $participant->pivot->conversation_role === 'owner'
         ) {
 
             throw new Exception(
