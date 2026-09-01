@@ -12,6 +12,6 @@ class MessageFailed
 
     public function __construct(
         public Message $message,
-        public?int $userId=null,
+        public ?int $userId = null,
     ) {}
 }

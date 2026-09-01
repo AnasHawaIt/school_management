@@ -12,7 +12,7 @@ class MessageDeleted
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public function __construct(
-        public Message $Message,
+        public Message $message,
         public int $userId,
         public ?string $socketId = null
     ) {}
