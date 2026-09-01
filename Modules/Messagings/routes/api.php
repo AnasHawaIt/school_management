@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Messagings\app\Http\Controllers\ConversationController;
 use Modules\Messagings\app\Http\Controllers\MessageController;
+use Modules\Messagings\app\Http\Controllers\TypingController;
 
 
 Route::prefix('conversations')->middleware('auth:sanctum')->group(function () {
+    Route::post('/{conversation}/typing/start', [TypingController::class, 'start']);
+    Route::post('/{conversation}/typing/stop', [TypingController::class, 'stop']);
     Route::get('', [ConversationController::class, 'index']);
     Route::post('', [ConversationController::class, 'store']);
     Route::delete('/{conversation}', [ConversationController::class, 'delete']);
@@ -39,3 +42,4 @@ Route::prefix('Message')->middleware(["auth:sanctum"])->group(function () {
     Route::get('attachments/{id}', [MessageController::class, 'ShowAttachment']);
     Route::get('index', [MessageController::class, 'indexAttachment']);
 });
+

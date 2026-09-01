@@ -1,4 +1,5 @@
 import Echo from 'laravel-echo';
+
 import Pusher from 'pusher-js';
 
 window.Pusher = Pusher;
@@ -18,5 +19,3 @@ window.Echo = new Echo({
 
     enabledTransports: ['ws', 'wss'],
 });
-
-console.log('Messaging Echo initialized');

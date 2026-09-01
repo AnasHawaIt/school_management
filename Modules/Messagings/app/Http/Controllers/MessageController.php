@@ -217,9 +217,12 @@ class MessageController extends Controller
     ) {
         $message = $this->messageService->findWithTrashed($id);
 
-        // تأكد أن الرسالة تخص هذه المحادثة
-        if ($message->conversation_id !== $conversation->id) {
-            abort(404);
+        if (!$message) {
+            abort(404, 'Message not found.');
+        }
+
+        if ((int) $message->conversation_id !== (int) $conversation->id) {
+            abort(404, 'Message does not belong to this conversation.');
         }
 
         $this->authorize(
@@ -231,9 +234,8 @@ class MessageController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Message restored successfully.',
+            'message' => 'Message permanently deleted successfully.',
         ]);
-
     }
 
     public function AllOnlyTrashed(

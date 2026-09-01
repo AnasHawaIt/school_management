@@ -12,7 +12,7 @@ class LogMessageDeletedEventListener
 
         activity()
             ->causedBy(auth()->user())
-            ->performedOn($event->Message)
+            ->performedOn($event->message)
             ->log('Message.Deleted');
     }
 }

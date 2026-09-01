@@ -540,10 +540,22 @@ class MessageService
 
     public function deleteAttachment(int $id): bool
     {
-        $attachment = $this->attachmentService->delete($id);
+        $attachment = $this->attachmentService->find($id);
+
+        $attachmentId = $attachment->id;
+        $messageId = $attachment->message_id;
+        $fileName = $attachment->file_name;
+        $filePath = $attachment->file_path;
+
+        $this->attachmentService->delete($attachmentId);
 
         event(
-            new AttachmentDeleted($attachment)
+            new AttachmentDeleted(
+                $attachmentId,
+                $messageId,
+                $fileName,
+                $filePath
+            )
         );
 
         return true;
