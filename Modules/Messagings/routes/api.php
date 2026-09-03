@@ -43,3 +43,10 @@ Route::prefix('Message')->middleware(["auth:sanctum"])->group(function () {
     Route::get('index', [MessageController::class, 'indexAttachment']);
 });
 
+Route::get('/test-auth', function () {
+    return response()->json([
+        'authenticated' => auth()->check(),
+        'user_id' => auth()->id(),
+        'user' => auth()->user(),
+    ]);
+});
