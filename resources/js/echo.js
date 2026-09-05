@@ -76,6 +76,20 @@ window.Echo = new Echo({
 });
 
 const conversationId = 1;
+window.Echo
+    .join(`conversation.${conversationId}`)
+    .here((users) => {
+        console.log('🟢 USERS CURRENTLY ONLINE:', users);
+    })
+    .joining((user) => {
+        console.log('🟢 USER JOINED:', user);
+    })
+    .leaving((user) => {
+        console.log('⚪ USER LEFT:', user);
+    })
+    .error((error) => {
+        console.error('❌ PRESENCE ERROR:', error);
+    });
 
 window.Echo
     .private(`conversation.${conversationId}`)
