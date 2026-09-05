@@ -34,7 +34,7 @@ class StudentPointRepository implements StudentPointRepositoryInterface
         return $this->model->with(['student.user', 'category', 'semester'])->findOrFail($id);
     }
 
-    public function create(array $data): object
+    public function create(array $data): StudentPoint
     {
         return $this->model->create($data);
     }

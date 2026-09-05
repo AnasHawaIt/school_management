@@ -2,13 +2,15 @@
 
 namespace Modules\Academic\Contracts\Repositories;
 
+use Modules\Academic\Entities\Student;
+
 interface StudentRepositoryInterface
 {
     public function getAll(array $filters = []);
     public function findById(int $id);
     public function findByStudentId(string $studentId);
-    public function create(array $data): object;
-    public function update(int $id, array $data): object;
+    public function create(array $data): Student;
+    public function update(int $id, array $data): Student;
     public function delete(int $id): bool;
     public function restore(int $id): bool;
     public function transferSection(int $studentId, int $newSectionId): bool;

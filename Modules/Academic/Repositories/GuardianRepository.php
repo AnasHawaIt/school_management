@@ -35,12 +35,12 @@ class GuardianRepository implements GuardianRepositoryInterface
         return $this->model->with('user')->findOrFail($id);
     }
 
-    public function create(array $data): object
+    public function create(array $data): Guardian
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): Guardian
     {
         $guardian = $this->model->findOrFail($id);
         $guardian->update($data);

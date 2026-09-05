@@ -45,12 +45,12 @@ class SubjectRepository implements SubjectRepositoryInterface
         return $this->model->where('code', $code)->firstOrFail();
     }
 
-    public function create(array $data): object
+    public function create(array $data): Subject
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): Subject
     {
         $subject = $this->model->findOrFail($id);
         $subject->update($data);

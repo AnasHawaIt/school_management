@@ -49,12 +49,12 @@ class StudentRepository implements StudentRepositoryInterface
         return $this->model->where('student_id', $studentId)->firstOrFail();
     }
 
-    public function create(array $data): object
+    public function create(array $data): Student
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): Student
     {
         $student = $this->model->findOrFail($id);
         $student->update($data);

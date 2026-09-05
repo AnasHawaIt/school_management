@@ -2,12 +2,14 @@
 
 namespace Modules\Academic\Contracts\Services;
 
+use Modules\Academic\Entities\Student;
+
 interface StudentServiceInterface
 {
     public function getAllStudents(array $filters = []);
     public function getStudent(int $id);
-    public function createStudent(array $data): object;
-    public function updateStudent(int $id, array $data): object;
+    public function createStudent(array $data): Student;
+    public function updateStudent(int $id, array $data): Student;
     public function deleteStudent(int $id): bool;
     public function restoreStudent(int $id): bool;
     public function transferSection(int $studentId, int $newSectionId): bool;
@@ -17,6 +19,6 @@ interface StudentServiceInterface
     public function updateMedicalRecord(int $studentId, array $data): object;
     public function getStudentsBySection(int $sectionId);
     public function getSectionStats(int $sectionId): array;
-    public function toggleStatus(int $id, string $status): object;
+    public function toggleStatus(int $id, string $status): Student;
     public function assignStudentToSection(int $sectionId, int $studentId, int $semesterId, int $academicYearId): bool;
 }

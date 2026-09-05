@@ -38,7 +38,7 @@ class TeacherRepository implements TeacherRepositoryInterface
         return $query->latest()->paginate($filters['per_page'] ?? 15);
     }
 
-    public function findById(int $id)
+    public function findById(int $id): Teacher
     {
         return $this->model->with(['user', 'qualifications'])->findOrFail($id);
     }
@@ -48,12 +48,12 @@ class TeacherRepository implements TeacherRepositoryInterface
         return $this->model->where('employee_id', $employeeId)->firstOrFail();
     }
 
-    public function create(array $data): object
+    public function create(array $data): Teacher
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): Teacher
     {
         $teacher = $this->model->findOrFail($id);
         $teacher->update($data);
@@ -67,10 +67,10 @@ class TeacherRepository implements TeacherRepositoryInterface
 
     public function restore(int $id): bool
     {
-        return $this->model->withTrashed()->findOrFail($id)->restore();
+        return $this->model->withTrashed()->findByIdWithTrashed($id)->restore();
     }
 
-    public function getWithQualifications(int $id)
+    public function getWithQualifications(int $id): Teacher
     {
         return $this->model->with('qualifications')->findOrFail($id);
     }
@@ -80,7 +80,7 @@ class TeacherRepository implements TeacherRepositoryInterface
         return $this->model->with(['subjects.grade'])->findOrFail($id);
     }
 
-    public function  getTeacherTimetable(int $teacherId, int $semesterId): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|Teacher|null
+    public function  getTeacherTimetable(int $teacherId, int $semesterId)
     {
         return $this->model->with([
             'timetables' => fn($q) => $q

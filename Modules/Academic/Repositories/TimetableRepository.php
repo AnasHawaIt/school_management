@@ -26,12 +26,12 @@ class TimetableRepository implements TimetableRepositoryInterface
         return $this->model->with(['section', 'subject', 'teacher', 'semester'])->findOrFail($id);
     }
 
-    public function create(array $data): object
+    public function create(array $data): Timetable
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): Timetable
     {
         $timetable = $this->model->findOrFail($id);
         $timetable->update($data);

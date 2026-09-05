@@ -34,12 +34,12 @@ class CounselorRepository implements CounselorRepositoryInterface
         return $this->model->with(['user', 'sections.class.grade'])->findOrFail($id);
     }
 
-    public function create(array $data): object
+    public function create(array $data): Counselor
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): Counselor
     {
         $counselor = $this->model->findOrFail($id);
         $counselor->update($data);
