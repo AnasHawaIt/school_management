@@ -35,12 +35,12 @@ class StudentAttendanceRepository implements StudentAttendanceRepositoryInterfac
         return $this->model->with(['student.user', 'section', 'status', 'recorder'])->findOrFail($id);
     }
 
-    public function create(array $data): object
+    public function create(array $data): StudentAttendance
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): StudentAttendance
     {
         $record = $this->model->findOrFail($id);
         $record->update($data);

@@ -31,12 +31,12 @@ class TeacherAttendanceRepository implements TeacherAttendanceRepositoryInterfac
         return $this->model->with(['teacher.user', 'status', 'recorder'])->findOrFail($id);
     }
 
-    public function create(array $data): object
+    public function create(array $data): TeacherAttendance
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): TeacherAttendance
     {
         $record = $this->model->findOrFail($id);
         $record->update($data);
