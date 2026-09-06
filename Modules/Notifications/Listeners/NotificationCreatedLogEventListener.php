@@ -16,6 +16,6 @@ class NotificationCreatedLogEventListener
             ->withProperties([
                 'Notification_id' => $notification->id,
             ])
-            ->log('Notification.deleted');
+            ->log('Notification.Created');
     }
 }
