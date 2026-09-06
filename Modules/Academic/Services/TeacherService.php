@@ -52,7 +52,7 @@ class TeacherService implements TeacherServiceInterface
             ->getTeacherTimetable($teacherId, $semesterId);
     }
 
-    public function createTeacher(array $data): object
+    public function createTeacher(array $data): Teacher
     {
         return DB::transaction(function () use ($data) {
 
@@ -182,7 +182,7 @@ class TeacherService implements TeacherServiceInterface
     public function restoreTeacher(int $id): bool
     {
         $teacher = $this->teacherRepository
-            ->findByIdWithTrashed($id);
+            ->findById($id);
 
         $result = $this->teacherRepository
             ->restore($id);
@@ -247,7 +247,7 @@ class TeacherService implements TeacherServiceInterface
         return $result;
     }
 
-    public function toggleStatus(int $id): object
+    public function toggleStatus(int $id): Teacher
     {
         $teacher = $this->teacherRepository
             ->findById($id);

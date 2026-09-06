@@ -45,7 +45,7 @@ class CounselorService implements CounselorServiceInterface
     /**
      * Create counselor.
      */
-    public function createCounselor(array $data): object
+    public function createCounselor(array $data): Counselor
     {
         return DB::transaction(function () use ($data) {
 

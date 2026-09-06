@@ -17,7 +17,7 @@ interface InspectionProgramRepositoryInterface
     public function assignCounselor(int $programId, int $counselorId, string $role): bool;
     public function unassignCounselor(int $programId, int $counselorId): bool;
     public function updateCounselorObservation(int $programId, int $counselorId, array $data): bool;
-    public function updateStatus(int $id, string $status): object;
+    public function updateStatus(int $id, string $status): InspectionProgram;
     public function getBySection(int $sectionId, array $filters = []);
     public function getByCounselor(int $counselorId, array $filters = []);
     public function getCurrentCounselorProgram(int $counselorId);

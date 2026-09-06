@@ -67,7 +67,7 @@ class TeacherRepository implements TeacherRepositoryInterface
 
     public function restore(int $id): bool
     {
-        return $this->model->withTrashed()->findByIdWithTrashed($id)->restore();
+        return $this->model->withTrashed()->findOrFail($id)->restore();
     }
 
     public function getWithQualifications(int $id): Teacher

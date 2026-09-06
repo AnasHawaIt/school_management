@@ -78,7 +78,7 @@ class InspectionProgramService implements InspectionProgramServiceInterface
     |--------------------------------------------------------------------------
     */
 
-    public function createProgram(array $data): InspectionProgramCreated
+    public function createProgram(array $data): InspectionProgram
     {
         $userId = Auth::id();
 
