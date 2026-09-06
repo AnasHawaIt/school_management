@@ -18,9 +18,9 @@ class AnnouncementCreateRequest extends FormRequest
                 'title' => 'required|string|max:255',
                 'body' => 'required|string',
                 'user_id' => 'required|exists:users,id',
-                'is_active' => 'boolean',
-                'published_at' => 'nullable|date',
-                'audience' => 'sometimes|in:admin,student,teacher,parent,public',
+              //  'is_active' => 'boolean',
+                'published_at' => 'required|date',
+                'audience' => 'required|in:admin,student,teacher,parent,public',
         ];
     }
 

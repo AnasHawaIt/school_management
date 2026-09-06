@@ -9,6 +9,7 @@ use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Activities\Entities\Activity;
+use Modules\Announcement\Entities\Announcement;
 use Modules\Core\Entities\User;
 use Modules\Messagings\app\Policies\MessagePolicy;
 use Modules\Messagings\Entities\Message;
@@ -48,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
             'bus'          => Bus::class,
             'message' => Message::class,
             'message_attachment' => MessageAttachment::class,
+            'announcement' =>Announcement::class,
         ]);
     }
 }

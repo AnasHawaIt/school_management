@@ -61,7 +61,7 @@ class AnnouncementController extends Controller
         $data =[
             'title' => $request->title,
             'user_id' => $request->user_id,
-            'is_active' => $request->is_active,
+            'is_active' =>true,
             'body' => $request->body,
             'audience'=>$request->audience,
             'published_at' => $request->published_at,
@@ -81,7 +81,7 @@ class AnnouncementController extends Controller
         $data =[
             'title' => $request->title,
             'user_id' => $request->user_id,
-            'is_active' => $request->is_active,
+            'is_active' => true,
             'body' => $request->body,
             'audience'=>$request->audience,
             'published_at' => $request->published_at,
