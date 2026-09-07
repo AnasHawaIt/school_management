@@ -3,21 +3,29 @@
 namespace Modules\Announcement\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-
 use Modules\Announcement\Events\AnnouncementCreated;
 use Modules\Announcement\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\AnnouncementExpired;
+use Modules\Announcement\Events\AnnouncementPublished;
+use Modules\Announcement\Events\AnnouncementRestored;
+use Modules\Announcement\Events\AnnouncementScheduled;
 use Modules\Announcement\Events\AnnouncementUpdated;
+use Modules\Announcement\Listeners\AnnouncementCreatedListener\AnnouncementCreatedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementCreatedListener\AnnouncementCreatedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementDeletedListener\AnnouncementDeletedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementDeletedListener\AnnouncementDeletedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementExpiredListener\AnnouncementExpiredBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementExpiredListener\AnnouncementExpiredLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementPublishedListener\AnnouncementPublishedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementPublishedListener\AnnouncementPublishedLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementPublishedListener\AnnouncementPublishedNotificationDatabaseListener;
+use Modules\Announcement\Listeners\AnnouncementRestoredListener\AnnouncementRestoredBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementRestoredListener\AnnouncementRestoredLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementScheduledListener\AnnouncementScheduledBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementScheduledListener\AnnouncementScheduledLogEventListener;
+use Modules\Announcement\Listeners\AnnouncementUpdatedListener\AnnouncementUpdatedBroadcastEventListener;
+use Modules\Announcement\Listeners\AnnouncementUpdatedListener\AnnouncementUpdatedLogEventListener;
 
-
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedBroadcastEventListener;
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedLogEventListener;
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener\AnnouncementCreatedNotificationDatabaseListener;
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedBroadcastEventListener;
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedLogEventListener;
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener\AnnouncementDeletedNotificationDatabaseListener;
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedBroadcastEventListener;
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedLogEventListener;
-use Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener\AnnouncementUpdatedNotificationDatabaseListener;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -28,25 +36,79 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
 
+        /*
+        |--------------------------------------------------------------------------
+        | Announcement Created
+        |--------------------------------------------------------------------------
+        */
         AnnouncementCreated::class => [
             AnnouncementCreatedBroadcastEventListener::class,
             AnnouncementCreatedLogEventListener::class,
-            AnnouncementCreatedNotificationDatabaseListener::class,
         ],
 
+        /*
+        |--------------------------------------------------------------------------
+        | Announcement Updated
+        |--------------------------------------------------------------------------
+        */
         AnnouncementUpdated::class => [
             AnnouncementUpdatedBroadcastEventListener::class,
             AnnouncementUpdatedLogEventListener::class,
-            AnnouncementUpdatedNotificationDatabaseListener::class,
         ],
 
+        /*
+        |--------------------------------------------------------------------------
+        | Announcement Deleted
+        |--------------------------------------------------------------------------
+        */
         AnnouncementDeleted::class => [
             AnnouncementDeletedBroadcastEventListener::class,
             AnnouncementDeletedLogEventListener::class,
-            AnnouncementDeletedNotificationDatabaseListener::class,
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Announcement Restored
+        |--------------------------------------------------------------------------
+        */
+        AnnouncementRestored::class => [
+            AnnouncementRestoredBroadcastEventListener::class,
+            AnnouncementRestoredLogEventListener::class,
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Announcement Published
+        |--------------------------------------------------------------------------
+        */
+        AnnouncementPublished::class => [
+            AnnouncementPublishedBroadcastEventListener::class,
+            AnnouncementPublishedLogEventListener::class,
+            AnnouncementPublishedNotificationDatabaseListener::class,
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Announcement Scheduled
+        |--------------------------------------------------------------------------
+        */
+        AnnouncementScheduled::class => [
+            AnnouncementScheduledBroadcastEventListener::class,
+            AnnouncementScheduledLogEventListener::class,
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | Announcement Expired
+        |--------------------------------------------------------------------------
+        */
+        AnnouncementExpired::class => [
+            AnnouncementExpiredBroadcastEventListener::class,
+            AnnouncementExpiredLogEventListener::class,
         ],
 
     ];
+
     /**
      * Indicates if events should be discovered.
      *

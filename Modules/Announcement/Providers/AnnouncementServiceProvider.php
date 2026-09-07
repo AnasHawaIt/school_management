@@ -2,8 +2,10 @@
 
 namespace Modules\Announcement\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Announcement\app\Console\Commands\ProcessAnnouncements;
 use Modules\Announcement\Repositories\Eloquent\AnnouncementRepository;
 use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
@@ -25,10 +27,14 @@ class AnnouncementServiceProvider extends ServiceProvider
     {
         $this->registerCommands();
         $this->registerCommandSchedules();
+
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        $this->loadMigrationsFrom(
+            module_path($this->name, 'database/migrations')
+        );
     }
 
     /**
@@ -46,7 +52,9 @@ class AnnouncementServiceProvider extends ServiceProvider
 
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            ProcessAnnouncements::class,
+        ]);
     }
 
     /**
@@ -54,10 +62,13 @@ class AnnouncementServiceProvider extends ServiceProvider
      */
     protected function registerCommandSchedules(): void
     {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
+        $this->app->booted(function () {
+            $schedule = $this->app->make(Schedule::class);
+
+            $schedule
+                ->command('announcements:process')
+                ->everyMinute();
+        });
     }
 
     /**

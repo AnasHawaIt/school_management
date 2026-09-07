@@ -3,10 +3,12 @@
 namespace Modules\Announcement\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Modules\Announcement\app\Requests\AnnouncementCreateRequest;
+use Modules\Announcement\app\Requests\AnnouncementScheduleRequest;
+use Modules\Announcement\app\Requests\AnnouncementUpdateRequest;
 use Modules\Announcement\app\Resources\AnnouncementResource;
 use Modules\Announcement\Services\AnnouncementService;
-use Modules\Announcement\app\Requests\AnnouncementCreateRequest;
-use Modules\Announcement\app\Requests\AnnouncementUpdateRequest;
 
 class AnnouncementController extends Controller
 {
@@ -15,91 +17,137 @@ class AnnouncementController extends Controller
     public function __construct(AnnouncementService $service)
     {
         $this->service = $service;
-
-    }
-
-    public function restore($id)
-    {
-        return new AnnouncementResource( $this->service->restore($id));
-    }
-
-    public function forceDelete($id)
-    {
-        $this->service->forceDelete($id);
-
-        return response()->json([
-            'message' => 'Force deleted successfully'
-        ]);
-    }
-
-    public function AllOnlyTrashed()
-    {
-        return AnnouncementResource::collection(
-            $this->service->getAnnouncementOnlyTrashed()
-        );
-
-    }
-
-    public function indexPublished()
-    {
-        return $this->service->getPublishedAnnouncements();
     }
 
     public function index()
     {
-        $announcements = cache()->remember('announcements_all', 300, function () {
-
-            return $this->service->getAll();
-
-        });
+        $announcements = cache()->remember(
+            'announcements_all',
+            300,
+            fn () => $this->service->getAll()
+        );
 
         return AnnouncementResource::collection($announcements);
     }
 
+    public function indexPublished()
+    {
+        return AnnouncementResource::collection(
+            $this->service->getPublishedAnnouncements()
+        );
+    }
+
     public function store(AnnouncementCreateRequest $request)
     {
-        $data =[
-            'title' => $request->title,
-            'user_id' => $request->user_id,
-            'is_active' =>true,
-            'body' => $request->body,
-            'audience'=>$request->audience,
-            'published_at' => $request->published_at,
-            'expires_at' => $request->expires_at,
-            'type' => $request->type,
-        ];
+        $data = $request->validated();
+
+        $data['created_by'] = $request->user()->id;
 
         $images = $request->file('images');
 
-        $announcement = $this->service->create($data,$images);
+        $announcement = $this->service->create(
+            $data,
+            $images
+        );
+
+        cache()->forget('announcements_all');
 
         return new AnnouncementResource($announcement);
     }
 
-    public function update(AnnouncementUpdateRequest $request)
+    public function show(int $id)
     {
-        $data =[
-            'title' => $request->title,
-            'user_id' => $request->user_id,
-            'is_active' => true,
-            'body' => $request->body,
-            'audience'=>$request->audience,
-            'published_at' => $request->published_at,
-            'expires_at' => $request->expires_at,
-            'type' => $request->type,
-        ];
+        return new AnnouncementResource(
+            $this->service->find($id)
+        );
+    }
+
+    public function update(
+        AnnouncementUpdateRequest $request,
+        int $id
+    ) {
+        $data = $request->validated();
+
+        unset($data['created_by']);
 
         $images = $request->file('images');
 
-        $announcement = $this->service->update($request->id, $data,$images);
+        $announcement = $this->service->update(
+            $id,
+            $data,
+            $images
+        );
+
+        cache()->forget('announcements_all');
 
         return new AnnouncementResource($announcement);
     }
 
-    public function destroy($id)
+    public function publish(int $id)
+    {
+        $announcement = $this->service->publish($id);
+
+        cache()->forget('announcements_all');
+
+        return new AnnouncementResource($announcement);
+    }
+
+    public function schedule(
+        AnnouncementScheduleRequest $request,
+        int $id
+    ) {
+        $announcement = $this->service->schedule(
+            $id,
+            $request->date('scheduled_at')
+        );
+
+        cache()->forget('announcements_all');
+
+        return new AnnouncementResource($announcement);
+    }
+
+    public function expire(int $id)
+    {
+        $announcement = $this->service->expire($id);
+
+        cache()->forget('announcements_all');
+
+        return new AnnouncementResource($announcement);
+    }
+
+    public function destroy(int $id): JsonResponse
     {
         $this->service->delete($id);
 
-        return response()->json(['success', 'Message deleted!'],);
+        cache()->forget('announcements_all');
+
+        return response()->json([
+            'message' => 'Announcement deleted successfully.',
+        ]);
+    }
+
+    public function onlyTrashed()
+    {
+        return AnnouncementResource::collection(
+            $this->service->getAnnouncementOnlyTrashed()
+        );
+    }
+
+    public function restore(int $id)
+    {
+        $announcement = $this->service->restore($id);
+
+        cache()->forget('announcements_all');
+
+        return new AnnouncementResource($announcement);
+    }
+
+    public function forceDelete(int $id): JsonResponse
+    {
+        $this->service->forceDelete($id);
+
+        return response()->json([
+            'message' => 'Announcement permanently deleted.',
+        ]);
     }
 }

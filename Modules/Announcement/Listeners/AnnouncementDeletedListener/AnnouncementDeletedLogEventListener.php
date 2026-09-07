@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementDeletedListener;
+namespace Modules\Announcement\Listeners\AnnouncementDeletedListener;
 
 use Modules\Announcement\Events\AnnouncementDeleted;
 
 class AnnouncementDeletedLogEventListener
 {
-    public function handle(AnnouncementDeleted $event)
+    public function handle(AnnouncementDeleted $event): void
     {
         $announcement = $event->announcement;
 
@@ -14,9 +14,8 @@ class AnnouncementDeletedLogEventListener
             ->causedBy(auth()->user())
             ->performedOn($announcement)
             ->withProperties([
-                'Announcement_id' => $announcement->id,
+                'announcement_id' => $announcement->id,
             ])
-            ->log('Announcement.Deleted');
-
+            ->log('Announcement.deleted');
     }
 }

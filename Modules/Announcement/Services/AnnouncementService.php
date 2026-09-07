@@ -6,7 +6,10 @@ use App\Services\ImageService;
 use Modules\Announcement\Entities\Announcement;
 use Modules\Announcement\Events\AnnouncementCreated;
 use Modules\Announcement\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\AnnouncementExpired;
+use Modules\Announcement\Events\AnnouncementPublished;
 use Modules\Announcement\Events\AnnouncementRestored;
+use Modules\Announcement\Events\AnnouncementScheduled;
 use Modules\Announcement\Events\AnnouncementUpdated;
 use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
 
@@ -23,7 +26,6 @@ class AnnouncementService
         $this->imageService = $imageService;
     }
 
-
     public function getAnnouncementOnlyTrashed()
     {
         return $this->repo->getAnnouncementOnlyTrashed();
@@ -31,26 +33,23 @@ class AnnouncementService
 
     public function restore($id)
     {
-        $author= $this->repo->restore($id);
+        $announcement = $this->repo->restore($id);
 
+        event(new AnnouncementRestored($announcement));
 
-        event(new AnnouncementRestored($author));
-
-        return $author;
+        return $announcement;
     }
 
-    public function forceDelete($id)
+    public function forceDelete(int $id): bool
     {
-        $author= $this->repo->find($id);
+        $announcement = $this->repo->forceDelete($id);
 
-        $author->forceDelete();
-
-        event(new AnnouncementDeleted($author));
+        event(new AnnouncementDeleted($announcement));
 
         return true;
     }
 
-    public function create(array $data,$images=null)
+    public function create(array $data, $images = null)
     {
         $announcement = $this->repo->create($data);
 
@@ -71,13 +70,106 @@ class AnnouncementService
         return $this->repo->getAll();
     }
 
-    public function update(int $id, array $data,$images=null): Announcement
+    public function find($id)
     {
+        return $this->repo->find($id);
+    }
+
+    public function update(
+        int $id,
+        array $data,
+        $images = null
+    ): Announcement {
         $announcement = $this->repo->update($id, $data);
 
         $this->imageService->replace($announcement, $images);
 
         event(new AnnouncementUpdated($announcement));
+
+        return $announcement;
+    }
+
+    public function publish(int $id): Announcement
+    {
+        $announcement = $this->repo->find($id);
+
+        if (!$announcement) {
+            abort(404, 'Announcement not found.');
+        }
+
+        if (!$announcement->publish()) {
+            throw new \LogicException(
+                'Announcement cannot be published from its current status.'
+            );
+        }
+
+        event(new AnnouncementPublished($announcement));
+
+        return $announcement;
+    }
+
+    public function schedule(
+        int $id,
+        \DateTimeInterface $date
+    ): Announcement {
+        $announcement = $this->repo->find($id);
+
+        if (!$announcement) {
+            abort(404, 'Announcement not found.');
+        }
+
+        if (!$announcement->schedule($date)) {
+            throw new \LogicException(
+                'Announcement cannot be scheduled from its current status.'
+            );
+        }
+
+        event(new AnnouncementScheduled($announcement));
+
+        return $announcement;
+    }
+
+    public function expire(int $id): Announcement
+    {
+        $announcement = $this->repo->find($id);
+
+        if (!$announcement) {
+            abort(404, 'Announcement not found.');
+        }
+
+        if (!$announcement->expire()) {
+            throw new \LogicException(
+                'Announcement cannot be expired from its current status.'
+            );
+        }
+
+        event(new AnnouncementExpired($announcement));
+
+        return $announcement;
+    }
+
+    public function pin(int $id): Announcement
+    {
+        $announcement = $this->repo->find($id);
+
+        if (!$announcement) {
+            abort(404, 'Announcement not found.');
+        }
+
+        $announcement->pin();
+
+        return $announcement;
+    }
+
+    public function unpin(int $id): Announcement
+    {
+        $announcement = $this->repo->find($id);
+
+        if (!$announcement) {
+            abort(404, 'Announcement not found.');
+        }
+
+        $announcement->unpin();
 
         return $announcement;
     }
