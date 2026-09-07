@@ -1,22 +1,9 @@
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
+import './bootstrap';
 
-window.Pusher = Pusher;
+import Alpine from 'alpinejs';
 
-window.Echo = new Echo({
-    broadcaster: 'reverb',
+window.Alpine = Alpine;
 
-    key: import.meta.env.VITE_REVERB_APP_KEY,
+Alpine.start();
 
-    wsHost: import.meta.env.VITE_REVERB_HOST,
-
-    wsPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
-
-    wssPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
-
-    forceTLS: false,
-
-    enabledTransports: ['ws', 'wss'],
-});
-
-console.log('Messaging Echo initialized');
+import './echo';

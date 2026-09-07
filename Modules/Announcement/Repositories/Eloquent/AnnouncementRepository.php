@@ -32,7 +32,6 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
     public function getPublished()
     {
         return Announcement::query()
-            ->active()
             ->published()
             ->get();
     }
@@ -40,12 +39,13 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
 
     public function getAll()
     {
-        $query = Announcement::query();
-
-        return $query->get();
+        return Announcement::query()
+            ->with('creator')
+            ->latest()
+            ->get();
     }
 
-    public function find($id)
+    public function find(int $id): ?Announcement
     {
         return Announcement::find($id);
     }
@@ -55,18 +55,18 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
         return Announcement::create($data);
     }
 
-    public function update($id, array $data)
+    public function update(int $id, array $data): Announcement
     {
-        $announcement = $this->find($id);
+        $announcement = Announcement::findOrFail($id);
 
         $announcement->update($data);
 
-        return $announcement;
+        return $announcement->refresh();
     }
 
-    public function delete($id)
+    public function delete(int $id): bool
     {
-        $announcement = $this->find($id);
+        $announcement = Announcement::findOrFail($id);
 
         return $announcement->delete();
     }

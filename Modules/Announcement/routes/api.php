@@ -3,16 +3,81 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Announcement\app\Http\Controllers\AnnouncementController;
 
+Route::prefix('announcement')->middleware('auth:sanctum')->group(function () {
 
-Route::prefix('announcement')->group(function () {
+    // =========================
+    // Special GET endpoints
+    // =========================
 
-    Route::get('/', [AnnouncementController::class, 'Index']);
-    Route::get('/AllOnlyTrashed', [AnnouncementController::class, 'AllOnlyTrashed']);
-    Route::post('/', [AnnouncementController::class, 'Store']);
-    Route::post('/{id}', [AnnouncementController::class, 'Update']);
-    Route::delete('/{id}', [AnnouncementController::class, 'Destroy']);
-    Route::post('/{id}/restore', [AnnouncementController::class, 'restore']);
-    route::delete('/{id}/force', [AnnouncementController::class, 'forceDelete']);
-    route::get('/indexPublished', [AnnouncementController::class, 'indexPublished']);  // Add postman
+    Route::get('/published', [
+        AnnouncementController::class,
+        'indexPublished'
+    ]);
+
+    Route::get('/trashed', [
+        AnnouncementController::class,
+        'onlyTrashed'
+    ]);
+
+    // =========================
+    // Basic CRUD
+    // =========================
+
+    Route::get('/', [
+        AnnouncementController::class,
+        'index'
+    ]);
+
+    Route::post('/', [
+        AnnouncementController::class,
+        'store'
+    ]);
+
+    Route::get('/{id}', [
+        AnnouncementController::class,
+        'show'
+    ]);
+
+    Route::post('/{id}', [
+        AnnouncementController::class,
+        'update'
+    ]);
+
+    Route::delete('/{id}', [
+        AnnouncementController::class,
+        'destroy'
+    ]);
+
+    // =========================
+    // Announcement actions
+    // =========================
+
+    Route::post('/{id}/publish', [
+        AnnouncementController::class,
+        'publish'
+    ]);
+
+    Route::post('/{id}/schedule', [
+        AnnouncementController::class,
+        'schedule'
+    ]);
+
+    Route::post('/{id}/expire', [
+        AnnouncementController::class,
+        'expire'
+    ]);
+
+    // =========================
+    // Restore / Force Delete
+    // =========================
+
+    Route::post('/{id}/restore', [
+        AnnouncementController::class,
+        'restore'
+    ]);
+
+    Route::delete('/{id}/force', [
+        AnnouncementController::class,
+        'forceDelete'
+    ]);
 });
-
