@@ -17,7 +17,9 @@ class UpdateTransactionRequest extends FormRequest
             'book_id'     => 'sometimes|exists:books,id',
             'member_id'   => 'sometimes|exists:members,id',
             'borrow_date' => 'sometimes|date',
+            'due_date'    => 'sometimes|nullable|date|after_or_equal:borrow_date',
             'return_date' => 'sometimes|nullable|date|after_or_equal:borrow_date',
+            'returned_at' => 'sometimes|nullable|date',
             'status'      => 'sometimes|in:borrowed,returned,late',
         ];
     }

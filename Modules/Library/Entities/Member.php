@@ -33,7 +33,7 @@ class Member extends Model
             return 'suspended';
         }
 
-        return $this->end_date < now()
+        return $this->end_date && $this->end_date < now()
             ? 'expired'
             : 'active';
     }

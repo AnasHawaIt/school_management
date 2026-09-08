@@ -47,13 +47,15 @@ class TransactionService
     {
         $member = Member::findOrFail($data['member_id']);
 
-        if ($member->status !== 'active') {
+        if ($member->membership_status !== 'active') {
             throw new \Exception('Membership is not active');
         }
 
+        $data['borrow_date'] ??= now()->toDateString();
+        $data['due_date'] ??= now()->addDays(14)->toDateString();
         $transaction = $this->repo->create($data);
 
-        event(new BorrowingCreated($transaction), auth()->id());
+        event(new BorrowingCreated($transaction, auth()->id()));
 
         return $transaction;
     }
@@ -67,7 +69,7 @@ class TransactionService
     {
         $Transaction= $this->repo->update($id, $data);
 
-        event(new BorrowingUpdateed($Transaction),auth()->id());
+        event(new BorrowingUpdateed($Transaction, auth()->id()));
 
         return $Transaction;
     }

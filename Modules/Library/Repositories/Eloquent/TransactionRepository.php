@@ -54,30 +54,61 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function create(array $data)
     {
+        return DB::transaction(function () use ($data) {
+            $book = Book::query()
+                ->lockForUpdate()
+                ->findOrFail($data['book_id']);
 
-        $book = Book::findOrFail($data['book_id']);
+            if ($book->copies <= 0) {
+                throw new \RuntimeException('Book not available');
+            }
 
-        if ($book->copies <= 0) {
-            throw new \Exception('Book not available');
-        }
+            $book->decrement('copies');
 
-        $book->decrement('copies');
-
-        return Borrowing::create($data);
+            return Borrowing::create($data);
+        });
     }
 
     public function update($id, array $data)
     {
         return DB::transaction(function () use ($id, $data) {
 
-            $transaction = $this->findById($id);
+            $transaction = Borrowing::query()
+                ->lockForUpdate()
+                ->findOrFail($id);
+            $oldStatus = $transaction->status;
+            $oldBookId = $transaction->book_id;
+            $newStatus = $data['status'] ?? $oldStatus;
+            $newBookId = $data['book_id'] ?? $oldBookId;
+            $wasActive = in_array($oldStatus, ['borrowed', 'late'], true);
+            $isActive = in_array($newStatus, ['borrowed', 'late'], true);
 
-            if (
-                isset($data['status']) &&
-                $transaction->status !== 'returned' &&
-                $data['status'] === 'returned'
-            ) {
-                $transaction->book->increment('copies');
+            if ($oldBookId !== $newBookId && $wasActive) {
+                Book::query()->lockForUpdate()->findOrFail($oldBookId)->increment('copies');
+            }
+
+            if ($oldBookId !== $newBookId && $isActive) {
+                $newBook = Book::query()->lockForUpdate()->findOrFail($newBookId);
+                if ($newBook->copies <= 0) {
+                    throw new \RuntimeException('Book not available');
+                }
+                $newBook->decrement('copies');
+            } elseif (!$wasActive && $isActive) {
+                $book = Book::query()->lockForUpdate()->findOrFail($newBookId);
+                if ($book->copies <= 0) {
+                    throw new \RuntimeException('Book not available');
+                }
+                $book->decrement('copies');
+            } elseif ($wasActive && !$isActive) {
+                Book::query()->lockForUpdate()->findOrFail($oldBookId)->increment('copies');
+            }
+
+            if ($newStatus === 'returned') {
+                $data['return_date'] ??= today()->toDateString();
+                $data['returned_at'] ??= now();
+            } elseif ($isActive) {
+                $data['return_date'] = null;
+                $data['returned_at'] = null;
             }
 
             $transaction->update($data);
@@ -88,7 +119,19 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function delete($id)
     {
-        $transaction = $this->findById($id);
-        return $transaction->delete();
+        return DB::transaction(function () use ($id) {
+            $transaction = Borrowing::query()
+                ->lockForUpdate()
+                ->findOrFail($id);
+
+            if (in_array($transaction->status, ['borrowed', 'late'], true)) {
+                Book::query()
+                    ->lockForUpdate()
+                    ->findOrFail($transaction->book_id)
+                    ->increment('copies');
+            }
+
+            return $transaction->delete();
+        });
     }
 }

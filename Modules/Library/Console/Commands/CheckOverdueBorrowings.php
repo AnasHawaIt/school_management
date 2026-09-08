@@ -17,11 +17,14 @@ class CheckOverdueBorrowings extends Command
     {
         Borrowing::query()
             ->whereNull('returned_at')
-            ->where('due_date', '<', now())
-            ->where('status', 'borrowed')
+            ->where('due_date', '<', today())
+            ->whereIn('status', ['borrowed', 'late'])
             ->chunkById(100, function ($borrowings) {
 
                 foreach ($borrowings as $borrowing) {
+                    if ($borrowing->status !== 'late') {
+                        $borrowing->update(['status' => 'late']);
+                    }
 
                     event(
                         new BorrowingOverdue($borrowing)

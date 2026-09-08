@@ -18,11 +18,13 @@ class TransactionResource extends JsonResource
 
             'member' => [
                 'id'   => $this->member->id,
-                'name' => $this->member->name,
+                'name' => $this->member->user?->full_name,
             ],
 
             'borrow_date' => $this->borrow_date,
             'due_date'    => $this->due_date,
+            'return_date' => $this->return_date,
+            'returned_at' => $this->returned_at,
             'status'      => $this->status,
 
             'created_at' => $this->created_at,

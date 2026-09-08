@@ -21,8 +21,17 @@ class Borrowing extends Model
         'member_id',
         'book_id',
         'borrow_date',
+        'due_date',
         'return_date',
+        'returned_at',
         'status'
+    ];
+
+    protected $casts = [
+        'borrow_date' => 'date',
+        'due_date' => 'date',
+        'return_date' => 'date',
+        'returned_at' => 'datetime',
     ];
 
     public function member()

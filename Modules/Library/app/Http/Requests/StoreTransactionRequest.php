@@ -17,6 +17,7 @@ class StoreTransactionRequest extends FormRequest
             'book_id'     => 'required|exists:books,id',
             'member_id'   => 'required|exists:members,id',
             'borrow_date' => 'required|date',
+            'due_date'    => 'nullable|date|after_or_equal:borrow_date',
             'return_date' => 'nullable|date|after_or_equal:borrow_date',
         ];
     }
