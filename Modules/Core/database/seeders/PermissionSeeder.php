@@ -11,6 +11,12 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permissions = [
+            ['name' => 'library.catalog.view', 'display_name' => 'View Library Catalog', 'description' => 'Can view library catalog and members'],
+            ['name' => 'library.catalog.manage', 'display_name' => 'Manage Library Catalog', 'description' => 'Can manage books, copies, authors, categories, publishers, and members'],
+            ['name' => 'library.circulation.view', 'display_name' => 'View Library Circulation', 'description' => 'Can view borrowing transactions'],
+            ['name' => 'library.circulation.manage', 'display_name' => 'Manage Library Circulation', 'description' => 'Can borrow, return, restore, and delete transactions'],
+            ['name' => 'library.fines.view', 'display_name' => 'View Library Fines', 'description' => 'Can view library fines'],
+            ['name' => 'library.fines.manage', 'display_name' => 'Manage Library Fines', 'description' => 'Can settle or waive library fines'],
             // Teachers (Academic Module)
             ['name' => 'teachers.view', 'display_name' => 'View Teachers', 'description' => 'Can view teachers list'],
             ['name' => 'teachers.create', 'display_name' => 'Create Teacher', 'description' => 'Can register new teachers'],

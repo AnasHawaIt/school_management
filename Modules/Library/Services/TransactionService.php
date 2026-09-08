@@ -3,6 +3,7 @@
 namespace Modules\Library\Services;
 
 use Modules\Library\Entities\Member;
+use Illuminate\Validation\ValidationException;
 use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
 use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 use Modules\Library\Events\BorrowingEvents\BorrowingUpdateed;
@@ -48,7 +49,9 @@ class TransactionService
         $member = Member::findOrFail($data['member_id']);
 
         if ($member->membership_status !== 'active') {
-            throw new \Exception('Membership is not active');
+            throw ValidationException::withMessages([
+                'member_id' => 'Membership is not active.',
+            ]);
         }
 
         $data['borrow_date'] ??= now()->toDateString();

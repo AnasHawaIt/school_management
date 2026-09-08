@@ -18,7 +18,7 @@ class LibraryCirculationTest extends TestCase
 
     public function test_authenticated_user_can_create_and_return_a_book_copy_loan(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['user_type' => 'admin']);
         $member = Member::create([
             'user_id' => $user->id,
             'membership_number' => 'MEM-001',
@@ -69,7 +69,7 @@ class LibraryCirculationTest extends TestCase
 
     public function test_copy_from_another_book_cannot_be_borrowed(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create(['user_type' => 'admin']);
         $member = Member::create([
             'user_id' => $user->id,
             'membership_number' => 'MEM-002',
@@ -93,6 +93,102 @@ class LibraryCirculationTest extends TestCase
                 'borrow_date' => today()->toDateString(),
             ])
             ->assertUnprocessable();
+    }
+
+    public function test_unavailable_copy_cannot_be_borrowed(): void
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $member = $this->createMember($user, 'MEM-003');
+        $book = $this->createBook(1);
+        $copy = BookCopy::create([
+            'book_id' => $book->id,
+            'barcode' => 'BC-003',
+            'status' => 'maintenance',
+        ]);
+
+        $this->actingAs($user)
+            ->postJson('/api/library/transactions', [
+                'book_id' => $book->id,
+                'copy_id' => $copy->id,
+                'member_id' => $member->id,
+                'borrow_date' => today()->toDateString(),
+            ])
+            ->assertUnprocessable();
+    }
+
+    public function test_expired_member_cannot_borrow(): void
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $member = $this->createMember($user, 'MEM-004', today()->subDay());
+        $book = $this->createBook(1);
+        $copy = BookCopy::create([
+            'book_id' => $book->id,
+            'barcode' => 'BC-004',
+            'status' => 'available',
+        ]);
+
+        $this->actingAs($user)
+            ->postJson('/api/library/transactions', [
+                'book_id' => $book->id,
+                'copy_id' => $copy->id,
+                'member_id' => $member->id,
+                'borrow_date' => today()->toDateString(),
+            ])
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('member_id');
+    }
+
+    public function test_overdue_processing_creates_and_settles_a_fine(): void
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $member = $this->createMember($user, 'MEM-005');
+        $book = $this->createBook(1);
+        $copy = BookCopy::create([
+            'book_id' => $book->id,
+            'barcode' => 'BC-005',
+            'status' => 'available',
+        ]);
+
+        $this->actingAs($user)
+            ->postJson('/api/library/transactions', [
+                'book_id' => $book->id,
+                'copy_id' => $copy->id,
+                'member_id' => $member->id,
+                'borrow_date' => today()->subDays(5)->toDateString(),
+                'due_date' => today()->subDays(2)->toDateString(),
+            ])
+            ->assertCreated();
+
+        $this->artisan('library:check-overdue')->assertSuccessful();
+
+        $this->assertDatabaseHas('library_fines', [
+            'status' => 'unpaid',
+            'amount' => 2,
+        ]);
+
+        $fineId = \DB::table('library_fines')->value('id');
+        $this->actingAs($user)
+            ->patchJson("/api/library/fines/{$fineId}", [
+                'status' => 'paid',
+                'notes' => 'Paid at circulation desk',
+            ])
+            ->assertOk();
+
+        $this->assertDatabaseHas('library_fines', [
+            'id' => $fineId,
+            'status' => 'paid',
+        ]);
+    }
+
+    private function createMember(User $user, string $number, $endDate = null): Member
+    {
+        return Member::create([
+            'user_id' => $user->id,
+            'membership_number' => $number,
+            'start_date' => today()->subYear(),
+            'end_date' => $endDate ?? today()->addYear(),
+            'status' => 'active',
+        ]);
     }
 
     private function createBook(int $copies, string $title = 'Test Book'): Book
