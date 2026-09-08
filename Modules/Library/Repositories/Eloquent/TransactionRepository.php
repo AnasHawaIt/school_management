@@ -43,14 +43,14 @@ class TransactionRepository implements TransactionRepositoryInterface
         $query = (new TransactionFilter($request))->apply($query);
 
         return $query
-            ->with(['member.user', 'book', 'copy'])
+            ->with(['member.user', 'book', 'copy', 'fine'])
             ->latest()
             ->paginate($request->get('per_page', 10));
     }
 
     public function findById($id)
     {
-        return Borrowing::with(['book', 'member.user', 'copy'])->findOrFail($id);
+        return Borrowing::with(['book', 'member.user', 'copy', 'fine'])->findOrFail($id);
     }
 
     public function create(array $data)

@@ -31,6 +31,7 @@ class TransactionResource extends JsonResource
             'return_date' => $this->return_date,
             'returned_at' => $this->returned_at,
             'status'      => $this->status,
+            'fine'        => $this->whenLoaded('fine', fn () => $this->fine ? new FineResource($this->fine) : null),
 
             'created_at' => $this->created_at,
         ];

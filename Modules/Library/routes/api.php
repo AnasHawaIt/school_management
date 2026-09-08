@@ -9,6 +9,7 @@ use Modules\Library\app\Http\Controllers\LibraryController;
 use Modules\Library\app\Http\Controllers\MemberController;
 use Modules\Library\app\Http\Controllers\PublishersController;
 use Modules\Library\app\Http\Controllers\TransactionController;
+use Modules\Library\app\Http\Controllers\FineController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('libraries', LibraryController::class)->names('library');
@@ -83,5 +84,11 @@ Route::middleware(['auth:sanctum'])->prefix('library')->group(function() {
         Route::delete('{id}', [TransactionController::class, 'destroy']);
         Route::post('/{id}/restore', [TransactionController::class, 'restore']);
         route::delete('/{id}/force', [TransactionController::class, 'forceDelete']);
+    });
+
+    Route::prefix('fines')->group(function () {
+        Route::get('/', [FineController::class, 'index']);
+        Route::get('{fine}', [FineController::class, 'show']);
+        Route::patch('{fine}', [FineController::class, 'update']);
     });
 });

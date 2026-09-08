@@ -50,6 +50,11 @@ class Borrowing extends Model
         return $this->belongsTo(BookCopy::class, 'copy_id');
     }
 
+    public function fine()
+    {
+        return $this->hasOne(Fine::class, 'transaction_id');
+    }
+
     // protected static function newFactory(): TransactionFactory
     // {
     //     // return TransactionFactory::new();

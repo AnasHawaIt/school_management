@@ -5,6 +5,7 @@ namespace Modules\Library\Console\Commands;
 
 use Illuminate\Console\Command;
 use Modules\Library\Entities\Borrowing;
+use Modules\Library\Entities\Fine;
 use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
 
 class CheckOverdueBorrowings extends Command
@@ -25,6 +26,12 @@ class CheckOverdueBorrowings extends Command
                     if ($borrowing->status !== 'late') {
                         $borrowing->update(['status' => 'late']);
                     }
+
+                    $daysLate = max(1, $borrowing->due_date->diffInDays(today()));
+                    Fine::firstOrCreate(
+                        ['transaction_id' => $borrowing->id],
+                        ['amount' => $daysLate, 'status' => 'unpaid']
+                    );
 
                     event(
                         new BorrowingOverdue($borrowing)
