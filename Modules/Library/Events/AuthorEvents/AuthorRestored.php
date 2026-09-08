@@ -3,7 +3,7 @@
 
 namespace Modules\Library\Events\AuthorEvents;
 
-use App\Models\User;
+use Modules\Core\Entities\User;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\Library\Entities\Author;

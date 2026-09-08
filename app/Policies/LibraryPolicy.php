@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use Modules\Core\Entities\User;
 use Modules\Library\Entities\BookCopy;
 use Modules\Library\Entities\Borrowing;
 use Modules\Library\Entities\Fine;

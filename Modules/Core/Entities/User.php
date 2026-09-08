@@ -5,6 +5,8 @@ namespace Modules\Core\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Academic\Entities\Guardian;
@@ -17,9 +19,9 @@ use Modules\Messagings\Entities\Message;
 use Modules\Notifications\Entities\Notification;
 use Modules\SMS\Entities\SmsOtp;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPassword
 {
-    use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CanResetPasswordTrait;
 
     protected $fillable = [
         'first_name',
@@ -55,7 +57,12 @@ class User extends Authenticatable
      */
     public function getFullNameAttribute(): string
     {
-        return "{$this->first_name} {$this->last_name}";
+        return trim("{$this->first_name} {$this->last_name}");
+    }
+
+    public function getNameAttribute(): string
+    {
+        return $this->full_name;
     }
 
     public function getFullNameArAttribute(): string
@@ -160,7 +167,7 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->user_type === 'admin';
+        return $this->user_type === 'admin' || $this->hasRole('admin');
     }
 
     public function isTeacher(): bool

@@ -5,7 +5,6 @@ namespace App\Providers;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
-use App\Models\User as AppUser;
 use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
@@ -51,7 +50,6 @@ class AppServiceProvider extends ServiceProvider
             'teacher' => Teacher::class,
             'guardian' => Guardian::class,
             'user' => User::class,
-            'app_user' => AppUser::class,
             'borrowing' => Borrowing::class,
             'notification' => Notification::class,
             'activity'     => Activity::class,

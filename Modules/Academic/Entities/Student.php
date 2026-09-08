@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Models\User;
+use Modules\Core\Entities\User;
 use Modules\Activities\Entities\ActivityParticipant;
 use Modules\Library\Entities\Member;
 use Modules\School\Entities\Section;

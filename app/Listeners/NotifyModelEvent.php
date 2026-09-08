@@ -15,7 +15,7 @@ class NotifyModelEvent implements ShouldQueue
     public function handle(ModelEvent $event): void
     {
         // مثال: إشعار لكل المستخدمين أو مجموعة محددة
-        $users = \App\Models\User::all(); // أو حسب النظام
+        $users = \Modules\Core\Entities\User::all(); // أو حسب النظام
         Notification::send($users, new GenericModelNotification($event));
     }
 }

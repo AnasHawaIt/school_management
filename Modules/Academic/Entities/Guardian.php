@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Models\User;
+use Modules\Core\Entities\User;
 use Modules\Academic\Entities\Student;
 use Modules\Activities\Entities\ActivityParticipant;
 
@@ -60,4 +60,3 @@ class Guardian extends Model
         );
     }
 }
-

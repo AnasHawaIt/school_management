@@ -8,7 +8,7 @@ use Modules\Academic\Entities\Student;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Semester;
-use App\Models\User;
+use Modules\Core\Entities\User;
 
 /**
  * @method insert(array $records)
