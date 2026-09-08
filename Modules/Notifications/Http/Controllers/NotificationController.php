@@ -3,7 +3,7 @@
 namespace Modules\Notifications\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Modules\Core\Entities\User;
 use Modules\Notifications\Entities\Notification;
 use Modules\Notifications\Http\Requests\StoreNotificationRequest;
 use Modules\Notifications\Services\NotificationService;
@@ -16,21 +16,26 @@ class NotificationController extends Controller
 
     public function index()
     {
+        $user =User::query()->find(auth()->id());
+
         return response()->json(
-            $this->notificationService->all(auth()->user()));
+            $this->notificationService->all($user));
     }
 
     public function unread()
     {
+        $user =User::query()->find(auth()->id());
         return response()->json(
-            $this->notificationService->unread(auth()->user())
+            $this->notificationService->unread($user)
         );
     }
 
     public function unreadCount()
     {
+        $user =User::query()->find(auth()->id());
+
         return response()->json([
-            'count' => $this->notificationService->unreadCount(auth()->user())
+            'count' => $this->notificationService->unreadCount($user)
         ]);
     }
 
@@ -43,8 +48,10 @@ class NotificationController extends Controller
 
     public function markAllAsRead()
     {
+        $user =User::query()->find(auth()->id());
+
         $count = $this->notificationService->markAllAsRead(
-            auth()->user()
+            $user
         );
 
         return response()->json([
@@ -53,14 +60,14 @@ class NotificationController extends Controller
         ]);
     }
 
-    public function statistics(): array
+    public function statistics()
     {
-        return [
-            'total' => Notification::count(),
-            'pending' => Notification::pending()->count(),
-            'sent' => Notification::sent()->count(),
-            'failed' => Notification::failed()->count(),
-        ];
+        return response()->json([
+            'total' => Notification::query()->count(),
+            'pending' => Notification::query()->pending()->count(),
+            'sent' => Notification::query()->sent()->count(),
+            'failed' => Notification::query()->failed()->count(),
+        ]);
     }
 
     public function restore(int $id): Notification
@@ -97,7 +104,7 @@ class NotificationController extends Controller
             case 'users':
 
                 $notifications = $this->notificationService->sendToUsers(
-                    users: $request->users,
+                    userIds: $request->users,
                     title: $request->title,
                     body: $request->body,
                     type: $request->type,

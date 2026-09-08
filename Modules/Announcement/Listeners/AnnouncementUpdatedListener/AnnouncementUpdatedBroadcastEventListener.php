@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementUpdatedListener;
+namespace Modules\Announcement\Listeners\AnnouncementUpdatedListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Announcement\Events\AnnouncementUpdated;
@@ -9,9 +8,10 @@ use Modules\Announcement\Events\Broadcasts\AnnouncementBroadcast;
 
 class AnnouncementUpdatedBroadcastEventListener implements ShouldQueue
 {
-
-    public function handle(AnnouncementUpdated $event)
+    public function handle(AnnouncementUpdated $event): void
     {
-        broadcast(new AnnouncementBroadcast($event->announcement))->toOthers();
+        broadcast(
+            new AnnouncementBroadcast($event->announcement,'updated')
+        )->toOthers();
     }
 }

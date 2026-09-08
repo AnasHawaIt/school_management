@@ -53,13 +53,12 @@ class FirebaseNotificationService
             return true;
 
         } catch (\Throwable $e) {
-
             Log::error('FCM Send Direct Error', [
                 'message' => $e->getMessage(),
                 'token' => $token,
             ]);
 
-            return false;
+            throw $e;
         }
     }
 

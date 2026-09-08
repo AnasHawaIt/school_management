@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Announcement\Listeners\AnnouncementListeners\AnnouncementCreatedListener;
+namespace Modules\Announcement\Listeners\AnnouncementCreatedListener;
 
 use Modules\Announcement\Events\AnnouncementCreated;
 
 class AnnouncementCreatedLogEventListener
 {
-    public function handle(AnnouncementCreated $event)
+    public function handle(AnnouncementCreated $event): void
     {
         $announcement = $event->announcement;
 
@@ -14,7 +14,7 @@ class AnnouncementCreatedLogEventListener
             ->causedBy(auth()->user())
             ->performedOn($announcement)
             ->withProperties([
-                'Announcement_id' => $announcement->id,
+                'announcement_id' => $announcement->id,
             ])
             ->log('Announcement.created');
     }
