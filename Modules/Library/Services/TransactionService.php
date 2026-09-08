@@ -9,6 +9,7 @@ use Modules\Library\Events\BorrowingEvents\BorrowingUpdateed;
 use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 use Modules\Library\Entities\Reservation;
 use Illuminate\Validation\ValidationException;
+use Modules\Library\Events\BookEvents\BookAvailable;
 
 class TransactionService
 {
@@ -71,9 +72,16 @@ class TransactionService
 
     public function update($id, array $data)
     {
+        $before = $this->repo->findById($id);
         $Transaction= $this->repo->update($id, $data);
 
         event(new BorrowingUpdateed($Transaction, auth()->id()));
+        if (
+            in_array($before->status, ['borrowed', 'late'], true)
+            && $Transaction->status === 'returned'
+        ) {
+            event(new BookAvailable($Transaction->book));
+        }
 
         return $Transaction;
     }
@@ -114,6 +122,9 @@ class TransactionService
         $this->repo->delete($id);
 
         event(new BorrowingRejected($Transaction));
+        if (in_array($Transaction->status, ['borrowed', 'late'], true)) {
+            event(new BookAvailable($Transaction->book));
+        }
 
         return true;
     }

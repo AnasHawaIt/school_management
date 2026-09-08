@@ -228,6 +228,39 @@ class LibraryCirculationTest extends TestCase
         ]);
     }
 
+    public function test_return_notifies_the_next_pending_reservation(): void
+    {
+        $borrower = User::factory()->create(['user_type' => 'admin']);
+        $reservedUser = User::factory()->create(['user_type' => 'teacher']);
+        $member = $this->createMember($borrower, 'MEM-008');
+        $reservedMember = $this->createMember($reservedUser, 'MEM-009');
+        $book = $this->createBook(1);
+        $copy = BookCopy::create(['book_id' => $book->id, 'barcode' => 'BC-008', 'status' => 'available']);
+
+        $this->actingAs($borrower)->postJson('/api/library/transactions', [
+            'book_id' => $book->id,
+            'copy_id' => $copy->id,
+            'member_id' => $member->id,
+            'borrow_date' => today()->toDateString(),
+        ])->assertCreated();
+
+        \Modules\Library\Entities\Reservation::create([
+            'book_id' => $book->id,
+            'member_id' => $reservedMember->id,
+            'status' => 'pending',
+        ]);
+
+        $transactionId = \DB::table('transactions')->value('id');
+        $this->actingAs($borrower)
+            ->postJson("/api/library/transactions/{$transactionId}", ['status' => 'returned'])
+            ->assertOk();
+
+        $this->assertDatabaseHas('notification', [
+            'user_id' => $reservedUser->id,
+            'type' => 'Library',
+        ]);
+    }
+
     private function createMember(User $user, string $number, $endDate = null): Member
     {
         return Member::create([
