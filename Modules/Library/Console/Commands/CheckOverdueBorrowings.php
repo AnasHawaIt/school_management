@@ -28,10 +28,12 @@ class CheckOverdueBorrowings extends Command
                     }
 
                     $daysLate = max(1, $borrowing->due_date->diffInDays(today()));
-                    Fine::firstOrCreate(
-                        ['transaction_id' => $borrowing->id],
-                        ['amount' => $daysLate, 'status' => 'unpaid']
-                    );
+                    $fine = Fine::firstOrNew(['transaction_id' => $borrowing->id]);
+                    if (!$fine->exists || $fine->status === 'unpaid') {
+                        $fine->amount = $daysLate;
+                        $fine->status ??= 'unpaid';
+                        $fine->save();
+                    }
 
                     event(
                         new BorrowingOverdue($borrowing)
