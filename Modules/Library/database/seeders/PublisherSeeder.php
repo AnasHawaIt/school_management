@@ -19,9 +19,7 @@ class PublisherSeeder extends Seeder
         ];
 
         foreach ($publishers as $publisher) {
-            Publishers::firstOrCreate([
-                'name' => $publisher['name'],
-            ]);
+            Publishers::firstOrCreate(['name' => $publisher['name']]);
         }
     }
 }

@@ -10,29 +10,22 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        Category::create([
-            'name' => 'روايات',
-            'description' => 'الروايات الأدبية والقصص الطويلة.',
-        ]);
+        $categories = [
+            ['name' => 'روايات', 'description' => 'الروايات الأدبية والقصص الطويلة.'],
+            ['name' => 'علوم', 'description' => 'الكتب العلمية والطبيعية.'],
+            ['name' => 'تاريخ', 'description' => 'كتب التاريخ والحضارات.'],
+            ['name' => 'أدب', 'description' => 'الأدب والشعر والنقد.'],
+            ['name' => 'برمجة', 'description' => 'البرمجة وعلوم الحاسوب.'],
+            ['name' => 'فلسفة', 'description' => 'الفلسفة والفكر الإنساني.'],
+            ['name' => 'تنمية ذاتية', 'description' => 'التطوير الشخصي والمهني.'],
+            ['name' => 'أطفال', 'description' => 'كتب الأطفال واليافعين.'],
+        ];
 
-        Category::create([
-            'name' => 'علوم',
-            'description' => 'الكتب العلمية والتقنية.',
-        ]);
-
-        Category::create([
-            'name' => 'تاريخ',
-            'description' => 'كتب التاريخ والحضارات.',
-        ]);
-
-        Category::create([
-            'name' => 'أدب',
-            'description' => 'الكتب الأدبية والشعرية.',
-        ]);
-
-        Category::create([
-            'name' => 'برمجة',
-            'description' => 'كتب البرمجة وعلوم الحاسوب.',
-        ]);
+        foreach ($categories as $category) {
+            Category::updateOrCreate(
+                ['name' => $category['name']],
+                ['description' => $category['description']]
+            );
+        }
     }
 }
