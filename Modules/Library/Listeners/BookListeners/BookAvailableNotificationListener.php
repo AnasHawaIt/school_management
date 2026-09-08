@@ -5,6 +5,7 @@ namespace Modules\Library\Listeners\BookListeners;
 use Modules\Library\Entities\Reservation;
 use Modules\Library\Events\BookEvents\BookAvailable;
 use Modules\Notifications\Services\NotificationService;
+use Illuminate\Support\Facades\DB;
 
 class BookAvailableNotificationListener
 {
@@ -15,12 +16,23 @@ class BookAvailableNotificationListener
 
     public function handle(BookAvailable $event): void
     {
-        $reservation = Reservation::query()
-            ->with('member.user')
-            ->where('book_id', $event->book->id)
-            ->where('status', 'pending')
-            ->oldest()
-            ->first();
+        $reservation = DB::transaction(function () use ($event) {
+            $reservation = Reservation::query()
+                ->where('book_id', $event->book->id)
+                ->where('status', 'pending')
+                ->oldest()
+                ->lockForUpdate()
+                ->first();
+
+            if ($reservation) {
+                $reservation->update([
+                    'status' => 'notified',
+                    'notified_at' => now(),
+                ]);
+            }
+
+            return $reservation?->load('member.user');
+        });
 
         $user = $reservation?->member?->user;
         if (! $user) {

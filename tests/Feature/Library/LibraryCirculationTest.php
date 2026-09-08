@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Library;
 
-use App\Models\User;
+use Modules\Core\Entities\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Library\Entities\Author;
 use Modules\Library\Entities\Book;
@@ -259,6 +259,18 @@ class LibraryCirculationTest extends TestCase
             'user_id' => $reservedUser->id,
             'type' => 'Library',
         ]);
+        $this->assertDatabaseHas('library_reservations', [
+            'member_id' => $reservedMember->id,
+            'status' => 'notified',
+        ]);
+
+        event(new \Modules\Library\Events\BookEvents\BookAvailable($book->fresh()));
+
+        $this->assertDatabaseCount('notification', 2);
+        $this->assertSame(
+            1,
+            \DB::table('notification')->where('user_id', $reservedUser->id)->count()
+        );
     }
 
     private function createMember(User $user, string $number, $endDate = null): Member

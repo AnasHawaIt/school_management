@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('book_id')->constrained()->cascadeOnDelete();
             $table->foreignId('member_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['pending', 'fulfilled', 'cancelled', 'expired'])->default('pending');
+            $table->enum('status', ['pending', 'notified', 'fulfilled', 'cancelled', 'expired'])->default('pending');
             $table->timestamp('fulfilled_at')->nullable();
             $table->timestamps();
             $table->unique(['book_id', 'member_id', 'status']);

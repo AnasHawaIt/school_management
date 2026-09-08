@@ -8,9 +8,9 @@ class Reservation extends Model
 {
     protected $table = 'library_reservations';
 
-    protected $fillable = ['book_id', 'member_id', 'status', 'fulfilled_at'];
+    protected $fillable = ['book_id', 'member_id', 'status', 'notified_at', 'fulfilled_at'];
 
-    protected $casts = ['fulfilled_at' => 'datetime'];
+    protected $casts = ['notified_at' => 'datetime', 'fulfilled_at' => 'datetime'];
 
     public function book()
     {
