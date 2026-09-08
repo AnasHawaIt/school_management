@@ -8,7 +8,7 @@ class UpdateTransactionRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     public function rules(): array
@@ -17,7 +17,8 @@ class UpdateTransactionRequest extends FormRequest
             'book_id'     => 'sometimes|exists:books,id',
             'member_id'   => 'sometimes|exists:members,id',
             'borrow_date' => 'sometimes|date',
-            'return_date' => 'sometimes|date',
+            'return_date' => 'sometimes|nullable|date|after_or_equal:borrow_date',
+            'status'      => 'sometimes|in:borrowed,returned,late',
         ];
     }
 

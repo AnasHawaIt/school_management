@@ -8,7 +8,7 @@ class StoreTransactionRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     public function rules(): array
@@ -17,7 +17,7 @@ class StoreTransactionRequest extends FormRequest
             'book_id'     => 'required|exists:books,id',
             'member_id'   => 'required|exists:members,id',
             'borrow_date' => 'required|date',
-            'return_date' => 'required|date',
+            'return_date' => 'nullable|date|after_or_equal:borrow_date',
         ];
     }
 

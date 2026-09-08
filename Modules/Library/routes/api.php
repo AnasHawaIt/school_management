@@ -13,7 +13,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('libraries', LibraryController::class)->names('library');
 });
 
-Route::prefix('library')->group(function() {
+Route::middleware(['auth:sanctum'])->prefix('library')->group(function() {
     Route::prefix('authors')->group(function () {
         Route::get('/', [AuthorController::class, 'index']);
         Route::get('/AllOnlyTrashed', [AuthorController::class, 'AllOnlyTrashed']);
