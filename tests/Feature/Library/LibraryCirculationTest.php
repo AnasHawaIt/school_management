@@ -141,6 +141,55 @@ class LibraryCirculationTest extends TestCase
         $this->assertDatabaseHas('library_copies', ['id' => $copy->id, 'status' => 'borrowed']);
     }
 
+    public function test_member_cannot_exceed_configured_active_loan_limit(): void
+    {
+        config(['library.max_active_loans_per_member' => 1]);
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $member = $this->createMember($user, 'MEM-LIMIT');
+        $firstBook = $this->createBook(1, 'First limit book');
+        $secondBook = $this->createBook(1, 'Second limit book');
+        $firstCopy = BookCopy::create(['book_id' => $firstBook->id, 'barcode' => 'BC-LIMIT-1', 'status' => 'available']);
+        $secondCopy = BookCopy::create(['book_id' => $secondBook->id, 'barcode' => 'BC-LIMIT-2', 'status' => 'available']);
+
+        $payload = fn (Book $book, BookCopy $copy) => [
+            'book_id' => $book->id,
+            'copy_id' => $copy->id,
+            'member_id' => $member->id,
+            'borrow_date' => today()->toDateString(),
+        ];
+
+        $this->actingAs($user)->postJson('/api/library/transactions', $payload($firstBook, $firstCopy))
+            ->assertCreated();
+        $this->actingAs($user)->postJson('/api/library/transactions', $payload($secondBook, $secondCopy))
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('member_id');
+    }
+
+    public function test_lost_and_damaged_copies_create_configured_compensation_fines(): void
+    {
+        config([
+            'library.lost_copy_compensation' => 80,
+            'library.damaged_copy_compensation' => 30,
+        ]);
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $member = $this->createMember($user, 'MEM-COMP');
+        $book = $this->createBook(1);
+        $copy = BookCopy::create(['book_id' => $book->id, 'barcode' => 'BC-COMP', 'status' => 'available']);
+
+        $this->actingAs($user)->postJson('/api/library/transactions', [
+            'book_id' => $book->id,
+            'copy_id' => $copy->id,
+            'member_id' => $member->id,
+            'borrow_date' => today()->toDateString(),
+        ])->assertCreated();
+        $this->actingAs($user)->putJson("/api/library/books/{$book->id}/copies/{$copy->id}", [
+            'status' => 'lost',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('library_fines', ['amount' => 80, 'status' => 'unpaid']);
+        $this->assertDatabaseHas('books', ['id' => $book->id, 'copies' => 0]);
+    }
+
     public function test_expired_member_cannot_borrow(): void
     {
         $user = User::factory()->create(['user_type' => 'admin']);
