@@ -116,6 +116,31 @@ class LibraryCirculationTest extends TestCase
             ->assertUnprocessable();
     }
 
+    public function test_two_borrow_attempts_for_the_same_copy_allow_only_one_loan(): void
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $firstMember = $this->createMember($user, 'MEM-RACE-1');
+        $secondMember = $this->createMember(User::factory()->create(['user_type' => 'admin']), 'MEM-RACE-2');
+        $book = $this->createBook(1);
+        $copy = BookCopy::create(['book_id' => $book->id, 'barcode' => 'BC-RACE', 'status' => 'available']);
+
+        $payload = fn (Member $member) => [
+            'book_id' => $book->id,
+            'copy_id' => $copy->id,
+            'member_id' => $member->id,
+            'borrow_date' => today()->toDateString(),
+        ];
+
+        $this->actingAs($user)->postJson('/api/library/transactions', $payload($firstMember))
+            ->assertCreated();
+
+        $this->actingAs($user)->postJson('/api/library/transactions', $payload($secondMember))
+            ->assertUnprocessable();
+
+        $this->assertDatabaseCount('transactions', 1);
+        $this->assertDatabaseHas('library_copies', ['id' => $copy->id, 'status' => 'borrowed']);
+    }
+
     public function test_expired_member_cannot_borrow(): void
     {
         $user = User::factory()->create(['user_type' => 'admin']);

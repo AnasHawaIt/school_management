@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Core\Entities\Permission;
 use Modules\Core\Entities\Role;
 use Modules\Library\Entities\Author;
+use Modules\Core\database\seeders\PermissionSeeder;
+use Modules\Core\database\seeders\RoleSeeder;
 use Tests\TestCase;
 
 class LibraryPermissionTest extends TestCase
@@ -107,5 +109,36 @@ class LibraryPermissionTest extends TestCase
             ->assertOk();
 
         $this->assertDatabaseMissing('authors', ['id' => $author->id]);
+    }
+
+    public function test_fresh_seeders_provide_all_library_permissions_to_admin(): void
+    {
+        $this->seed(RoleSeeder::class);
+        $this->seed(PermissionSeeder::class);
+
+        $libraryPermissions = [
+            'library.catalog.view',
+            'library.catalog.manage',
+            'library.catalog.delete',
+            'library.catalog.restore',
+            'library.catalog.force_delete',
+            'library.circulation.view',
+            'library.circulation.manage',
+            'library.circulation.restore',
+            'library.circulation.force_delete',
+            'library.fines.view',
+            'library.fines.manage',
+        ];
+
+        $this->assertEqualsCanonicalizing(
+            $libraryPermissions,
+            \Modules\Core\Entities\Permission::query()
+                ->whereIn('name', $libraryPermissions)
+                ->pluck('name')
+                ->all()
+        );
+
+        $admin = \Modules\Core\Entities\Role::where('name', 'admin')->firstOrFail();
+        $this->assertTrue($admin->permissions()->whereIn('name', $libraryPermissions)->count() === count($libraryPermissions));
     }
 }

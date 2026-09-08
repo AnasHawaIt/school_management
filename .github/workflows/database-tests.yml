@@ -1,0 +1,61 @@
+name: Database compatibility tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    strategy:
+      fail-fast: false
+      matrix:
+        database: [mysql, pgsql]
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: school_management
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: school_management
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: curl, mbstring, pdo, pdo_mysql, pdo_pgsql
+          coverage: none
+      - run: composer install --no-interaction --prefer-dist
+      - run: cp .env.example .env
+      - run: php artisan key:generate
+      - name: Configure database
+        shell: bash
+        run: |
+          if [ "${{ matrix.database }}" = "mysql" ]; then
+            sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=mysql/' .env
+            sed -i 's/^# DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+            sed -i 's/^# DB_PORT=.*/DB_PORT=3306/' .env
+            sed -i 's/^# DB_DATABASE=.*/DB_DATABASE=school_management/' .env
+            sed -i 's/^# DB_USERNAME=.*/DB_USERNAME=root/' .env
+            sed -i 's/^# DB_PASSWORD=.*/DB_PASSWORD=root/' .env
+          else
+            sed -i 's/^DB_CONNECTION=.*/DB_CONNECTION=pgsql/' .env
+            sed -i 's/^# DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+            sed -i 's/^# DB_PORT=.*/DB_PORT=5432/' .env
+            sed -i 's/^# DB_DATABASE=.*/DB_DATABASE=school_management/' .env
+            sed -i 's/^# DB_USERNAME=.*/DB_USERNAME=postgres/' .env
+            sed -i 's/^# DB_PASSWORD=.*/DB_PASSWORD=postgres/' .env
+          fi
+      - run: php artisan test
