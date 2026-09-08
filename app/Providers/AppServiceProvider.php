@@ -18,7 +18,12 @@ use Modules\Notifications\Entities\Notification;
 use Modules\Transport\Entities\Bus;
 use App\Policies\LibraryPolicy;
 use Modules\Library\Entities\BookCopy;
+use Modules\Library\Entities\Author;
+use Modules\Library\Entities\Book;
+use Modules\Library\Entities\Category;
 use Modules\Library\Entities\Fine;
+use Modules\Library\Entities\Member;
+use Modules\Library\Entities\Publisher;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,6 +56,13 @@ class AppServiceProvider extends ServiceProvider
             'guardian' => Guardian::class,
             'user' => User::class,
             'borrowing' => Borrowing::class,
+            'author' => Author::class,
+            'book' => Book::class,
+            'category' => Category::class,
+            'member' => Member::class,
+            'publisher' => Publisher::class,
+            'book_copy' => BookCopy::class,
+            'fine' => Fine::class,
             'notification' => Notification::class,
             'activity'     => Activity::class,
             'bus'          => Bus::class,

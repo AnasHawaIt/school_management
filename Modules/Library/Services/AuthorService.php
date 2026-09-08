@@ -38,9 +38,7 @@ class AuthorService
 
     public function forceDelete($id)
     {
-        $author= $this->repo->find($id);
-
-        $author->forceDelete();
+        $author = $this->repo->forceDelete($id);
 
         event(new AuthorDeleted($author,auth()->id()));
 

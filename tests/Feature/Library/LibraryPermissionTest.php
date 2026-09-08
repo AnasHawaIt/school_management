@@ -70,4 +70,42 @@ class LibraryPermissionTest extends TestCase
             ->postJson('/api/library/authors/1/restore')
             ->assertForbidden();
     }
+
+    public function test_force_delete_requires_force_delete_permission(): void
+    {
+        $user = User::factory()->create(['user_type' => 'teacher']);
+        $permission = Permission::create([
+            'name' => 'library.catalog.restore',
+            'display_name' => 'Restore Library Catalog',
+        ]);
+        $role = Role::create(['name' => 'catalog-restorer', 'display_name' => 'Catalog Restorer']);
+        $role->permissions()->attach($permission);
+        $user->assignRole('catalog-restorer');
+        $author = Author::create(['name' => 'Deleted Author', 'birth_date' => '1980-01-01']);
+        $author->delete();
+
+        $this->actingAs($user)
+            ->deleteJson("/api/library/authors/{$author->id}/force")
+            ->assertForbidden();
+    }
+
+    public function test_force_delete_is_allowed_only_with_force_delete_permission(): void
+    {
+        $user = User::factory()->create(['user_type' => 'teacher']);
+        $permission = Permission::create([
+            'name' => 'library.catalog.force_delete',
+            'display_name' => 'Permanently Delete Library Catalog',
+        ]);
+        $role = Role::create(['name' => 'catalog-forcer', 'display_name' => 'Catalog Forcer']);
+        $role->permissions()->attach($permission);
+        $user->assignRole('catalog-forcer');
+        $author = Author::create(['name' => 'Permanently Deleted Author', 'birth_date' => '1980-01-01']);
+        $author->delete();
+
+        $this->actingAs($user)
+            ->deleteJson("/api/library/authors/{$author->id}/force")
+            ->assertOk();
+
+        $this->assertDatabaseMissing('authors', ['id' => $author->id]);
+    }
 }
