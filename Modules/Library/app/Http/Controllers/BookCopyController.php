@@ -27,7 +27,18 @@ class BookCopyController extends Controller
     {
         abort_unless($copy->book_id === $book->id, 404);
 
-        $copy->update($request->validated());
+        $data = $request->validated();
+        if (
+            $copy->status === 'borrowed'
+            && isset($data['status'])
+            && $data['status'] !== 'borrowed'
+        ) {
+            return response()->json([
+                'message' => 'Borrowed copies can only be released by returning the active loan.',
+            ], 422);
+        }
+
+        $copy->update($data);
 
         return response()->json($copy->refresh());
     }
