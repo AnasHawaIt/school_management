@@ -14,6 +14,7 @@ class BookCopy extends Model
         'barcode',
         'status',
         'location',
+        'replacement_cost',
     ];
 
     public function book(): BelongsTo
@@ -25,4 +26,8 @@ class BookCopy extends Model
     {
         return $this->hasMany(Borrowing::class, 'copy_id');
     }
+
+    protected $casts = [
+        'replacement_cost' => 'decimal:2',
+    ];
 }

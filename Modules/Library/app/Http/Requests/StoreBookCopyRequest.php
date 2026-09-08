@@ -17,6 +17,7 @@ class StoreBookCopyRequest extends FormRequest
             'barcode' => 'required|string|max:255|unique:library_copies,barcode',
             'status' => 'sometimes|in:available,borrowed,lost,damaged,maintenance',
             'location' => 'nullable|string|max:255',
+            'replacement_cost' => 'sometimes|nullable|numeric|min:0',
         ];
     }
 }

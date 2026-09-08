@@ -78,8 +78,10 @@ class TransactionRepository implements TransactionRepositoryInterface
 
             $book->decrement('copies');
             $copy?->update(['status' => 'borrowed']);
+            $transaction = Borrowing::create($data);
+            $this->syncPhysicalInventory($book);
 
-            return Borrowing::create($data);
+            return $transaction;
         });
     }
 
@@ -154,6 +156,7 @@ class TransactionRepository implements TransactionRepositoryInterface
             }
 
             $transaction->update($data);
+            $this->syncPhysicalInventory(Book::findOrFail($newBookId));
 
             return $transaction;
         });
@@ -177,9 +180,20 @@ class TransactionRepository implements TransactionRepositoryInterface
                         ->findOrFail($transaction->copy_id)
                         ->update(['status' => 'available']);
                 }
+
+                $this->syncPhysicalInventory(Book::findOrFail($transaction->book_id));
             }
 
             return $transaction->delete();
         });
+    }
+
+    private function syncPhysicalInventory(Book $book): void
+    {
+        if ($book->copies()->exists()) {
+            $book->update([
+                'copies' => $book->copies()->where('status', 'available')->count(),
+            ]);
+        }
     }
 }

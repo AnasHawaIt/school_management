@@ -19,6 +19,14 @@ database values, `CORS_ALLOWED_ORIGINS`, and matching
 configured by `FIREBASE_CREDENTIALS_PATH` and restrict it to the application
 user (`chmod 640`).
 
+Library circulation limits and compensation amounts are configured with
+`LIBRARY_MAX_ACTIVE_LOANS_PER_MEMBER`, `LIBRARY_FINE_PER_DAY`,
+`LIBRARY_LOST_COPY_COMPENSATION`, and
+`LIBRARY_DAMAGED_COPY_COMPENSATION`. A member-level
+`max_active_loans` value overrides the global loan limit. Physical inventory
+counts are recalculated from available copies whenever a copy or loan changes;
+books without tracked physical copies retain their manually managed count.
+
 ## Queue worker
 
 Copy `ops/supervisor/school-management-worker.conf` to

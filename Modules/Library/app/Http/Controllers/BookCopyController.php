@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Modules\Library\Entities\Book;
 use Modules\Library\Entities\BookCopy;
+use Modules\Library\Entities\Fine;
 use Modules\Library\app\Http\Requests\StoreBookCopyRequest;
 use Modules\Library\app\Http\Requests\UpdateBookCopyRequest;
 
@@ -19,6 +20,7 @@ class BookCopyController extends Controller
     public function store(StoreBookCopyRequest $request, Book $book): JsonResponse
     {
         $copy = $book->copies()->create($request->validated());
+        $book->update(['copies' => $book->copies()->where('status', 'available')->count()]);
 
         return response()->json($copy, 201);
     }
@@ -32,13 +34,36 @@ class BookCopyController extends Controller
             $copy->status === 'borrowed'
             && isset($data['status'])
             && $data['status'] !== 'borrowed'
+            && ! in_array($data['status'], ['lost', 'damaged'], true)
         ) {
             return response()->json([
                 'message' => 'Borrowed copies can only be released by returning the active loan.',
             ], 422);
         }
 
+        $previousStatus = $copy->status;
         $copy->update($data);
+
+        if (
+            isset($data['status'])
+            && in_array($data['status'], ['lost', 'damaged'], true)
+            && $previousStatus !== $data['status']
+        ) {
+            $transaction = $copy->transactions()
+                ->whereIn('status', ['borrowed', 'late'])
+                ->latest('id')
+                ->first();
+            if ($transaction) {
+                $amount = $copy->replacement_cost
+                    ?? config("library.{$data['status']}_copy_compensation");
+                Fine::updateOrCreate(
+                    ['transaction_id' => $transaction->id],
+                    ['amount' => $amount, 'status' => 'unpaid', 'notes' => "Copy marked {$data['status']}."]
+                );
+            }
+        }
+
+        $book->update(['copies' => $book->copies()->where('status', 'available')->count()]);
 
         return response()->json($copy->refresh());
     }
@@ -54,6 +79,7 @@ class BookCopyController extends Controller
         }
 
         $copy->delete();
+        $book->update(['copies' => $book->copies()->where('status', 'available')->count()]);
 
         return response()->json(['message' => 'Deleted']);
     }

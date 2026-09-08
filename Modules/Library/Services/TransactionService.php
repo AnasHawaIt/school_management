@@ -56,8 +56,15 @@ class TransactionService
             ]);
         }
 
+        $limit = $member->max_active_loans ?? config('library.max_active_loans_per_member');
+        if ($member->transactions()->whereIn('status', ['borrowed', 'late'])->count() >= $limit) {
+            throw ValidationException::withMessages([
+                'member_id' => 'The member has reached the maximum number of active loans.',
+            ]);
+        }
+
         $data['borrow_date'] ??= now()->toDateString();
-        $data['due_date'] ??= now()->addDays(14)->toDateString();
+        $data['due_date'] ??= now()->addDays(config('library.loan_days'))->toDateString();
         $transaction = $this->repo->create($data);
 
         event(new BorrowingCreated($transaction, auth()->id()));
@@ -103,7 +110,7 @@ class TransactionService
         }
 
         $transaction->update([
-            'due_date' => $transaction->due_date->addDays(14),
+            'due_date' => $transaction->due_date->addDays(config('library.renewal_days')),
             'renewal_count' => $transaction->renewal_count + 1,
             'status' => 'borrowed',
         ]);
