@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreTransactionRequest;
 use Modules\Library\app\Http\Requests\UpdateTransactionRequest;
 use Modules\Library\app\Http\Resources\TransactionResource;
-use Modules\Library\Entities\Borrowing;
 use Modules\Library\Services\TransactionService;
 
 class TransactionController extends Controller
@@ -40,7 +39,7 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        $transactions =Borrowing::with(['book', 'member'])->get();
+        $transactions = $this->service->getAll($request);
 
         return  TransactionResource::collection($transactions);
     }
@@ -64,7 +63,7 @@ class TransactionController extends Controller
 
     public function update(UpdateTransactionRequest $request, $id)
     {
-        $transaction = $this->service->update($id, $request->all());
+        $transaction = $this->service->update($id, $request->validated());
 
         return new TransactionResource($transaction);
     }
