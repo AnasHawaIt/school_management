@@ -5,11 +5,13 @@ namespace App\Providers;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use App\Models\User as AppUser;
 use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Activities\Entities\Activity;
 use Modules\Core\Entities\User;
+use Modules\Library\Entities\Borrowing;
 use Modules\Messagings\app\Policies\MessagePolicy;
 use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageAttachment;
@@ -43,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
             'teacher' => Teacher::class,
             'guardian' => Guardian::class,
             'user' => User::class,
+            'app_user' => AppUser::class,
+            'borrowing' => Borrowing::class,
             'notification' => Notification::class,
             'activity'     => Activity::class,
             'bus'          => Bus::class,
