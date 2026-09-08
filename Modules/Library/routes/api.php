@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Library\app\Http\Controllers\AuthorController;
 use Modules\Library\app\Http\Controllers\BookController;
+use Modules\Library\app\Http\Controllers\BookCopyController;
 use Modules\Library\app\Http\Controllers\CategoryController;
 use Modules\Library\app\Http\Controllers\LibraryController;
 use Modules\Library\app\Http\Controllers\MemberController;
@@ -59,6 +60,10 @@ Route::middleware(['auth:sanctum'])->prefix('library')->group(function() {
     });
 
     Route::prefix('books')->group(function () {
+        Route::get('{book}/copies', [BookCopyController::class, 'index']);
+        Route::post('{book}/copies', [BookCopyController::class, 'store']);
+        Route::put('{book}/copies/{copy}', [BookCopyController::class, 'update']);
+        Route::delete('{book}/copies/{copy}', [BookCopyController::class, 'destroy']);
         Route::get('/', [BookController::class, 'index']);
         Route::get('/AllOnlyTrashed', [BookController::class, 'AllOnlyTrashed']);
         Route::get('{id}', [BookController::class, 'show']);

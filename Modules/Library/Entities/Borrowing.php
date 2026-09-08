@@ -20,6 +20,7 @@ class Borrowing extends Model
     protected $fillable = [
         'member_id',
         'book_id',
+        'copy_id',
         'borrow_date',
         'due_date',
         'return_date',
@@ -42,6 +43,11 @@ class Borrowing extends Model
     public function book()
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function copy()
+    {
+        return $this->belongsTo(BookCopy::class, 'copy_id');
     }
 
     // protected static function newFactory(): TransactionFactory

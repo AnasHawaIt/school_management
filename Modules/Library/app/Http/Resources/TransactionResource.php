@@ -15,6 +15,11 @@ class TransactionResource extends JsonResource
                 'id'    => $this->book->id,
                 'title' => $this->book->title,
             ],
+            'copy' => $this->copy ? [
+                'id' => $this->copy->id,
+                'barcode' => $this->copy->barcode,
+                'status' => $this->copy->status,
+            ] : null,
 
             'member' => [
                 'id'   => $this->member->id,

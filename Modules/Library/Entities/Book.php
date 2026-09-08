@@ -38,6 +38,11 @@ class Book extends Model
         return $this->hasMany(Borrowing::class);
     }
 
+    public function copies()
+    {
+        return $this->hasMany(BookCopy::class);
+    }
+
     public function images()
     {
         return $this->morphMany(Images::class, 'imageable');

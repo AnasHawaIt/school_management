@@ -15,6 +15,7 @@ class UpdateTransactionRequest extends FormRequest
     {
         return [
             'book_id'     => 'sometimes|exists:books,id',
+            'copy_id'     => 'sometimes|nullable|exists:library_copies,id',
             'member_id'   => 'sometimes|exists:members,id',
             'borrow_date' => 'sometimes|date',
             'due_date'    => 'sometimes|nullable|date|after_or_equal:borrow_date',
