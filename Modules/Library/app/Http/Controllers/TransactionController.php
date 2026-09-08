@@ -68,6 +68,11 @@ class TransactionController extends Controller
         return new TransactionResource($transaction);
     }
 
+    public function renew($id)
+    {
+        return new TransactionResource($this->service->renew($id));
+    }
+
     public function destroy($id)
     {
         $this->service->delete($id);

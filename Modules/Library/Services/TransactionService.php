@@ -3,11 +3,12 @@
 namespace Modules\Library\Services;
 
 use Modules\Library\Entities\Member;
-use Illuminate\Validation\ValidationException;
 use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
 use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 use Modules\Library\Events\BorrowingEvents\BorrowingUpdateed;
 use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
+use Modules\Library\Entities\Reservation;
+use Illuminate\Validation\ValidationException;
 
 class TransactionService
 {
@@ -75,6 +76,31 @@ class TransactionService
         event(new BorrowingUpdateed($Transaction, auth()->id()));
 
         return $Transaction;
+    }
+
+    public function renew($id)
+    {
+        $transaction = $this->repo->findById($id);
+        if (!in_array($transaction->status, ['borrowed', 'late'], true)) {
+            throw ValidationException::withMessages(['transaction' => 'Only active borrowings can be renewed.']);
+        }
+        if ($transaction->renewal_count >= $transaction->max_renewals) {
+            throw ValidationException::withMessages(['transaction' => 'Renewal limit has been reached.']);
+        }
+        if (Reservation::where('book_id', $transaction->book_id)
+            ->where('status', 'pending')
+            ->where('member_id', '!=', $transaction->member_id)
+            ->exists()) {
+            throw ValidationException::withMessages(['transaction' => 'This book has a pending reservation.']);
+        }
+
+        $transaction->update([
+            'due_date' => $transaction->due_date->addDays(14),
+            'renewal_count' => $transaction->renewal_count + 1,
+            'status' => 'borrowed',
+        ]);
+
+        return $transaction->refresh();
     }
 
     public function delete($id)

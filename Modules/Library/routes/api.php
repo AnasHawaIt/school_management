@@ -10,6 +10,8 @@ use Modules\Library\app\Http\Controllers\MemberController;
 use Modules\Library\app\Http\Controllers\PublishersController;
 use Modules\Library\app\Http\Controllers\TransactionController;
 use Modules\Library\app\Http\Controllers\FineController;
+use Modules\Library\app\Http\Controllers\ReservationController;
+use Modules\Library\app\Http\Controllers\LibraryReportController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('libraries', LibraryController::class)->names('library');
@@ -81,6 +83,7 @@ Route::middleware(['auth:sanctum'])->prefix('library')->group(function() {
         Route::get('{id}', [TransactionController::class, 'show'])->middleware('permission:library.circulation.view');
         Route::post('/', [TransactionController::class, 'store'])->middleware('permission:library.circulation.manage');
         Route::post('{id}', [TransactionController::class, 'update'])->middleware('permission:library.circulation.manage');
+        Route::post('{id}/renew', [TransactionController::class, 'renew'])->middleware('permission:library.circulation.manage');
         Route::delete('{id}', [TransactionController::class, 'destroy'])->middleware('permission:library.circulation.manage');
         Route::post('/{id}/restore', [TransactionController::class, 'restore'])->middleware('permission:library.circulation.manage');
         route::delete('/{id}/force', [TransactionController::class, 'forceDelete'])->middleware('permission:library.circulation.manage');
@@ -91,4 +94,13 @@ Route::middleware(['auth:sanctum'])->prefix('library')->group(function() {
         Route::get('{fine}', [FineController::class, 'show'])->middleware('permission:library.fines.view');
         Route::patch('{fine}', [FineController::class, 'update'])->middleware('permission:library.fines.manage');
     });
+
+    Route::prefix('reservations')->middleware('permission:library.circulation.manage')->group(function () {
+        Route::get('/', [ReservationController::class, 'index']);
+        Route::post('/', [ReservationController::class, 'store']);
+        Route::post('{reservation}/cancel', [ReservationController::class, 'cancel']);
+    });
+
+    Route::get('reports/circulation', [LibraryReportController::class, 'circulation'])
+        ->middleware('permission:library.circulation.view');
 });

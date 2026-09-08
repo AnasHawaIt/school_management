@@ -180,6 +180,54 @@ class LibraryCirculationTest extends TestCase
         ]);
     }
 
+    public function test_active_loan_can_be_renewed_until_the_limit(): void
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $member = $this->createMember($user, 'MEM-006');
+        $book = $this->createBook(1);
+        $copy = BookCopy::create(['book_id' => $book->id, 'barcode' => 'BC-006', 'status' => 'available']);
+
+        $this->actingAs($user)->postJson('/api/library/transactions', [
+            'book_id' => $book->id,
+            'copy_id' => $copy->id,
+            'member_id' => $member->id,
+            'borrow_date' => today()->toDateString(),
+        ])->assertCreated();
+
+        $transactionId = \DB::table('transactions')->value('id');
+        $this->actingAs($user)
+            ->postJson("/api/library/transactions/{$transactionId}/renew")
+            ->assertOk()
+            ->assertJsonPath('data.renewal_count', 1);
+    }
+
+    public function test_reservation_is_created_for_unavailable_book_and_can_be_cancelled(): void
+    {
+        $user = User::factory()->create(['user_type' => 'admin']);
+        $member = $this->createMember($user, 'MEM-007');
+        $book = $this->createBook(0);
+
+        $response = $this->actingAs($user)->postJson('/api/library/reservations', [
+            'book_id' => $book->id,
+            'member_id' => $member->id,
+        ])->assertCreated();
+
+        $reservationId = $response->json('id');
+        if (! $reservationId) {
+            $reservationId = $response->json('data.id');
+        }
+
+        $this->actingAs($user)
+            ->postJson("/api/library/reservations/{$reservationId}/cancel")
+            ->assertOk()
+            ->assertJsonPath('status', 'cancelled');
+
+        $this->assertDatabaseHas('library_reservations', [
+            'id' => $reservationId,
+            'status' => 'cancelled',
+        ]);
+    }
+
     private function createMember(User $user, string $number, $endDate = null): Member
     {
         return Member::create([

@@ -17,11 +17,17 @@ use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageAttachment;
 use Modules\Notifications\Entities\Notification;
 use Modules\Transport\Entities\Bus;
+use App\Policies\LibraryPolicy;
+use Modules\Library\Entities\BookCopy;
+use Modules\Library\Entities\Fine;
 
 class AppServiceProvider extends ServiceProvider
 {
     protected $policies = [
         Message::class => MessagePolicy::class,
+        BookCopy::class => LibraryPolicy::class,
+        Borrowing::class => LibraryPolicy::class,
+        Fine::class => LibraryPolicy::class,
     ];
     /**
      * Register any application services.

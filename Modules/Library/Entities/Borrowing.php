@@ -23,6 +23,8 @@ class Borrowing extends Model
         'copy_id',
         'borrow_date',
         'due_date',
+        'renewal_count',
+        'max_renewals',
         'return_date',
         'returned_at',
         'status'

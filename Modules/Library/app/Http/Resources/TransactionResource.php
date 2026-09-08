@@ -28,6 +28,8 @@ class TransactionResource extends JsonResource
 
             'borrow_date' => $this->borrow_date,
             'due_date'    => $this->due_date,
+            'renewal_count' => $this->renewal_count,
+            'max_renewals' => $this->max_renewals,
             'return_date' => $this->return_date,
             'returned_at' => $this->returned_at,
             'status'      => $this->status,
