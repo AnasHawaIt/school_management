@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\User;
+
+use Modules\Core\Entities\User;
 
 test('profile page is displayed', function () {
     $user = User::factory()->create();
@@ -31,7 +32,8 @@ test('profile information can be updated', function () {
 
     $user->refresh();
 
-    $this->assertSame('Test User', $user->first_name);
+    $this->assertSame('Test', $user->first_name);
+    $this->assertSame('User', $user->last_name);
     $this->assertSame('test@example.com', $user->email);
     $this->assertNull($user->email_verified_at);
 });

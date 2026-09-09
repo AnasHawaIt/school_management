@@ -20,8 +20,8 @@ return new class extends Migration
                 'maintenance',
             ])->default('available');
             $table->string('location')->nullable();
+            $table->decimal('replacement_cost', 10, 2)->nullable();
             $table->timestamps();
-
             $table->index(['book_id', 'status']);
         });
 
