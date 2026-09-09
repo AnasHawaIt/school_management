@@ -19,7 +19,7 @@ class SendBorrowingRejectedNotification
     {
         $borrowing = $event->borrowing;
 
-        $user = $borrowing->user;
+        $user = $borrowing->member?->user;
 
         if (!$user) {
             return;

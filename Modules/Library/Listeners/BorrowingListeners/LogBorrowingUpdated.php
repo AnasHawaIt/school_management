@@ -14,7 +14,6 @@ class LogBorrowingUpdated
         $borrowing = $event->borrowing;
 
         activity()
-            ->causedBy($event->userId)
             ->performedOn($borrowing)
             ->withProperties([
                 'book_id' => $borrowing->book_id,

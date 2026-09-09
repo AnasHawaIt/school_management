@@ -3,7 +3,9 @@
 namespace Modules\Library\Providers;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\ServiceProvider;
+use Modules\Library\Console\Commands\CheckOverdueBorrowings;
 use Modules\Library\Repositories\Eloquent\AuthorRepository;
 use Modules\Library\Repositories\Eloquent\BookRepository;
 use Modules\Library\Repositories\Eloquent\CategoryRepository;
@@ -59,7 +61,9 @@ class LibraryServiceProvider extends ServiceProvider
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            CheckOverdueBorrowings::class,
+        ]);
     }
 
     /**
@@ -67,10 +71,11 @@ class LibraryServiceProvider extends ServiceProvider
      */
     protected function registerCommandSchedules(): void
     {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
+        $this->app->booted(function () {
+            $this->app->make(Schedule::class)
+                ->command('library:check-overdue')
+                ->daily();
+        });
     }
 
     /**

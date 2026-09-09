@@ -56,6 +56,8 @@ use Modules\Library\Listeners\BookListeners\BookDeletedListener\BookDeletedNotif
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedBroadcastEventListener;
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedLogEventListener;
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedNotificationDatabaseListener;
+use Modules\Library\Listeners\BookListeners\BookAvailableNotificationListener;
+use Modules\Library\Events\BookEvents\BookAvailable;
 
 // Borrowing Listeners
 use Modules\Library\Listeners\BorrowingListeners\LogBorrowingApproved;
@@ -164,6 +166,10 @@ class EventServiceProvider extends ServiceProvider
             BookDeletedLogEventListener::class,
             BookDeletedNotificationDatabaseListener::class,
             BookDeletedBroadcastEventListener::class,
+        ],
+
+        BookAvailable::class => [
+            BookAvailableNotificationListener::class,
         ],
 
 

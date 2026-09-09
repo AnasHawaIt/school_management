@@ -3,16 +3,15 @@
 
 namespace Modules\Library\Listeners\BorrowingListeners;
 
-use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
+use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
 
 class LogBorrowingCreated
 {
-    public function handle(BorrowingRejected $event): void
+    public function handle(BorrowingCreated $event): void
     {
         $borrowing = $event->borrowing;
 
         activity()
-            ->causedBy($event->userId)
             ->performedOn($borrowing)
             ->withProperties([
                 'book_id' => $borrowing->book_id,
