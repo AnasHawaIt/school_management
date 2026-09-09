@@ -36,6 +36,26 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
             ->get();
     }
 
+    public function getScheduled()
+    {
+        return Announcement::query()
+            ->scheduled()
+            ->get();
+    }
+
+    public function getExpired()
+    {
+        return Announcement::query()
+            ->expired()
+            ->get();
+    }
+
+    public function getPinned()
+    {
+        return Announcement::query()
+            ->Pinned()
+            ->get();
+    }
 
     public function getAll()
     {

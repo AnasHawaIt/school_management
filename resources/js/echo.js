@@ -42,6 +42,9 @@ window.Echo
     .listen('.announcement.created', (event) => {
         console.log('🆕 ANNOUNCEMENT CREATED:', event);
     })
+    .listen('.announcement.scheduled', (event) => {
+        console.log('📢⏰🆕 ANNOUNCEMENT SCHEDULED:', event);
+    })
     .listen('.announcement.updated', (event) => {
         console.log('✏️ ANNOUNCEMENT UPDATED:', event);
     })

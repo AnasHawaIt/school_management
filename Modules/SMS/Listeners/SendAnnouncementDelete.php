@@ -9,7 +9,7 @@ use Modules\SMS\Jobs\SendSmsJob;
 
 class SendAnnouncementDelete  implements ShouldQueue
 {
-    public function handle(AnnouncementDeleted $event)
+    public function handle( $event)
     {
         $map = [
             'students' => 'student',

@@ -77,6 +77,14 @@ class Announcement extends Model
         );
     }
 
+    public function scopeExpired(Builder $query): Builder
+    {
+        return $query->where(
+            'status',
+            AnnouncementStatus::EXPIRED->value
+        );
+    }
+
     public function scopePinned(Builder $query): Builder
     {
         return $query->where('is_pinned', true);
@@ -180,13 +188,13 @@ class Announcement extends Model
 
     public function cancel(): bool
     {
-        if (
-            $this->status !== AnnouncementStatus::DRAFT &&
-            $this->status !== AnnouncementStatus::SCHEDULED &&
-            $this->status !== AnnouncementStatus::PUBLISHED
-        ) {
-            return false;
-        }
+//        if (
+//            $this->status !== AnnouncementStatus::DRAFT &&
+//            $this->status !== AnnouncementStatus::SCHEDULED &&
+//            $this->status !== AnnouncementStatus::PUBLISHED
+//        ) {
+//            return false;
+//        }
 
         $this->status = AnnouncementStatus::CANCELLED;
 

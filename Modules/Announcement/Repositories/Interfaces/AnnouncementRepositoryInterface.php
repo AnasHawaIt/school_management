@@ -11,6 +11,9 @@ interface AnnouncementRepositoryInterface
     public function restore($id);
     public function forceDelete($id);
     public function getPublished();
+    public function getScheduled();
+    public function getExpired();
+    public function getPinned();
     public function getAll();
     public function find(int $id): ?Announcement;
     public function create(array $data);

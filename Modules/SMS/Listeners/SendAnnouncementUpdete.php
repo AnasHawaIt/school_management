@@ -8,7 +8,7 @@ use Modules\SMS\Jobs\SendSmsJob;
 
 class SendAnnouncementUpdete implements ShouldQueue
 {
-    public function handle(AnnouncementUpdated $event)
+    public function handle( $event)
     {
         $map = [
             'students' => 'student',
