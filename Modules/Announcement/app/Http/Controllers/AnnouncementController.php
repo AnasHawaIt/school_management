@@ -37,6 +37,27 @@ class AnnouncementController extends Controller
         );
     }
 
+    public function indexExpired()
+    {
+        return AnnouncementResource::collection(
+            $this->service->getExpiredAnnouncements()
+        );
+    }
+
+    public function indexPinned()
+    {
+        return AnnouncementResource::collection(
+            $this->service->getPinnedAnnouncements()
+        );
+    }
+
+    public function indexScheduled()
+    {
+        return AnnouncementResource::collection(
+            $this->service->getScheduledAnnouncements()
+        );
+    }
+
     public function store(AnnouncementCreateRequest $request)
     {
         $data = $request->validated();
@@ -62,10 +83,7 @@ class AnnouncementController extends Controller
         );
     }
 
-    public function update(
-        AnnouncementUpdateRequest $request,
-        int $id
-    ) {
+    public function update(AnnouncementUpdateRequest $request, int $id) {
         $data = $request->validated();
 
         unset($data['created_by']);
@@ -92,10 +110,34 @@ class AnnouncementController extends Controller
         return new AnnouncementResource($announcement);
     }
 
-    public function schedule(
-        AnnouncementScheduleRequest $request,
-        int $id
-    ) {
+    public function pin(int $id)
+    {
+        $announcement = $this->service->pin($id);
+
+        cache()->forget('announcements_all');
+
+        return new AnnouncementResource($announcement);
+    }
+
+    public function unpin(int $id)
+    {
+        $announcement = $this->service->unpin($id);
+
+        cache()->forget('announcements_all');
+
+        return new AnnouncementResource($announcement);
+    }
+
+    public function cancel(int $id)
+    {
+        $announcement = $this->service->cancel($id);
+
+        cache()->forget('announcements_all');
+
+        return new AnnouncementResource($announcement);
+    }
+
+    public function schedule(AnnouncementScheduleRequest $request, int $id) {
         $announcement = $this->service->schedule(
             $id,
             $request->date('scheduled_at')

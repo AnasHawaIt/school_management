@@ -77,6 +77,14 @@ class Announcement extends Model
         );
     }
 
+    public function scopeExpired(Builder $query): Builder
+    {
+        return $query->where(
+            'status',
+            AnnouncementStatus::EXPIRED->value
+        );
+    }
+
     public function scopePinned(Builder $query): Builder
     {
         return $query->where('is_pinned', true);

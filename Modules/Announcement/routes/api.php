@@ -14,6 +14,21 @@ Route::prefix('announcement')->middleware('auth:sanctum')->group(function () {
         'indexPublished'
     ]);
 
+    Route::get('/scheduled', [
+        AnnouncementController::class,
+        'indexScheduled'
+    ]);
+
+    Route::get('/expired', [
+        AnnouncementController::class,
+        'indexExpired'
+    ]);
+
+    Route::get('/Pinned', [
+        AnnouncementController::class,
+        'indexPinned'
+    ]);
+
     Route::get('/trashed', [
         AnnouncementController::class,
         'onlyTrashed'
@@ -55,6 +70,21 @@ Route::prefix('announcement')->middleware('auth:sanctum')->group(function () {
     Route::post('/{id}/publish', [
         AnnouncementController::class,
         'publish'
+    ]);
+
+    Route::post('/{id}/pin', [
+        AnnouncementController::class,
+        'pin'
+    ]);
+
+    Route::post('/{id}/unpin', [
+        AnnouncementController::class,
+        'unpin'
+    ]);
+
+    Route::post('/{id}/cancel', [
+        AnnouncementController::class,
+        'cancel'
     ]);
 
     Route::post('/{id}/schedule', [

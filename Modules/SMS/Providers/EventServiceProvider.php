@@ -18,15 +18,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array<string, array<int, string>>
      */
     protected $listen = [
-        AnnouncementCreated::class => [
-            SendAnnouncementCreate::class,
-        ],
-        AnnouncementDeleted::class => [
-            SendAnnouncementDelete::class,
-        ],
-        AnnouncementUpdated::class => [
-            SendAnnouncementUpdete::class,
-        ],
+
     ];
 
     /**

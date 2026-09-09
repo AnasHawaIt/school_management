@@ -65,6 +65,21 @@ class AnnouncementService
         return $this->repo->getPublished();
     }
 
+    public function getScheduledAnnouncements()
+    {
+        return $this->repo->getScheduled();
+    }
+
+    public function getPinnedAnnouncements()
+    {
+        return $this->repo->getPinned();
+    }
+
+    public function getExpiredAnnouncements()
+    {
+        return $this->repo->getExpired();
+    }
+
     public function getAll()
     {
         return $this->repo->getAll();
@@ -75,11 +90,7 @@ class AnnouncementService
         return $this->repo->find($id);
     }
 
-    public function update(
-        int $id,
-        array $data,
-        $images = null
-    ): Announcement {
+    public function update(int $id, array $data, $images = null): Announcement {
         $announcement = $this->repo->update($id, $data);
 
         $this->imageService->replace($announcement, $images);
@@ -108,10 +119,7 @@ class AnnouncementService
         return $announcement;
     }
 
-    public function schedule(
-        int $id,
-        \DateTimeInterface $date
-    ): Announcement {
+    public function schedule(int $id, \DateTimeInterface $date): Announcement {
         $announcement = $this->repo->find($id);
 
         if (!$announcement) {
@@ -148,12 +156,35 @@ class AnnouncementService
         return $announcement;
     }
 
+    public function cancel(int $id): Announcement
+    {
+        $announcement = $this->repo->find($id);
+
+        if (!$announcement) {
+            abort(404, 'Announcement not found.');
+        }
+
+        if (!$announcement->cancel()) {
+            throw new \LogicException(
+                'Announcement cannot be canceled from its current status.'
+            );
+        }
+
+        return $announcement;
+    }
+
     public function pin(int $id): Announcement
     {
         $announcement = $this->repo->find($id);
 
         if (!$announcement) {
             abort(404, 'Announcement not found.');
+        }
+
+        if (!(Announcement::published()->find($announcement->id))) {
+            throw new \LogicException(
+                'Announcement cannot be Pinned from its current status before publishing.'
+            );
         }
 
         $announcement->pin();
@@ -167,6 +198,12 @@ class AnnouncementService
 
         if (!$announcement) {
             abort(404, 'Announcement not found.');
+        }
+
+        if(!$announcement->is_pinned){
+            throw new \LogicException(
+                'Announcement cannot be Unpinned from its current status before Pinned.'
+            );
         }
 
         $announcement->unpin();
