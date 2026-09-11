@@ -21,9 +21,9 @@ class StorePuiblshersRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Publishers name is required',
-            'name.string'   => 'Publishers name must be a string',
-            'name.unique'   => 'Publishers already exists',
+            'name.required' => 'Publisher name is required',
+            'name.string'   => 'Publisher name must be a string',
+            'name.unique'   => 'Publisher already exists',
         ];
     }
 }

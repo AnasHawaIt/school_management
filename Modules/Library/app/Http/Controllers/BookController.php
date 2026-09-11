@@ -3,10 +3,10 @@
 namespace Modules\Library\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreBookRequest;
 use Modules\Library\app\Http\Requests\UpdateBookRequest;
 use Modules\Library\app\Http\Resources\BookResource;
-use Modules\Library\Entities\Book;
 use Modules\Library\Services\BookService;
 
 class BookController extends Controller
@@ -41,13 +41,12 @@ class BookController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
         return BookResource::collection(
-            Book::with(['author','category'])->paginate(10)
+            $this->service->getAll($request)
         );
     }
-
     public function store(StoreBookRequest $request)
     {
         $data =[

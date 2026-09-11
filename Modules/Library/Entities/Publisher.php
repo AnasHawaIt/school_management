@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 // use Modules\Library\Database\Factories\PublishersFactory;
 
-class Publishers extends Model
+class Publisher extends Model
 {
     use HasFactory,softDeletes;
 

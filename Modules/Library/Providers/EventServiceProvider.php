@@ -35,7 +35,7 @@ use Modules\Library\Events\MemberEvents\MemberCreated;
 use Modules\Library\Events\MemberEvents\MemberDeleted;
 use Modules\Library\Events\MemberEvents\MemberUpdated;
 
-// Publishers
+// Publisher
 use Modules\Library\Events\PublishersEvents\PublishersCreated;
 use Modules\Library\Events\PublishersEvents\PublishersDeleted;
 use Modules\Library\Events\PublishersEvents\PublishersUpdated;

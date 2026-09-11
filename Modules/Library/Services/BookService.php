@@ -5,6 +5,7 @@ namespace Modules\Library\Services;
 use App\Services\ImageService;
 use Modules\Library\Events\BookEvents\BookCreated;
 use Modules\Library\Events\BookEvents\BookDeleted;
+use Modules\Library\Events\BookEvents\BookRestored;
 use Modules\Library\Events\BookEvents\BookUpdated;
 use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
 
@@ -48,12 +49,22 @@ class BookService
 
     public function restore($id)
     {
-        return $this->repo->restore($id);
+        $book= $this->repo->restore($id);
+
+        event(new BookRestored($book));
+
+        return $book;
     }
 
     public function forceDelete($id)
     {
-        return $this->repo->forceDelete($id);
+        $b = $this->repo->find($id);
+
+        $this->repo->forceDelete($id);
+
+        event(new BookDeleted($b));
+
+        return true;
     }
 
     public function getAll($request)

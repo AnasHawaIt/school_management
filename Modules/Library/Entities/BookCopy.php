@@ -2,11 +2,17 @@
 
 namespace Modules\Library\Entities;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BookCopy extends Model
 {
+    use  SoftDeletes ,HasFactory;
+
+    protected $dates = ['deleted_at'];
+
     protected $table = 'library_copies';
 
     protected $fillable = [

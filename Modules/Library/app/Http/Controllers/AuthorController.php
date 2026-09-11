@@ -50,6 +50,7 @@ class AuthorController extends Controller
     {
         $data =[
             'name' => $request->name,
+            'description' => $request->description,
             'birth_date' => $request->birth_date,
             'death_date' => $request->death_date,
             ];
@@ -69,6 +70,7 @@ class AuthorController extends Controller
     {
         $data =[
             'name' => $request->name,
+            'description' => $request->description,
             'birth_date' => $request->birth_date,
             'death_date' => $request->death_date,
         ];

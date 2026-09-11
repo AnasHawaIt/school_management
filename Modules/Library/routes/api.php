@@ -40,7 +40,7 @@ Route::middleware(['auth:sanctum'])->prefix('library')->group(function() {
         route::delete('/{id}/force', [CategoryController::class, 'forceDelete'])->middleware('permission:library.catalog.force_delete');
     });
 
-    Route::prefix('Publishers')->group(function () {
+    Route::prefix('Publisher')->group(function () {
         Route::get('/', [PublishersController::class, 'index'])->middleware('permission:library.catalog.view');
         Route::get('/AllOnlyTrashed', [PublishersController::class, 'AllOnlyTrashed'])->middleware('permission:library.catalog.view');
         Route::get('{id}', [PublishersController::class, 'show'])->middleware('permission:library.catalog.view');
@@ -63,7 +63,7 @@ Route::middleware(['auth:sanctum'])->prefix('library')->group(function() {
     });
 
     Route::prefix('books')->group(function () {
-        Route::get('{book}/copies', [BookCopyController::class, 'index'])->middleware('permission:library.catalog.view');
+        Route::get('{request}/copies', [BookCopyController::class, 'index'])->middleware('permission:library.catalog.view');
         Route::post('{book}/copies', [BookCopyController::class, 'store'])->middleware('permission:library.catalog.manage');
         Route::put('{book}/copies/{copy}', [BookCopyController::class, 'update'])->middleware('permission:library.catalog.manage');
         Route::delete('{book}/copies/{copy}', [BookCopyController::class, 'destroy'])->middleware('permission:library.catalog.manage');

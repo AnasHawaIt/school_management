@@ -6,7 +6,7 @@ use App\Models\Images;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Library\Entities\Publishers;
+use Modules\Library\Entities\Publisher;
 
 // use Modules\Library\Database\Factories\BookFactory;
 
@@ -30,7 +30,7 @@ class Book extends Model
 
     public function publisher()
     {
-        return $this->belongsTo(Publishers::class, 'publisher_id');
+        return $this->belongsTo(Publisher::class, 'publisher_id');
     }
 
     public function transactions()

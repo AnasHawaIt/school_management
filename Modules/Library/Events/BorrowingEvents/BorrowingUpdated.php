@@ -8,7 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Modules\Library\Entities\Borrowing;
 
 
-class   BorrowingUpdateed
+class   BorrowingUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

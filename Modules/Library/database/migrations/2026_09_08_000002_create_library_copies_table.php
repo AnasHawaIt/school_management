@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->decimal('replacement_cost', 10, 2)->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->index(['book_id', 'status']);
         });
 

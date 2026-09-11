@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Modules\Library\Entities\Book;
 use Modules\Library\Entities\Author;
 use Modules\Library\Entities\Category;
-use Modules\Library\Entities\Publishers;
+use Modules\Library\Entities\Publisher;
 
 class BookSeeder extends Seeder
 {
@@ -20,8 +20,8 @@ class BookSeeder extends Seeder
         $novels = Category::where('name', 'روايات')->first();
         $literature = Category::where('name', 'أدب')->first();
 
-        $shorouk = Publishers::where('name', 'دار الشروق')->first();
-        $adab = Publishers::where('name', 'دار الآداب')->first();
+        $shorouk = Publisher::where('name', 'دار الشروق')->first();
+        $adab = Publisher::where('name', 'دار الآداب')->first();
 
         Book::create([
             'title' => 'اللص والكلاب',

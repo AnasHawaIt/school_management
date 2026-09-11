@@ -3,6 +3,9 @@
 namespace Modules\Library\Services;
 
 use Modules\library\Events\CategoryEvents\CategoryCreated;
+use Modules\Library\Events\CategoryEvents\CategoryDeleted;
+use Modules\Library\Events\CategoryEvents\CategoryRestored;
+use Modules\Library\Events\CategoryEvents\CategoryUpdated;
 use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
 
 class CategoryService
@@ -23,7 +26,7 @@ class CategoryService
     {
         $category= $this->repo->restore($id);
 
-        event(new CategoryCreated($category));
+        event(new CategoryRestored($category));
 
 
         return $category;
@@ -36,7 +39,7 @@ class CategoryService
 
         $category->forceDelete();
 
-        event(new CategoryCreated($category));
+        event(new CategoryDeleted($category));
 
 
         return true;
@@ -67,7 +70,7 @@ class CategoryService
     {
         $category= $this->repo->update($id, $data);
 
-        event(new CategoryCreated($category));
+        event(new CategoryUpdated($category));
 
 
         return $category;
@@ -83,7 +86,7 @@ class CategoryService
 
         $this->repo->delete($id);
 
-        event(new CategoryCreated($category));
+        event(new CategoryDeleted($category));
 
 
         return true;

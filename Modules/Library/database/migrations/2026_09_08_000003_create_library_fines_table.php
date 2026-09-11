@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('waived_at')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index(['status', 'paid_at']);
         });

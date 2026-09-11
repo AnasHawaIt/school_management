@@ -28,7 +28,9 @@ class ReservationController extends Controller
         }
 
         $book = Book::findOrFail($request->integer('book_id'));
-        if ($book->copies > 0) {
+        if (!($book->copies()
+            ->where('status', 'available')
+            ->exists())) { //$book->hasAvailableCopies()
             throw ValidationException::withMessages(['book_id' => 'This book is currently available.']);
         }
 

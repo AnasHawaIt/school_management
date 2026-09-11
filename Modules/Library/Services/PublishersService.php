@@ -48,11 +48,11 @@ class PublishersService
 
     public function create(array $data)
     {
-        $category= $this->repo->create($data);
+         $publisher= $this->repo->create($data);
 
-        event(new PublishersCreated($category),auth()->id());
+        event(new PublishersCreated( $publisher),auth()->id());
 
-        return $category;
+        return  $publisher;
     }
 
     public function findById($id)
@@ -62,24 +62,24 @@ class PublishersService
 
     public function update($id, array $data)
     {
-        $category= $this->repo->update($id, $data);
+         $publisher= $this->repo->update($id, $data);
 
-        event(new PublishersUpdated($category),auth()->id());
+        event(new PublishersUpdated( $publisher),auth()->id());
 
-        return $category;
+        return  $publisher;
     }
 
     public function delete($id)
     {
-        $category = $this->repo->findById($id);
+         $publisher = $this->repo->findById($id);
 
-        if (!$category) {
+        if (! $publisher) {
             throw new \Exception('Publisher not found');
         }
 
         $this->repo->delete($id);
 
-        event(new PublishersDeleted($category));
+        event(new PublishersDeleted( $publisher));
 
         return true;
     }
