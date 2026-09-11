@@ -23,7 +23,7 @@ class CategoryService
     {
         $category= $this->repo->restore($id);
 
-        event(new CategoryCreated($category, auth()->id()));
+        event(new CategoryCreated($category));
 
 
         return $category;
@@ -36,7 +36,7 @@ class CategoryService
 
         $category->forceDelete();
 
-        event(new CategoryCreated($category, auth()->id()));
+        event(new CategoryCreated($category));
 
 
         return true;
@@ -52,7 +52,7 @@ class CategoryService
     {
         $category= $this->repo->create($data);
 
-        event(new CategoryCreated($category, auth()->id()));
+        event(new CategoryCreated($category));
 
 
         return $category;
@@ -67,7 +67,7 @@ class CategoryService
     {
         $category= $this->repo->update($id, $data);
 
-        event(new CategoryCreated($category, auth()->id()));
+        event(new CategoryCreated($category));
 
 
         return $category;
@@ -83,7 +83,7 @@ class CategoryService
 
         $this->repo->delete($id);
 
-        event(new CategoryCreated($category, auth()->id()));
+        event(new CategoryCreated($category));
 
 
         return true;

@@ -11,7 +11,7 @@ class MemberDeletedLogEventListener
         $member = $event->member;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($member)
             ->withProperties([
                 'member_id' => $member->id,

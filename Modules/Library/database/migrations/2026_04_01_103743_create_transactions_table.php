@@ -18,8 +18,6 @@ return new class extends Migration
             $table->date('borrow_date');
             $table->date('return_date')->nullable();
             $table->enum('status', ['borrowed', 'returned', 'late'])->default('borrowed');
-            $table->dropIndex(['status', 'due_date']);
-            $table->dropColumn(['due_date', 'returned_at']);
             $table->unsignedTinyInteger('renewal_count')->default(0);
             $table->unsignedTinyInteger('max_renewals')->default(2);
             $table->softDeletes();

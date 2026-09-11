@@ -18,13 +18,13 @@ use Modules\Library\Entities\Borrowing;
 use Modules\Library\Entities\Category;
 use Modules\Library\Entities\Fine;
 use Modules\Library\Entities\Member;
+use Modules\Library\Entities\Publishers;
 use Modules\Library\Policy\LibraryPolicy;
 use Modules\Messagings\app\Policies\MessagePolicy;
 use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageAttachment;
 use Modules\Notifications\Entities\Notification;
 use Modules\Transport\Entities\Bus;
-use Nwidart\Modules\Publishing\Publisher;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
             'book' => Book::class,
             'category' => Category::class,
             'member' => Member::class,
-            'publisher' => Publisher::class,
+            'publishers' => Publishers::class,
             'book_copy' => BookCopy::class,
             'fine' => Fine::class,
             'user' => User::class,
