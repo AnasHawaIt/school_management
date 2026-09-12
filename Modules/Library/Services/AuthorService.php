@@ -68,7 +68,7 @@ class AuthorService
 
         $author = $this->repo->find($id);
 
-        $this->imageService->replace($author, $images);
+        $this->imageService->upload($author, $images);
 
         event(new AuthorUpdated($author, auth()->id()));
 

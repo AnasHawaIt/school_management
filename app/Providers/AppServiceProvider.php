@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
             'book' => Book::class,
             'category' => Category::class,
             'member' => Member::class,
-            'publishers' => Publisher::class,
+            'publisher' => Publisher::class,
             'book_copy' => BookCopy::class,
             'fine' => Fine::class,
             'user' => User::class,

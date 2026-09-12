@@ -18,7 +18,6 @@ class UpdateBookRequest extends FormRequest
             'author_id'   => 'sometimes|exists:authors,id',
             'category_id' => 'sometimes|exists:categories,id',
             'isbn' => 'sometimes|string|unique:books,isbn,' . $this->route('id'),
-            'copies'      => 'sometimes|integer|min:0',
              'description' => 'sometimes|string',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',

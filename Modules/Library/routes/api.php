@@ -52,7 +52,7 @@ Route::middleware(['auth:sanctum'])
                 'store'
             ])->middleware('permission:library.catalog.manage');
 
-            Route::put('/{id}', [
+            Route::post('/{id}', [
                 LibraryController::class,
                 'update'
             ])->middleware('permission:library.catalog.manage');
@@ -108,7 +108,7 @@ Route::middleware(['auth:sanctum'])
             ])->middleware('permission:library.catalog.force_delete');
 
             // Update
-            Route::put('/{id}', [
+            Route::post('/{id}', [
                 AuthorController::class,
                 'update'
             ])->middleware('permission:library.catalog.manage');
@@ -171,7 +171,7 @@ Route::middleware(['auth:sanctum'])
             ])->middleware('permission:library.catalog.force_delete');
 
             // Update
-            Route::put('/{id}', [
+            Route::post('/{id}', [
                 CategoryController::class,
                 'update'
             ])->middleware('permission:library.catalog.manage');
@@ -234,7 +234,7 @@ Route::middleware(['auth:sanctum'])
             ])->middleware('permission:library.catalog.force_delete');
 
             // Update
-            Route::put('/{id}', [
+            Route::post('/{id}', [
                 PublishersController::class,
                 'update'
             ])->middleware('permission:library.catalog.manage');
@@ -297,7 +297,7 @@ Route::middleware(['auth:sanctum'])
             ])->middleware('permission:library.catalog.force_delete');
 
             // Update
-            Route::put('/{id}', [
+            Route::post('/{id}', [
                 MemberController::class,
                 'update'
             ])->middleware('permission:library.catalog.manage');
@@ -364,7 +364,7 @@ Route::middleware(['auth:sanctum'])
                 'store'
             ])->middleware('permission:library.catalog.manage');
 
-            Route::put('/{book}/copies/{copy}', [
+            Route::post('/{book}/copies/{copy}', [
                 BookCopyController::class,
                 'update'
             ])->middleware('permission:library.catalog.manage');
@@ -403,7 +403,7 @@ Route::middleware(['auth:sanctum'])
             |--------------------------------------------------------------------------
             */
 
-            Route::put('/{id}', [
+            Route::post('/{id}', [
                 BookController::class,
                 'update'
             ])->middleware('permission:library.catalog.manage');
@@ -560,7 +560,7 @@ Route::middleware(['auth:sanctum'])
             |--------------------------------------------------------------------------
             */
 
-            Route::put('/{id}', [
+            Route::post('/{id}', [
                 TransactionController::class,
                 'update'
             ])->middleware('permission:library.circulation.manage');
@@ -617,7 +617,7 @@ Route::middleware(['auth:sanctum'])
             ])->middleware('permission:library.fines.view');
 
             // Update / Pay / Waive
-            Route::patch('/{fine}', [
+            Route::post('/{fine}', [
                 FineController::class,
                 'update'
             ])->middleware('permission:library.fines.manage');

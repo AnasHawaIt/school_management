@@ -56,7 +56,6 @@ class BookController extends Controller
             'category_id' => $request->category_id,
             'publisher_id' => $request->publisher_id,
             'isbn' => $request->isbn,
-            'copies' => $request->copies,
         ];
 
         $images = $request->file('images');
@@ -79,7 +78,6 @@ class BookController extends Controller
             'category_id' => $request->category_id,
             'publisher_id' => $request->publisher_id,
             'isbn' => $request->isbn,
-            'copies' => $request->copies,
         ];
 
         $images = $request->file('images');
