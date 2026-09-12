@@ -94,6 +94,119 @@ class TransactionRepository implements TransactionRepositoryInterface
         });
     }
 
+
+    public function isAvailable(int $bookId): bool
+    {
+        return $this->availableCopiesCount($bookId) > 0;
+    }
+
+    public function availableCopiesCount(int $bookId): int
+    {
+        $book = Book::query()
+            ->findOrFail($bookId);
+
+        if ($book->copies()->exists()) {
+            return $book->copies()
+                ->where('status', 'available')
+                ->count();
+        }
+
+        return (int) $book->copies;
+    }
+
+
+    public function returnBook(int $id): Borrowing
+    {
+        return DB::transaction(function () use ($id) {
+
+            // Lock borrowing row
+            $transaction = Borrowing::query()
+                ->with(['book', 'copy'])
+                ->lockForUpdate()
+                ->find($id);
+
+            if (!$transaction) {
+                throw new \Exception('Borrowing not found');
+            }
+
+            // Prevent returning an already returned transaction
+            if (!in_array($transaction->status, ['borrowed', 'late'], true)) {
+                throw new \RuntimeException(
+                    'This borrowing is already returned.'
+                );
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 1. Return physical copy
+            |--------------------------------------------------------------------------
+            */
+            if ($transaction->copy_id) {
+
+                $copy = BookCopy::query()
+                    ->where('id', $transaction->copy_id)
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($copy) {
+                    $copy->update([
+                        'status' => 'available',
+                    ]);
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 2. Update borrowing
+            |--------------------------------------------------------------------------
+            */
+            $transaction->update([
+                'status'      => 'returned',
+                'return_date' => now()->toDateString(),
+                'returned_at' => now(),
+            ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | 3. Sync book available copies
+            |--------------------------------------------------------------------------
+            */
+            $book = $transaction->book;
+
+            if ($book) {
+
+                // If this book uses physical copies,
+                // calculate available copies from BookCopy.
+                if ($book->copies()->exists()) {
+
+                    $availableCopies = $book->copies()
+                        ->where('status', 'available')
+                        ->count();
+
+                    $book->update([
+                        'copies' => $availableCopies,
+                    ]);
+
+                } else {
+
+                    // Fallback for books without physical copies
+                    $book->increment('copies');
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 4. Refresh relations
+            |--------------------------------------------------------------------------
+            */
+            return $transaction->fresh([
+                'book',
+                'member',
+                'copy',
+            ]);
+        });
+    }
+
     /**
      * Permanently delete a transaction.
      *

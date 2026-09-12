@@ -2,6 +2,7 @@
 namespace Modules\Library\Repositories\Eloquent;
 
 use Modules\Library\Entities\Book;
+use Modules\Library\Entities\BookCopy;
 use Modules\Library\Filters\BookFilter;
 use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
 
@@ -33,6 +34,25 @@ class BookRepository implements BookRepositoryInterface
     public function query()
     {
         return Book::query();
+    }
+
+    public function isAvailable(int $bookId): bool
+    {
+        return $this->availableCopiesCount($bookId) > 0;
+    }
+
+    public function availableCopiesCount(int $bookId): int
+    {
+        $book = Book::query()
+            ->findOrFail($bookId);
+
+        if ($book->copies()->exists()) {
+            return $book->copies()
+                ->where('status', 'available')
+                ->count();
+        }
+
+        return (int) $book->copies;
     }
 
     public function getAll($request)

@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\Listeners\BookListeners;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
-use Modules\Library\Entities\Reservation;
-use Modules\Library\Events\BookEvents\BookAvailable;
-use Modules\Notifications\Services\NotificationService;
 use Illuminate\Support\Facades\DB;
+use Modules\Library\Entities\Reservation;
+use Modules\Library\Events\BorrowingEvents\BookAvailable;
+use Modules\Notifications\Services\NotificationService;
 
 class BookAvailableNotificationListener
 {

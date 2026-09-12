@@ -4,6 +4,7 @@ namespace Modules\Library\Services;
 
 use Modules\library\Events\CategoryEvents\CategoryCreated;
 use Modules\Library\Events\CategoryEvents\CategoryDeleted;
+use Modules\Library\Events\CategoryEvents\CategoryForceDeleted;
 use Modules\Library\Events\CategoryEvents\CategoryRestored;
 use Modules\Library\Events\CategoryEvents\CategoryUpdated;
 use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -39,7 +40,7 @@ class CategoryService
 
         $category->forceDelete();
 
-        event(new CategoryDeleted($category));
+        event(new CategoryForceDeleted($category));
 
 
         return true;

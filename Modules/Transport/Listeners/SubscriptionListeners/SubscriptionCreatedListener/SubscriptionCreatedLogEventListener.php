@@ -10,8 +10,7 @@ class SubscriptionCreatedLogEventListener
     {
         $subscription = $event->subscription;
 
-        activity()
-            ->causedBy($event->userId)
+        activity()->causedBy(auth()->user())
             ->performedOn($subscription)
             ->withProperties([
                 'Subscription_id' => $subscription->id,

@@ -4,49 +4,105 @@ namespace Modules\Library\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\Member;
 use Modules\Library\Entities\Reservation;
+use Modules\Library\Services\ReservationService;
 use Modules\Library\app\Http\Requests\StoreReservationRequest;
 
 class ReservationController extends Controller
 {
+    public function __construct(
+        protected ReservationService $service
+    ) {
+    }
+
+    /**
+     * Display reservations.
+     */
     public function index(Request $request)
     {
-        return Reservation::with(['book', 'member.user'])
-            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')))
-            ->latest()
-            ->paginate(min((int) $request->get('per_page', 10), 100));
+        return response()->json(
+            $this->service->getAll($request)
+        );
     }
 
+    /**
+     * Create a new reservation.
+     */
     public function store(StoreReservationRequest $request)
     {
-        $member = Member::findOrFail($request->integer('member_id'));
-        if ($member->membership_status !== 'active') {
-            throw ValidationException::withMessages(['member_id' => 'Membership is not active.']);
-        }
-
-        $book = Book::findOrFail($request->integer('book_id'));
-        if (!($book->copies()
-            ->where('status', 'available')
-            ->exists())) { //$book->hasAvailableCopies()
-            throw ValidationException::withMessages(['book_id' => 'This book is currently available.']);
-        }
-
-        $reservation = Reservation::firstOrCreate(
-            ['book_id' => $book->id, 'member_id' => $member->id, 'status' => 'pending'],
-            ['status' => 'pending']
+        $reservation = $this->service->createReservation(
+            bookId: $request->integer('book_id'),
+            memberId: $request->integer('member_id'),
+            data: $request->validated()
         );
 
-        return response()->json($reservation->load(['book', 'member.user']), 201);
+        return response()->json(
+            $reservation->load(['book', 'member.user']),
+            201
+        );
     }
 
+    /**
+     * Cancel reservation.
+     */
     public function cancel(Reservation $reservation)
     {
-        abort_unless($reservation->status === 'pending', 422, 'Only pending reservations can be cancelled.');
-        $reservation->update(['status' => 'cancelled']);
+        $reservation = $this->service->cancelReservation(
+            $reservation->id
+        );
 
-        return response()->json($reservation->refresh());
+        return response()->json(
+            $reservation->load(['book', 'member.user'])
+        );
+    }
+
+    /**
+     * Fulfill reservation.
+     */
+    public function fulfill(Reservation $reservation)
+    {
+        $reservation = $this->service->fulfillReservation(
+            $reservation->id
+        );
+
+        return response()->json(
+            $reservation->load(['book', 'member.user'])
+        );
+    }
+
+    /**
+     * Expire reservation.
+     *
+     * Intended for admin/system usage.
+     */
+    public function expire(Reservation $reservation)
+    {
+        $reservation = $this->service->expireReservation(
+            $reservation->id
+        );
+
+        return response()->json(
+            $reservation->load(['book', 'member.user'])
+        );
+    }
+
+    /**
+     * Notify the next member in FIFO order.
+     */
+    public function notifyNext(int $bookId)
+    {
+        $reservation = $this->service->notifyNextMember(
+            $bookId
+        );
+
+        if (!$reservation) {
+            return response()->json([
+                'message' => 'There are no pending reservations for this book.',
+            ]);
+        }
+
+        return response()->json(
+            $reservation->load(['book', 'member.user'])
+        );
     }
 }

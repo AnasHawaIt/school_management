@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use Modules\Library\app\Http\Controllers\AuthorController;
 use Modules\Library\app\Http\Controllers\BookController;
 use Modules\Library\app\Http\Controllers\BookCopyController;
@@ -13,94 +14,709 @@ use Modules\Library\app\Http\Controllers\FineController;
 use Modules\Library\app\Http\Controllers\ReservationController;
 use Modules\Library\app\Http\Controllers\LibraryReportController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('libraries', LibraryController::class)->names('library');
-});
 
-Route::middleware(['auth:sanctum'])->prefix('library')->group(function() {
-    Route::prefix('authors')->group(function () {
-        Route::get('/', [AuthorController::class, 'index'])->middleware('permission:library.catalog.view');
-        Route::get('/AllOnlyTrashed', [AuthorController::class, 'AllOnlyTrashed'])->middleware('permission:library.catalog.view');
-        Route::get('{id}', [AuthorController::class, 'show'])->middleware('permission:library.catalog.view');
-        Route::post('/', [AuthorController::class, 'store'])->middleware('permission:library.catalog.manage');
-        Route::post('/Update/{id}', [AuthorController::class, 'update'])->middleware('permission:library.catalog.manage');
-        Route::delete('{id}', [AuthorController::class, 'destroy'])->middleware('permission:library.catalog.delete');
-        Route::post('/{id}/restore', [AuthorController::class, 'restore'])->middleware('permission:library.catalog.restore');
-        route::delete('/{id}/force', [AuthorController::class, 'forceDelete'])->middleware('permission:library.catalog.force_delete');
+/*
+|--------------------------------------------------------------------------
+| Library API
+|--------------------------------------------------------------------------
+|
+| Base:
+| /api/library
+|
+*/
+
+Route::middleware(['auth:sanctum'])
+    ->prefix('library')
+    ->group(function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Library
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('libraries')->group(function () {
+
+            Route::get('/', [
+                LibraryController::class,
+                'index'
+            ])->middleware('permission:library.catalog.view');
+
+            Route::get('/{id}', [
+                LibraryController::class,
+                'show'
+            ])->middleware('permission:library.catalog.view');
+
+            Route::post('/', [
+                LibraryController::class,
+                'store'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::put('/{id}', [
+                LibraryController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::patch('/{id}', [
+                LibraryController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::delete('/{id}', [
+                LibraryController::class,
+                'destroy'
+            ])->middleware('permission:library.catalog.delete');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Authors
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('authors')->group(function () {
+
+            // List
+            Route::get('/', [
+                AuthorController::class,
+                'index'
+            ])->middleware('permission:library.catalog.view');
+
+            // Trashed
+            Route::get('/trashed', [
+                AuthorController::class,
+                'AllOnlyTrashed'
+            ])->middleware('permission:library.catalog.view');
+
+            // Create
+            Route::post('/', [
+                AuthorController::class,
+                'store'
+            ])->middleware('permission:library.catalog.manage');
+
+            // Restore
+            Route::post('/{id}/restore', [
+                AuthorController::class,
+                'restore'
+            ])->middleware('permission:library.catalog.restore');
+
+            // Force Delete
+            Route::delete('/{id}/force', [
+                AuthorController::class,
+                'forceDelete'
+            ])->middleware('permission:library.catalog.force_delete');
+
+            // Update
+            Route::put('/{id}', [
+                AuthorController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::patch('/{id}', [
+                AuthorController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            // Delete
+            Route::delete('/{id}', [
+                AuthorController::class,
+                'destroy'
+            ])->middleware('permission:library.catalog.delete');
+
+            // Show
+            Route::get('/{id}', [
+                AuthorController::class,
+                'show'
+            ])->middleware('permission:library.catalog.view');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Categories
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('categories')->group(function () {
+
+            // List
+            Route::get('/', [
+                CategoryController::class,
+                'index'
+            ])->middleware('permission:library.catalog.view');
+
+            // Trashed
+            Route::get('/trashed', [
+                CategoryController::class,
+                'AllOnlyTrashed'
+            ])->middleware('permission:library.catalog.view');
+
+            // Create
+            Route::post('/', [
+                CategoryController::class,
+                'store'
+            ])->middleware('permission:library.catalog.manage');
+
+            // Restore
+            Route::post('/{id}/restore', [
+                CategoryController::class,
+                'restore'
+            ])->middleware('permission:library.catalog.restore');
+
+            // Force Delete
+            Route::delete('/{id}/force', [
+                CategoryController::class,
+                'forceDelete'
+            ])->middleware('permission:library.catalog.force_delete');
+
+            // Update
+            Route::put('/{id}', [
+                CategoryController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::patch('/{id}', [
+                CategoryController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            // Delete
+            Route::delete('/{id}', [
+                CategoryController::class,
+                'destroy'
+            ])->middleware('permission:library.catalog.delete');
+
+            // Show
+            Route::get('/{id}', [
+                CategoryController::class,
+                'show'
+            ])->middleware('permission:library.catalog.view');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Publishers
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('publishers')->group(function () {
+
+            // List
+            Route::get('/', [
+                PublishersController::class,
+                'index'
+            ])->middleware('permission:library.catalog.view');
+
+            // Trashed
+            Route::get('/trashed', [
+                PublishersController::class,
+                'AllOnlyTrashed'
+            ])->middleware('permission:library.catalog.view');
+
+            // Create
+            Route::post('/', [
+                PublishersController::class,
+                'store'
+            ])->middleware('permission:library.catalog.manage');
+
+            // Restore
+            Route::post('/{id}/restore', [
+                PublishersController::class,
+                'restore'
+            ])->middleware('permission:library.catalog.restore');
+
+            // Force Delete
+            Route::delete('/{id}/force', [
+                PublishersController::class,
+                'forceDelete'
+            ])->middleware('permission:library.catalog.force_delete');
+
+            // Update
+            Route::put('/{id}', [
+                PublishersController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::patch('/{id}', [
+                PublishersController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            // Delete
+            Route::delete('/{id}', [
+                PublishersController::class,
+                'destroy'
+            ])->middleware('permission:library.catalog.delete');
+
+            // Show
+            Route::get('/{id}', [
+                PublishersController::class,
+                'show'
+            ])->middleware('permission:library.catalog.view');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Members
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('members')->group(function () {
+
+            // List
+            Route::get('/', [
+                MemberController::class,
+                'index'
+            ])->middleware('permission:library.catalog.view');
+
+            // Trashed
+            Route::get('/trashed', [
+                MemberController::class,
+                'AllOnlyTrashed'
+            ])->middleware('permission:library.catalog.view');
+
+            // Create
+            Route::post('/', [
+                MemberController::class,
+                'store'
+            ])->middleware('permission:library.catalog.manage');
+
+            // Restore
+            Route::post('/{id}/restore', [
+                MemberController::class,
+                'restore'
+            ])->middleware('permission:library.catalog.restore');
+
+            // Force Delete
+            Route::delete('/{id}/force', [
+                MemberController::class,
+                'forceDelete'
+            ])->middleware('permission:library.catalog.force_delete');
+
+            // Update
+            Route::put('/{id}', [
+                MemberController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::patch('/{id}', [
+                MemberController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            // Delete
+            Route::delete('/{id}', [
+                MemberController::class,
+                'destroy'
+            ])->middleware('permission:library.catalog.delete');
+
+            // Show
+            Route::get('/{id}', [
+                MemberController::class,
+                'show'
+            ])->middleware('permission:library.catalog.view');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Books
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('books')->group(function () {
+
+            // List
+            Route::get('/', [
+                BookController::class,
+                'index'
+            ])->middleware('permission:library.catalog.view');
+
+            // Trashed
+            Route::get('/trashed', [
+                BookController::class,
+                'AllOnlyTrashed'
+            ])->middleware('permission:library.catalog.view');
+
+            // Create
+            Route::post('/', [
+                BookController::class,
+                'store'
+            ])->middleware('permission:library.catalog.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Physical Copies
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/{book}/copies', [
+                BookCopyController::class,
+                'index'
+            ])->middleware('permission:library.catalog.view');
+
+            Route::post('/{book}/copies', [
+                BookCopyController::class,
+                'store'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::put('/{book}/copies/{copy}', [
+                BookCopyController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::patch('/{book}/copies/{copy}', [
+                BookCopyController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::delete('/{book}/copies/{copy}', [
+                BookCopyController::class,
+                'destroy'
+            ])->middleware('permission:library.catalog.delete');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Book Restore / Force Delete
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/{id}/restore', [
+                BookController::class,
+                'restore'
+            ])->middleware('permission:library.catalog.restore');
+
+            Route::delete('/{id}/force', [
+                BookController::class,
+                'forceDelete'
+            ])->middleware('permission:library.catalog.force_delete');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Book Update
+            |--------------------------------------------------------------------------
+            */
+
+            Route::put('/{id}', [
+                BookController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+            Route::patch('/{id}', [
+                BookController::class,
+                'update'
+            ])->middleware('permission:library.catalog.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Book Delete
+            |--------------------------------------------------------------------------
+            */
+
+            Route::delete('/{id}', [
+                BookController::class,
+                'destroy'
+            ])->middleware('permission:library.catalog.delete');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Book Show
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/{id}', [
+                BookController::class,
+                'show'
+            ])->middleware('permission:library.catalog.view');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Transactions / Borrowings
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('transactions')->group(function () {
+
+            /*
+            |--------------------------------------------------------------------------
+            | List
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/', [
+                TransactionController::class,
+                'index'
+            ])->middleware('permission:library.circulation.view');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Trashed
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/trashed', [
+                TransactionController::class,
+                'trashed'
+            ])->middleware('permission:library.circulation.view');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Create Borrowing
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/', [
+                TransactionController::class,
+                'store'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Workflow
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/{id}/approve', [
+                TransactionController::class,
+                'approve'
+            ])->middleware('permission:library.circulation.manage');
+
+            Route::post('/{id}/reject', [
+                TransactionController::class,
+                'reject'
+            ])->middleware('permission:library.circulation.manage');
+
+            Route::post('/{id}/pickup', [
+                TransactionController::class,
+                'pickup'
+            ])->middleware('permission:library.circulation.manage');
+
+            Route::post('/{id}/cancel', [
+                TransactionController::class,
+                'cancel'
+            ])->middleware('permission:library.circulation.manage');
+
+            Route::post('/{id}/return', [
+                TransactionController::class,
+                'returnBook'
+            ])->middleware('permission:library.circulation.manage');
+
+            Route::post('/{id}/renew', [
+                TransactionController::class,
+                'renew'
+            ])->middleware('permission:library.circulation.manage');
+
+            Route::post('/{id}/lost', [
+                TransactionController::class,
+                'markLost'
+            ])->middleware('permission:library.circulation.manage');
+
+            Route::post('/{id}/overdue', [
+                TransactionController::class,
+                'markOverdue'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Restore
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/{id}/restore', [
+                TransactionController::class,
+                'restore'
+            ])->middleware('permission:library.circulation.restore');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Force Delete
+            |--------------------------------------------------------------------------
+            */
+
+            Route::delete('/{id}/force', [
+                TransactionController::class,
+                'forceDelete'
+            ])->middleware('permission:library.circulation.force_delete');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Update
+            |--------------------------------------------------------------------------
+            */
+
+            Route::put('/{id}', [
+                TransactionController::class,
+                'update'
+            ])->middleware('permission:library.circulation.manage');
+
+            Route::patch('/{id}', [
+                TransactionController::class,
+                'update'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Soft Delete
+            |--------------------------------------------------------------------------
+            */
+
+            Route::delete('/{id}', [
+                TransactionController::class,
+                'destroy'
+            ])->middleware('permission:library.circulation.delete');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Show
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/{id}', [
+                TransactionController::class,
+                'show'
+            ])->middleware('permission:library.circulation.view');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Fines
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('fines')->group(function () {
+
+            // List
+            Route::get('/', [
+                FineController::class,
+                'index'
+            ])->middleware('permission:library.fines.view');
+
+            // Show
+            Route::get('/{fine}', [
+                FineController::class,
+                'show'
+            ])->middleware('permission:library.fines.view');
+
+            // Update / Pay / Waive
+            Route::patch('/{fine}', [
+                FineController::class,
+                'update'
+            ])->middleware('permission:library.fines.manage');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Reservations
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('reservations')->group(function () {
+
+            /*
+            |--------------------------------------------------------------------------
+            | List
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/', [
+                ReservationController::class,
+                'index'
+            ])->middleware('permission:library.circulation.view');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Create
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/', [
+                ReservationController::class,
+                'store'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Cancel
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/{reservation}/cancel', [
+                ReservationController::class,
+                'cancel'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Fulfill
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/{reservation}/fulfill', [
+                ReservationController::class,
+                'fulfill'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Expire
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/{reservation}/expire', [
+                ReservationController::class,
+                'expire'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Notify Next
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/books/{bookId}/notify-next', [
+                ReservationController::class,
+                'notifyNext'
+            ])->middleware('permission:library.circulation.manage');
+        });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Reports
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('reports')->group(function () {
+
+            Route::get('/circulation', [
+                LibraryReportController::class,
+                'circulation'
+            ])->middleware('permission:library.circulation.view');
+        });
     });
 
-    Route::prefix('categories')->group(function () {
-        Route::get('/', [CategoryController::class, 'index'])->middleware('permission:library.catalog.view');
-        Route::get('/AllOnlyTrashed', [CategoryController::class, 'AllOnlyTrashed'])->middleware('permission:library.catalog.view');
-        Route::get('{id}', [CategoryController::class, 'show'])->middleware('permission:library.catalog.view');
-        Route::post('/', [CategoryController::class, 'store'])->middleware('permission:library.catalog.manage');
-        Route::post('{id}', [CategoryController::class, 'update'])->middleware('permission:library.catalog.manage');
-        Route::delete('{id}', [CategoryController::class, 'destroy'])->middleware('permission:library.catalog.delete');
-        Route::post('/{id}/restore', [CategoryController::class, 'restore'])->middleware('permission:library.catalog.restore');
-        route::delete('/{id}/force', [CategoryController::class, 'forceDelete'])->middleware('permission:library.catalog.force_delete');
-    });
-
-    Route::prefix('Publisher')->group(function () {
-        Route::get('/', [PublishersController::class, 'index'])->middleware('permission:library.catalog.view');
-        Route::get('/AllOnlyTrashed', [PublishersController::class, 'AllOnlyTrashed'])->middleware('permission:library.catalog.view');
-        Route::get('{id}', [PublishersController::class, 'show'])->middleware('permission:library.catalog.view');
-        Route::post('/', [PublishersController::class, 'store'])->middleware('permission:library.catalog.manage');
-        Route::post('{id}', [PublishersController::class, 'update'])->middleware('permission:library.catalog.manage');
-        Route::delete('{id}', [PublishersController::class, 'destroy'])->middleware('permission:library.catalog.delete');
-        Route::post('/{id}/restore', [PublishersController::class, 'restore'])->middleware('permission:library.catalog.restore');
-        route::delete('/{id}/force', [PublishersController::class, 'forceDelete'])->middleware('permission:library.catalog.force_delete');
-    });
-
-    Route::prefix('members')->group(function () {
-        Route::get('/', [MemberController::class, 'index'])->middleware('permission:library.catalog.view');
-        Route::get('/AllOnlyTrashed', [MemberController::class, 'AllOnlyTrashed'])->middleware('permission:library.catalog.view');
-        Route::get('{id}', [MemberController::class, 'show'])->middleware('permission:library.catalog.view');
-        Route::post('/', [MemberController::class, 'store'])->middleware('permission:library.catalog.manage');
-        Route::post('{id}', [MemberController::class, 'update'])->middleware('permission:library.catalog.manage');
-        Route::delete('{id}', [MemberController::class, 'destroy'])->middleware('permission:library.catalog.delete');
-        Route::post('/{id}/restore', [MemberController::class, 'restore'])->middleware('permission:library.catalog.restore');
-        route::delete('/{id}/force', [MemberController::class, 'forceDelete'])->middleware('permission:library.catalog.force_delete');
-    });
-
-    Route::prefix('books')->group(function () {
-        Route::get('{request}/copies', [BookCopyController::class, 'index'])->middleware('permission:library.catalog.view');
-        Route::post('{book}/copies', [BookCopyController::class, 'store'])->middleware('permission:library.catalog.manage');
-        Route::put('{book}/copies/{copy}', [BookCopyController::class, 'update'])->middleware('permission:library.catalog.manage');
-        Route::delete('{book}/copies/{copy}', [BookCopyController::class, 'destroy'])->middleware('permission:library.catalog.manage');
-        Route::get('/', [BookController::class, 'index'])->middleware('permission:library.catalog.view');
-        Route::get('/AllOnlyTrashed', [BookController::class, 'AllOnlyTrashed'])->middleware('permission:library.catalog.view');
-        Route::get('{id}', [BookController::class, 'show'])->middleware('permission:library.catalog.view');
-        Route::post('/', [BookController::class, 'store'])->middleware('permission:library.catalog.manage');
-        Route::post('/Update/{id}', [BookController::class, 'update'])->middleware('permission:library.catalog.manage');
-        Route::delete('{id}', [BookController::class, 'destroy'])->middleware('permission:library.catalog.delete');
-        Route::post('/{id}/restore', [BookController::class, 'restore'])->middleware('permission:library.catalog.restore');
-        route::delete('/{id}/force', [BookController::class, 'forceDelete'])->middleware('permission:library.catalog.force_delete');
-    });
-
-    Route::prefix('transactions')->group(function () {
-        Route::get('/', [TransactionController::class, 'index'])->middleware('permission:library.circulation.view');
-        Route::get('/AllOnlyTrashed', [TransactionController::class, 'AllOnlyTrashed'])->middleware('permission:library.circulation.view');
-        Route::get('{id}', [TransactionController::class, 'show'])->middleware('permission:library.circulation.view');
-        Route::post('/', [TransactionController::class, 'store'])->middleware('permission:library.circulation.manage');
-        Route::post('{id}', [TransactionController::class, 'update'])->middleware('permission:library.circulation.manage');
-        Route::post('{id}/renew', [TransactionController::class, 'renew'])->middleware('permission:library.circulation.manage');
-        Route::delete('{id}', [TransactionController::class, 'destroy'])->middleware('permission:library.circulation.manage');
-        Route::post('/{id}/restore', [TransactionController::class, 'restore'])->middleware('permission:library.circulation.restore');
-        route::delete('/{id}/force', [TransactionController::class, 'forceDelete'])->middleware('permission:library.circulation.force_delete');
-    });
-
-    Route::prefix('fines')->group(function () {
-        Route::get('/', [FineController::class, 'index'])->middleware('permission:library.fines.view');
-        Route::get('{fine}', [FineController::class, 'show'])->middleware('permission:library.fines.view');
-        Route::patch('{fine}', [FineController::class, 'update'])->middleware('permission:library.fines.manage');
-    });
-
-    Route::prefix('reservations')->middleware('permission:library.circulation.manage')->group(function () {
-        Route::get('/', [ReservationController::class, 'index']);
-        Route::post('/', [ReservationController::class, 'store']);
-        Route::post('{reservation}/cancel', [ReservationController::class, 'cancel']);
-    });
-
-    Route::get('reports/circulation', [LibraryReportController::class, 'circulation'])
-        ->middleware('permission:library.circulation.view');
-});

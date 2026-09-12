@@ -1,19 +1,17 @@
 <?php
 
 
-namespace Modules\Library\Listeners\BorrowingListeners;
+namespace Modules\Library\Listeners\BorrowingListeners\Logs;
 
-use Modules\Library\Events\BorrowingEvents\BorrowingCancelled;
-use Modules\Library\Events\BorrowingEvents\BorrowingLost;
-use Modules\Library\Events\BorrowingEvents\BorrowingUpdateed;
+use Modules\Library\Events\BorrowingEvents\BorrowingUpdated;
 
 class LogBorrowingUpdated
 {
-    public function handle(BorrowingUpdateed $event): void
+    public function handle(BorrowingUpdated $event): void
     {
         $borrowing = $event->borrowing;
 
-        activity()
+        activity()->causedBy(auth()->user())
             ->performedOn($borrowing)
             ->withProperties([
                 'book_id' => $borrowing->book_id,

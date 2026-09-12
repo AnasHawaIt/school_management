@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Library\Listeners\BorrowingListeners;
+namespace Modules\Library\Listeners\BorrowingListeners\Logs;
 
 use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
 
@@ -11,7 +11,7 @@ class LogBorrowingCreated
     {
         $borrowing = $event->borrowing;
 
-        activity()
+        activity()->causedBy(auth()->user())
             ->performedOn($borrowing)
             ->withProperties([
                 'book_id' => $borrowing->book_id,

@@ -5,6 +5,7 @@ namespace Modules\Library\Services;
 use Modules\Library\app\Http\Resources\PublishersResource;
 use Modules\Library\Events\PublishersEvents\PublishersCreated;
 use Modules\Library\Events\PublishersEvents\PublishersDeleted;
+use Modules\Library\Events\PublishersEvents\PublishersForceDeleted;
 use Modules\Library\Events\PublishersEvents\PublishersRestored;
 use Modules\Library\Events\PublishersEvents\PublishersUpdated;
 use Modules\Library\Repositories\Eloquent\PublishersRepository;
@@ -36,7 +37,7 @@ class PublishersService
     {
         $publishers= $this->repo->forceDelete($id);
 
-        event(new PublishersDeleted($publishers));
+        event(new PublishersForceDeleted($publishers));
 
         return true;
     }

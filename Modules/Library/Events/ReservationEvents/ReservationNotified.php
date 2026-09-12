@@ -1,19 +1,18 @@
 <?php
 
-
-namespace Modules\Library\Events\BookEvents;
+namespace Modules\Library\Events\ReservationEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Book;
+use Modules\Library\Entities\Reservation;
 
-class BookAvailable
+class ReservationNotified
 {
+
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public Book $book,
-    )
-    {
+        public Reservation $reservation
+    ) {
     }
 }
