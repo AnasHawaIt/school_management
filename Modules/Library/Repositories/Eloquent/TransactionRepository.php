@@ -789,6 +789,91 @@ class TransactionRepository implements TransactionRepositoryInterface
         });
     }
 
+    public function markLost(int $id): Borrowing
+{
+    return DB::transaction(function () use ($id) {
+
+        /** @var Borrowing $transaction */
+        $transaction = Borrowing::query()
+            ->with(['book', 'copy'])
+            ->lockForUpdate()
+            ->findOrFail($id);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validate current status
+        |--------------------------------------------------------------------------
+        */
+
+        if (!in_array($transaction->status, ['borrowed', 'late'], true)) {
+            throw new \RuntimeException(
+                'Only active borrowings can be marked as lost.'
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 1. Mark physical copy as lost
+        |--------------------------------------------------------------------------
+        */
+
+        if ($transaction->copy_id) {
+
+            $copy = BookCopy::query()
+                ->lockForUpdate()
+                ->find($transaction->copy_id);
+
+            if ($copy) {
+                $copy->update([
+                    'status' => 'lost',
+                ]);
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 2. Update borrowing
+        |--------------------------------------------------------------------------
+        */
+
+        $transaction->update([
+            'status' => 'lost',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | 3. Sync book inventory
+        |--------------------------------------------------------------------------
+        |
+        | Physical copies are the source of truth.
+        | A lost copy must NOT count as available.
+        |--------------------------------------------------------------------------
+        */
+
+        $book = Book::query()
+            ->lockForUpdate()
+            ->find($transaction->book_id);
+
+        if ($book) {
+            $this->syncPhysicalInventory($book);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | 4. Refresh relations
+        |--------------------------------------------------------------------------
+        */
+
+        return $transaction->fresh([
+            'member.user',
+            'book',
+            'copy',
+            'fine',
+        ]);
+    });
+}
+
+
     /**
      * Synchronize books.copies with physical available copies.
      *
@@ -807,4 +892,5 @@ class TransactionRepository implements TransactionRepositoryInterface
             ]);
         }
     }
+
 }
