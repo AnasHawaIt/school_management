@@ -10,10 +10,7 @@ return new class extends Migration
     {
         Schema::create('library_fines', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('transaction_id')
-                ->unique()
-                ->constrained('transactions')
-                ->restrictOnDelete();
+            $table->foreignId('transaction_id')->unique()->constrained('transactions')->restrictOnDelete();
             $table->decimal('amount', 10, 2);
             $table->enum('status', ['unpaid', 'paid', 'waived'])->default('unpaid');
             $table->timestamp('paid_at')->nullable();
