@@ -64,7 +64,7 @@ class ReservationService
             $reservationData = array_merge($data, [
                 'book_id' => $bookId,
                 'member_id' => $memberId,
-                'status' => 'pending',
+                'status' => ReservationStatus::PENDING,
             ]);
 
             $reservation = $this->repository->create(
@@ -308,7 +308,7 @@ class ReservationService
             }
 
             $reservation->update([
-                'status' => 'notified',
+                'status' => ReservationStatus::PENDING,
                 'notified_at' => now(),
                 'expires_at' => now()->addDays(
                     config('library.reservation_expiry_days', 2)

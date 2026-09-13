@@ -142,7 +142,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     public function cancel(Reservation $reservation): Reservation
     {
         return $this->update($reservation, [
-            'status' => 'cancelled',
+            'status' => ReservationStatus::CANCELLED,
             'cancelled_at' => now(),
         ]);
     }
@@ -150,7 +150,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     public function fulfill(Reservation $reservation): Reservation
     {
         return $this->update($reservation, [
-            'status' => 'fulfilled',
+            'status' => ReservationStatus::FULFILLED,
             'fulfilled_at' => now(),
         ]);
     }
@@ -158,7 +158,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     public function expire(Reservation $reservation): Reservation
     {
         return $this->update($reservation, [
-            'status' => 'expired',
+            'status' => ReservationStatus::EXPIRED,
             'expired_at' => now(),
         ]);
     }
@@ -166,7 +166,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     public function markAsNotified(Reservation $reservation): Reservation
     {
         return $this->update($reservation, [
-            'status' => 'notified',
+            'status' => ReservationStatus::NOTIFIED,
             'notified_at' => now(),
         ]);
     }
