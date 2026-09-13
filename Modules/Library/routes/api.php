@@ -482,7 +482,10 @@ Route::middleware(['auth:sanctum'])
                 'store'
             ])->middleware('permission:library.circulation.manage');
 
-
+            Route::get('/status-dashboard', [
+                TransactionController::class,
+                'statusDashboard'
+            ])->middleware('permission:library.circulation.manage');
             /*
             |--------------------------------------------------------------------------
             | Workflow

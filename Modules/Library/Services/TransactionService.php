@@ -3,7 +3,9 @@
 namespace Modules\Library\Services;
 
 use Illuminate\Validation\ValidationException;
+use Modules\Library\app\Enums\BookCopiesStatus;
 use Modules\Library\app\Enums\ReservationStatus;
+use Modules\Library\Entities\BookCopy;
 use Modules\Library\Entities\Borrowing;
 use Modules\Library\Entities\Member;
 use Modules\Library\Entities\Reservation;
@@ -31,6 +33,149 @@ class TransactionService
     public function __construct(TransactionRepositoryInterface $repo)
     {
         $this->repo = $repo;
+    }
+
+    /**
+     * Get library books grouped by physical-copy
+     * and borrowing status.
+     *
+     * Physical copy statuses:
+     * available, reserved, borrowed, lost
+     *
+     * Borrowing statuses:
+     * late, approved, rejected, cancelled
+     */
+    public function getStatusDashboard(): array
+    {
+        /*
+         * ==========================================
+         * PHYSICAL COPIES
+         * ==========================================
+         */
+
+        $available = BookCopy::query()
+            ->with(['book'])
+            ->where('status', BookCopiesStatus::AVAILABLE)
+            ->latest()
+            ->get();
+
+        $reserved = BookCopy::query()
+            ->with([
+                'book',
+                'transactions' => function ($query) {
+                    $query->where(
+                        'status',
+                        BorrowingStatus::APPROVED
+                    )->latest();
+                },
+            ])
+            ->where('status', BookCopiesStatus::RESERVED)
+            ->latest()
+            ->get();
+
+        $borrowed = BookCopy::query()
+            ->with([
+                'book',
+                'transactions' => function ($query) {
+                    $query->whereIn('status', [
+                        BorrowingStatus::BORROWED,
+                        BorrowingStatus::LATE,
+                    ])->latest();
+                },
+            ])
+            ->where('status', BookCopiesStatus::BORROWED)
+            ->latest()
+            ->get();
+
+        $lost = BookCopy::query()
+            ->with(['book'])
+            ->where('status', BookCopiesStatus::LOST)
+            ->latest()
+            ->get();
+
+
+        /*
+         * ==========================================
+         * BORROWINGS
+         * ==========================================
+         */
+
+        $late = Borrowing::query()
+            ->with([
+                'member.user',
+                'book',
+                'copy',
+                'fine',
+            ])
+            ->where('status', BorrowingStatus::LATE)
+            ->latest()
+            ->get();
+
+        $approved = Borrowing::query()
+            ->with([
+                'member.user',
+                'book',
+                'copy',
+                'fine',
+            ])
+            ->where('status', BorrowingStatus::APPROVED)
+            ->latest()
+            ->get();
+
+        $rejected = Borrowing::query()
+            ->with([
+                'member.user',
+                'book',
+                'copy',
+                'fine',
+            ])
+            ->where('status', BorrowingStatus::REJECTED)
+            ->latest()
+            ->get();
+
+        $cancelled = Borrowing::query()
+            ->with([
+                'member.user',
+                'book',
+                'copy',
+                'fine',
+            ])
+            ->where('status', BorrowingStatus::CANCELLED)
+            ->latest()
+            ->get();
+
+
+        /*
+         * ==========================================
+         * COUNTS
+         * ==========================================
+         */
+
+        return [
+            'counts' => [
+                'available' => $available->count(),
+                'reserved' => $reserved->count(),
+                'borrowed' => $borrowed->count(),
+                'late' => $late->count(),
+                'lost' => $lost->count(),
+
+                'approved' => $approved->count(),
+                'rejected' => $rejected->count(),
+                'cancelled' => $cancelled->count(),
+            ],
+
+            'data' => [
+                'available' => $available,
+                'reserved' => $reserved,
+                'borrowed' => $borrowed,
+                'late' => $late,
+                'lost' => $lost,
+
+                'approved' => $approved,
+                'rejected' => $rejected,
+                'cancelled' => $cancelled,
+            ],
+        ];
     }
 
     public function getTransactionOnlyTrashed()
@@ -175,16 +320,7 @@ class TransactionService
     {
         $transaction = $this->repo->findById($id);
 
-        if (!in_array($transaction->status, [
-            BorrowingStatus::PENDING,
-            BorrowingStatus::APPROVED,
-        ], true)) {
-            throw ValidationException::withMessages([
-                'transaction' => 'This borrowing cannot be cancelled.',
-            ]);
-        }
-
-        $transaction = $this->repo->cancel($id);
+        $this->repo->cancel($id);
 
         event(new BorrowingCancelled(
             $transaction,

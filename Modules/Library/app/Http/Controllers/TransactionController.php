@@ -18,6 +18,13 @@ class TransactionController extends Controller
         $this->service = $service;
     }
 
+    public function statusDashboard()
+    {
+        return response()->json(
+            $this->service->getStatusDashboard()
+        );
+    }
+
     /**
      * Get all transactions.
      */
