@@ -122,7 +122,7 @@ class SectionController extends Controller
     public function getSectionByTeacher(Request $request): JsonResponse
     {
         try {
-            // استخراج class_id من الـ Request
+
             $classId = $request->input('class_id') ?? $request->input('classId');
 
             if (!$classId) {

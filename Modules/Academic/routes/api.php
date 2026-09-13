@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::post('/assign-student_section', [StudentController::class, 'assignToSection']);
         Route::get('/{student}/medical-record', [StudentController::class, 'medicalRecord']);
         Route::put('/{student}/medical-record', [StudentController::class, 'updateMedicalRecord']);
+        Route::get('/{teacher}/timetable',               [TeacherController::class, 'timetable']);
     });
 
     // Students by section
