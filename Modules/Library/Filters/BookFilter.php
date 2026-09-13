@@ -19,7 +19,9 @@ class BookFilter extends QueryFilter
     public function available($value)
     {
         if ($value) {
-            $this->query->where('copies', '>', 0);
+            $this->query->whereHas('copies', function ($query) {
+                $query->where('status', 'available');
+            });
         }
     }
 

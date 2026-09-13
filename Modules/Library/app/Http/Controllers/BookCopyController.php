@@ -14,22 +14,37 @@ class BookCopyController extends Controller
 {
     public function index(Book $book)
     {
-        return response()->json($book->copies()->latest()->paginate(20));
+        return response()->json(
+            $book->copies()
+                ->latest()
+                ->paginate(20)
+        );
     }
 
-    public function store(StoreBookCopyRequest $request, Book $book): JsonResponse
-    {
+    public function store(
+        StoreBookCopyRequest $request,
+        Book $book
+    ): JsonResponse {
         $copy = $book->copies()->create($request->validated());
-        $book->update(['copies' => $book->copies()->where('status', 'available')->count()]);
 
         return response()->json($copy, 201);
     }
 
-    public function update(UpdateBookCopyRequest $request, Book $book, BookCopy $copy): JsonResponse
-    {
+    public function update(
+        UpdateBookCopyRequest $request,
+        Book $book,
+        BookCopy $copy
+    ): JsonResponse {
         abort_unless($copy->book_id === $book->id, 404);
 
         $data = $request->validated();
+
+        /*
+         * A borrowed physical copy cannot be manually changed
+         * to available/maintenance.
+         *
+         * It must be released through the borrowing return workflow.
+         */
         if (
             $copy->status === 'borrowed'
             && isset($data['status'])
@@ -42,8 +57,13 @@ class BookCopyController extends Controller
         }
 
         $previousStatus = $copy->status;
+
         $copy->update($data);
 
+        /*
+         * If a borrowed copy is marked lost or damaged,
+         * create/update the related fine.
+         */
         if (
             isset($data['status'])
             && in_array($data['status'], ['lost', 'damaged'], true)
@@ -53,23 +73,29 @@ class BookCopyController extends Controller
                 ->whereIn('status', ['borrowed', 'late'])
                 ->latest('id')
                 ->first();
+
             if ($transaction) {
                 $amount = $copy->replacement_cost
                     ?? config("library.{$data['status']}_copy_compensation");
+
                 Fine::updateOrCreate(
                     ['transaction_id' => $transaction->id],
-                    ['amount' => $amount, 'status' => 'unpaid', 'notes' => "Copy marked {$data['status']}."]
+                    [
+                        'amount' => $amount,
+                        'status' => 'unpaid',
+                        'notes' => "Copy marked {$data['status']}.",
+                    ]
                 );
             }
         }
 
-        $book->update(['copies' => $book->copies()->where('status', 'available')->count()]);
-
         return response()->json($copy->refresh());
     }
 
-    public function destroy(Book $book, BookCopy $copy): JsonResponse
-    {
+    public function destroy(
+        Book $book,
+        BookCopy $copy
+    ): JsonResponse {
         abort_unless($copy->book_id === $book->id, 404);
 
         if ($copy->status === 'borrowed') {
@@ -79,8 +105,9 @@ class BookCopyController extends Controller
         }
 
         $copy->delete();
-        $book->update(['copies' => $book->copies()->where('status', 'available')->count()]);
 
-        return response()->json(['message' => 'Deleted']);
+        return response()->json([
+            'message' => 'Deleted',
+        ]);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Validation\ValidationException;
 use Modules\Library\Entities\Borrowing;
 use Modules\Library\Entities\Member;
 use Modules\Library\Entities\Reservation;
+use Modules\Library\app\Enums\BorrowingStatus;
 use Modules\Library\Events\BorrowingEvents\BookAvailable;
 use Modules\Library\Events\BorrowingEvents\BorrowingApproved;
 use Modules\Library\Events\BorrowingEvents\BorrowingCancelled;
@@ -26,7 +27,7 @@ class TransactionService
 {
     protected $repo;
 
-    public function __construct(TransactionRepositoryInterface $repo,)
+    public function __construct(TransactionRepositoryInterface $repo)
     {
         $this->repo = $repo;
     }
@@ -38,7 +39,7 @@ class TransactionService
 
     public function restore($id)
     {
-        $transaction= $this->repo->restore($id);
+        $transaction = $this->repo->restore($id);
 
         event(new BorrowingRestored($transaction));
 
@@ -47,12 +48,11 @@ class TransactionService
 
     public function forceDelete($id)
     {
-        $Transaction= $this->repo->forceDelete($id);
+        $transaction = $this->repo->forceDelete($id);
 
-        event(new BorrowingForceDeleted($Transaction));
+        event(new BorrowingForceDeleted($transaction));
 
         return true;
-
     }
 
     public function getAll($request)
@@ -75,7 +75,10 @@ class TransactionService
 
         if (
             $member->transactions()
-                ->whereIn('status', ['borrowed', 'late'])
+                ->whereIn('status', [
+                    BorrowingStatus::BORROWED->value,
+                    BorrowingStatus::LATE->value,
+                ])
                 ->count() >= $limit
         ) {
             throw ValidationException::withMessages([
@@ -83,7 +86,6 @@ class TransactionService
             ]);
         }
 
-        // فحص توفر الكتاب
         if (!$this->repo->isAvailable($data['book_id'])) {
             throw ValidationException::withMessages([
                 'book_id' => 'This book is currently unavailable.',
@@ -98,7 +100,10 @@ class TransactionService
 
         $transaction = $this->repo->create($data);
 
-        event(new BorrowingCreated($transaction, auth()->id()));
+        event(new BorrowingCreated(
+            $transaction,
+            auth()->id()
+        ));
 
         return $transaction;
     }
@@ -107,14 +112,14 @@ class TransactionService
     {
         $transaction = $this->repo->findById($id);
 
-        if ($transaction->status !== 'pending') {
+        if ($transaction->status !== BorrowingStatus::PENDING) {
             throw ValidationException::withMessages([
                 'transaction' => 'Only pending borrowings can be approved.',
             ]);
         }
 
         $transaction = $this->repo->update($id, [
-            'status' => 'approved',
+            'status' => BorrowingStatus::APPROVED->value,
             'approved_at' => now(),
             'approved_by' => auth()->id(),
         ]);
@@ -131,14 +136,14 @@ class TransactionService
     {
         $transaction = $this->repo->findById($id);
 
-        if ($transaction->status !== 'pending') {
+        if ($transaction->status !== BorrowingStatus::PENDING) {
             throw ValidationException::withMessages([
                 'transaction' => 'Only pending borrowings can be rejected.',
             ]);
         }
 
         $transaction = $this->repo->update($id, [
-            'status' => 'rejected',
+            'status' => BorrowingStatus::REJECTED->value,
         ]);
 
         event(new BorrowingRejected(
@@ -153,14 +158,14 @@ class TransactionService
     {
         $transaction = $this->repo->findById($id);
 
-        if ($transaction->status !== 'approved') {
+        if ($transaction->status !== BorrowingStatus::APPROVED) {
             throw ValidationException::withMessages([
                 'transaction' => 'Only approved borrowings can be picked up.',
             ]);
         }
 
         $transaction = $this->repo->update($id, [
-            'status' => 'borrowed',
+            'status' => BorrowingStatus::BORROWED->value,
             'picked_up_at' => now(),
         ]);
 
@@ -177,8 +182,8 @@ class TransactionService
         $transaction = $this->repo->findById($id);
 
         if (!in_array($transaction->status, [
-            'pending',
-            'approved',
+            BorrowingStatus::PENDING,
+            BorrowingStatus::APPROVED,
         ], true)) {
             throw ValidationException::withMessages([
                 'transaction' => 'This borrowing cannot be cancelled.',
@@ -186,7 +191,7 @@ class TransactionService
         }
 
         $transaction = $this->repo->update($id, [
-            'status' => 'cancelled',
+            'status' => BorrowingStatus::CANCELLED->value,
         ]);
 
         event(new BorrowingCancelled(
@@ -205,7 +210,10 @@ class TransactionService
             throw new \Exception('Borrowing not found');
         }
 
-        if (!in_array($transaction->status, ['borrowed', 'late'], true)) {
+        if (!in_array($transaction->status, [
+            BorrowingStatus::BORROWED,
+            BorrowingStatus::LATE,
+        ], true)) {
             throw ValidationException::withMessages([
                 'transaction' => 'This borrowing is already returned.',
             ]);
@@ -230,8 +238,8 @@ class TransactionService
         $transaction = $this->repo->findById($id);
 
         if (!in_array($transaction->status, [
-            'borrowed',
-            'late',
+            BorrowingStatus::BORROWED,
+            BorrowingStatus::LATE,
         ], true)) {
             throw ValidationException::withMessages([
                 'transaction' => 'Only active borrowings can be marked as lost.',
@@ -265,8 +273,11 @@ class TransactionService
         ));
 
         if (
-            in_array($before->status, ['borrowed', 'late'], true)
-            && $transaction->status === 'returned'
+            in_array($before->status, [
+                BorrowingStatus::BORROWED,
+                BorrowingStatus::LATE,
+            ], true)
+            && $transaction->status === BorrowingStatus::RETURNED
         ) {
             event(new BorrowingReturned(
                 $transaction,
@@ -285,7 +296,10 @@ class TransactionService
     {
         $transaction = $this->repo->findById($id);
 
-        if (!in_array($transaction->status, ['borrowed', 'late'], true)) {
+        if (!in_array($transaction->status, [
+            BorrowingStatus::BORROWED,
+            BorrowingStatus::LATE,
+        ], true)) {
             throw ValidationException::withMessages([
                 'transaction' => 'Only active borrowings can be renewed.',
             ]);
@@ -314,7 +328,7 @@ class TransactionService
 
             'renewal_count' => $transaction->renewal_count + 1,
 
-            'status' => 'borrowed',
+            'status' => BorrowingStatus::BORROWED->value,
         ]);
 
         $transaction = $transaction->refresh();
@@ -331,7 +345,7 @@ class TransactionService
     {
         $transaction = $this->repo->findById($id);
 
-        if ($transaction->status !== 'borrowed') {
+        if ($transaction->status !== BorrowingStatus::BORROWED) {
             throw ValidationException::withMessages([
                 'transaction' => 'Only borrowed transactions can become overdue.',
             ]);
@@ -344,7 +358,7 @@ class TransactionService
         }
 
         $transaction = $this->repo->update($id, [
-            'status' => 'late',
+            'status' => BorrowingStatus::LATE->value,
         ]);
 
         event(new BorrowingOverdue(
@@ -356,21 +370,23 @@ class TransactionService
 
     public function delete($id)
     {
-        $Transaction = $this->repo->findById($id);
+        $transaction = $this->repo->findById($id);
 
-        if (!$Transaction) {
+        if (!$transaction) {
             throw new \Exception('Borrowing not found');
         }
 
         $this->repo->delete($id);
 
-        event(new BorrowingDeleted($Transaction));
+        event(new BorrowingDeleted($transaction));
 
-        if (in_array($Transaction->status, ['borrowed', 'late'], true)) {
-            event(new BookAvailable($Transaction->book));
+        if (in_array($transaction->status, [
+            BorrowingStatus::BORROWED,
+            BorrowingStatus::LATE,
+        ], true)) {
+            event(new BookAvailable($transaction->book));
         }
 
         return true;
     }
-
 }

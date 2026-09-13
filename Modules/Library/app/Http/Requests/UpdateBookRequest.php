@@ -32,7 +32,6 @@ class UpdateBookRequest extends FormRequest
             'author_id.exists' => 'Author not found',
             'category_id.exists' => 'Category not found',
             'isbn.unique' => 'ISBN already exists',
-            'copies.integer' => 'Copies must be an integer',
             'description.string' => 'Description must be a string',
             'photo.image' => 'Photo must be an image',
         ];

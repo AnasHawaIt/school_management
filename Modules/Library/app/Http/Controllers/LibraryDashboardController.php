@@ -32,7 +32,8 @@ class LibraryDashboardController extends Controller
             'lowStockBooks' => Book::withCount([
                 'copies as available_copies_count' => fn ($query) => $query->where('status', 'available'),
             ])
-                ->orderBy('copies')
+
+                ->orderByDesc('available_copies_count')
                 ->limit(5)
                 ->get(),
         ]);

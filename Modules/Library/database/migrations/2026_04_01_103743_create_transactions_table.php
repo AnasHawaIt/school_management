@@ -19,7 +19,16 @@ return new class extends Migration
             $table->date('due_date')->nullable();
             $table->date('return_date')->nullable();
             $table->timestamp('returned_at')->nullable();
-            $table->enum('status', ['borrowed', 'returned', 'late'])->default('borrowed');
+            $table->enum('status', [
+                'pending',
+                'approved',
+                'rejected',
+                'borrowed',
+                'late',
+                'returned',
+                'lost',
+                'cancelled',
+            ])->default('pending');
             $table->unsignedTinyInteger('renewal_count')->default(0);
             $table->unsignedTinyInteger('max_renewals')->default(2);
             $table->softDeletes();
