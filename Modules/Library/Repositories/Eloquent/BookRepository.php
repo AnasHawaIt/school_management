@@ -4,6 +4,7 @@ namespace Modules\Library\Repositories\Eloquent;
 
 use Modules\Library\Entities\Book;
 use Modules\Library\Filters\BookFilter;
+use Modules\Library\app\Enums\BookCopiesStatus;
 use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
 
 class BookRepository implements BookRepositoryInterface
@@ -56,7 +57,7 @@ class BookRepository implements BookRepositoryInterface
         return Book::query()
             ->findOrFail($bookId)
             ->copies()
-            ->where('status', 'available')
+            ->where('status', BookCopiesStatus::AVAILABLE)
             ->count();
     }
 

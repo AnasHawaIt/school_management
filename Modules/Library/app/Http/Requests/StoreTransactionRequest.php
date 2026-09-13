@@ -4,6 +4,7 @@ namespace Modules\Library\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Modules\Library\app\Enums\BookCopiesStatus;
 
 class StoreTransactionRequest extends FormRequest
 {
@@ -20,7 +21,7 @@ class StoreTransactionRequest extends FormRequest
                 'nullable',
                 Rule::exists('library_copies', 'id')->where(function ($query) {
                     $query->where('book_id', $this->input('book_id'))
-                        ->where('status', 'available');
+                        ->where('status', BookCopiesStatus::AVAILABLE);
                 }),
             ],
             'member_id'   => 'required|exists:members,id',

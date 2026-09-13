@@ -7,6 +7,7 @@ use Modules\Library\Entities\Book;
 use Modules\Library\Entities\BookCopy;
 use Modules\Library\Entities\Borrowing;
 use Modules\Library\Filters\TransactionFilter;
+use Modules\Library\app\Enums\BookCopiesStatus;
 use Modules\Library\app\Enums\BorrowingStatus;
 use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 
@@ -31,10 +32,6 @@ class TransactionRepository implements TransactionRepositoryInterface
                 return $transaction;
             }
 
-            /*
-             * If the restored borrowing is active,
-             * its physical copy must become borrowed again.
-             */
             if (
                 in_array($transaction->status, [
                     BorrowingStatus::BORROWED,
@@ -46,14 +43,14 @@ class TransactionRepository implements TransactionRepositoryInterface
                     ->lockForUpdate()
                     ->findOrFail($transaction->copy_id);
 
-                if ($copy->status !== 'available') {
+                if ($copy->status !== BookCopiesStatus::AVAILABLE) {
                     throw new \RuntimeException(
                         'The physical copy is not available for restoration.'
                     );
                 }
 
                 $copy->update([
-                    'status' => 'borrowed',
+                    'status' => BookCopiesStatus::BORROWED,
                 ]);
             }
 
@@ -74,22 +71,226 @@ class TransactionRepository implements TransactionRepositoryInterface
     }
 
     /**
-     * Physical Copies are the source of truth.
+     * Physical copies are the source of truth.
      */
     public function availableCopiesCount(int $bookId): int
     {
-        Book::query()
-            ->findOrFail($bookId);
+        Book::query()->findOrFail($bookId);
 
         return BookCopy::query()
             ->where('book_id', $bookId)
-            ->where('status', 'available')
+            ->where('status', BookCopiesStatus::AVAILABLE)
             ->count();
+    }
+
+    /**
+     * Approve a pending borrowing.
+     *
+     * At this stage:
+     *
+     * Borrowing: pending -> approved
+     * Copy:      available -> reserved
+     */
+    public function approve(int $id): Borrowing
+    {
+        return DB::transaction(function () use ($id) {
+
+            $transaction = Borrowing::query()
+                ->lockForUpdate()
+                ->findOrFail($id);
+
+            if ($transaction->status !== BorrowingStatus::PENDING) {
+                throw new \RuntimeException(
+                    'Only pending borrowings can be approved.'
+                );
+            }
+
+            /*
+             * If a specific copy was requested,
+             * validate it again under lock.
+             */
+            if ($transaction->copy_id) {
+
+                $copy = BookCopy::query()
+                    ->where('id', $transaction->copy_id)
+                    ->where('book_id', $transaction->book_id)
+                    ->lockForUpdate()
+                    ->firstOrFail();
+
+                if ($copy->status !== BookCopiesStatus::AVAILABLE) {
+                    throw new \RuntimeException(
+                        'The requested physical copy is no longer available.'
+                    );
+                }
+
+            } else {
+
+                /*
+                 * Otherwise select the first available physical copy.
+                 */
+                $copy = BookCopy::query()
+                    ->where('book_id', $transaction->book_id)
+                    ->where('status', BookCopiesStatus::AVAILABLE)
+                    ->orderBy('id')
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$copy) {
+                    throw new \RuntimeException(
+                        'No available physical copy for this borrowing.'
+                    );
+                }
+            }
+
+            /*
+             * Reserve the physical copy.
+             */
+            $copy->update([
+                'status' => BookCopiesStatus::RESERVED,
+            ]);
+
+            /*
+             * Approve the borrowing.
+             */
+            $transaction->update([
+                'copy_id' => $copy->id,
+                'status' => BorrowingStatus::APPROVED,
+                'approved_at' => now(),
+                'approved_by' => auth()->id(),
+            ]);
+
+            return $transaction->fresh([
+                'member.user',
+                'book',
+                'copy',
+                'fine',
+            ]);
+        });
+    }
+
+    /**
+     * Pickup an approved borrowing.
+     *
+     * Borrowing: approved -> borrowed
+     * Copy:      reserved -> borrowed
+     */
+    public function pickup(int $id): Borrowing
+    {
+        return DB::transaction(function () use ($id) {
+
+            $transaction = Borrowing::query()
+                ->lockForUpdate()
+                ->findOrFail($id);
+
+            if ($transaction->status !== BorrowingStatus::APPROVED) {
+                throw new \RuntimeException(
+                    'Only approved borrowings can be picked up.'
+                );
+            }
+
+            if (!$transaction->copy_id) {
+                throw new \RuntimeException(
+                    'No physical copy has been reserved for this borrowing.'
+                );
+            }
+
+            $copy = BookCopy::query()
+                ->where('id', $transaction->copy_id)
+                ->where('book_id', $transaction->book_id)
+                ->lockForUpdate()
+                ->firstOrFail();
+
+            if ($copy->status !== BookCopiesStatus::RESERVED) {
+                throw new \RuntimeException(
+                    'The reserved physical copy is not available for pickup.'
+                );
+            }
+
+            /*
+             * The member physically receives the copy.
+             */
+            $copy->update([
+                'status' => BookCopiesStatus::BORROWED,
+            ]);
+
+            $transaction->update([
+                'status' => BorrowingStatus::BORROWED,
+                'picked_up_at' => now(),
+            ]);
+
+            return $transaction->fresh([
+                'member.user',
+                'book',
+                'copy',
+                'fine',
+            ]);
+        });
+    }
+
+    /**
+     * Cancel pending or approved borrowing.
+     *
+     * Pending:
+     *      no physical copy
+     *
+     * Approved:
+     *      reserved -> available
+     */
+    public function cancel(int $id): Borrowing
+    {
+        return DB::transaction(function () use ($id) {
+
+            $transaction = Borrowing::query()
+                ->lockForUpdate()
+                ->findOrFail($id);
+
+            if (!in_array($transaction->status, [
+                BorrowingStatus::PENDING,
+                BorrowingStatus::APPROVED,
+            ], true)) {
+                throw new \RuntimeException(
+                    'This borrowing cannot be cancelled.'
+                );
+            }
+
+            /*
+             * Approved borrowing has a reserved physical copy.
+             */
+            if (
+                $transaction->status === BorrowingStatus::APPROVED
+                && $transaction->copy_id
+            ) {
+                $copy = BookCopy::query()
+                    ->lockForUpdate()
+                    ->find($transaction->copy_id);
+
+                if (
+                    $copy
+                    && $copy->status === BookCopiesStatus::RESERVED
+                ) {
+                    $copy->update([
+                        'status' => BookCopiesStatus::AVAILABLE,
+                    ]);
+                }
+            }
+
+            $transaction->update([
+                'status' => BorrowingStatus::CANCELLED,
+            ]);
+
+            return $transaction->fresh([
+                'member.user',
+                'book',
+                'copy',
+                'fine',
+            ]);
+        });
     }
 
     public function returnBook(int $id): Borrowing
     {
         return DB::transaction(function () use ($id) {
+
             $transaction = Borrowing::query()
                 ->with(['book', 'copy'])
                 ->lockForUpdate()
@@ -108,23 +309,21 @@ class TransactionRepository implements TransactionRepositoryInterface
                 );
             }
 
-            /*
-             * Release the physical copy.
-             */
             if ($transaction->copy_id) {
+
                 $copy = BookCopy::query()
                     ->lockForUpdate()
                     ->find($transaction->copy_id);
 
                 if ($copy) {
                     $copy->update([
-                        'status' => 'available',
+                        'status' => BookCopiesStatus::AVAILABLE,
                     ]);
                 }
             }
 
             $transaction->update([
-                'status' => BorrowingStatus::RETURNED->value,
+                'status' => BorrowingStatus::RETURNED,
                 'return_date' => now()->toDateString(),
                 'returned_at' => now(),
             ]);
@@ -171,56 +370,34 @@ class TransactionRepository implements TransactionRepositoryInterface
     }
 
     /**
-     * Create a borrowing using a physical book copy.
+     * Create borrowing request.
+     *
+     * IMPORTANT:
+     * No physical copy is reserved here.
+     *
+     * Borrowing:
+     * pending
+     *
+     * Copy:
+     * remains available
      */
     public function create(array $data)
     {
         return DB::transaction(function () use ($data) {
-            $book = Book::query()
+
+            Book::query()
                 ->findOrFail($data['book_id']);
 
             /*
-             * If a specific physical copy was requested,
-             * validate and lock it.
+             * copy_id represents the ACTUAL physical copy
+             * assigned to the borrowing.
+             *
+             * Therefore it remains NULL until approval.
              */
-            if (!empty($data['copy_id'])) {
-                $copy = BookCopy::query()
-                    ->where('id', $data['copy_id'])
-                    ->where('book_id', $book->id)
-                    ->lockForUpdate()
-                    ->firstOrFail();
+            $data['copy_id'] = null;
 
-                if ($copy->status !== 'available') {
-                    throw new \RuntimeException(
-                        'The selected book copy is not available.'
-                    );
-                }
-            } else {
-                /*
-                 * Otherwise automatically assign the first
-                 * available physical copy.
-                 */
-                $copy = BookCopy::query()
-                    ->where('book_id', $book->id)
-                    ->where('status', 'available')
-                    ->lockForUpdate()
-                    ->first();
-
-                if (!$copy) {
-                    throw new \RuntimeException(
-                        'No available physical copy.'
-                    );
-                }
-            }
-
-            /*
-             * Mark the physical copy as borrowed.
-             */
-            $copy->update([
-                'status' => 'borrowed',
-            ]);
-
-            $data['copy_id'] = $copy->id;
+            $data['status'] = $data['status']
+                ?? BorrowingStatus::PENDING->value;
 
             $transaction = Borrowing::create($data);
 
@@ -236,6 +413,7 @@ class TransactionRepository implements TransactionRepositoryInterface
     public function update($id, array $data): Borrowing
     {
         return DB::transaction(function () use ($id, $data) {
+
             $transaction = Borrowing::query()
                 ->lockForUpdate()
                 ->findOrFail($id);
@@ -243,10 +421,6 @@ class TransactionRepository implements TransactionRepositoryInterface
             $oldBookId = $transaction->book_id;
             $oldCopyId = $transaction->copy_id;
 
-            /*
-             * Because Borrowing casts status to BorrowingStatus,
-             * convert it to its scalar value for internal comparisons.
-             */
             $oldStatus = $transaction->status instanceof BorrowingStatus
                 ? $transaction->status->value
                 : $transaction->status;
@@ -261,6 +435,23 @@ class TransactionRepository implements TransactionRepositoryInterface
 
             if ($newStatus instanceof BorrowingStatus) {
                 $newStatus = $newStatus->value;
+            }
+
+            /*
+             * Lifecycle statuses should be handled
+             * through dedicated methods.
+             */
+            if (
+                $newStatus !== $oldStatus
+                && in_array($newStatus, [
+                    BorrowingStatus::APPROVED->value,
+                    BorrowingStatus::BORROWED->value,
+                    BorrowingStatus::CANCELLED->value,
+                ], true)
+            ) {
+                throw new \RuntimeException(
+                    'Use the dedicated borrowing lifecycle operation for this status change.'
+                );
             }
 
             $wasActive = in_array($oldStatus, [
@@ -278,51 +469,45 @@ class TransactionRepository implements TransactionRepositoryInterface
 
             /*
              * ACTIVE -> ACTIVE
-             *
-             * Example:
-             * Borrowed Book A / Copy 1
-             *        ->
-             * Borrowed Book B / Copy 5
              */
             if (
                 $wasActive &&
                 $willBeActive &&
                 ($bookChanged || $copyChanged)
             ) {
-                /*
-                 * Release old physical copy.
-                 */
+
                 if ($oldCopyId) {
+
                     $oldCopy = BookCopy::query()
                         ->lockForUpdate()
                         ->find($oldCopyId);
 
                     if ($oldCopy) {
                         $oldCopy->update([
-                            'status' => 'available',
+                            'status' => BookCopiesStatus::AVAILABLE,
                         ]);
                     }
                 }
 
-                /*
-                 * Get new physical copy.
-                 */
                 if ($newCopyId) {
+
                     $newCopy = BookCopy::query()
                         ->where('id', $newCopyId)
                         ->where('book_id', $newBookId)
                         ->lockForUpdate()
                         ->firstOrFail();
 
-                    if ($newCopy->status !== 'available') {
+                    if ($newCopy->status !== BookCopiesStatus::AVAILABLE) {
                         throw new \RuntimeException(
                             'The selected book copy is not available.'
                         );
                     }
+
                 } else {
+
                     $newCopy = BookCopy::query()
                         ->where('book_id', $newBookId)
-                        ->where('status', 'available')
+                        ->where('status', BookCopiesStatus::AVAILABLE)
                         ->lockForUpdate()
                         ->first();
 
@@ -334,7 +519,7 @@ class TransactionRepository implements TransactionRepositoryInterface
                 }
 
                 $newCopy->update([
-                    'status' => 'borrowed',
+                    'status' => BookCopiesStatus::BORROWED,
                 ]);
 
                 $data['copy_id'] = $newCopy->id;
@@ -342,53 +527,50 @@ class TransactionRepository implements TransactionRepositoryInterface
 
             /*
              * ACTIVE -> INACTIVE
-             *
-             * Release the physical copy.
              */
             if ($wasActive && !$willBeActive) {
+
                 if ($oldCopyId) {
+
                     $copy = BookCopy::query()
                         ->lockForUpdate()
                         ->find($oldCopyId);
 
                     if ($copy) {
                         $copy->update([
-                            'status' => 'available',
+                            'status' => BookCopiesStatus::AVAILABLE,
                         ]);
                     }
                 }
 
-                if (!isset($data['returned_at'])) {
-                    $data['returned_at'] = now();
-                }
-
-                if (!isset($data['return_date'])) {
-                    $data['return_date'] = now()->toDateString();
-                }
+                $data['returned_at'] ??= now();
+                $data['return_date'] ??= now()->toDateString();
             }
 
             /*
              * INACTIVE -> ACTIVE
-             *
-             * Acquire a physical copy.
              */
             if (!$wasActive && $willBeActive) {
+
                 if ($newCopyId) {
+
                     $newCopy = BookCopy::query()
                         ->where('id', $newCopyId)
                         ->where('book_id', $newBookId)
                         ->lockForUpdate()
                         ->firstOrFail();
 
-                    if ($newCopy->status !== 'available') {
+                    if ($newCopy->status !== BookCopiesStatus::AVAILABLE) {
                         throw new \RuntimeException(
                             'The selected book copy is not available.'
                         );
                     }
+
                 } else {
+
                     $newCopy = BookCopy::query()
                         ->where('book_id', $newBookId)
-                        ->where('status', 'available')
+                        ->where('status', BookCopiesStatus::AVAILABLE)
                         ->lockForUpdate()
                         ->first();
 
@@ -400,20 +582,20 @@ class TransactionRepository implements TransactionRepositoryInterface
                 }
 
                 $newCopy->update([
-                    'status' => 'borrowed',
+                    'status' => BookCopiesStatus::BORROWED,
                 ]);
 
                 $data['copy_id'] = $newCopy->id;
             }
 
             /*
-             * Final safety check:
-             * the physical copy must belong to the selected book.
+             * Final safety check.
              */
             if (
-                $willBeActive &&
-                !empty($data['copy_id'])
+                $willBeActive
+                && !empty($data['copy_id'])
             ) {
+
                 $copy = BookCopy::query()
                     ->find($data['copy_id']);
 
@@ -444,33 +626,43 @@ class TransactionRepository implements TransactionRepositoryInterface
     public function delete($id)
     {
         return DB::transaction(function () use ($id) {
+
             $transaction = Borrowing::query()
                 ->lockForUpdate()
                 ->findOrFail($id);
 
-            $isActive = in_array($transaction->status, [
-                BorrowingStatus::BORROWED,
-                BorrowingStatus::LATE,
-            ], true);
-
             /*
-             * Release the physical copy.
+             * Active borrowing -> borrowed copy.
+             * Approved borrowing -> reserved copy.
              */
-            if ($isActive && $transaction->copy_id) {
+            if ($transaction->copy_id) {
+
                 $copy = BookCopy::query()
                     ->lockForUpdate()
                     ->find($transaction->copy_id);
 
                 if ($copy) {
-                    $copy->update([
-                        'status' => 'available',
-                    ]);
+
+                    if (
+                        $transaction->status === BorrowingStatus::BORROWED
+                        || $transaction->status === BorrowingStatus::LATE
+                    ) {
+                        $copy->update([
+                            'status' => BookCopiesStatus::AVAILABLE,
+                        ]);
+                    }
+
+                    if (
+                        $transaction->status === BorrowingStatus::APPROVED
+                        && $copy->status === BookCopiesStatus::RESERVED
+                    ) {
+                        $copy->update([
+                            'status' => BookCopiesStatus::AVAILABLE,
+                        ]);
+                    }
                 }
             }
 
-            /*
-             * Soft delete the borrowing.
-             */
             $transaction->delete();
 
             return $transaction;
@@ -480,6 +672,7 @@ class TransactionRepository implements TransactionRepositoryInterface
     public function markLost(int $id): Borrowing
     {
         return DB::transaction(function () use ($id) {
+
             $transaction = Borrowing::query()
                 ->with(['book', 'copy'])
                 ->lockForUpdate()
@@ -494,26 +687,21 @@ class TransactionRepository implements TransactionRepositoryInterface
                 );
             }
 
-            /*
-             * Mark the physical copy as lost.
-             */
             if ($transaction->copy_id) {
+
                 $copy = BookCopy::query()
                     ->lockForUpdate()
                     ->find($transaction->copy_id);
 
                 if ($copy) {
                     $copy->update([
-                        'status' => 'lost',
+                        'status' => BookCopiesStatus::LOST,
                     ]);
                 }
             }
 
-            /*
-             * Mark the borrowing as lost.
-             */
             $transaction->update([
-                'status' => BorrowingStatus::LOST->value,
+                'status' => BorrowingStatus::LOST,
             ]);
 
             return $transaction->fresh([

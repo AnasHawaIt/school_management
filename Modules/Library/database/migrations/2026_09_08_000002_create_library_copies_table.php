@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('barcode')->unique();
             $table->enum('status', [
                 'available',
+                'reserved',
                 'borrowed',
                 'lost',
                 'damaged',

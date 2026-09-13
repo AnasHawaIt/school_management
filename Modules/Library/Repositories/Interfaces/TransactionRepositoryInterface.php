@@ -16,6 +16,9 @@ interface TransactionRepositoryInterface
     public function availableCopiesCount(int $bookId): int;
     public function returnBook(int $id): Borrowing;
     public function markLost(int $id): Borrowing;
+    public function approve(int $id): Borrowing;
+    public function pickup(int $id): Borrowing;
+    public function cancel(int $id): Borrowing;
     public function findById($id);
     public function create(array $data);
     public function update($id, array $data);

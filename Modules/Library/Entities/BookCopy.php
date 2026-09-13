@@ -6,14 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Library\app\Enums\BookCopiesStatus;
 
 class BookCopy extends Model
 {
-    use  SoftDeletes ,HasFactory;
-
-    protected $dates = ['deleted_at'];
+    use SoftDeletes, HasFactory;
 
     protected $table = 'library_copies';
+
+    protected $dates = [
+        'deleted_at',
+    ];
 
     protected $fillable = [
         'book_id',
@@ -21,6 +24,11 @@ class BookCopy extends Model
         'status',
         'location',
         'replacement_cost',
+    ];
+
+    protected $casts = [
+        'status' => BookCopiesStatus::class,
+        'replacement_cost' => 'decimal:2',
     ];
 
     public function book(): BelongsTo
@@ -32,8 +40,4 @@ class BookCopy extends Model
     {
         return $this->hasMany(Borrowing::class, 'copy_id');
     }
-
-    protected $casts = [
-        'replacement_cost' => 'decimal:2',
-    ];
 }

@@ -3,6 +3,7 @@
 namespace Modules\Library\Filters;
 
 use App\Filters\QueryFilter;
+use Modules\Library\app\Enums\BookCopiesStatus;
 
 class BookFilter extends QueryFilter
 {
@@ -20,7 +21,7 @@ class BookFilter extends QueryFilter
     {
         if ($value) {
             $this->query->whereHas('copies', function ($query) {
-                $query->where('status', 'available');
+                $query->where('status', BookCopiesStatus::AVAILABLE);
             });
         }
     }

@@ -4,6 +4,7 @@ namespace Modules\Library\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\View\View;
+use Modules\Library\app\Enums\BookCopiesStatus;
 use Modules\Library\Entities\Book;
 use Modules\Library\Entities\BookCopy;
 use Modules\Library\Entities\Borrowing;
@@ -30,7 +31,7 @@ class LibraryDashboardController extends Controller
                 ->limit(8)
                 ->get(),
             'lowStockBooks' => Book::withCount([
-                'copies as available_copies_count' => fn ($query) => $query->where('status', 'available'),
+                'copies as available_copies_count' => fn ($query) => $query->where('status', BookCopiesStatus::AVAILABLE),
             ])
 
                 ->orderByDesc('available_copies_count')

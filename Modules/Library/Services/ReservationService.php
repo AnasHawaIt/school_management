@@ -298,7 +298,7 @@ class ReservationService
 
             $reservation = Reservation::query()
                 ->where('book_id', $bookId)
-                ->where('status', 'pending')
+                ->where('status', ReservationStatus::PENDING)
                 ->orderBy('position')
                 ->lockForUpdate()
                 ->first();

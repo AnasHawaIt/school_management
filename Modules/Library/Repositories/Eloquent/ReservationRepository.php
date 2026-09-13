@@ -5,6 +5,8 @@ namespace Modules\Library\Repositories\Eloquent;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Modules\Library\app\Enums\BookCopiesStatus;
+use Modules\Library\app\Enums\ReservationStatus;
 use Modules\Library\Entities\Book;
 use Modules\Library\Entities\Member;
 use Modules\Library\Entities\Reservation;
@@ -97,7 +99,7 @@ class ReservationRepository implements ReservationRepositoryInterface
     ): ?Reservation {
         return Reservation::query()
             ->where('book_id', $bookId)
-            ->where('status', 'pending')
+            ->where('status', ReservationStatus::PENDING)
             ->orderBy('created_at', 'asc')
             ->orderBy('id', 'asc')
             ->lockForUpdate()
@@ -122,7 +124,7 @@ class ReservationRepository implements ReservationRepositoryInterface
         return Reservation::query()
             ->where('book_id', $bookId)
             ->where('member_id', $memberId)
-            ->where('status', 'pending')
+            ->where('status', ReservationStatus::PENDING)
             ->exists();
     }
     /**
@@ -133,7 +135,7 @@ class ReservationRepository implements ReservationRepositoryInterface
         return Reservation::query()
             ->where('book_id', $bookId)
             ->where('member_id', $memberId)
-            ->where('status', 'pending')
+            ->where('status', ReservationStatus::PENDING)
             ->first();
     }
 
@@ -174,7 +176,7 @@ class ReservationRepository implements ReservationRepositoryInterface
         return Book::query()
             ->withCount([
                 'copies as available_copies_count' => function ($query) {
-                    $query->where('status', 'available');
+                    $query->where('status', BookCopiesStatus::AVAILABLE);
                 },
             ])
             ->findOrFail($bookId);

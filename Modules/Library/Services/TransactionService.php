@@ -3,6 +3,7 @@
 namespace Modules\Library\Services;
 
 use Illuminate\Validation\ValidationException;
+use Modules\Library\app\Enums\ReservationStatus;
 use Modules\Library\Entities\Borrowing;
 use Modules\Library\Entities\Member;
 use Modules\Library\Entities\Reservation;
@@ -118,11 +119,7 @@ class TransactionService
             ]);
         }
 
-        $transaction = $this->repo->update($id, [
-            'status' => BorrowingStatus::APPROVED->value,
-            'approved_at' => now(),
-            'approved_by' => auth()->id(),
-        ]);
+        $transaction = $this->repo->approve($id);
 
         event(new BorrowingApproved(
             $transaction,
@@ -164,10 +161,7 @@ class TransactionService
             ]);
         }
 
-        $transaction = $this->repo->update($id, [
-            'status' => BorrowingStatus::BORROWED->value,
-            'picked_up_at' => now(),
-        ]);
+        $transaction = $this->repo->pickup($id);
 
         event(new BorrowingPickedUp(
             $transaction,
@@ -190,9 +184,7 @@ class TransactionService
             ]);
         }
 
-        $transaction = $this->repo->update($id, [
-            'status' => BorrowingStatus::CANCELLED->value,
-        ]);
+        $transaction = $this->repo->cancel($id);
 
         event(new BorrowingCancelled(
             $transaction,
@@ -313,7 +305,7 @@ class TransactionService
 
         if (
             Reservation::where('book_id', $transaction->book_id)
-                ->where('status', 'pending')
+                ->where('status', ReservationStatus::PENDING)
                 ->where('member_id', '!=', $transaction->member_id)
                 ->exists()
         ) {
