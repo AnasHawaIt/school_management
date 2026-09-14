@@ -25,7 +25,7 @@ interface ReservationRepositoryInterface
         array $data
     ): Reservation;
 
-    public function delete(Reservation $reservation): bool;
+    public function delete(int $reservation): bool;
 
     public function getByBook(
         int $bookId

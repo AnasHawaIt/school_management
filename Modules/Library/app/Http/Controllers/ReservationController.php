@@ -95,10 +95,10 @@ class ReservationController extends Controller
     /**
      * Delete reservation.
      */
-    public function destroy(Reservation $reservation)
+    public function destroy(int $reservation)
     {
         $this->service->delete(
-            $reservation->id
+            $reservation
         );
 
         return response()->json([

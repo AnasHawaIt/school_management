@@ -743,12 +743,10 @@ Route::middleware(['auth:sanctum'])
             |--------------------------------------------------------------------------
             */
 
-            Route::post('/books/{bookId}/notify-next', [
+            Route::post('/notifyNext/{bookId}', [
                 ReservationController::class,
                 'notifyNext'
             ])->middleware('permission:library.circulation.manage');
-
-
             /*
             |--------------------------------------------------------------------------
             | Process Next Reservation

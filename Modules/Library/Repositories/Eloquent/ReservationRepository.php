@@ -65,9 +65,10 @@ class ReservationRepository implements ReservationRepositoryInterface
         return $reservation->refresh();
     }
 
-    public function delete(Reservation $reservation): bool
+    public function delete(int $reservation): bool
     {
-        return (bool)$reservation->delete();
+        Reservation::query()->findOrFail($reservation)->delete();
+        return true;
     }
 
     public function getByBook(int $bookId): LengthAwarePaginator

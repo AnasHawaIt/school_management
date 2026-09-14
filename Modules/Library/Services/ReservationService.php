@@ -77,9 +77,7 @@ class ReservationService
         });
     }
 
-    /**
-     * Cancel reservation.
-     */
+
     public function cancelReservation(
         int $reservationId
     ): Reservation {
@@ -93,11 +91,8 @@ class ReservationService
              * Only pending/notified reservations can be cancelled.
              */
             if (
-                !in_array(
-                    $reservation->status,
-                    ['pending', 'notified'],
-                    true
-                )
+                $reservation->status !== ReservationStatus::PENDING &&
+                $reservation->status !== ReservationStatus::NOTIFIED
             ) {
                 throw new \RuntimeException(
                     'Only pending or notified reservations can be cancelled.'
@@ -137,11 +132,8 @@ class ReservationService
              * Only pending/notified reservations can be fulfilled.
              */
             if (
-                !in_array(
-                    $reservation->status,
-                    ['pending', 'notified'],
-                    true
-                )
+                $reservation->status !== ReservationStatus::PENDING &&
+                $reservation->status !== ReservationStatus::NOTIFIED
             ) {
                 throw new \RuntimeException(
                     'Only pending or notified reservations can be fulfilled.'
@@ -164,10 +156,10 @@ class ReservationService
 
             $reservation = $this->repository->findForUpdate($id);
 
-            if (!in_array($reservation->status, [
-                ReservationStatus::PENDING,
-                ReservationStatus::NOTIFIED,
-            ])) {
+            if (
+                $reservation->status !== ReservationStatus::PENDING &&
+                $reservation->status !== ReservationStatus::NOTIFIED
+            ) {
                 throw new \DomainException(
                     'This reservation cannot be cancelled.'
                 );
@@ -225,11 +217,8 @@ class ReservationService
              * Only pending/notified reservations can expire.
              */
             if (
-                !in_array(
-                    $reservation->status,
-                    ['pending', 'notified'],
-                    true
-                )
+                $reservation->status !== ReservationStatus::PENDING &&
+                $reservation->status !== ReservationStatus::NOTIFIED
             ) {
                 throw new \RuntimeException(
                     'Only pending or notified reservations can expire.'
@@ -299,7 +288,7 @@ class ReservationService
             $reservation = Reservation::query()
                 ->where('book_id', $bookId)
                 ->where('status', ReservationStatus::PENDING)
-                ->orderBy('position')
+                ->orderBy('id', 'asc')
                 ->lockForUpdate()
                 ->first();
 
@@ -348,7 +337,7 @@ class ReservationService
         return $this->repository->find($id);
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         $publisher = $this->repository->find($id);
 
