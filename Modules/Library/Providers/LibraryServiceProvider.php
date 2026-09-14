@@ -10,11 +10,13 @@ use Modules\Library\Repositories\Eloquent\AuthorRepository;
 use Modules\Library\Repositories\Eloquent\BookRepository;
 use Modules\Library\Repositories\Eloquent\CategoryRepository;
 use Modules\Library\Repositories\Eloquent\MemberRepository;
+use Modules\Library\Repositories\Eloquent\ReservationRepository;
 use Modules\Library\Repositories\Eloquent\TransactionRepository;
 use Modules\Library\Repositories\Interfaces\AuthorRepositoryInterface;
 use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
 use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
 use Modules\Library\Repositories\Interfaces\MemberRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\ReservationRepositoryInterface;
 use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 
@@ -73,6 +75,11 @@ class LibraryServiceProvider extends ServiceProvider
         $this->app->bind(
             MemberRepositoryInterface::class,
             MemberRepository::class
+        );
+
+        $this->app->bind(
+            ReservationRepositoryInterface::class,
+            ReservationRepository::class
         );
     }
 

@@ -321,5 +321,44 @@ class ReservationService
         });
     }
 
+    public function getByBook(int $bookId)
+    {
+        return $this->repository->getByBook($bookId);
+    }
 
+
+    public function getByMember(int $memberId)
+    {
+        return $this->repository->getByMember($memberId);
+    }
+
+
+    public function getMemberPendingReservation(
+        int $bookId,
+        int $memberId
+    ): ?Reservation {
+        return $this->repository->getMemberPendingReservation(
+            $bookId,
+            $memberId
+        );
+    }
+
+    public function find($id)
+    {
+        return $this->repository->find($id);
+    }
+
+    public function delete($id)
+    {
+        $publisher = $this->repository->find($id);
+
+        if (! $publisher) {
+            throw new \Exception('Publisher not found');
+        }
+
+        $this->repository->delete($id);
+
+
+        return true;
+    }
 }

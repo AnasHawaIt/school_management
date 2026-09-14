@@ -637,13 +637,19 @@ Route::middleware(['auth:sanctum'])
 
             /*
             |--------------------------------------------------------------------------
-            | List
+            | List / Show
             |--------------------------------------------------------------------------
             */
 
             Route::get('/', [
                 ReservationController::class,
                 'index'
+            ])->middleware('permission:library.circulation.view');
+
+
+            Route::get('/{reservation}', [
+                ReservationController::class,
+                'show'
             ])->middleware('permission:library.circulation.view');
 
 
@@ -657,6 +663,42 @@ Route::middleware(['auth:sanctum'])
                 ReservationController::class,
                 'store'
             ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Reservations By Book
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/books/{bookId}', [
+                ReservationController::class,
+                'byBook'
+            ])->middleware('permission:library.circulation.view');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Reservations By Member
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/members/{memberId}', [
+                ReservationController::class,
+                'byMember'
+            ])->middleware('permission:library.circulation.view');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Member Pending Reservation
+            |--------------------------------------------------------------------------
+            */
+
+            Route::get('/books/{bookId}/members/{memberId}/pending', [
+                ReservationController::class,
+                'memberPending'
+            ])->middleware('permission:library.circulation.view');
 
 
             /*
@@ -697,13 +739,37 @@ Route::middleware(['auth:sanctum'])
 
             /*
             |--------------------------------------------------------------------------
-            | Notify Next
+            | Notify Next Reservation
             |--------------------------------------------------------------------------
             */
 
             Route::post('/books/{bookId}/notify-next', [
                 ReservationController::class,
                 'notifyNext'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Process Next Reservation
+            |--------------------------------------------------------------------------
+            */
+
+            Route::post('/books/{bookId}/process-next', [
+                ReservationController::class,
+                'processNext'
+            ])->middleware('permission:library.circulation.manage');
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Delete
+            |--------------------------------------------------------------------------
+            */
+
+            Route::delete('/{reservation}', [
+                ReservationController::class,
+                'destroy'
             ])->middleware('permission:library.circulation.manage');
         });
 
