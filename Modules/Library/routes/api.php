@@ -87,7 +87,7 @@ Route::middleware(['auth:sanctum'])
             Route::get('/trashed', [
                 AuthorController::class,
                 'AllOnlyTrashed'
-            ])->middleware('permission:library.catalog.view');
+            ])->middleware('permission:library.catalog.manage');
 
             // Create
             Route::post('/', [
@@ -150,7 +150,7 @@ Route::middleware(['auth:sanctum'])
             Route::get('/trashed', [
                 CategoryController::class,
                 'AllOnlyTrashed'
-            ])->middleware('permission:library.catalog.view');
+            ])->middleware('permission:library.catalog.manage');
 
             // Create
             Route::post('/', [
@@ -213,7 +213,7 @@ Route::middleware(['auth:sanctum'])
             Route::get('/trashed', [
                 PublishersController::class,
                 'AllOnlyTrashed'
-            ])->middleware('permission:library.catalog.view');
+            ])->middleware('permission:library.catalog.manage');
 
             // Create
             Route::post('/', [
@@ -276,7 +276,7 @@ Route::middleware(['auth:sanctum'])
             Route::get('/trashed', [
                 MemberController::class,
                 'AllOnlyTrashed'
-            ])->middleware('permission:library.catalog.view');
+            ])->middleware('permission:library.catalog.manage');
 
             // Create
             Route::post('/', [
@@ -339,7 +339,7 @@ Route::middleware(['auth:sanctum'])
             Route::get('/trashed', [
                 BookController::class,
                 'AllOnlyTrashed'
-            ])->middleware('permission:library.catalog.view');
+            ])->middleware('permission:library.catalog.manage');
 
             // Create
             Route::post('/', [
@@ -468,7 +468,7 @@ Route::middleware(['auth:sanctum'])
             Route::get('/trashed', [
                 TransactionController::class,
                 'trashed'
-            ])->middleware('permission:library.circulation.view');
+            ])->middleware('permission:library.circulation.manage');
 
 
             /*
@@ -619,10 +619,16 @@ Route::middleware(['auth:sanctum'])
                 'show'
             ])->middleware('permission:library.fines.view');
 
-            // Update / Pay / Waive
-            Route::post('/{fine}', [
+            // Pay
+            Route::post('/{fine}/pay', [
                 FineController::class,
-                'update'
+                'pay'
+            ])->middleware('permission:library.fines.manage');
+
+            // Waive
+            Route::post('/{fine}/waive', [
+                FineController::class,
+                'waive'
             ])->middleware('permission:library.fines.manage');
         });
 
@@ -651,6 +657,13 @@ Route::middleware(['auth:sanctum'])
                 ReservationController::class,
                 'show'
             ])->middleware('permission:library.circulation.view');
+
+
+
+            Route::get('/trashed', [
+                ReservationController::class,
+                'AllOnlyTrashed'
+            ])->middleware('permission:library.circulation.manage');
 
 
             /*
@@ -743,12 +756,10 @@ Route::middleware(['auth:sanctum'])
             |--------------------------------------------------------------------------
             */
 
-            Route::post('/books/{bookId}/notify-next', [
+            Route::post('/notifyNext/{bookId}', [
                 ReservationController::class,
                 'notifyNext'
             ])->middleware('permission:library.circulation.manage');
-
-
             /*
             |--------------------------------------------------------------------------
             | Process Next Reservation
@@ -771,6 +782,21 @@ Route::middleware(['auth:sanctum'])
                 ReservationController::class,
                 'destroy'
             ])->middleware('permission:library.circulation.manage');
+
+
+            // Restore
+            Route::post('/{id}/restore', [
+                ReservationController::class,
+                'restore'
+            ])->middleware('permission:library.circulation.restore');
+
+
+            // Force Delete
+            Route::delete('/{id}/force', [
+                ReservationController::class,
+                'forceDelete'
+            ])->middleware('permission:library.circulation.force_delete');
+
         });
 
 

@@ -8,6 +8,14 @@ use Modules\Library\Events\AuthorEvents\AuthorDeleted;
 use Modules\Library\Events\AuthorEvents\AuthorForceDeleted;
 use Modules\Library\Events\AuthorEvents\AuthorRestored;
 use Modules\Library\Events\AuthorEvents\AuthorUpdated;
+use Modules\Library\Events\BookCopiesEvents\BookCopyAvailable;
+use Modules\Library\Events\BookCopiesEvents\BookCopyCreated;
+use Modules\Library\Events\BookCopiesEvents\BookCopyDamaged;
+use Modules\Library\Events\BookCopiesEvents\BookCopyDeleted;
+use Modules\Library\Events\BookCopiesEvents\BookCopyForceDeleted;
+use Modules\Library\Events\BookCopiesEvents\BookCopyLost;
+use Modules\Library\Events\BookCopiesEvents\BookCopyRestored;
+use Modules\Library\Events\BookCopiesEvents\BookCopyUpdated;
 use Modules\Library\Events\BookEvents\BookCreated;
 use Modules\Library\Events\BookEvents\BookDeleted;
 use Modules\Library\Events\BookEvents\BookForceDeleted;
@@ -31,6 +39,9 @@ use Modules\Library\Events\CategoryEvents\CategoryDeleted;
 use Modules\Library\Events\CategoryEvents\CategoryForceDeleted;
 use Modules\Library\Events\CategoryEvents\CategoryRestored;
 use Modules\Library\Events\CategoryEvents\CategoryUpdated;
+use Modules\Library\Events\FinesEvents\FineCreated;
+use Modules\Library\Events\FinesEvents\FinePaid;
+use Modules\Library\Events\FinesEvents\FineWaived;
 use Modules\Library\Events\MemberEvents\MemberCreated;
 use Modules\Library\Events\MemberEvents\MemberDeleted;
 use Modules\Library\Events\MemberEvents\MemberForceDeleted;
@@ -46,6 +57,24 @@ use Modules\Library\Listeners\AuthorListeners\AuthorDeletedLogEventListener;
 use Modules\Library\Listeners\AuthorListeners\AuthorForceDeletedLogEventListener;
 use Modules\Library\Listeners\AuthorListeners\AuthorRestoredLogEventListener;
 use Modules\Library\Listeners\AuthorListeners\AuthorUpdateLogEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyAvailableNotificationListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyCreatedBroadcastEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyCreatedLogEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyDamagedBroadcastEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyDamagedLogEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyDamagedNotificationDatabaseListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyDeletedBroadcastEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyDeletedLogEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyDeletedNotificationDatabaseListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyForceDeletedLogEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyLostBroadcastEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyLostLogEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyLostNotificationDatabaseListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyRestoredLogEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyUpdatedBroadcastEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyUpdatedLogEventListener;
+use Modules\Library\Listeners\BookCopyListeners\BookCopyUpdatedNotificationDatabaseListener;
+use Modules\Library\Listeners\BookCopyListeners\LogBookCopyAvailable;
 use Modules\Library\Listeners\BookListeners\BookCreatedListener\BookCreatedBroadcastEventListener;
 use Modules\Library\Listeners\BookListeners\BookCreatedListener\BookCreatedLogEventListener;
 use Modules\Library\Listeners\BookListeners\BookDeletedListener\BookDeletedBroadcastEventListener;
@@ -81,6 +110,13 @@ use Modules\Library\Listeners\CategoryListeners\CategoryDeletedLogEventListener;
 use Modules\Library\Listeners\CategoryListeners\CategoryForceDeletedLogEventListener;
 use Modules\Library\Listeners\CategoryListeners\CategoryRestoredLogEventListener;
 use Modules\Library\Listeners\CategoryListeners\CategoryUpdateLogEventListener;
+use Modules\Library\Listeners\FineListeners\BroadcastFinePaid;
+use Modules\Library\Listeners\FineListeners\LogFineCreated;
+use Modules\Library\Listeners\FineListeners\LogFinePaid;
+use Modules\Library\Listeners\FineListeners\LogFineWaived;
+use Modules\Library\Listeners\FineListeners\NotifyFineCreated;
+use Modules\Library\Listeners\FineListeners\NotifyFinePaid;
+use Modules\Library\Listeners\FineListeners\NotifyFineWaived;
 use Modules\Library\Listeners\MemberListeners\MemberCreatedLogEventListener;
 use Modules\Library\Listeners\MemberListeners\MemberCreatedNotificationDatabaseListener;
 use Modules\Library\Listeners\MemberListeners\MemberDeletedLogEventListener;
@@ -209,6 +245,47 @@ class EventServiceProvider extends ServiceProvider
             BookAvailableNotificationListener::class,
             LogBookAvailable::class
         ],
+        BookCopyCreated::class => [
+            BookCopyCreatedLogEventListener::class,
+            BookCopyCreatedBroadcastEventListener::class,
+        ],
+
+        BookCopyUpdated::class => [
+            BookCopyUpdatedLogEventListener::class,
+            BookCopyUpdatedNotificationDatabaseListener::class,
+            BookCopyUpdatedBroadcastEventListener::class,
+        ],
+
+        BookCopyDeleted::class => [
+            BookCopyDeletedLogEventListener::class,
+            BookCopyDeletedNotificationDatabaseListener::class,
+            BookCopyDeletedBroadcastEventListener::class,
+        ],
+
+        BookCopyRestored::class => [
+            BookCopyRestoredLogEventListener::class,
+        ],
+
+        BookCopyForceDeleted::class => [
+            BookCopyForceDeletedLogEventListener::class,
+        ],
+
+        BookCopyAvailable::class => [
+            BookCopyAvailableNotificationListener::class,
+            LogBookCopyAvailable::class,
+        ],
+
+        BookCopyLost::class => [
+            BookCopyLostLogEventListener::class,
+            BookCopyLostNotificationDatabaseListener::class,
+            BookCopyLostBroadcastEventListener::class,
+        ],
+
+        BookCopyDamaged::class => [
+            BookCopyDamagedLogEventListener::class,
+            BookCopyDamagedNotificationDatabaseListener::class,
+            BookCopyDamagedBroadcastEventListener::class,
+        ],
 
         BorrowingCreated::class => [
             LogBorrowingCreated::class,
@@ -263,6 +340,22 @@ class EventServiceProvider extends ServiceProvider
         BorrowingForceDeleted::class => [
             LogBorrowingForceDeleted::class,
         ],
+
+        FineCreated::class => [
+            LogFineCreated::class,
+            NotifyFineCreated::class,
+        ],
+
+        FinePaid::class => [
+            LogFinePaid::class,
+            NotifyFinePaid::class,
+            BroadcastFinePaid::class,
+        ],
+
+        FineWaived::class => [
+            LogFineWaived::class,
+            NotifyFineWaived::class,
+        ]
 
     ];
 

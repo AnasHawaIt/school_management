@@ -6,12 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Core\Entities\User;
 
 class Fine extends Model
 {
-    use HasFactory,SoftDeletes;
-
-    protected $dates = ['deleted_at'];
+    use HasFactory, SoftDeletes;
 
     protected $table = 'library_fines';
 
@@ -20,7 +19,9 @@ class Fine extends Model
         'amount',
         'status',
         'paid_at',
+        'paid_by',
         'waived_at',
+        'waived_by',
         'notes',
     ];
 
@@ -32,6 +33,25 @@ class Fine extends Model
 
     public function transaction(): BelongsTo
     {
-        return $this->belongsTo(Borrowing::class, 'transaction_id');
+        return $this->belongsTo(
+            Borrowing::class,
+            'transaction_id'
+        );
+    }
+
+    public function paidBy(): BelongsTo
+    {
+        return $this->belongsTo(
+            User::class,
+            'paid_by'
+        );
+    }
+
+    public function waivedBy(): BelongsTo
+    {
+        return $this->belongsTo(
+            User::class,
+            'waived_by'
+        );
     }
 }

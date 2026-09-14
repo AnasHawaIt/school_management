@@ -2,42 +2,45 @@
 
 namespace Modules\Library\app\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\Entities\Fine;
-use Modules\Library\app\Http\Requests\UpdateFineRequest;
+use Illuminate\Routing\Controller;
 use Modules\Library\app\Http\Resources\FineResource;
+use Modules\Library\Entities\Fine;
+use Modules\Library\Services\FineService;
+use Modules\Library\Repositories\Interfaces\FineRepositoryInterface;
 
 class FineController extends Controller
 {
+    public function __construct(
+        protected FineService $service,
+        protected FineRepositoryInterface $repository
+    ) {}
+
     public function index(Request $request)
     {
-        $fines = Fine::query()
-            ->with('transaction.member.user')
-            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->string('status')->toString()))
-            ->latest()
-            ->paginate(min((int) $request->get('per_page', 10), 100));
-
-        return FineResource::collection($fines);
+        return FineResource::collection(
+            $this->repository->paginate($request)
+        );
     }
 
     public function show(Fine $fine): FineResource
     {
-        return new FineResource($fine->load('transaction.member.user'));
+        return new FineResource(
+            $this->repository->findById($fine->id)
+        );
     }
 
-    public function update(UpdateFineRequest $request, Fine $fine)
+    public function pay(Fine $fine): FineResource
     {
-        if ($fine->status !== 'unpaid') {
-            return response()->json([
-                'message' => 'Only unpaid fines can be settled.',
-            ], 422);
-        }
+        return new FineResource(
+            $this->service->pay($fine)
+        );
+    }
 
-        $data = $request->validated();
-        $data[$data['status'] === 'paid' ? 'paid_at' : 'waived_at'] = now();
-        $fine->update($data);
-
-        return new FineResource($fine->refresh());
+    public function waive(Fine $fine): FineResource
+    {
+        return new FineResource(
+            $this->service->waive($fine)
+        );
     }
 }
