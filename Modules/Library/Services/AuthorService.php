@@ -5,6 +5,7 @@ namespace Modules\Library\Services;
 use App\Services\ImageService;
 use Modules\library\Events\AuthorEvents\AuthorCreated;
 use Modules\library\Events\AuthorEvents\AuthorDeleted;
+use Modules\Library\Events\AuthorEvents\AuthorForceDeleted;
 use Modules\library\Events\AuthorEvents\AuthorRestored;
 use Modules\library\Events\AuthorEvents\AuthorUpdated;
 use Modules\Library\Repositories\Interfaces\AuthorRepositoryInterface;
@@ -38,11 +39,9 @@ class AuthorService
 
     public function forceDelete($id)
     {
-        $author= $this->repo->find($id);
+        $author = $this->repo->forceDelete($id);
 
-        $author->forceDelete();
-
-        event(new AuthorDeleted($author,auth()->id()));
+        event(new AuthorForceDeleted($author,auth()->id()));
 
         return true;
     }
@@ -69,7 +68,7 @@ class AuthorService
 
         $author = $this->repo->find($id);
 
-        $this->imageService->replace($author, $images);
+        $this->imageService->upload($author, $images);
 
         event(new AuthorUpdated($author, auth()->id()));
 

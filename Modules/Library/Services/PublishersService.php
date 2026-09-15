@@ -5,6 +5,7 @@ namespace Modules\Library\Services;
 use Modules\Library\app\Http\Resources\PublishersResource;
 use Modules\Library\Events\PublishersEvents\PublishersCreated;
 use Modules\Library\Events\PublishersEvents\PublishersDeleted;
+use Modules\Library\Events\PublishersEvents\PublishersForceDeleted;
 use Modules\Library\Events\PublishersEvents\PublishersRestored;
 use Modules\Library\Events\PublishersEvents\PublishersUpdated;
 use Modules\Library\Repositories\Eloquent\PublishersRepository;
@@ -36,7 +37,7 @@ class PublishersService
     {
         $publishers= $this->repo->forceDelete($id);
 
-        event(new PublishersDeleted($publishers));
+        event(new PublishersForceDeleted($publishers));
 
         return true;
     }
@@ -48,11 +49,11 @@ class PublishersService
 
     public function create(array $data)
     {
-        $category= $this->repo->create($data);
+         $publisher= $this->repo->create($data);
 
-        event(new PublishersCreated($category),auth()->id());
+        event(new PublishersCreated( $publisher),auth()->id());
 
-        return $category;
+        return  $publisher;
     }
 
     public function findById($id)
@@ -62,24 +63,24 @@ class PublishersService
 
     public function update($id, array $data)
     {
-        $category= $this->repo->update($id, $data);
+         $publisher= $this->repo->update($id, $data);
 
-        event(new PublishersUpdated($category),auth()->id());
+        event(new PublishersUpdated( $publisher),auth()->id());
 
-        return $category;
+        return  $publisher;
     }
 
     public function delete($id)
     {
-        $category = $this->repo->findById($id);
+         $publisher = $this->repo->findById($id);
 
-        if (!$category) {
+        if (! $publisher) {
             throw new \Exception('Publisher not found');
         }
 
         $this->repo->delete($id);
 
-        event(new PublishersDeleted($category));
+        event(new PublishersDeleted( $publisher));
 
         return true;
     }

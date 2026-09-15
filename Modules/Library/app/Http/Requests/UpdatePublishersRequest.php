@@ -8,7 +8,7 @@ class UpdatePublishersRequest extends FormRequest
 {
     public function authorize()
     {
-    return true;
+    return auth()->check();
     }
 
     public function rules()
@@ -21,8 +21,8 @@ class UpdatePublishersRequest extends FormRequest
     public function messages()
     {
     return [
-            'name.string' => 'Publishers name must be a string',
-            'name.unique' => 'Publishers already exists',
+            'name.string' => 'Publisher name must be a string',
+            'name.unique' => 'Publisher already exists',
 
         ];
     }

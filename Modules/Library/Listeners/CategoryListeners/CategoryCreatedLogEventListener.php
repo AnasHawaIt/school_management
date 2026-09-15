@@ -11,7 +11,7 @@ class CategoryCreatedLogEventListener
         $category = $event->category;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($category)
             ->withProperties([
                 'category_id' => $category->id,

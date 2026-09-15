@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->foreignId('author_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained();
-            $table->foreignId('publisher_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('author_id')
+                ->constrained()
+                ->restrictOnDelete();
+            $table->foreignId('category_id')
+                ->constrained()
+                ->restrictOnDelete();
+            $table->foreignId('publisher_id')
+                ->constrained()
+                ->restrictOnDelete();
             $table->string('isbn')->unique();
-            $table->integer('copies')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

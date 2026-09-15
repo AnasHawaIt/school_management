@@ -4,6 +4,7 @@
 namespace Modules\Library\Repositories\Interfaces;
 
 use Illuminate\Http\Request;
+use Modules\Library\Entities\Borrowing;
 
 interface TransactionRepositoryInterface
 {
@@ -11,6 +12,13 @@ interface TransactionRepositoryInterface
     public function restore($id);
     public function forceDelete($id);
     public function getAll(Request $request);
+    public function isAvailable(int $bookId): bool;
+    public function availableCopiesCount(int $bookId): int;
+    public function returnBook(int $id): Borrowing;
+    public function markLost(int $id): Borrowing;
+    public function approve(int $id): Borrowing;
+    public function pickup(int $id): Borrowing;
+    public function cancel(int $id): Borrowing;
     public function findById($id);
     public function create(array $data);
     public function update($id, array $data);

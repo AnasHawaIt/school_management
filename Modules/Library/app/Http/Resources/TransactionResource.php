@@ -15,15 +15,25 @@ class TransactionResource extends JsonResource
                 'id'    => $this->book->id,
                 'title' => $this->book->title,
             ],
+            'copy' => $this->copy ? [
+                'id' => $this->copy->id,
+                'barcode' => $this->copy->barcode,
+                'status' => $this->copy->status,
+            ] : null,
 
             'member' => [
                 'id'   => $this->member->id,
-                'name' => $this->member->name,
+                'name' => $this->member->user?->full_name,
             ],
 
             'borrow_date' => $this->borrow_date,
             'due_date'    => $this->due_date,
+            'renewal_count' => $this->renewal_count,
+            'max_renewals' => $this->max_renewals,
+            'return_date' => $this->return_date,
+            'returned_at' => $this->returned_at,
             'status'      => $this->status,
+            'fine'        => $this->whenLoaded('fine', fn () => $this->fine ? new FineResource($this->fine) : null),
 
             'created_at' => $this->created_at,
         ];

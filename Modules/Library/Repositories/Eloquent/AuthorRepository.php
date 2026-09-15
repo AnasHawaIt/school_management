@@ -55,7 +55,7 @@ class AuthorRepository implements AuthorRepositoryInterface
     {
         $author = $this->find($id);
 
-        $author= Author::query()->update($data);
+        $author->update($data);
 
         return $author;
     }

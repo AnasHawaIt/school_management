@@ -11,7 +11,7 @@ class BookUpdatedLogEventListener
         $book = $event->book;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($book)
             ->withProperties([
                 'book_id' => $book->id,

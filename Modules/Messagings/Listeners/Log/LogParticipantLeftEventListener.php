@@ -12,8 +12,7 @@ class LogParticipantLeftEventListener
     ): void
     {
 
-        activity()
-            ->causedBy($event->user)
+        activity()->causedBy(auth()->user())
             ->performedOn($event->conversation)
             ->log('Conversation.ParticipantLeft');
     }

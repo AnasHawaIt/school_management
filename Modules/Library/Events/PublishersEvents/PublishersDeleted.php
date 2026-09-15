@@ -2,13 +2,13 @@
 
 namespace Modules\Library\Events\PublishersEvents;
 
-use Modules\Library\Entities\Publishers;
+use Modules\Library\Entities\Publisher;
 
 class PublishersDeleted
 {
     public function __construct(
-        public Publishers $publisher,
-        public ?int $userId = null
+        public Publisher $publisher,
+        public ?int      $userId = null
     ) {}
 }
 

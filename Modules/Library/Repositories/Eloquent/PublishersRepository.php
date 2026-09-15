@@ -2,22 +2,22 @@
 
 namespace Modules\Library\Repositories\Eloquent;
 
-use Modules\Library\Entities\Publishers;
-use Modules\Library\Filters\CategoryFilter;
+use Modules\Library\Entities\Publisher;
+use Modules\Library\Filters\PublisherFilter;
 use Modules\Library\Repositories\Interfaces\PublishersRepositoryInterface;
 
 class PublishersRepository implements PublishersRepositoryInterface
 {
     public function getPublishersOnlyTrashed()
     {
-        $query = Publishers::onlyTrashed()->get();
+        $query = Publisher::onlyTrashed()->get();
 
         return $query;
     }
 
     public function restore($id)
     {
-        $publisher = Publishers::withTrashed()->findOrFail($id);
+        $publisher = Publisher::withTrashed()->findOrFail($id);
 
         $publisher->restore();
 
@@ -26,7 +26,7 @@ class PublishersRepository implements PublishersRepositoryInterface
 
     public function forceDelete($id)
     {
-        $publisher = Publishers::withTrashed()->findOrFail($id);
+        $publisher = Publisher::withTrashed()->findOrFail($id);
 
         $publisher->forceDelete();
 
@@ -35,21 +35,21 @@ class PublishersRepository implements PublishersRepositoryInterface
 
     public function getAll($request)
     {
-        $query = Publishers::query();
+        $query = Publisher::query();
 
-        $query = (new CategoryFilter($request))->apply($query);
+        $query = (new PublisherFilter($request))->apply($query);
 
         return $query->paginate($request->get('per_page', 10));
     }
 
     public function findById($id)
     {
-        return Publishers::findOrFail($id);
+        return Publisher::findOrFail($id);
     }
 
     public function create(array $data)
     {
-        return Publishers::create($data);
+        return Publisher::create($data);
     }
 
     public function update($id, array $data)

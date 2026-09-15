@@ -3,7 +3,7 @@
 namespace Modules\Library\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Library\Entities\Publishers;
+use Modules\Library\Entities\Publisher;
 
 class PublisherSeeder extends Seeder
 {
@@ -19,7 +19,7 @@ class PublisherSeeder extends Seeder
         ];
 
         foreach ($publishers as $publisher) {
-            Publishers::firstOrCreate([
+            Publisher::firstOrCreate([
                 'name' => $publisher['name'],
             ]);
         }

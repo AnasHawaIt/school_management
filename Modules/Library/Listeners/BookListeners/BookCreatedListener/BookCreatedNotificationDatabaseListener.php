@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Library\Listeners\BookListeners;
+namespace Modules\Library\Listeners\BookListeners\BookCreatedListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Library\Events\BookEvents\BookCreated;

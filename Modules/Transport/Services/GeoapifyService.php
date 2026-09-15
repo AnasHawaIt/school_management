@@ -40,6 +40,7 @@ class GeoapifyService
         string $mode = 'drive'
     ): array
     {
+        $this->ensureConfigured();
         $response = Http::timeout(15)
             ->get($this->baseUrl . '/v1/routing', [
                 'waypoints' =>
@@ -70,6 +71,7 @@ class GeoapifyService
         string $mode = 'drive'
     ): array
     {
+        $this->ensureConfigured();
         $response = Http::timeout(15)
             ->get($this->baseUrl . '/v1/matrix', [
                 'sources' => $this->formatPoints($sources),
@@ -98,5 +100,12 @@ class GeoapifyService
                 return "{$point['latitude']},{$point['longitude']}";
             })
             ->implode('|');
+    }
+
+    protected function ensureConfigured(): void
+    {
+        if (empty($this->apiKey)) {
+            throw new Exception('Geoapify API key is not configured.');
+        }
     }
 }
