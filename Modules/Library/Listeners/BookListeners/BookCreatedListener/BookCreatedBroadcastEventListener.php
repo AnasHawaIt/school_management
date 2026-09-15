@@ -13,6 +13,11 @@ class BookCreatedBroadcastEventListener  implements ShouldQueue
 
     public function handle(BookCreated $event)
     {
-        broadcast(new BookBroadcast($event->book))->toOthers();
+        broadcast(
+            new BookBroadcast(
+                book: $event->book,
+                action: 'created'
+            )
+        )->toOthers();
     }
 }

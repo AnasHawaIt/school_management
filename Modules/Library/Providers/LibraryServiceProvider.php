@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Library\Console\Commands\CheckOverdueBorrowings;
 use Modules\Library\Repositories\Eloquent\AuthorRepository;
+use Modules\Library\Repositories\Eloquent\BookCopyRepository;
 use Modules\Library\Repositories\Eloquent\BookRepository;
 use Modules\Library\Repositories\Eloquent\CategoryRepository;
 use Modules\Library\Repositories\Eloquent\FineRepository;
@@ -14,6 +15,7 @@ use Modules\Library\Repositories\Eloquent\MemberRepository;
 use Modules\Library\Repositories\Eloquent\ReservationRepository;
 use Modules\Library\Repositories\Eloquent\TransactionRepository;
 use Modules\Library\Repositories\Interfaces\AuthorRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\BookCopyRepositoryInterface;
 use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
 use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
 use Modules\Library\Repositories\Interfaces\FineRepositoryInterface;
@@ -58,6 +60,10 @@ class LibraryServiceProvider extends ServiceProvider
             BookRepositoryInterface::class,
             BookRepository::class
         );
+
+        $this->app->bind(
+            BookCopyRepositoryInterface::class,
+            BookCopyRepository::class );
 
         $this->app->bind(
             TransactionRepositoryInterface::class,

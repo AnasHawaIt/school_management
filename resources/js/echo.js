@@ -53,3 +53,43 @@ window.Echo
     });
 
 console.log('👂 Listening for announcement events...');
+
+window.Echo
+    .channel('library.books')
+    .subscribed(() => {
+        console.log('🟢 SUBSCRIBED TO LIBRARY BOOKS CHANNEL');
+    })
+    .error((error) => {
+        console.error('❌ LIBRARY BOOKS CHANNEL ERROR:', error);
+    })
+
+    .listen('.book.updated', (event) => {
+        console.log('✏️ BOOK UPDATED - REAL TIME:', event);
+    })
+
+    .listen('.book.created', (event) => {
+        console.log('➕ BOOK CREATED - REAL TIME:', event);
+    })
+
+    .listen('.book.deleted', (event) => {
+        console.log('🗑️ BOOK DELETED - REAL TIME:', event);
+    });
+
+window.Echo
+    .channel('library.book-copies')
+    .subscribed(() => {
+        console.log('🟢 SUBSCRIBED TO LIBRARY BOOK COPIES CHANNEL');
+    })
+    .listen('.book-copy.created', (event) => {
+        console.log('➕ BOOK COPY CREATED:', event);
+    })
+    .listen('.book-copy.updated', (event) => {
+        console.log('✏️ BOOK COPY UPDATED:', event);
+    })
+    .listen('.book-copy.deleted', (event) => {
+        console.log('🗑️ BOOK COPY DELETED:', event);
+    })
+    .listen('.book-copy.status-changed', (event) => {
+        console.log('🔄 BOOK COPY STATUS CHANGED:', event);
+    });
+

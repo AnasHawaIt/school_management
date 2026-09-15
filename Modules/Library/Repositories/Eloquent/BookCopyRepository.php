@@ -15,24 +15,30 @@ class BookCopyRepository implements BookCopyRepositoryInterface
         Request $request
     ): LengthAwarePaginator {
         return $book->copies()
-            ->latest()
+            ->with('book')
+            ->latest('id')
             ->paginate(
                 min(
-                    (int) $request->get('per_page', 20),
+                    max(
+                        (int) $request->get('per_page', 20),
+                        1
+                    ),
                     100
                 )
             );
     }
 
-    public function findById(int $id): BookCopy
-    {
+    public function findById(
+        int $id
+    ): BookCopy {
         return BookCopy::query()
             ->with('book')
             ->findOrFail($id);
     }
 
-    public function findByIdForUpdate(int $id): BookCopy
-    {
+    public function findByIdForUpdate(
+        int $id
+    ): BookCopy {
         return BookCopy::query()
             ->lockForUpdate()
             ->findOrFail($id);
@@ -51,11 +57,14 @@ class BookCopyRepository implements BookCopyRepositoryInterface
     ): BookCopy {
         $copy->update($data);
 
-        return $copy->fresh();
+        return $copy->fresh([
+            'book',
+        ]);
     }
 
-    public function delete(BookCopy $copy): bool
-    {
+    public function delete(
+        BookCopy $copy
+    ): bool {
         return (bool) $copy->delete();
     }
 
