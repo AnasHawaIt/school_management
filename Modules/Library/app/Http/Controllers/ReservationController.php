@@ -76,7 +76,7 @@ class ReservationController extends Controller
      */
     public function processNext(int $bookId)
     {
-        $reservation = $this->service->processNextReservation(
+        $reservation = $this->service->notifyNextMember(
             $bookId
         );
 

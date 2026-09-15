@@ -32,6 +32,7 @@ use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
 use Modules\Library\Events\BorrowingEvents\BorrowingPickedUp;
 use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
 use Modules\Library\Events\BorrowingEvents\BorrowingRenewed;
+use Modules\Library\Events\BorrowingEvents\BorrowingRestored;
 use Modules\Library\Events\BorrowingEvents\BorrowingReturned;
 use Modules\Library\Events\BorrowingEvents\BorrowingUpdated;
 use Modules\Library\Events\CategoryEvents\CategoryCreated;
@@ -52,6 +53,11 @@ use Modules\Library\Events\PublishersEvents\PublishersDeleted;
 use Modules\Library\Events\PublishersEvents\PublishersForceDeleted;
 use Modules\Library\Events\PublishersEvents\PublishersRestored;
 use Modules\Library\Events\PublishersEvents\PublishersUpdated;
+use Modules\Library\Events\ReservationEvents\ReservationCancelled;
+use Modules\Library\Events\ReservationEvents\ReservationCreated;
+use Modules\Library\Events\ReservationEvents\ReservationExpired;
+use Modules\Library\Events\ReservationEvents\ReservationFulfilled;
+use Modules\Library\Events\ReservationEvents\ReservationNotified;
 use Modules\Library\Listeners\AuthorListeners\AuthorCreatedLogEventListener;
 use Modules\Library\Listeners\AuthorListeners\AuthorDeletedLogEventListener;
 use Modules\Library\Listeners\AuthorListeners\AuthorForceDeletedLogEventListener;
@@ -86,6 +92,7 @@ use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedBroad
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedLogEventListener;
 use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedNotificationDatabaseListener;
 use Modules\Library\Listeners\BorrowingListeners\BookAvailableNotificationListener;
+use Modules\Library\Listeners\BorrowingListeners\CreateOverdueFineListener;
 use Modules\Library\Listeners\BorrowingListeners\Logs\LogBookAvailable;
 use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingApproved;
 use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingCancelled;
@@ -97,8 +104,10 @@ use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingOverdue;
 use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingPickedUp;
 use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingRejected;
 use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingRenewed;
+use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingRestored;
 use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingReturned;
 use Modules\Library\Listeners\BorrowingListeners\Logs\LogBorrowingUpdated;
+use Modules\Library\Listeners\BorrowingListeners\ProcessReservationQueueListener;
 use Modules\Library\Listeners\BorrowingListeners\SendBorrowingApprovedNotification;
 use Modules\Library\Listeners\BorrowingListeners\SendBorrowingCreatedNotification;
 use Modules\Library\Listeners\BorrowingListeners\SendBorrowingOverdueNotification;
@@ -129,6 +138,14 @@ use Modules\Library\Listeners\PublishersListeners\PublishersDeletedLogEventListe
 use Modules\Library\Listeners\PublishersListeners\PublishersForceDeletedLogEventListener;
 use Modules\Library\Listeners\PublishersListeners\PublishersRestoredLogEventListener;
 use Modules\Library\Listeners\PublishersListeners\PublishersUpdateLogEventListener;
+use Modules\Library\Listeners\ReservationListeners\ProcessBookReservations;
+use Modules\Library\Listeners\ReservationListeners\ProcessNextReservation;
+use Modules\Library\Listeners\ReservationListeners\ReservationCancelledLogEventListener;
+use Modules\Library\Listeners\ReservationListeners\ReservationCreatedLogEventListener;
+use Modules\Library\Listeners\ReservationListeners\ReservationExpiredLogEventListener;
+use Modules\Library\Listeners\ReservationListeners\ReservationFulfilledLogEventListener;
+use Modules\Library\Listeners\ReservationListeners\ReservationNotifiedLogEventListener;
+use Modules\Library\Listeners\ReservationListeners\SendReservationNotification;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -243,6 +260,7 @@ class EventServiceProvider extends ServiceProvider
 
         BookAvailable::class => [
             BookAvailableNotificationListener::class,
+            ProcessBookReservations::class,
             LogBookAvailable::class
         ],
         BookCopyCreated::class => [
@@ -272,6 +290,7 @@ class EventServiceProvider extends ServiceProvider
 
         BookCopyAvailable::class => [
             BookCopyAvailableNotificationListener::class,
+            ProcessReservationQueueListener::class,
             LogBookCopyAvailable::class,
         ],
 
@@ -330,7 +349,12 @@ class EventServiceProvider extends ServiceProvider
 
         BorrowingOverdue::class => [
             LogBorrowingOverdue::class,
+            CreateOverdueFineListener::class,
             SendBorrowingOverdueNotification::class,
+        ],
+
+        BorrowingRestored::class=>[
+            LogBorrowingRestored::class,
         ],
 
         BorrowingDeleted::class => [
@@ -355,7 +379,29 @@ class EventServiceProvider extends ServiceProvider
         FineWaived::class => [
             LogFineWaived::class,
             NotifyFineWaived::class,
-        ]
+        ],
+
+        ReservationCancelled::class => [
+            ReservationCancelledLogEventListener::class,
+        ],
+
+        ReservationCreated::class => [
+            ProcessNextReservation::class,
+            ReservationCreatedLogEventListener::class,
+        ],
+
+        ReservationExpired::class => [
+            ReservationExpiredLogEventListener::class,
+        ],
+
+        ReservationFulfilled::class => [
+            ReservationFulfilledLogEventListener::class,
+        ],
+
+        ReservationNotified::class => [
+            ReservationNotifiedLogEventListener::class,
+            SendReservationNotification::class,
+        ],
 
     ];
 

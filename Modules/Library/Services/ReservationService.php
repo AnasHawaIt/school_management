@@ -281,35 +281,6 @@ class ReservationService
         });
     }
 
-    public function processNextReservation(int $bookId): ?Reservation
-    {
-        return DB::transaction(function () use ($bookId) {
-
-            $reservation = Reservation::query()
-                ->where('book_id', $bookId)
-                ->where('status', ReservationStatus::PENDING)
-                ->orderBy('id', 'asc')
-                ->lockForUpdate()
-                ->first();
-
-            if (!$reservation) {
-                return null;
-            }
-
-            $reservation->update([
-                'status' => ReservationStatus::PENDING,
-                'notified_at' => now(),
-                'expires_at' => now()->addDays(
-                    config('library.reservation_expiry_days', 2)
-                ),
-            ]);
-
-            event(new ReservationNotified($reservation));
-
-            return $reservation->fresh();
-        });
-    }
-
     public function getByBook(int $bookId)
     {
         return $this->repository->getByBook($bookId);

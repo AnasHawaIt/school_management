@@ -2,10 +2,11 @@
 
 namespace Modules\Library\Listeners\BookCopyListeners;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use Modules\Library\Events\BookCopiesEvents\BookCopyLost;
 
-class BookCopyLostLogEventListener
+class BookCopyLostLogEventListener implements ShouldQueue
 {
     public function handle(BookCopyLost $event): void
     {
