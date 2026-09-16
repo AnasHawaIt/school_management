@@ -4,20 +4,37 @@ namespace Modules\Library\app\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Modules\Library\Entities\Borrowing;
 use Modules\Library\Entities\Fine;
 use Modules\Library\Services\FineService;
+use Modules\Library\app\Enums\BorrowingStatus;
+use Modules\Library\app\Enums\FineStatus;
 
-class CreateOverdueFineJob implements ShouldQueue
+class CreateOverdueFineJob implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+    public int $timeout = 60;
+    public int $uniqueFor = 3600;
 
     public function __construct(
         public int $borrowingId
     ) {
+    }
+
+    public function uniqueId(): string
+    {
+        return (string) $this->borrowingId;
+    }
+
+    public function backoff(): array
+    {
+        return [30, 120];
     }
 
     public function handle(
@@ -37,7 +54,7 @@ class CreateOverdueFineJob implements ShouldQueue
         /*
          * Fine should only be created for late borrowings.
          */
-        if ($borrowing->status !== 'late') {
+        if ($borrowing->status !== BorrowingStatus::LATE) {
             return;
         }
 
@@ -83,7 +100,7 @@ class CreateOverdueFineJob implements ShouldQueue
         $fineService->create([
             'transaction_id' => $borrowing->id,
             'amount' => $amount,
-            'status' => 'unpaid',
+            'status' => FineStatus::UNPAID,
             'notes' => sprintf(
                 'Overdue fine for %d day(s).',
                 $overdueDays

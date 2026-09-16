@@ -7,6 +7,8 @@ use Illuminate\Console\Command;
 use Modules\Library\Entities\Borrowing;
 use Modules\Library\Entities\Fine;
 use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
+use Modules\Library\app\Enums\BorrowingStatus;
+use Modules\Library\app\Enums\FineStatus;
 
 class CheckOverdueBorrowings extends Command
 {
@@ -19,19 +21,19 @@ class CheckOverdueBorrowings extends Command
         Borrowing::query()
             ->whereNull('returned_at')
             ->where('due_date', '<', today())
-            ->whereIn('status', ['borrowed', 'late'])
+            ->whereIn('status', [BorrowingStatus::BORROWED, BorrowingStatus::LATE])
             ->chunkById(100, function ($borrowings) {
 
                 foreach ($borrowings as $borrowing) {
-                    if ($borrowing->status !== 'late') {
-                        $borrowing->update(['status' => 'late']);
+                    if ($borrowing->status !== BorrowingStatus::LATE) {
+                        $borrowing->update(['status' => BorrowingStatus::LATE]);
                     }
 
                     $daysLate = max(1, $borrowing->due_date->diffInDays(today()));
                     $fine = Fine::firstOrNew(['transaction_id' => $borrowing->id]);
-                    if (!$fine->exists || $fine->status === 'unpaid') {
+                    if (!$fine->exists || $fine->status === FineStatus::UNPAID) {
                         $fine->amount = $daysLate * config('library.fine_per_day');
-                        $fine->status ??= 'unpaid';
+                        $fine->status ??= FineStatus::UNPAID;
                         $fine->save();
                     }
 

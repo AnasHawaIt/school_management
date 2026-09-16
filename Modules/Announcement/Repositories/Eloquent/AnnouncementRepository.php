@@ -4,6 +4,7 @@ namespace Modules\Announcement\Repositories\Eloquent;
 
 use Modules\Announcement\Entities\Announcement;
 use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
+use Illuminate\Http\Request;
 
 class AnnouncementRepository implements AnnouncementRepositoryInterface
 {
@@ -57,12 +58,26 @@ class AnnouncementRepository implements AnnouncementRepositoryInterface
             ->get();
     }
 
-    public function getAll()
+    public function getAll(Request $request)
     {
-        return Announcement::query()
+        $query = Announcement::query()
             ->with('creator')
-            ->latest()
-            ->get();
+            ->when($request->filled('status'), fn ($q) => $q->where('status', $request->string('status')->value))
+            ->when($request->filled('pinned'), fn ($q) => $q->where('is_pinned', $request->boolean('pinned')))
+            ->when($request->filled('search'), fn ($q) => $q->where(function ($q) use ($request) {
+                $term = $request->string('search')->value;
+                $q->where('title', 'like', "%{$term}%")
+                    ->orWhere('body', 'like', "%{$term}%");
+            }));
+
+        $sort = in_array($request->get('sort'), ['created_at', 'published_at', 'expires_at', 'priority'], true)
+            ? $request->get('sort')
+            : 'created_at';
+        $direction = $request->get('direction') === 'asc' ? 'asc' : 'desc';
+
+        return $query
+            ->orderBy($sort, $direction)
+            ->paginate(min(max((int) $request->get('per_page', 10), 1), 100));
     }
 
     public function find(int $id): ?Announcement

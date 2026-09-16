@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
+use Modules\Library\app\Enums\FineStatus;
 
 class Fine extends Model
 {
@@ -27,6 +28,7 @@ class Fine extends Model
 
     protected $casts = [
         'amount' => 'decimal:2',
+        'status' => FineStatus::class,
         'paid_at' => 'datetime',
         'waived_at' => 'datetime',
     ];

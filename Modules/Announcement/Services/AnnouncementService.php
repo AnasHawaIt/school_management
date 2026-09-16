@@ -17,13 +17,16 @@ class AnnouncementService
 {
     protected $repo;
     protected $imageService;
+    protected AnnouncementCache $cache;
 
     public function __construct(
         AnnouncementRepositoryInterface $repo,
-        ImageService $imageService
+        ImageService $imageService,
+        AnnouncementCache $cache
     ) {
         $this->repo = $repo;
         $this->imageService = $imageService;
+        $this->cache = $cache;
     }
 
     public function getAnnouncementOnlyTrashed()
@@ -36,6 +39,7 @@ class AnnouncementService
         $announcement = $this->repo->restore($id);
 
         event(new AnnouncementRestored($announcement));
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -45,6 +49,7 @@ class AnnouncementService
         $announcement = $this->repo->forceDelete($id);
 
         event(new AnnouncementDeleted($announcement));
+        $this->cache->invalidate();
 
         return true;
     }
@@ -56,6 +61,7 @@ class AnnouncementService
         $this->imageService->upload($announcement, $images);
 
         event(new AnnouncementCreated($announcement));
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -80,9 +86,9 @@ class AnnouncementService
         return $this->repo->getExpired();
     }
 
-    public function getAll()
+    public function getAll(\Illuminate\Http\Request $request)
     {
-        return $this->repo->getAll();
+        return $this->repo->getAll($request);
     }
 
     public function find($id)
@@ -93,9 +99,12 @@ class AnnouncementService
     public function update(int $id, array $data, $images = null): Announcement {
         $announcement = $this->repo->update($id, $data);
 
-        $this->imageService->replace($announcement, $images);
+        if ($images !== null) {
+            $this->imageService->replace($announcement, $images);
+        }
 
         event(new AnnouncementUpdated($announcement));
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -115,6 +124,7 @@ class AnnouncementService
         }
 
         event(new AnnouncementPublished($announcement));
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -133,6 +143,7 @@ class AnnouncementService
         }
 
         event(new AnnouncementScheduled($announcement));
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -152,6 +163,7 @@ class AnnouncementService
         }
 
         event(new AnnouncementExpired($announcement));
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -169,6 +181,8 @@ class AnnouncementService
                 'Announcement cannot be canceled from its current status.'
             );
         }
+
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -188,6 +202,7 @@ class AnnouncementService
         }
 
         $announcement->pin();
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -207,6 +222,7 @@ class AnnouncementService
         }
 
         $announcement->unpin();
+        $this->cache->invalidate();
 
         return $announcement;
     }
@@ -220,5 +236,6 @@ class AnnouncementService
         $this->repo->delete($id);
 
         event(new AnnouncementDeleted($announcement));
+        $this->cache->invalidate();
     }
 }

@@ -4,6 +4,9 @@ use App\Http\Middleware\EnsureEmailIsVerified;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Request;
 use Modules\Library\app\Http\Middleware\CheckPermission;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -24,6 +27,12 @@ return Application::configure(basePath: dirname(__DIR__))
         ],
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by(
+                $request->user()?->id ?: $request->ip()
+            );
+        });
+
         $middleware->alias([
             'verified' => EnsureEmailIsVerified::class,
             'permission' => CheckPermission::class,

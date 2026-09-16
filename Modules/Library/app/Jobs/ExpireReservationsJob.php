@@ -4,6 +4,7 @@ namespace Modules\Library\app\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
@@ -11,9 +12,18 @@ use Modules\Library\Entities\Reservation;
 use Modules\Library\app\Enums\ReservationStatus;
 use Modules\Library\Services\ReservationService;
 
-class ExpireReservationsJob implements ShouldQueue
+class ExpireReservationsJob implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+    public int $timeout = 120;
+    public int $uniqueFor = 3600;
+
+    public function backoff(): array
+    {
+        return [60, 300];
+    }
 
     public function __construct()
     {

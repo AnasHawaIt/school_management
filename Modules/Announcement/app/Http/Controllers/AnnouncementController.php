@@ -4,6 +4,7 @@ namespace Modules\Announcement\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Modules\Announcement\app\Requests\AnnouncementCreateRequest;
 use Modules\Announcement\app\Requests\AnnouncementScheduleRequest;
 use Modules\Announcement\app\Requests\AnnouncementUpdateRequest;
@@ -14,17 +15,19 @@ class AnnouncementController extends Controller
 {
     protected AnnouncementService $service;
 
-    public function __construct(AnnouncementService $service)
-    {
+    public function __construct(
+        AnnouncementService $service,
+        private \Modules\Announcement\Services\AnnouncementCache $cache
+    ) {
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $announcements = cache()->remember(
-            'announcements_all',
+            $this->cache->key($request),
             300,
-            fn () => $this->service->getAll()
+            fn () => $this->service->getAll($request)
         );
 
         return AnnouncementResource::collection($announcements);
@@ -71,7 +74,7 @@ class AnnouncementController extends Controller
             $images
         );
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }
@@ -96,7 +99,7 @@ class AnnouncementController extends Controller
             $images
         );
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }
@@ -105,7 +108,7 @@ class AnnouncementController extends Controller
     {
         $announcement = $this->service->publish($id);
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }
@@ -114,7 +117,7 @@ class AnnouncementController extends Controller
     {
         $announcement = $this->service->pin($id);
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }
@@ -123,7 +126,7 @@ class AnnouncementController extends Controller
     {
         $announcement = $this->service->unpin($id);
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }
@@ -132,7 +135,7 @@ class AnnouncementController extends Controller
     {
         $announcement = $this->service->cancel($id);
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }
@@ -143,7 +146,7 @@ class AnnouncementController extends Controller
             $request->date('scheduled_at')
         );
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }
@@ -152,7 +155,7 @@ class AnnouncementController extends Controller
     {
         $announcement = $this->service->expire($id);
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }
@@ -161,7 +164,7 @@ class AnnouncementController extends Controller
     {
         $this->service->delete($id);
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return response()->json([
             'message' => 'Announcement deleted successfully.',
@@ -179,7 +182,7 @@ class AnnouncementController extends Controller
     {
         $announcement = $this->service->restore($id);
 
-        cache()->forget('announcements_all');
+        $this->cache->invalidate();
 
         return new AnnouncementResource($announcement);
     }

@@ -29,7 +29,18 @@ class BookFilter extends QueryFilter
     public function search($value)
     {
         $this->query->where(function ($q) use ($value) {
-            $q->where('title', 'like', "%$value%");
+            $q->where('title', 'like', "%$value%")
+                ->orWhere('isbn', 'like', "%$value%");
         });
+    }
+
+    public function sort($value)
+    {
+        $column = in_array($value, ['title', 'created_at', 'isbn'], true)
+            ? $value
+            : 'created_at';
+        $direction = $this->request->get('direction') === 'asc' ? 'asc' : 'desc';
+
+        $this->query->orderBy($column, $direction);
     }
 }

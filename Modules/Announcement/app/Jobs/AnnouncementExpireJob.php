@@ -4,22 +4,38 @@ namespace Modules\Announcement\app\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Modules\Announcement\Entities\Announcement;
 use Modules\Announcement\Enums\AnnouncementStatus;
 use Modules\Announcement\Events\AnnouncementExpired;
+use Modules\Announcement\Services\AnnouncementCache;
 
-class AnnouncementExpireJob implements ShouldQueue
+class AnnouncementExpireJob implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+    public int $timeout = 60;
+    public int $uniqueFor = 3600;
 
     public function __construct(
         public int $announcementId
     ) {}
 
-    public function handle(): void
+    public function uniqueId(): string
+    {
+        return (string) $this->announcementId;
+    }
+
+    public function backoff(): array
+    {
+        return [30, 120];
+    }
+
+    public function handle(AnnouncementCache $cache): void
     {
         $announcement = Announcement::find($this->announcementId);
 
@@ -62,5 +78,6 @@ class AnnouncementExpireJob implements ShouldQueue
          * إطلاق Event.
          */
         event(new AnnouncementExpired($announcement));
+        $cache->invalidate();
     }
 }

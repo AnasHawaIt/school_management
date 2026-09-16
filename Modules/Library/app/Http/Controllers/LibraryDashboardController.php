@@ -5,6 +5,9 @@ namespace Modules\Library\app\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\View\View;
 use Modules\Library\app\Enums\BookCopiesStatus;
+use Modules\Library\app\Enums\BorrowingStatus;
+use Modules\Library\app\Enums\FineStatus;
+use Modules\Library\app\Enums\ReservationStatus;
 use Modules\Library\Entities\Book;
 use Modules\Library\Entities\BookCopy;
 use Modules\Library\Entities\Borrowing;
@@ -19,12 +22,12 @@ class LibraryDashboardController extends Controller
         return view('library.dashboard', [
             'stats' => [
                 'books' => Book::count(),
-                'available_copies' => BookCopy::where('status', 'available')->count(),
-                'active_loans' => Borrowing::whereIn('status', ['borrowed', 'late'])->count(),
+                'available_copies' => BookCopy::where('status', BookCopiesStatus::AVAILABLE)->count(),
+                'active_loans' => Borrowing::whereIn('status', [BorrowingStatus::BORROWED, BorrowingStatus::LATE])->count(),
                 'members' => Member::where('status', 'active')->count(),
-                'overdue' => Borrowing::where('status', 'late')->count(),
-                'unpaid_fines' => Fine::where('status', 'unpaid')->sum('amount'),
-                'reservations' => Reservation::where('status', 'pending')->count(),
+                'overdue' => Borrowing::where('status', BorrowingStatus::LATE)->count(),
+                'unpaid_fines' => Fine::where('status', FineStatus::UNPAID)->sum('amount'),
+                'reservations' => Reservation::where('status', ReservationStatus::PENDING)->count(),
             ],
             'recentBorrowings' => Borrowing::with(['book', 'member.user'])
                 ->latest()

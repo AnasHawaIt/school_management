@@ -184,133 +184,70 @@ class TransactionService
      */
     public function getStatusDashboard(): array
     {
-        /*
-         * ==========================================
-         * PHYSICAL COPIES
-         * ==========================================
-         */
+        $copyCounts = BookCopy::query()
+            ->select('status')
+            ->selectRaw('COUNT(*) as aggregate')
+            ->groupBy('status')
+            ->pluck('aggregate', 'status');
 
-        $available = BookCopy::query()
-            ->with(['book'])
-            ->where('status', BookCopiesStatus::AVAILABLE)
-            ->latest()
-            ->get();
-
-        $reserved = BookCopy::query()
-            ->with([
-                'book',
-                'transactions' => function ($query) {
-                    $query->where(
-                        'status',
-                        BorrowingStatus::APPROVED
-                    )->latest();
-                },
-            ])
-            ->where('status', BookCopiesStatus::RESERVED)
-            ->latest()
-            ->get();
-
-        $borrowed = BookCopy::query()
-            ->with([
-                'book',
-                'transactions' => function ($query) {
-                    $query->whereIn('status', [
-                        BorrowingStatus::BORROWED,
-                        BorrowingStatus::LATE,
-                    ])->latest();
-                },
-            ])
-            ->where('status', BookCopiesStatus::BORROWED)
-            ->latest()
-            ->get();
-
-        $lost = BookCopy::query()
-            ->with(['book'])
-            ->where('status', BookCopiesStatus::LOST)
-            ->latest()
-            ->get();
-
-        /*
-         * ==========================================
-         * BORROWINGS
-         * ==========================================
-         */
-
-        $late = Borrowing::query()
-            ->with([
-                'member.user',
-                'book',
-                'copy',
-                'fine',
-            ])
-            ->where('status', BorrowingStatus::LATE)
-            ->latest()
-            ->get();
-
-        $approved = Borrowing::query()
-            ->with([
-                'member.user',
-                'book',
-                'copy',
-                'fine',
-            ])
-            ->where('status', BorrowingStatus::APPROVED)
-            ->latest()
-            ->get();
-
-        $rejected = Borrowing::query()
-            ->with([
-                'member.user',
-                'book',
-                'copy',
-                'fine',
-            ])
-            ->where('status', BorrowingStatus::REJECTED)
-            ->latest()
-            ->get();
-
-        $cancelled = Borrowing::query()
-            ->with([
-                'member.user',
-                'book',
-                'copy',
-                'fine',
-            ])
-            ->where('status', BorrowingStatus::CANCELLED)
-            ->latest()
-            ->get();
-
-        /*
-         * ==========================================
-         * COUNTS
-         * ==========================================
-         */
+        $borrowingCounts = Borrowing::query()
+            ->select('status')
+            ->selectRaw('COUNT(*) as aggregate')
+            ->groupBy('status')
+            ->pluck('aggregate', 'status');
 
         return [
             'counts' => [
-                'available' => $available->count(),
-                'reserved' => $reserved->count(),
-                'borrowed' => $borrowed->count(),
-                'late' => $late->count(),
-                'lost' => $lost->count(),
-
-                'approved' => $approved->count(),
-                'rejected' => $rejected->count(),
-                'cancelled' => $cancelled->count(),
+                'available' => (int) ($copyCounts[BookCopiesStatus::AVAILABLE->value] ?? 0),
+                'reserved' => (int) ($copyCounts[BookCopiesStatus::RESERVED->value] ?? 0),
+                'borrowed' => (int) ($copyCounts[BookCopiesStatus::BORROWED->value] ?? 0),
+                'late' => (int) ($borrowingCounts[BorrowingStatus::LATE->value] ?? 0),
+                'lost' => (int) ($copyCounts[BookCopiesStatus::LOST->value] ?? 0),
+                'approved' => (int) ($borrowingCounts[BorrowingStatus::APPROVED->value] ?? 0),
+                'rejected' => (int) ($borrowingCounts[BorrowingStatus::REJECTED->value] ?? 0),
+                'cancelled' => (int) ($borrowingCounts[BorrowingStatus::CANCELLED->value] ?? 0),
             ],
-
             'data' => [
-                'available' => $available,
-                'reserved' => $reserved,
-                'borrowed' => $borrowed,
-                'late' => $late,
-                'lost' => $lost,
-
-                'approved' => $approved,
-                'rejected' => $rejected,
-                'cancelled' => $cancelled,
+                'available' => $this->paginateCopies(BookCopiesStatus::AVAILABLE),
+                'reserved' => $this->paginateCopies(BookCopiesStatus::RESERVED, BorrowingStatus::APPROVED),
+                'borrowed' => $this->paginateCopies(BookCopiesStatus::BORROWED, [BorrowingStatus::BORROWED, BorrowingStatus::LATE]),
+                'lost' => $this->paginateCopies(BookCopiesStatus::LOST),
+                'late' => $this->paginateBorrowings(BorrowingStatus::LATE),
+                'approved' => $this->paginateBorrowings(BorrowingStatus::APPROVED),
+                'rejected' => $this->paginateBorrowings(BorrowingStatus::REJECTED),
+                'cancelled' => $this->paginateBorrowings(BorrowingStatus::CANCELLED),
             ],
         ];
+    }
+
+    private function paginateCopies(BookCopiesStatus $status, BorrowingStatus|array|null $transactionStatus = null)
+    {
+        $query = BookCopy::query()
+            ->select(['id', 'book_id', 'barcode', 'status', 'location'])
+            ->with(['book:id,title'])
+            ->where('status', $status)
+            ->latest();
+
+        if ($transactionStatus !== null) {
+            $statuses = is_array($transactionStatus) ? $transactionStatus : [$transactionStatus];
+            $query->with(['transactions' => function ($query) use ($statuses) {
+                $query->select(['id', 'book_id', 'copy_id', 'member_id', 'status', 'due_date'])
+                    ->whereIn('status', $statuses)
+                    ->latest();
+            }]);
+        }
+
+        return $query->paginate((int) request()->integer('per_page', 10));
+    }
+
+    private function paginateBorrowings(BorrowingStatus $status)
+    {
+        return Borrowing::query()
+            ->select(['id', 'member_id', 'book_id', 'copy_id', 'status', 'borrow_date', 'due_date'])
+            ->with(['member:id,user_id', 'member.user:id,first_name,last_name', 'book:id,title', 'copy:id,barcode,status', 'fine'])
+            ->where('status', $status)
+            ->latest()
+            ->paginate((int) request()->integer('per_page', 10));
     }
 
     /**

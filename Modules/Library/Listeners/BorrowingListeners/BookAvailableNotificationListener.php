@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 use Modules\Library\Entities\Reservation;
 use Modules\Library\Events\BorrowingEvents\BookAvailable;
+use Modules\Library\app\Enums\BorrowingStatus;
 use Modules\Notifications\Services\NotificationService;
 
 class BookAvailableNotificationListener implements ShouldQueue
@@ -20,7 +21,7 @@ class BookAvailableNotificationListener implements ShouldQueue
         $reservation = DB::transaction(function () use ($event) {
             $reservation = Reservation::query()
                 ->where('book_id', $event->book->id)
-                ->where('status', 'pending')
+                ->where('status', BorrowingStatus::PENDING)
                 ->oldest()
                 ->lockForUpdate()
                 ->first();

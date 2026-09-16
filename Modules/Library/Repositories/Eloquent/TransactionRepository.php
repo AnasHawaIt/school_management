@@ -124,6 +124,15 @@ class TransactionRepository implements TransactionRepositoryInterface
             }
 
             /*
+             * Serialize approvals for the same book. The copy query below
+             * also locks the selected row, while the book lock prevents two
+             * concurrent approvals from selecting the same inventory state.
+             */
+            Book::query()
+                ->lockForUpdate()
+                ->findOrFail($transaction->book_id);
+
+            /*
              * If a specific copy was requested,
              * validate it again under lock.
              */
