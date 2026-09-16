@@ -3,10 +3,11 @@
 namespace Modules\Library\Listeners\FineListeners;
 
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Library\Events\FinesEvents\FineWaived;
 use Modules\Notifications\Services\NotificationService;
 
-class NotifyFineWaived
+class NotifyFineWaived implements ShouldQueue
 {
     public function __construct(
         protected NotificationService $notificationService

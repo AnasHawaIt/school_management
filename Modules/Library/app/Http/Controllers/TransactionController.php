@@ -18,6 +18,9 @@ class TransactionController extends Controller
         $this->service = $service;
     }
 
+    /**
+     * Get borrowing and physical copies status dashboard.
+     */
     public function statusDashboard()
     {
         return response()->json(
@@ -40,9 +43,9 @@ class TransactionController extends Controller
      */
     public function store(StoreTransactionRequest $request)
     {
-        $data = $request->validated();
-
-        $transaction = $this->service->create($data);
+        $transaction = $this->service->create(
+            $request->validated()
+        );
 
         return new TransactionResource($transaction);
     }
@@ -58,14 +61,15 @@ class TransactionController extends Controller
     }
 
     /**
-     * Update transaction.
+     * Update normal editable fields.
      *
-     * Use this for normal editable fields.
-     * Status transitions should use dedicated methods:
-     * approve, reject, pickup, cancel, return, renew, etc.
+     * Lifecycle status changes should use
+     * dedicated lifecycle methods.
      */
-    public function update(UpdateTransactionRequest $request, int $id)
-    {
+    public function update(
+        UpdateTransactionRequest $request,
+        int $id
+    ) {
         $transaction = $this->service->update(
             $id,
             $request->validated()
@@ -115,7 +119,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * Return a borrowed book.
+     * Return borrowed/late book.
      */
     public function returnBook(int $id)
     {
@@ -125,7 +129,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * Renew an active borrowing.
+     * Renew active borrowing.
      */
     public function renew(int $id)
     {

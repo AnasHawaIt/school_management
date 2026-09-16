@@ -19,11 +19,25 @@ class UpdateBookCopyRequest extends FormRequest
                 'sometimes',
                 'string',
                 'max:255',
-                Rule::unique('library_copies', 'barcode')->ignore($this->route('copy')),
+                Rule::unique('library_copies', 'barcode')
+                    ->ignore(
+                        $this->route('copy')
+                    ),
             ],
-            'status' => 'sometimes|in:available,borrowed,lost,damaged,maintenance',
-            'location' => 'nullable|string|max:255',
-            'replacement_cost' => 'sometimes|nullable|numeric|min:0',
+
+            'location' => [
+                'sometimes',
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'replacement_cost' => [
+                'sometimes',
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
         ];
     }
 }

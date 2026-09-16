@@ -28,7 +28,7 @@ use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 
 class TransactionService
 {
-    protected $repo;
+    protected TransactionRepositoryInterface $repo;
 
     public function __construct(TransactionRepositoryInterface $repo)
     {
@@ -36,14 +36,151 @@ class TransactionService
     }
 
     /**
-     * Get library books grouped by physical-copy
-     * and borrowing status.
-     *
-     * Physical copy statuses:
-     * available, reserved, borrowed, lost
-     *
-     * Borrowing statuses:
-     * late, approved, rejected, cancelled
+     * Approve pending borrowing.
+     */
+    public function approve(int $id): Borrowing
+    {
+        $transaction = $this->repo->findById($id);
+
+        if ($transaction->status !== BorrowingStatus::PENDING) {
+            throw ValidationException::withMessages([
+                'transaction' => 'Only pending borrowings can be approved.',
+            ]);
+        }
+
+        $transaction = $this->repo->approve($id);
+
+        event(new BorrowingApproved(
+            $transaction,
+            auth()->id()
+        ));
+
+        return $transaction;
+    }
+
+    /**
+     * Reject pending borrowing.
+     */
+    public function reject(int $id): Borrowing
+    {
+        $transaction = $this->repo->findById($id);
+
+        if ($transaction->status !== BorrowingStatus::PENDING) {
+            throw ValidationException::withMessages([
+                'transaction' => 'Only pending borrowings can be rejected.',
+            ]);
+        }
+
+        $transaction = $this->repo->update($id, [
+            'status' => BorrowingStatus::REJECTED->value,
+        ]);
+
+        event(new BorrowingRejected(
+            $transaction,
+            auth()->id()
+        ));
+
+        return $transaction;
+    }
+
+    /**
+     * Pickup approved borrowing.
+     */
+    public function pickup(int $id): Borrowing
+    {
+        $transaction = $this->repo->findById($id);
+
+        if ($transaction->status !== BorrowingStatus::APPROVED) {
+            throw ValidationException::withMessages([
+                'transaction' => 'Only approved borrowings can be picked up.',
+            ]);
+        }
+
+        $transaction = $this->repo->pickup($id);
+
+        event(new BorrowingPickedUp(
+            $transaction,
+            auth()->id()
+        ));
+
+        return $transaction;
+    }
+
+    /**
+     * Cancel pending/approved borrowing.
+     */
+    public function cancel(int $id): Borrowing
+    {
+        $transaction = $this->repo->findById($id);
+
+        $transaction = $this->repo->cancel($id);
+
+        event(new BorrowingCancelled(
+            $transaction,
+            auth()->id()
+        ));
+
+        return $transaction;
+    }
+
+    /**
+     * Return borrowed/late book.
+     */
+    public function returnBook(int $id): Borrowing
+    {
+        $transaction = $this->repo->findById($id);
+
+        if (!in_array($transaction->status, [
+            BorrowingStatus::BORROWED,
+            BorrowingStatus::LATE,
+        ], true)) {
+            throw ValidationException::withMessages([
+                'transaction' => 'Only borrowed or late borrowings can be returned.',
+            ]);
+        }
+
+        $transaction = $this->repo->returnBook($id);
+
+        event(new BorrowingReturned(
+            $transaction,
+            auth()->id()
+        ));
+
+        event(new BookAvailable(
+            $transaction->book
+        ));
+
+        return $transaction;
+    }
+
+    /**
+     * Mark borrowing as lost.
+     */
+    public function markLost(int $id): Borrowing
+    {
+        $transaction = $this->repo->findById($id);
+
+        if (!in_array($transaction->status, [
+            BorrowingStatus::BORROWED,
+            BorrowingStatus::LATE,
+        ], true)) {
+            throw ValidationException::withMessages([
+                'transaction' => 'Only active borrowings can be marked as lost.',
+            ]);
+        }
+
+        $transaction = $this->repo->markLost($id);
+
+        event(new BorrowingLost(
+            $transaction,
+            auth()->id()
+        ));
+
+        return $transaction;
+    }
+
+    /**
+     * Get borrowing and physical copies dashboard.
      */
     public function getStatusDashboard(): array
     {
@@ -92,7 +229,6 @@ class TransactionService
             ->where('status', BookCopiesStatus::LOST)
             ->latest()
             ->get();
-
 
         /*
          * ==========================================
@@ -144,7 +280,6 @@ class TransactionService
             ->latest()
             ->get();
 
-
         /*
          * ==========================================
          * COUNTS
@@ -178,11 +313,17 @@ class TransactionService
         ];
     }
 
+    /**
+     * Get only trashed transactions.
+     */
     public function getTransactionOnlyTrashed()
     {
         return $this->repo->getTransactionOnlyTrashed();
     }
 
+    /**
+     * Restore transaction.
+     */
     public function restore($id)
     {
         $transaction = $this->repo->restore($id);
@@ -192,6 +333,9 @@ class TransactionService
         return $transaction;
     }
 
+    /**
+     * Permanently delete transaction.
+     */
     public function forceDelete($id)
     {
         $transaction = $this->repo->forceDelete($id);
@@ -201,11 +345,17 @@ class TransactionService
         return true;
     }
 
+    /**
+     * Get all transactions.
+     */
     public function getAll($request)
     {
         return $this->repo->getAll($request);
     }
 
+    /**
+     * Create borrowing request.
+     */
     public function create(array $data)
     {
         $member = Member::findOrFail($data['member_id']);
@@ -254,144 +404,29 @@ class TransactionService
         return $transaction;
     }
 
-    public function approve(int $id): Borrowing
-    {
-        $transaction = $this->repo->findById($id);
-
-        if ($transaction->status !== BorrowingStatus::PENDING) {
-            throw ValidationException::withMessages([
-                'transaction' => 'Only pending borrowings can be approved.',
-            ]);
-        }
-
-        $transaction = $this->repo->approve($id);
-
-        event(new BorrowingApproved(
-            $transaction,
-            auth()->id()
-        ));
-
-        return $transaction;
-    }
-
-    public function reject(int $id): Borrowing
-    {
-        $transaction = $this->repo->findById($id);
-
-        if ($transaction->status !== BorrowingStatus::PENDING) {
-            throw ValidationException::withMessages([
-                'transaction' => 'Only pending borrowings can be rejected.',
-            ]);
-        }
-
-        $transaction = $this->repo->update($id, [
-            'status' => BorrowingStatus::REJECTED->value,
-        ]);
-
-        event(new BorrowingRejected(
-            $transaction,
-            auth()->id()
-        ));
-
-        return $transaction;
-    }
-
-    public function pickup(int $id): Borrowing
-    {
-        $transaction = $this->repo->findById($id);
-
-        if ($transaction->status !== BorrowingStatus::APPROVED) {
-            throw ValidationException::withMessages([
-                'transaction' => 'Only approved borrowings can be picked up.',
-            ]);
-        }
-
-        $transaction = $this->repo->pickup($id);
-
-        event(new BorrowingPickedUp(
-            $transaction,
-            auth()->id()
-        ));
-
-        return $transaction;
-    }
-
-    public function cancel(int $id): Borrowing
-    {
-        $transaction = $this->repo->findById($id);
-
-        $this->repo->cancel($id);
-
-        event(new BorrowingCancelled(
-            $transaction,
-            auth()->id()
-        ));
-
-        return $transaction;
-    }
-
-    public function returnBook(int $id): Borrowing
-    {
-        $transaction = $this->repo->findById($id);
-
-        if (!$transaction) {
-            throw new \Exception('Borrowing not found');
-        }
-
-        if (!in_array($transaction->status, [
-            BorrowingStatus::BORROWED,
-            BorrowingStatus::LATE,
-        ], true)) {
-            throw ValidationException::withMessages([
-                'transaction' => 'This borrowing is already returned.',
-            ]);
-        }
-
-        $transaction = $this->repo->returnBook($id);
-
-        event(new BorrowingReturned(
-            $transaction,
-            auth()->id()
-        ));
-
-        event(new BookAvailable(
-            $transaction->book
-        ));
-
-        return $transaction;
-    }
-
-    public function markLost(int $id): Borrowing
-    {
-        $transaction = $this->repo->findById($id);
-
-        if (!in_array($transaction->status, [
-            BorrowingStatus::BORROWED,
-            BorrowingStatus::LATE,
-        ], true)) {
-            throw ValidationException::withMessages([
-                'transaction' => 'Only active borrowings can be marked as lost.',
-            ]);
-        }
-
-        $transaction = $this->repo->markLost($id);
-
-        event(new BorrowingLost(
-            $transaction,
-            auth()->id()
-        ));
-
-        return $transaction;
-    }
-
+    /**
+     * Find transaction by ID.
+     */
     public function findById($id)
     {
         return $this->repo->findById($id);
     }
 
+    /**
+     * Update normal editable fields.
+     *
+     * Lifecycle operations should use their
+     * dedicated methods.
+     */
     public function update($id, array $data)
     {
-        $before = $this->repo->findById($id);
+        $transaction = $this->repo->findById($id);
+
+        if ($transaction->status !== BorrowingStatus::PENDING) {
+            throw ValidationException::withMessages([
+                'transaction' => 'Only pending borrowings can be updated.',
+            ]);
+        }
 
         $transaction = $this->repo->update($id, $data);
 
@@ -400,26 +435,12 @@ class TransactionService
             auth()->id()
         ));
 
-        if (
-            in_array($before->status, [
-                BorrowingStatus::BORROWED,
-                BorrowingStatus::LATE,
-            ], true)
-            && $transaction->status === BorrowingStatus::RETURNED
-        ) {
-            event(new BorrowingReturned(
-                $transaction,
-                auth()->id()
-            ));
-
-            event(new BookAvailable(
-                $transaction->book
-            ));
-        }
-
         return $transaction;
     }
 
+    /**
+     * Renew active borrowing.
+     */
     public function renew($id)
     {
         $transaction = $this->repo->findById($id);
@@ -469,6 +490,9 @@ class TransactionService
         return $transaction;
     }
 
+    /**
+     * Mark borrowing as overdue.
+     */
     public function markOverdue(int $id): Borrowing
     {
         $transaction = $this->repo->findById($id);
@@ -496,6 +520,9 @@ class TransactionService
         return $transaction;
     }
 
+    /**
+     * Soft delete transaction.
+     */
     public function delete($id)
     {
         $transaction = $this->repo->findById($id);

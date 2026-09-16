@@ -3,10 +3,11 @@
 
 namespace Modules\Library\Listeners\BorrowingListeners;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Library\Events\BorrowingEvents\BorrowingApproved;
 use Modules\Notifications\Services\NotificationService;
 
-class SendBorrowingApprovedNotification
+class SendBorrowingApprovedNotification implements ShouldQueue
 {
     public function __construct(
         protected NotificationService $notificationService

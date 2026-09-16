@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Library\Entities\Book;
 use Modules\Library\Entities\BookCopy;
+use Modules\Library\app\Enums\BookCopiesStatus;
 use Modules\Library\app\Http\Requests\StoreBookCopyRequest;
 use Modules\Library\app\Http\Requests\UpdateBookCopyRequest;
 use Modules\Library\Services\BookCopyService;
@@ -17,6 +18,12 @@ class BookCopyController extends Controller
         protected BookCopyService $service
     ) {
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Index
+    |--------------------------------------------------------------------------
+    */
 
     public function index(
         Request $request,
@@ -29,6 +36,12 @@ class BookCopyController extends Controller
             )
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Store
+    |--------------------------------------------------------------------------
+    */
 
     public function store(
         StoreBookCopyRequest $request,
@@ -44,6 +57,26 @@ class BookCopyController extends Controller
             201
         );
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Show
+    |--------------------------------------------------------------------------
+    */
+
+    public function show(
+        BookCopy $copy
+    ): JsonResponse {
+        return response()->json(
+            $copy->load('book')
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update
+    |--------------------------------------------------------------------------
+    */
 
     public function update(
         UpdateBookCopyRequest $request,
@@ -63,6 +96,42 @@ class BookCopyController extends Controller
         return response()->json($copy);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Change Status
+    |--------------------------------------------------------------------------
+    */
+
+    public function updateStatus(
+        Request $request,
+        BookCopy $copy
+    ): JsonResponse {
+        $validated = $request->validate([
+            'status' => [
+                'required',
+                'string',
+                'in:available,reserved,borrowed,lost,damaged,maintenance',
+            ],
+        ]);
+
+        $status = BookCopiesStatus::from(
+            $validated['status']
+        );
+
+        $copy = $this->service->changeStatus(
+            $copy,
+            $status
+        );
+
+        return response()->json($copy);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Destroy
+    |--------------------------------------------------------------------------
+    */
+
     public function destroy(
         Book $book,
         BookCopy $copy
@@ -75,7 +144,7 @@ class BookCopyController extends Controller
         $this->service->delete($copy);
 
         return response()->json([
-            'message' => 'Deleted',
+            'message' => 'Book copy deleted successfully.',
         ]);
     }
 }

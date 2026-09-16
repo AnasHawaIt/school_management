@@ -17,6 +17,12 @@ class BookCopyService
     ) {
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Pagination
+    |--------------------------------------------------------------------------
+    */
+
     public function paginate(
         Book $book,
              $request
@@ -27,103 +33,116 @@ class BookCopyService
         );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Create
+    |--------------------------------------------------------------------------
+    */
+
     public function create(
         Book $book,
         array $data
     ): BookCopy {
-        return DB::transaction(function () use ($book, $data) {
-
+        return DB::transaction(function () use (
+            $book,
+            $data
+        ) {
             /*
-             * Every newly created physical copy
-             * must start as AVAILABLE.
+             * A newly created physical copy
+             * is always AVAILABLE.
              */
-            $data['status'] = BookCopiesStatus::AVAILABLE;
+            $data['status'] =
+                BookCopiesStatus::AVAILABLE;
 
             $copy = $this->repository->createForBook(
                 $book,
                 $data
             );
 
-            return $copy->fresh();
+            return $copy->fresh([
+                'book',
+            ]);
         });
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update
+    |--------------------------------------------------------------------------
+    */
 
     public function update(
         BookCopy $copy,
         array $data
     ): BookCopy {
-        return DB::transaction(function () use ($copy, $data) {
-
-            $copy = $this->repository->findByIdForUpdate(
-                $copy->id
-            );
-
-            $this->validateStatusChange(
-                $copy,
-                $data
-            );
+        return DB::transaction(function () use (
+            $copy,
+            $data
+        ) {
+            $copy = $this->repository
+                ->findByIdForUpdate($copy->id);
 
             /*
-             * Reserved copies cannot have their status
-             * manually changed.
+             * Status is not part of the normal
+             * update operation.
              */
-            if (
-                $copy->status === BookCopiesStatus::RESERVED
-            ) {
-                unset($data['status']);
-            }
-
-            $previousStatus = $copy->status;
+            unset($data['status']);
 
             $copy = $this->repository->update(
                 $copy,
                 $data
             );
 
-            /*
-             * Lost / damaged copy may create a fine
-             * for the active borrowing.
-             */
-            if (
-                isset($data['status'])
-                && in_array(
-                    $data['status'],
-                    [
-                        BookCopiesStatus::LOST->value,
-                        BookCopiesStatus::DAMAGED->value,
-                    ],
-                    true
-                )
-                && $previousStatus->value !== $data['status']
-            ) {
-                $this->handleCompensation(
-                    $copy,
-                    $data['status']
-                );
-            }
-
-            return $copy->fresh();
+            return $copy->fresh([
+                'book',
+            ]);
         });
     }
 
-    public function delete(BookCopy $copy): bool
-    {
-        return DB::transaction(function () use ($copy) {
+    /*
+    |--------------------------------------------------------------------------
+    | Delete
+    |--------------------------------------------------------------------------
+    */
 
-            $copy = $this->repository->findByIdForUpdate(
-                $copy->id
-            );
+    public function delete(
+        BookCopy $copy
+    ): bool {
+        return DB::transaction(function () use (
+            $copy
+        ) {
+            $copy = $this->repository
+                ->findByIdForUpdate($copy->id);
 
-            if (in_array(
-                $copy->status,
-                [
-                    BookCopiesStatus::BORROWED,
-                    BookCopiesStatus::RESERVED,
-                ],
-                true
-            )) {
+            /*
+             * Borrowed or reserved copies cannot
+             * be deleted.
+             */
+            if (
+                in_array(
+                    $copy->status,
+                    [
+                        BookCopiesStatus::BORROWED,
+                        BookCopiesStatus::RESERVED,
+                    ],
+                    true
+                )
+            ) {
                 throw new RuntimeException(
                     'Borrowed or reserved copies cannot be deleted.'
+                );
+            }
+
+            /*
+             * Do not delete a copy that has
+             * an active borrowing.
+             */
+            $transaction = $this->repository
+                ->findActiveTransaction($copy);
+
+            if ($transaction) {
+                throw new RuntimeException(
+                    'This copy has an active borrowing and cannot be deleted.'
                 );
             }
 
@@ -131,77 +150,182 @@ class BookCopyService
         });
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Status Change
+    |--------------------------------------------------------------------------
+    |
+    | This method is intentionally separate from
+    | normal update().
+    |
+    */
+
+    public function changeStatus(
+        BookCopy $copy,
+        BookCopiesStatus $newStatus
+    ): BookCopy {
+        return DB::transaction(function () use (
+            $copy,
+            $newStatus
+        ) {
+            $copy = $this->repository
+                ->findByIdForUpdate($copy->id);
+
+            $oldStatus = $copy->status;
+
+            if ($oldStatus === $newStatus) {
+                return $copy->fresh([
+                    'book',
+                ]);
+            }
+
+            $this->validateStatusChange(
+                $copy,
+                $newStatus
+            );
+
+            $copy = $this->repository->update(
+                $copy,
+                [
+                    'status' => $newStatus,
+                ]
+            );
+
+            /*
+             * Lost / damaged copy may require
+             * compensation.
+             */
+            if (
+                in_array(
+                    $newStatus,
+                    [
+                        BookCopiesStatus::LOST,
+                        BookCopiesStatus::DAMAGED,
+                    ],
+                    true
+                )
+            ) {
+                $this->handleCompensation(
+                    $copy,
+                    $newStatus
+                );
+            }
+
+            return $copy->fresh([
+                'book',
+            ]);
+        });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Status Validation
+    |--------------------------------------------------------------------------
+    */
+
     protected function validateStatusChange(
         BookCopy $copy,
-        array $data
+        BookCopiesStatus $newStatus
     ): void {
-        if (!isset($data['status'])) {
-            return;
-        }
-
-        $newStatus = $data['status'];
-
         /*
-         * Normalize Enum → string.
-         */
-        if ($newStatus instanceof BookCopiesStatus) {
-            $newStatus = $newStatus->value;
-        }
-
-        /*
-         * Reserved copies are controlled by
-         * reservation / borrowing workflow.
+         * RESERVED is controlled by reservation
+         * workflow.
          */
         if (
-            $copy->status === BookCopiesStatus::RESERVED
-            && $newStatus !== BookCopiesStatus::RESERVED->value
+            $copy->status ===
+            BookCopiesStatus::RESERVED
         ) {
             throw new RuntimeException(
-                'Reserved copies can only be released through the borrowing cancellation or pickup workflow.'
+                'Reserved copies can only be released through the reservation or borrowing workflow.'
             );
         }
 
         /*
-         * Borrowed copies cannot be manually returned
-         * through BookCopy endpoint.
+         * BORROWED is controlled by borrowing
+         * workflow.
          */
         if (
-            $copy->status === BookCopiesStatus::BORROWED
-            && !in_array(
-                $newStatus,
-                [
-                    BookCopiesStatus::BORROWED->value,
-                    BookCopiesStatus::LOST->value,
-                    BookCopiesStatus::DAMAGED->value,
-                ],
-                true
-            )
+            $copy->status ===
+            BookCopiesStatus::BORROWED
+        ) {
+            if (
+                in_array(
+                    $newStatus,
+                    [
+                        BookCopiesStatus::AVAILABLE,
+                        BookCopiesStatus::RESERVED,
+                    ],
+                    true
+                )
+            ) {
+                throw new RuntimeException(
+                    'Borrowed copies can only be released by the borrowing return workflow.'
+                );
+            }
+        }
+
+        /*
+         * A lost copy cannot magically become
+         * available without being recovered.
+         *
+         * We allow maintenance/damaged only if
+         * your business flow needs it.
+         */
+        if (
+            $copy->status ===
+            BookCopiesStatus::LOST
+            &&
+            $newStatus !==
+            BookCopiesStatus::LOST
         ) {
             throw new RuntimeException(
-                'Borrowed copies can only be released by returning the active loan.'
+                'Lost copies must be processed through the recovery workflow.'
             );
         }
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Compensation
+    |--------------------------------------------------------------------------
+    */
+
     protected function handleCompensation(
         BookCopy $copy,
-        string $status
+        BookCopiesStatus $status
     ): void {
         $transaction = $this->repository
             ->findActiveTransaction($copy);
 
+        /*
+         * No active borrowing means there is
+         * nobody to charge.
+         */
         if (!$transaction) {
             return;
         }
 
-        $amount = $copy->replacement_cost
-            ?? config(
-                "library.{$status}_copy_compensation"
+        /*
+         * Use manually configured replacement cost
+         * first.
+         */
+        $amount = $copy->replacement_cost;
+
+        /*
+         * Otherwise use Library configuration:
+         *
+         * library.lost
+         * library.damaged
+         */
+        if ($amount === null) {
+            $amount = config(
+                "library.{$status->value}"
             );
+        }
 
         if ($amount === null) {
             throw new RuntimeException(
-                "No compensation amount configured for {$status} copy."
+                "No compensation amount configured for {$status->value} copy."
             );
         }
 
@@ -209,7 +333,8 @@ class BookCopyService
             'transaction_id' => $transaction->id,
             'amount' => $amount,
             'status' => 'unpaid',
-            'notes' => "Copy marked {$status}.",
+            'notes' =>
+                "Copy marked {$status->value}.",
         ]);
     }
 }

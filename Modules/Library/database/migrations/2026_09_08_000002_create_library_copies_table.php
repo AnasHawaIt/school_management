@@ -10,8 +10,14 @@ return new class extends Migration
     {
         Schema::create('library_copies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id')->constrained()->restrictOnDelete();
-            $table->string('barcode')->unique();
+
+            $table->foreignId('book_id')
+                ->constrained('books')
+                ->restrictOnDelete();
+
+            $table->string('barcode')
+                ->unique();
+
             $table->enum('status', [
                 'available',
                 'reserved',
@@ -20,11 +26,20 @@ return new class extends Migration
                 'damaged',
                 'maintenance',
             ])->default('available');
-            $table->string('location')->nullable();
-            $table->decimal('replacement_cost', 10, 2)->nullable();
+
+            $table->string('location')
+                ->nullable();
+
+            $table->decimal('replacement_cost', 10, 2)
+                ->nullable();
+
             $table->timestamps();
             $table->softDeletes();
-            $table->index(['book_id', 'status']);
+
+            $table->index([
+                'book_id',
+                'status',
+            ]);
         });
 
         Schema::table('transactions', function (Blueprint $table) {
@@ -33,15 +48,26 @@ return new class extends Migration
                 ->after('book_id')
                 ->constrained('library_copies')
                 ->nullOnDelete();
-            $table->index(['copy_id', 'status']);
+
+            $table->index([
+                'copy_id',
+                'status',
+            ]);
         });
     }
 
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropForeign(['copy_id']);
-            $table->dropIndex(['copy_id', 'status']);
+            $table->dropIndex([
+                'copy_id',
+                'status',
+            ]);
+
+            $table->dropForeign([
+                'copy_id',
+            ]);
+
             $table->dropColumn('copy_id');
         });
 

@@ -799,6 +799,63 @@ Route::middleware(['auth:sanctum'])
 
         });
 
+        /*
+        |--------------------------------------------------------------------------
+        | Book Copies
+        |--------------------------------------------------------------------------
+        */
+
+        Route::middleware('auth:sanctum')
+            ->group(function () {
+
+                /*
+                |--------------------------------------------------------------------------
+                | Copies belonging to a Book
+                |--------------------------------------------------------------------------
+                */
+
+                Route::get(
+                    'books/{book}/copies',
+                    [BookCopyController::class, 'index']
+                );
+
+                Route::post(
+                    'books/{book}/copies',
+                    [BookCopyController::class, 'store']
+                );
+
+                Route::post(
+                    'books/{book}/copies/{copy}',
+                    [BookCopyController::class, 'update']
+                );
+
+                Route::patch(
+                    'books/{book}/copies/{copy}',
+                    [BookCopyController::class, 'update']
+                );
+
+                Route::delete(
+                    'books/{book}/copies/{copy}',
+                    [BookCopyController::class, 'destroy']
+                );
+
+                /*
+                |--------------------------------------------------------------------------
+                | Individual Copy
+                |--------------------------------------------------------------------------
+                */
+
+                Route::get(
+                    'copies/{copy}',
+                    [BookCopyController::class, 'show']
+                );
+
+//                Route::patch(
+//                    'copies/{copy}/status',
+//                    [BookCopyController::class, 'updateStatus']
+//                );
+            });
+
 
         /*
         |--------------------------------------------------------------------------

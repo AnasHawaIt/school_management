@@ -2,12 +2,13 @@
 
 namespace Modules\Library\Listeners\BorrowingListeners;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 use Modules\Library\Entities\Reservation;
 use Modules\Library\Events\BorrowingEvents\BookAvailable;
 use Modules\Notifications\Services\NotificationService;
 
-class BookAvailableNotificationListener
+class BookAvailableNotificationListener implements ShouldQueue
 {
     public function __construct(
         protected NotificationService $notificationService

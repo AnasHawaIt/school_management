@@ -17,7 +17,7 @@ class ProcessNextReservation implements ShouldQueue
     {
         $reservation = $event->reservation;
 
-        $this->reservationService->processNextReservation(
+        $this->reservationService->notifyNextMember(
             $reservation->book_id
         );
     }
