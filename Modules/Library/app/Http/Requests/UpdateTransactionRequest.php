@@ -5,6 +5,8 @@ namespace Modules\Library\app\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Modules\Library\Entities\Borrowing;
+use Modules\Library\app\Enums\BookCopiesStatus;
+use Modules\Library\app\Enums\BorrowingStatus;
 
 class UpdateTransactionRequest extends FormRequest
 {
@@ -25,7 +27,7 @@ class UpdateTransactionRequest extends FormRequest
                     $bookId = $this->input('book_id', $transaction?->book_id);
 
                     $query->where('book_id', $bookId)
-                        ->whereIn('status', ['available', 'borrowed']);
+                        ->whereIn('status', [BookCopiesStatus::AVAILABLE, BookCopiesStatus::BORROWED]);
                 }),
             ],
             'member_id'   => 'sometimes|exists:members,id',
@@ -33,7 +35,7 @@ class UpdateTransactionRequest extends FormRequest
             'due_date'    => 'sometimes|nullable|date|after_or_equal:borrow_date',
             'return_date' => 'sometimes|nullable|date|after_or_equal:borrow_date',
             'returned_at' => 'sometimes|nullable|date',
-            'status'      => 'sometimes|in:borrowed,returned,late',
+            'status'      => ['sometimes', Rule::enum(BorrowingStatus::class)],
         ];
     }
 

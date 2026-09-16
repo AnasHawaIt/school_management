@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Modules\Library\Entities\Reservation;
 use Modules\Library\Events\BookCopiesEvents\BookCopyAvailable;
 use Modules\Notifications\Services\NotificationService;
+use Modules\Library\app\Enums\ReservationStatus;
 
 class BookCopyAvailableNotificationListener implements ShouldQueue
 {
@@ -21,14 +22,14 @@ class BookCopyAvailableNotificationListener implements ShouldQueue
 
             $reservation = Reservation::query()
                 ->where('book_id', $event->copy->book_id)
-                ->where('status', 'pending')
+                ->where('status', ReservationStatus::PENDING)
                 ->oldest('id')
                 ->lockForUpdate()
                 ->first();
 
             if ($reservation) {
                 $reservation->update([
-                    'status' => 'notified',
+                    'status' => ReservationStatus::NOTIFIED,
                     'notified_at' => now(),
                 ]);
             }

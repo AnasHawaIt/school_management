@@ -10,9 +10,6 @@ use Modules\Library\app\Jobs\ExpireReservationsJob;
 |--------------------------------------------------------------------------
 */
 
-Schedule::command('announcements:process')
-    ->everyMinute();
-
 Schedule::job(new DetectOverdueBorrowingsJob())
     ->everyTenMinutes();
 

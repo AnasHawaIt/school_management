@@ -22,11 +22,21 @@ class TransactionFilter extends QueryFilter
 
     public function from_date($value)
     {
-        $this->query->whereDate('created_at', '>=', $value);
+        $this->query->whereDate('borrow_date', '>=', $value);
     }
 
     public function to_date($value)
     {
-        $this->query->whereDate('created_at', '<=', $value);
+        $this->query->whereDate('borrow_date', '<=', $value);
+    }
+
+    public function sort($value)
+    {
+        $column = in_array($value, ['borrow_date', 'due_date', 'created_at', 'status'], true)
+            ? $value
+            : 'created_at';
+        $direction = $this->request->get('direction') === 'asc' ? 'asc' : 'desc';
+
+        $this->query->orderBy($column, $direction);
     }
 }

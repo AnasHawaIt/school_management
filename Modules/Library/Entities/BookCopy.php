@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Library\app\Enums\BookCopiesStatus;
+use Modules\Library\app\Enums\BorrowingStatus;
 
 class BookCopy extends Model
 {
@@ -58,8 +59,8 @@ class BookCopy extends Model
     {
         return $this->transactions()
             ->whereIn('status', [
-                'borrowed',
-                'late',
+                BorrowingStatus::BORROWED,
+                BorrowingStatus::LATE,
             ])
             ->latest('id')
             ->first();

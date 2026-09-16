@@ -72,7 +72,9 @@ class BookRepository implements BookRepositoryInterface
             'category',
         ]);
 
-        $query->latest();
+        if (!$request->filled('sort')) {
+            $query->latest();
+        }
 
         return $query->paginate(
             $request->get('per_page', 10)

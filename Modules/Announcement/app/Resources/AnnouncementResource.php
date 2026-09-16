@@ -6,6 +6,14 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class AnnouncementResource extends JsonResource
 {
+    public function with($request): array
+    {
+        return [
+            'success' => true,
+            'message' => 'Announcement retrieved successfully.',
+        ];
+    }
+
     public function toArray($request): array
     {
         return [

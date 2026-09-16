@@ -69,6 +69,7 @@ class AnnouncementCreateRequest extends FormRequest
 
             'images.*' => [
                 'image',
+                'mimes:jpg,jpeg,png,webp',
                 'max:5120',
             ],
         ];

@@ -9,6 +9,7 @@ use Modules\Library\Events\FinesEvents\FineWaived;
 use RuntimeException;
 use Modules\Library\Entities\Fine;
 use Modules\Library\Repositories\Interfaces\FineRepositoryInterface;
+use Modules\Library\app\Enums\FineStatus;
 
 class FineService
 {
@@ -34,14 +35,14 @@ class FineService
 
             $fine = $this->repository->findForUpdate($fine->id);
 
-            if ($fine->status !== 'unpaid') {
+            if ($fine->status !== FineStatus::UNPAID) {
                 throw new RuntimeException(
                     'Only unpaid fines can be paid.'
                 );
             }
 
             $fine = $this->repository->update($fine, [
-                'status' => 'paid',
+                'status' => FineStatus::PAID,
                 'paid_at' => now(),
                 'paid_by' => auth()->id(),
             ]);
@@ -58,14 +59,14 @@ class FineService
 
             $fine = $this->repository->findForUpdate($fine->id);
 
-            if ($fine->status !== 'unpaid') {
+            if ($fine->status !== FineStatus::UNPAID) {
                 throw new RuntimeException(
                     'Only unpaid fines can be waived.'
                 );
             }
 
             $fine = $this->repository->update($fine, [
-                'status' => 'waived',
+                'status' => FineStatus::WAIVED,
                 'waived_at' => now(),
                 'waived_by' => auth()->id(),
             ]);

@@ -67,7 +67,8 @@ class AnnouncementServiceProvider extends ServiceProvider
 
             $schedule
                 ->command('announcements:process')
-                ->everyMinute();
+                ->everyMinute()
+                ->withoutOverlapping();
         });
     }
 

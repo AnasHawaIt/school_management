@@ -25,7 +25,7 @@ use Modules\Library\app\Http\Controllers\LibraryReportController;
 |
 */
 
-Route::middleware(['auth:sanctum'])
+Route::middleware(['auth:sanctum', 'throttle:api'])
     ->prefix('library')
     ->group(function () {
 
@@ -333,7 +333,7 @@ Route::middleware(['auth:sanctum'])
             Route::get('/', [
                 BookController::class,
                 'index'
-            ])->middleware('permission:library.catalog.view');
+            ])->middleware('permission:library.books.view');
 
             // Trashed
             Route::get('/trashed', [
@@ -345,7 +345,7 @@ Route::middleware(['auth:sanctum'])
             Route::post('/', [
                 BookController::class,
                 'store'
-            ])->middleware('permission:library.catalog.manage');
+            ])->middleware('permission:library.books.manage');
 
 
             /*
@@ -357,27 +357,27 @@ Route::middleware(['auth:sanctum'])
             Route::get('/{book}/copies', [
                 BookCopyController::class,
                 'index'
-            ])->middleware('permission:library.catalog.view');
+            ])->middleware('permission:library.copies.view');
 
             Route::post('/{book}/copies', [
                 BookCopyController::class,
                 'store'
-            ])->middleware('permission:library.catalog.manage');
+            ])->middleware('permission:library.copies.manage');
 
             Route::post('/{book}/copies/{copy}', [
                 BookCopyController::class,
                 'update'
-            ])->middleware('permission:library.catalog.manage');
+            ])->middleware('permission:library.copies.manage');
 
             Route::patch('/{book}/copies/{copy}', [
                 BookCopyController::class,
                 'update'
-            ])->middleware('permission:library.catalog.manage');
+            ])->middleware('permission:library.copies.manage');
 
             Route::delete('/{book}/copies/{copy}', [
                 BookCopyController::class,
                 'destroy'
-            ])->middleware('permission:library.catalog.delete');
+            ])->middleware('permission:library.copies.delete');
 
 
             /*
@@ -389,12 +389,12 @@ Route::middleware(['auth:sanctum'])
             Route::post('/{id}/restore', [
                 BookController::class,
                 'restore'
-            ])->middleware('permission:library.catalog.restore');
+            ])->middleware('permission:library.books.manage');
 
             Route::delete('/{id}/force', [
                 BookController::class,
                 'forceDelete'
-            ])->middleware('permission:library.catalog.force_delete');
+            ])->middleware('permission:library.books.force_delete');
 
 
             /*
@@ -406,12 +406,12 @@ Route::middleware(['auth:sanctum'])
             Route::post('/{id}', [
                 BookController::class,
                 'update'
-            ])->middleware('permission:library.catalog.manage');
+            ])->middleware('permission:library.books.manage');
 
             Route::patch('/{id}', [
                 BookController::class,
                 'update'
-            ])->middleware('permission:library.catalog.manage');
+            ])->middleware('permission:library.books.manage');
 
 
             /*
@@ -423,7 +423,7 @@ Route::middleware(['auth:sanctum'])
             Route::delete('/{id}', [
                 BookController::class,
                 'destroy'
-            ])->middleware('permission:library.catalog.delete');
+            ])->middleware('permission:library.books.delete');
 
 
             /*
@@ -435,7 +435,7 @@ Route::middleware(['auth:sanctum'])
             Route::get('/{id}', [
                 BookController::class,
                 'show'
-            ])->middleware('permission:library.catalog.view');
+            ])->middleware('permission:library.books.view');
         });
 
 
@@ -480,7 +480,7 @@ Route::middleware(['auth:sanctum'])
             Route::post('/', [
                 TransactionController::class,
                 'store'
-            ])->middleware('permission:library.circulation.manage');
+            ])->middleware('permission:library.transactions.create');
 
             Route::get('/status-dashboard', [
                 TransactionController::class,
@@ -495,12 +495,12 @@ Route::middleware(['auth:sanctum'])
             Route::post('/{id}/approve', [
                 TransactionController::class,
                 'approve'
-            ])->middleware('permission:library.circulation.manage');
+            ])->middleware('permission:library.transactions.approve');
 
             Route::post('/{id}/reject', [
                 TransactionController::class,
                 'reject'
-            ])->middleware('permission:library.circulation.manage');
+            ])->middleware('permission:library.transactions.approve');
 
             Route::post('/{id}/pickup', [
                 TransactionController::class,
@@ -817,27 +817,27 @@ Route::middleware(['auth:sanctum'])
                 Route::get(
                     'books/{book}/copies',
                     [BookCopyController::class, 'index']
-                );
+                )->middleware('permission:library.copies.view');
 
                 Route::post(
                     'books/{book}/copies',
                     [BookCopyController::class, 'store']
-                );
+                )->middleware('permission:library.copies.manage');
 
                 Route::post(
                     'books/{book}/copies/{copy}',
                     [BookCopyController::class, 'update']
-                );
+                )->middleware('permission:library.copies.manage');
 
                 Route::patch(
                     'books/{book}/copies/{copy}',
                     [BookCopyController::class, 'update']
-                );
+                )->middleware('permission:library.copies.manage');
 
                 Route::delete(
                     'books/{book}/copies/{copy}',
                     [BookCopyController::class, 'destroy']
-                );
+                )->middleware('permission:library.copies.delete');
 
                 /*
                 |--------------------------------------------------------------------------
@@ -848,7 +848,7 @@ Route::middleware(['auth:sanctum'])
                 Route::get(
                     'copies/{copy}',
                     [BookCopyController::class, 'show']
-                );
+                )->middleware('permission:library.copies.view');
 
 //                Route::patch(
 //                    'copies/{copy}/status',
@@ -871,4 +871,3 @@ Route::middleware(['auth:sanctum'])
             ])->middleware('permission:library.circulation.view');
         });
     });
-

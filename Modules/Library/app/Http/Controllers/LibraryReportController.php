@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Library\Entities\Borrowing;
 use Modules\Library\Entities\Fine;
+use Modules\Library\app\Enums\BorrowingStatus;
+use Modules\Library\app\Enums\FineStatus;
 
 class LibraryReportController extends Controller
 {
@@ -18,12 +20,12 @@ class LibraryReportController extends Controller
         return response()->json([
             'period' => ['from' => $from->toDateString(), 'to' => $to->toDateString()],
             'borrowings' => Borrowing::whereBetween('borrow_date', [$from->toDateString(), $to->toDateString()])->count(),
-            'active' => Borrowing::whereIn('status', ['borrowed', 'late'])->count(),
-            'overdue' => Borrowing::where('status', 'late')->count(),
+            'active' => Borrowing::whereIn('status', [BorrowingStatus::BORROWED, BorrowingStatus::LATE])->count(),
+            'overdue' => Borrowing::where('status', BorrowingStatus::LATE)->count(),
             'fines' => [
-                'unpaid' => Fine::where('status', 'unpaid')->sum('amount'),
-                'paid' => Fine::where('status', 'paid')->sum('amount'),
-                'waived' => Fine::where('status', 'waived')->sum('amount'),
+                'unpaid' => Fine::where('status', FineStatus::UNPAID)->sum('amount'),
+                'paid' => Fine::where('status', FineStatus::PAID)->sum('amount'),
+                'waived' => Fine::where('status', FineStatus::WAIVED)->sum('amount'),
             ],
             'most_borrowed' => Borrowing::select('book_id', DB::raw('count(*) as borrowings'))
                 ->with('book:id,title')

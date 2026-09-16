@@ -26,7 +26,9 @@ class ImageService
 
     public function upload($model, $images)
     {
-        if (!$images || empty($images)) return false;
+        if (!$images || empty($images)) {
+            return [];
+        }
 
         if (!is_array($images)) {
             $images = [$images];
@@ -35,7 +37,9 @@ class ImageService
         $savedImages = [];
 
         foreach ($images as $image) {
-
+            if (!$image->isValid()) {
+                throw new \InvalidArgumentException('Invalid image upload.');
+            }
 
             $path = $image->store('images', 'public');
 

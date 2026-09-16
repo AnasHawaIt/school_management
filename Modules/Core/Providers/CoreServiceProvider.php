@@ -3,6 +3,7 @@
 namespace Modules\Core\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
@@ -10,6 +11,7 @@ use Modules\Core\Repositories\UserRepository;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Modules\Core\Observers\DomainActivityObserver;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -33,6 +35,57 @@ class CoreServiceProvider extends ServiceProvider
         Relation::morphMap([
             'user' => \Modules\Core\Entities\User::class,
         ]);
+
+        $this->registerDomainActivityObserver();
+    }
+
+    /**
+     * Register lifecycle logging for domain models that do not have a
+     * module-specific event/log listener. Existing event-driven modules keep
+     * their public events and are intentionally not double logged.
+     */
+    private function registerDomainActivityObserver(): void
+    {
+        $models = [
+            'Modules\\Academic\\Entities\\Counselor',
+            'Modules\\Academic\\Entities\\Guardian',
+            'Modules\\Academic\\Entities\\InspectionProgram',
+            'Modules\\Academic\\Entities\\Student',
+            'Modules\\Academic\\Entities\\StudentMedicalRecord',
+            'Modules\\Academic\\Entities\\StudentPoint',
+            'Modules\\Academic\\Entities\\Subject',
+            'Modules\\Academic\\Entities\\Teacher',
+            'Modules\\Academic\\Entities\\TeacherQualification',
+            'Modules\\Academic\\Entities\\Timetable',
+            'Modules\\Attendance\\Entities\\LeaveRequest',
+            'Modules\\Attendance\\Entities\\StudentAttendance',
+            'Modules\\Attendance\\Entities\\TeacherAttendance',
+            'Modules\\Finance\\Entities\\Discount',
+            'Modules\\Finance\\Entities\\FeeStructure',
+            'Modules\\Finance\\Entities\\FeeType',
+            'Modules\\Finance\\Entities\\Invoice',
+            'Modules\\Finance\\Entities\\InvoiceItem',
+            'Modules\\Finance\\Entities\\Payment',
+            'Modules\\Finance\\Entities\\StudentFee',
+            'Modules\\School\\Entities\\AcademicYear',
+            'Modules\\School\\Entities\\Grade',
+            'Modules\\School\\Entities\\Holiday',
+            'Modules\\School\\Entities\\SchoolClass',
+            'Modules\\School\\Entities\\Semester',
+            'Modules\\Transport\\Entities\\BusLocation',
+            'Modules\\Transport\\Entities\\BusTrackingState',
+            'Modules\\Transport\\Entities\\Images',
+            'Modules\\Activities\\Entities\\ActivityCategory',
+            'Modules\\Examination\\Entities\\ExamResult',
+        ];
+
+        $observer = $this->app->make(DomainActivityObserver::class);
+
+        foreach ($models as $model) {
+            if (class_exists($model) && is_subclass_of($model, Model::class)) {
+                $model::observe($observer);
+            }
+        }
     }
 
     /**
