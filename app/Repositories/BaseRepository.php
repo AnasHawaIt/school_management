@@ -6,6 +6,8 @@ use App\Contracts\Repositories\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\app\Entities\Role;
+use Modules\Core\app\Entities\User;
 
 abstract class BaseRepository implements BaseRepositoryInterface
 {
@@ -26,22 +28,27 @@ abstract class BaseRepository implements BaseRepositoryInterface
         return $this->model->paginate($perPage, $columns);
     }
 
-    public function find(int $id, array $columns = ['*']): ?Model
+    public function find(int $id, array $columns = ['*']): ?Role
     {
         return $this->model->find($id, $columns);
     }
 
-    public function findOrFail(int $id, array $columns = ['*']): Model
+    public function findOrFail(int $id, array $columns = ['*']): Role
     {
         return $this->model->findOrFail($id, $columns);
     }
 
-    public function findBy(string $column, $value, array $columns = ['*']): ?Model
+    public function findBy(string $column, $value, array $columns = ['*']): ?User
     {
         return $this->model->where($column, $value)->first($columns);
     }
 
-    public function create(array $data): Model
+    public function create(array $data): User
+    {
+        return $this->model->create($data);
+    }
+
+    public function createRole(array $data): Role
     {
         return $this->model->create($data);
     }
