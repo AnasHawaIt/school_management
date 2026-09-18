@@ -3,13 +3,13 @@
 namespace Modules\Academic\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Modules\School\Entities\Section;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Core\app\Entities\User;
 use Modules\School\Entities\AcademicYear;
+use Modules\School\Entities\Section;
 use Modules\School\Entities\Semester;
-use Modules\Core\Entities\User;
 
 class InspectionProgram extends Model
 {

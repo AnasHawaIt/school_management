@@ -4,7 +4,7 @@ namespace Modules\Messagings\Services;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\ConversationParticipant;
 use Modules\Messagings\Events\AdminDemoted;
@@ -299,6 +299,7 @@ class ConversationService
 
         $participant = $conversation->participants()
             ->where('users.id', $userId)
+            ->with('user')
             ->first();
 
         if (!$participant) {
@@ -306,6 +307,8 @@ class ConversationService
                 'User is not a participant in this conversation.'
             );
         }
+
+        $user = $participant->user;
 
         /*
         |--------------------------------------------------------------------------
@@ -321,8 +324,6 @@ class ConversationService
                 'Conversation owner cannot be removed.'
             );
         }
-
-        $user = $participant;
 
         /*
         |--------------------------------------------------------------------------
@@ -513,6 +514,7 @@ class ConversationService
 
         $participant = $conversation->participants()
             ->where('users.id', $userId)
+            ->with('user')
             ->first();
 
         if (!$participant) {
@@ -521,8 +523,6 @@ class ConversationService
                 'User is not a participant in this conversation.'
             );
         }
-
-        $user = $participant;
 
         /*
         |--------------------------------------------------------------------------
@@ -538,6 +538,9 @@ class ConversationService
                 'Conversation owner cannot leave the conversation.'
             );
         }
+
+
+        $user = $participant->user;
 
         /*
         |--------------------------------------------------------------------------

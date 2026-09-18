@@ -2,11 +2,11 @@
 
 namespace Modules\Academic\Services;
 
-use Modules\Academic\Contracts\Services\GuardianServiceInterface;
-use Modules\Academic\Contracts\Repositories\GuardianRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\Entities\User;
+use Modules\Academic\Contracts\Repositories\GuardianRepositoryInterface;
+use Modules\Academic\Contracts\Services\GuardianServiceInterface;
+use Modules\Core\app\Entities\User;
 
 
 class GuardianService implements GuardianServiceInterface

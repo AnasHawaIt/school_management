@@ -5,6 +5,8 @@ namespace App\Contracts\Repositories;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Core\app\Entities\Role;
+use Modules\Core\app\Entities\User;
 
 interface BaseRepositoryInterface
 {
@@ -12,13 +14,13 @@ interface BaseRepositoryInterface
 
     public function paginate(int $perPage = 15, array $columns = ['*']): LengthAwarePaginator;
 
-    public function find(int $id, array $columns = ['*']): ?Model;
+    public function find(int $id, array $columns = ['*']): ?Role;
 
-    public function findOrFail(int $id, array $columns = ['*']): Model;
+    public function findOrFail(int $id, array $columns = ['*']): Role;
 
-    public function findBy(string $column, $value, array $columns = ['*']): ?Model;
+    public function findBy(string $column, $value, array $columns = ['*']): ?User;
 
-    public function create(array $data): Model;
+    public function create(array $data): User;
 
     public function update(int $id, array $data): bool;
 

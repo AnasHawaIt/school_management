@@ -2,7 +2,7 @@
 
 namespace Modules\Messagings\Listeners\Log;
 
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\Messagings\Events\Message\MessageFailed;
 
 class LogMessageFailedEventListener

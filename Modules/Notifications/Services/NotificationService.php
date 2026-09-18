@@ -4,7 +4,7 @@ namespace Modules\Notifications\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\Notifications\Entities\Notification;
 use Modules\Notifications\Events\NotificationCreated;
 

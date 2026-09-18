@@ -5,11 +5,9 @@ namespace Modules\Academic\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
 use Modules\Academic\Contracts\Services\GuardianServiceInterface;
 use Modules\Academic\Http\Requests\StoreGuardianRequest;
 use Modules\Academic\Http\Resources\GuardianResource;
-use Modules\Core\Entities\User;
 
 class GuardianController extends Controller
 {

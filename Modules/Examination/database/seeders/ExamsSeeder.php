@@ -5,7 +5,7 @@ namespace Modules\Examination\database\seeders;
 use Illuminate\Database\Seeder;
 use Modules\Academic\Entities\Subject;
 use Modules\Academic\Entities\Teacher;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\Examination\Entities\Exam;
 use Modules\Examination\Entities\ExamType;
 use Modules\School\Entities\AcademicYear;

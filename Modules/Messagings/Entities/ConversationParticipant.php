@@ -3,7 +3,7 @@
 namespace Modules\Messagings\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class ConversationParticipant extends Model
 {

@@ -3,8 +3,10 @@
 namespace Modules\Core\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Core\Entities\Role;
-use Modules\Core\Entities\Permission; // تأكد من وجود موديل الصلاحيات
+use Modules\Core\app\Entities\Permission;
+use Modules\Core\app\Entities\Role;
+
+// تأكد من وجود موديل الصلاحيات
 
 class RoleSeeder extends Seeder
 {

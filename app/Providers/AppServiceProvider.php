@@ -10,7 +10,7 @@ use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Activities\Entities\Activity;
 use Modules\Announcement\Entities\Announcement;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\Messagings\app\Policies\MessagePolicy;
 use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageAttachment;

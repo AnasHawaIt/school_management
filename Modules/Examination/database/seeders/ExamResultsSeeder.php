@@ -4,7 +4,7 @@ namespace Modules\Examination\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Academic\Entities\Student;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\Examination\Entities\Exam;
 use Modules\Examination\Entities\ExamResult;
 

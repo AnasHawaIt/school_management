@@ -4,7 +4,7 @@ namespace Modules\Core\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class UserFactory extends Factory
 {

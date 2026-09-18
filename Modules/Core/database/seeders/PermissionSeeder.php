@@ -3,8 +3,8 @@
 namespace Modules\Core\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Core\Entities\Permission;
-use Modules\Core\Entities\Role;
+use Modules\Core\app\Entities\Permission;
+use Modules\Core\app\Entities\Role;
 
 class PermissionSeeder extends Seeder
 {

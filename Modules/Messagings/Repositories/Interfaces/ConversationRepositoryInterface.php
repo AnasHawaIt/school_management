@@ -2,7 +2,7 @@
 
 namespace Modules\Messagings\Repositories\Interfaces;
 
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\Messagings\Entities\Conversation;
 
 interface ConversationRepositoryInterface

@@ -3,7 +3,7 @@
 namespace Modules\Notifications\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\Notifications\Entities\Notification;
 use Modules\Notifications\Http\Requests\StoreNotificationRequest;
 use Modules\Notifications\Services\NotificationService;

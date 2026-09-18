@@ -3,7 +3,7 @@
 namespace Modules\Core\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Core\Entities\Setting;
+use Modules\Core\app\Entities\Setting;
 
 class SettingSeeder extends Seeder
 {
