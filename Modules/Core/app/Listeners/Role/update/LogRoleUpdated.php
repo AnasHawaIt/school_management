@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Core\app\Listeners\Role;
+namespace Modules\Core\app\Listeners\Role\update;
 
 use Modules\Core\app\Events\Role\RoleUpdated;
 

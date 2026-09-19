@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role;
+namespace Modules\Core\app\Listeners\Role\delete;
 
 use Modules\Core\app\Events\Role\RoleDeleted;
 
