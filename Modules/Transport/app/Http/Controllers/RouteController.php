@@ -4,16 +4,16 @@ namespace Modules\Transport\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\Services\CategoryService;
 use Modules\Transport\app\Http\Requests\StoreRouteRequest;
 use Modules\Transport\app\Http\Requests\UpdateRouteRequest;
 use Modules\Transport\app\Http\Resources\RouteResource;
+use Modules\Transport\app\Services\RouteService;
 
 class RouteController extends Controller
 {
     protected $service;
 
-    public function __construct(CategoryService $service)
+    public function __construct(RouteService $service)
     {
         $this->service = $service;
     }

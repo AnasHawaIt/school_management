@@ -5,7 +5,7 @@ namespace Modules\Examination\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Examination\Events\ExamUpdated;
-use Modules\Notifications\Services\NotificationService;
+use Modules\Notifications\app\Services\NotificationService;
 
 class ExamUpdatedNotificationDatabaseListener implements ShouldQueue
 {

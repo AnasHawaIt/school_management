@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Notifications\Http\Controllers\FcmTokenController;
-use Modules\Notifications\Http\Controllers\NotificationController;
+use Modules\Notifications\app\Http\Controllers\FcmTokenController;
+use Modules\Notifications\app\Http\Controllers\NotificationController;
 
 Route::middleware(['auth:sanctum'])->prefix('Notifications')->group(function () {
     Route::get('/', [NotificationController::class,'index']);

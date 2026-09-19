@@ -2,14 +2,14 @@
 
 namespace Modules\Core\app\Jobs\Role;
 
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Broadcast;
+use Modules\Core\app\Entities\Role;
+use Modules\Core\app\Events\Broadcasted\RoleBroadcast;
 
 class BroadcastRoleChangedJob implements ShouldQueue
 {
@@ -34,37 +34,23 @@ class BroadcastRoleChangedJob implements ShouldQueue
 
     public function handle(): void
     {
-        $payload = [
-            'role_id' => $this->roleId,
-            'event' => $this->eventType,
-            'user_id' => $this->userId,
-        ];
+        $role = Role::find($this->roleId);
 
-        if (!empty($this->permissionIds)) {
-            $payload['permission_ids'] = $this->permissionIds;
+        if (!$role) {
+            return;
         }
 
-        if (!empty($this->oldPermissionIds)) {
-            $payload['old_permission_ids'] = $this->oldPermissionIds;
-        }
+        event(new RoleBroadcast(
+            role: $role,
+            action: $this->eventType,
+            userId: $this->userId,
+            permissionIds: $this->permissionIds,
+            oldPermissionIds: $this->oldPermissionIds,
+            oldValues: $this->oldValues,
+            newValues: $this->newValues,
+        ));
 
-        if (!empty($this->oldValues)) {
-            $payload['old_values'] = $this->oldValues;
-        }
-
-        if (!empty($this->newValues)) {
-            $payload['new_values'] = $this->newValues;
-        }
-
-        Broadcast::on(
-            new PrivateChannel('admin.roles')
-        )->as(
-            'role.changed'
-        )->with(
-            $payload
-        )->send();
-
-        Log::info('Role change broadcasted', [
+        Log::info('Role change broadcast dispatched', [
             'role_id' => $this->roleId,
             'event' => $this->eventType,
         ]);

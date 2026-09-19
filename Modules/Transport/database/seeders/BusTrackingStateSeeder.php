@@ -4,9 +4,9 @@
 namespace Modules\Transport\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Transport\Entities\Bus;
-use Modules\Transport\Entities\RouteStop;
-use Modules\Transport\Entities\BusTrackingState;
+use Modules\Transport\app\Entities\Bus;
+use Modules\Transport\app\Entities\BusTrackingState;
+use Modules\Transport\app\Entities\RouteStop;
 
 class BusTrackingStateSeeder extends Seeder
 {

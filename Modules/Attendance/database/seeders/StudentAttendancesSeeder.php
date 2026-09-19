@@ -4,8 +4,8 @@ namespace Modules\Attendance\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Academic\Entities\Student;
-use Modules\Attendance\Entities\AttendanceStatus;
-use Modules\Attendance\Entities\StudentAttendance;
+use Modules\Attendance\app\Entities\AttendanceStatus;
+use Modules\Attendance\app\Entities\StudentAttendance;
 use Modules\Core\app\Entities\User;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;

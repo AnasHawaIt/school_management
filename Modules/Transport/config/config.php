@@ -3,6 +3,6 @@
 return [
     'name' => 'Transport',
     'providers' => [
-        Modules\Transport\Providers\RouteServiceProvider::class,
+        \Modules\Transport\app\Providers\RouteServiceProvider::class,
     ]
 ];

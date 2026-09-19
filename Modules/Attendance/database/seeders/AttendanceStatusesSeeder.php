@@ -3,7 +3,7 @@
 namespace Modules\Attendance\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Attendance\Entities\AttendanceStatus;
+use Modules\Attendance\app\Entities\AttendanceStatus;
 
 class AttendanceStatusesSeeder extends Seeder
 {

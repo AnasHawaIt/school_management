@@ -4,8 +4,8 @@
 namespace Modules\Transport\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Transport\Entities\Route;
-use Modules\Transport\Entities\RouteStop;
+use Modules\Transport\app\Entities\Route;
+use Modules\Transport\app\Entities\RouteStop;
 
 class RouteStopSeeder extends Seeder
 {

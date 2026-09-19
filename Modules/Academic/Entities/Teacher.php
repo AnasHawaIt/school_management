@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Activities\Entities\ActivityParticipant;
-use Modules\Activities\Entities\ActivitySupervisor;
+use Modules\Activities\app\Entities\ActivityParticipant;
+use Modules\Activities\app\Entities\ActivitySupervisor;
 use Modules\Core\app\Entities\User;
 
 class Teacher extends Model

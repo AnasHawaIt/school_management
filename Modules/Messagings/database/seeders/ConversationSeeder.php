@@ -4,7 +4,7 @@ namespace Modules\Messagings\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Core\app\Entities\User;
-use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\app\Entities\Conversation;
 
 class ConversationSeeder extends Seeder
 {

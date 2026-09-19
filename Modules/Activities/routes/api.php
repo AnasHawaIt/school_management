@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-use Modules\Activities\Http\Controllers\ActivityController;
-use Modules\Activities\Http\Controllers\ActivityParticipantController;
-use Modules\Activities\Http\Controllers\ActivitySupervisorController;
-use Modules\Activities\Http\Controllers\ActivityAttachmentController;
+use Modules\Activities\app\Http\Controllers\ActivityAttachmentController;
+use Modules\Activities\app\Http\Controllers\ActivityController;
+use Modules\Activities\app\Http\Controllers\ActivityParticipantController;
+use Modules\Activities\app\Http\Controllers\ActivitySupervisorController;
 
 Route::middleware('auth:sanctum')
     ->prefix('activities')

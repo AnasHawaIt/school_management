@@ -3,7 +3,7 @@
 namespace Modules\Core\app\Listeners\User;
 
 use Modules\Core\app\Events\User\UserPasswordChanged;
-use Modules\Notifications\Services\NotificationService;
+use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyPasswordChanged
 {

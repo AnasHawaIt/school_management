@@ -3,7 +3,7 @@
 namespace Modules\Core\app\Listeners\User\UserCreated;
 
 use Modules\Core\app\Events\User\UserCreated;
-use Modules\Notifications\Services\NotificationService;
+use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyUserCreated
 {

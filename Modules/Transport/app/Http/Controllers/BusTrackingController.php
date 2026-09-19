@@ -3,9 +3,9 @@
 namespace Modules\Transport\app\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use Modules\Transport\Entities\Bus;
 use Illuminate\Routing\Controller;
-use Modules\Transport\Services\BusTrackingService;
+use Modules\Transport\app\Entities\Bus;
+use Modules\Transport\app\Services\BusTrackingService;
 
 class BusTrackingController extends Controller
 {

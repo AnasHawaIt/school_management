@@ -3,7 +3,7 @@
 namespace Modules\Messagings\app\Policies;
 
 use Modules\Core\app\Entities\User;
-use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\app\Entities\Conversation;
 
 class ConversationPolicy
 {

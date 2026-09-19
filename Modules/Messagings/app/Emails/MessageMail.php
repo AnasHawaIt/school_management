@@ -5,7 +5,7 @@ namespace Modules\Messagings\app\Emails;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Messagings\Entities\Message;
+use Modules\Messagings\app\Entities\Message;
 
 class MessageMail extends Mailable
 {

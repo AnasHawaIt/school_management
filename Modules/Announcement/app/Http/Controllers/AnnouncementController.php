@@ -8,7 +8,7 @@ use Modules\Announcement\app\Requests\AnnouncementCreateRequest;
 use Modules\Announcement\app\Requests\AnnouncementScheduleRequest;
 use Modules\Announcement\app\Requests\AnnouncementUpdateRequest;
 use Modules\Announcement\app\Resources\AnnouncementResource;
-use Modules\Announcement\Services\AnnouncementService;
+use Modules\Announcement\app\Services\AnnouncementService;
 
 class AnnouncementController extends Controller
 {

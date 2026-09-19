@@ -2,5 +2,5 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    \Modules\Messagings\Providers\AuthServiceProvider::class,
+    \Modules\Messagings\app\Providers\AuthServiceProvider::class,
 ];

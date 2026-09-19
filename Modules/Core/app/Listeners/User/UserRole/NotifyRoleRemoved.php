@@ -3,7 +3,7 @@
 namespace Modules\Core\app\Listeners\User\UserRole;
 
 use Modules\Core\app\Events\User\UserRoleRemoved;
-use Modules\Notifications\Services\NotificationService;
+use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyRoleRemoved
 {

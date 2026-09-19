@@ -8,7 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Modules\Core\app\Entities\User;
-use Modules\Notifications\Services\NotificationService;
+use Modules\Notifications\app\Services\NotificationService;
 
 class SendRoleNotificationJob implements ShouldQueue
 {

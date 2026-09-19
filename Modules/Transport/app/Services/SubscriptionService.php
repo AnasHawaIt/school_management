@@ -1,0 +1,135 @@
+<?php
+
+namespace Modules\Transport\app\Services;
+
+use Illuminate\Support\Facades\DB;
+use Modules\Transport\app\Entities\Route;
+use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionCreated;
+use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionDeleted;
+use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionRestored;
+use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionUpdated;
+use Modules\Transport\app\Repositories\Interfaces\SubscriptionRepositoryInterface;
+
+class SubscriptionService
+{
+    protected $repo;
+
+    public function __construct(SubscriptionRepositoryInterface $repo)
+    {
+        $this->repo = $repo;
+    }
+
+    public function getSubscriptionOnlyTrashed()
+    {
+        return $this->repo->getSubscriptionOnlyTrashed();
+    }
+
+    public function restore($id)
+    {
+        $subscription= $this->repo->restore($id);
+
+        event(new SubscriptionRestored($subscription));
+
+        return $subscription;
+    }
+
+    public function forceDelete($id)
+    {
+        $subscription= $this->repo->forceDelete($id);
+
+        event(new SubscriptionDeleted($subscription));
+
+        return true;
+    }
+
+    public function getAll($request)
+    {
+        return $this->repo->getAll($request);
+    }
+
+    public function find($id)
+    {
+        return $this->repo->find($id);
+    }
+
+    public function create(array $data)
+    {
+        $subscription = $this->repo->create($data);
+
+        event(new SubscriptionCreated($subscription),auth()->id());
+
+        return $subscription;
+    }
+
+    public function subscribe(array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+            $route = Route::with('bus')->findOrFail($data['route_id']);
+
+            $count = $this->repo->countActiveByRoute($data['route_id']);
+
+            if ($count >= $route->bus->capacity) {
+                throw new \Exception('Bus is full');
+            }
+
+            $subscription = $this->repo->create([
+                'student_id' => $data['student_id'],
+                'route_id'   => $data['route_id'],
+                'start_date' => $data['start_date'],
+                'end_date'   => $data['end_date'],
+                'status'     => 'active',
+            ]);
+
+            DB::commit();
+
+            return $subscription;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function update($id, array $data)
+    {
+        $subscription= $this->repo->update($id, $data);
+
+        event(new SubscriptionUpdated($subscription),auth()->id());
+
+        return $subscription;
+    }
+
+    public function cancel($id)
+    {
+        return $this->repo->update($id, [
+            'status' => 'expired'
+        ]);
+    }
+
+    public function delete($id)
+    {
+        $subscription = $this->repo->find($id);
+
+        if (!$subscription) {
+            throw new \Exception('Route not found');
+        }
+
+        $this->repo->delete($id);
+
+        event(new SubscriptionDeleted($subscription),auth()->id());
+
+        return true;
+    }
+
+    public function getStudentSubscriptions($studentId)
+    {
+        return $this->repo->getByStudent($studentId);
+    }
+
+    public function getActiveByRoute($routeId)
+    {
+        return $this->repo->getActiveByRoute($routeId);
+    }
+}

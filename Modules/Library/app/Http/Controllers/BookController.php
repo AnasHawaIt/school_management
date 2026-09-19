@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Modules\Library\app\Http\Requests\StoreBookRequest;
 use Modules\Library\app\Http\Requests\UpdateBookRequest;
 use Modules\Library\app\Http\Resources\BookResource;
-use Modules\Library\Entities\Book;
-use Modules\Library\Services\BookService;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Services\BookService;
 
 class BookController extends Controller
 {

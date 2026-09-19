@@ -3,7 +3,7 @@
 namespace Modules\Library\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Library\Entities\Publishers;
+use Modules\Library\app\Entities\Publishers;
 
 class PublisherSeeder extends Seeder
 {

@@ -11,10 +11,10 @@ use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Core\Database\Factories\UserFactory;
-use Modules\Library\Entities\Member;
-use Modules\Messagings\Entities\Conversation;
-use Modules\Messagings\Entities\Message;
-use Modules\Notifications\Entities\Notification;
+use Modules\Library\app\Entities\Member;
+use Modules\Messagings\app\Entities\Conversation;
+use Modules\Messagings\app\Entities\Message;
+use Modules\Notifications\app\Entities\Notification;
 use Modules\SMS\Entities\SmsOtp;
 
 class User extends Authenticatable

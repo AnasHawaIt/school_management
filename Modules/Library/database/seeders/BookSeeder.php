@@ -4,10 +4,10 @@
 namespace Modules\Library\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\Author;
-use Modules\Library\Entities\Category;
-use Modules\Library\Entities\Publishers;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Entities\Author;
+use Modules\Library\app\Entities\Category;
+use Modules\Library\app\Entities\Publishers;
 
 class BookSeeder extends Seeder
 {

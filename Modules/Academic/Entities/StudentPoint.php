@@ -4,10 +4,9 @@ namespace Modules\Academic\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Modules\Attendance\app\Entities\StudentAttendance;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Semester;
-use Modules\Attendance\Entities\StudentAttendance;
 
 class StudentPoint extends Model
 {

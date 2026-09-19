@@ -4,8 +4,8 @@ namespace Modules\Messagings\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Core\app\Entities\User;
-use Modules\Messagings\Entities\Conversation;
-use Modules\Messagings\Entities\Message;
+use Modules\Messagings\app\Entities\Conversation;
+use Modules\Messagings\app\Entities\Message;
 
 class MessageFactory extends Factory
 {

@@ -8,7 +8,6 @@ use Modules\Transport\app\Http\Controllers\RouteController;
 use Modules\Transport\app\Http\Controllers\RouteStopController;
 use Modules\Transport\app\Http\Controllers\SubscriptionController;
 use Modules\Transport\app\Http\Controllers\TransportController;
-use Modules\Transport\Services\GeoapifyService;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('transports', TransportController::class)->names('transport');

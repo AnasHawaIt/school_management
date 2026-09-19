@@ -8,14 +8,14 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
-use Modules\Activities\Entities\Activity;
-use Modules\Announcement\Entities\Announcement;
+use Modules\Activities\app\Entities\Activity;
+use Modules\Announcement\app\Entities\Announcement;
 use Modules\Core\app\Entities\User;
+use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\app\Entities\MessageAttachment;
 use Modules\Messagings\app\Policies\MessagePolicy;
-use Modules\Messagings\Entities\Message;
-use Modules\Messagings\Entities\MessageAttachment;
-use Modules\Notifications\Entities\Notification;
-use Modules\Transport\Entities\Bus;
+use Modules\Notifications\app\Entities\Notification;
+use Modules\Transport\app\Entities\Bus;
 
 class AppServiceProvider extends ServiceProvider
 {

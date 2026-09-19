@@ -3,8 +3,8 @@
 namespace Modules\Messagings\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Messagings\Entities\Conversation;
-use Modules\Messagings\Entities\Message;
+use Modules\Messagings\app\Entities\Conversation;
+use Modules\Messagings\app\Entities\Message;
 
 class MessageSeeder extends Seeder
 {
