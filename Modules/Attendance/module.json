@@ -5,7 +5,7 @@
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\Attendance\\Providers\\AttendanceServiceProvider"
+        "Modules\\Attendance\\app\\Providers\\AttendanceServiceProvider"
     ],
     "files": []
 }

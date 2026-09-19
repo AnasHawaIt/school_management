@@ -5,8 +5,8 @@
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\Messagings\\Providers\\MessagingsServiceProvider",
-        "Modules\\Messagings\\Providers\\AuthServiceProvider"
+        "Modules\\Messagings\\app\\Providers\\MessagingsServiceProvider",
+        "Modules\\Messagings\\app\\Providers\\AuthServiceProvider"
     ],
     "files": []
 }

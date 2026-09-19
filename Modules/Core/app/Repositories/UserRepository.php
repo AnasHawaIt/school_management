@@ -33,7 +33,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->get();
     }
 
-    public function getWithRoles(int $id)
+    public function getWithRoles(int $id): ?User
     {
         return $this->model->with('roles.permissions')->find($id);
     }

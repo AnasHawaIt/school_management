@@ -5,8 +5,12 @@ namespace Modules\Core\app\Providers;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Core\app\Contracts\Repositories\PermissionRepositoryInterface;
 use Modules\Core\app\Contracts\Repositories\UserRepositoryInterface;
+use Modules\Core\app\Contracts\Services\PermissionServiceInterface;
+use Modules\Core\app\Repositories\PermissionRepository;
 use Modules\Core\app\Repositories\UserRepository;
+use Modules\Core\app\Services\PermissionService;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -43,14 +47,41 @@ class CoreServiceProvider extends ServiceProvider
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
 
+        $this->registerRepositories();
+        $this->registerServices();
+    }
+
+    protected function registerRepositories(): void
+    {
+        // User Repository
         $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class
         );
-        $this->app->register(RouteServiceProvider::class);
 
-        $this->registerRepositories();
-        $this->registerServices();
+        // Role Repository
+        $this->app->bind(
+            \Modules\Core\app\Contracts\Repositories\RoleRepositoryInterface::class,
+            \Modules\Core\app\Repositories\RoleRepository::class
+        );
+
+        // Permission Repository
+        $this->app->bind(
+            PermissionRepositoryInterface::class,
+            PermissionRepository::class
+        );
+
+        // ActivityLog Repository
+        $this->app->bind(
+            \Modules\Core\app\Contracts\Repositories\ActivityLogRepositoryInterface::class,
+            \Modules\Core\app\Repositories\ActivityLogRepository::class
+        );
+
+        // Setting Repository
+        $this->app->bind(
+            \Modules\Core\app\Contracts\Repositories\SettingRepositoryInterface::class,
+            \Modules\Core\app\Repositories\SettingRepository::class
+        );
     }
 
     /**
@@ -146,61 +177,35 @@ class CoreServiceProvider extends ServiceProvider
 
         Blade::componentNamespace(config('modules.namespace').'\\' . $this->name . '\\View\\Components', $this->nameLower);
     }
-    protected function registerRepositories(): void
-    {
-        // User Repository
-        $this->app->bind(
-            \Modules\Core\app\Contracts\Repositories\UserRepositoryInterface::class,
-            \Modules\Core\app\Repositories\UserRepository::class
-        );
-
-        // Role Repository
-        $this->app->bind(
-            \Modules\Core\app\Contracts\Repositories\RoleRepositoryInterface::class,
-            \Modules\Core\app\Repositories\RoleRepository::class
-        );
-
-        // Permission Repository
-        $this->app->bind(
-            \Modules\Core\app\Contracts\Repositories\PermissionRepositoryInterface::class,
-            \Modules\Core\app\Repositories\PermissionRepository::class
-        );
-
-        // ActivityLog Repository
-        $this->app->bind(
-            \Modules\Core\app\Contracts\Repositories\ActivityLogRepositoryInterface::class,
-            \Modules\Core\app\Repositories\ActivityLogRepository::class
-        );
-
-        // Setting Repository
-        $this->app->bind(
-            \Modules\Core\app\Contracts\Repositories\SettingRepositoryInterface::class,
-            \Modules\Core\app\Repositories\SettingRepository::class
-        );
-    }
 
 
     protected function registerServices(): void
     {
-        // Auth Services
+        // Auth Service
         $this->app->bind(
             \Modules\Core\app\Contracts\Services\AuthServiceInterface::class,
             \Modules\Core\app\Services\AuthService::class
         );
 
-        // User Services
+        // User Service
         $this->app->bind(
             \Modules\Core\app\Contracts\Services\UserServiceInterface::class,
             \Modules\Core\app\Services\UserService::class
         );
 
-        // Role Services
+        // Role Service
         $this->app->bind(
             \Modules\Core\app\Contracts\Services\RoleServiceInterface::class,
             \Modules\Core\app\Services\RoleService::class
         );
 
-        // Setting Services
+        // Permission Service
+        $this->app->bind(
+            PermissionServiceInterface::class,
+            PermissionService::class
+        );
+
+        // Setting Service
         $this->app->bind(
             \Modules\Core\app\Contracts\Services\SettingServiceInterface::class,
             \Modules\Core\app\Services\SettingService::class

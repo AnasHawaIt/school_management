@@ -1,6 +1,5 @@
 <?php
-
-use App\Models\User;
+use Modules\Core\app\Entities\User;
 
 test('profile page is displayed', function () {
     $user = User::factory()->create();

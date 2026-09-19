@@ -3,7 +3,7 @@
 namespace Modules\Announcement\app\Entities;
 
 use App\Models\Images;
-use App\Models\User;
+use Modules\Core\app\Entities\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

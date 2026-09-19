@@ -3,7 +3,7 @@
 
 namespace Modules\Activities\app\Entities;
 
-use App\Models\User;
+use Modules\Core\app\Entities\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
