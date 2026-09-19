@@ -63,6 +63,15 @@ use Modules\Core\app\Listeners\Permission\LogPermissionDeleted;
 use Modules\Core\app\Listeners\Permission\LogPermissionRestored;
 use Modules\Core\app\Listeners\Permission\LogPermissionForceDeleted;
 
+use Modules\Core\app\Events\Setting\SettingCreated;
+use Modules\Core\app\Events\Setting\SettingUpdated;
+use Modules\Core\app\Events\Setting\SettingDeleted;
+use Modules\Core\app\Events\Setting\SettingsUpdated;
+
+use Modules\Core\app\Listeners\Setting\LogSettingCreated;
+use Modules\Core\app\Listeners\Setting\LogSettingUpdated;
+use Modules\Core\app\Listeners\Setting\LogSettingDeleted;
+use Modules\Core\app\Listeners\Setting\LogSettingsUpdated;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -187,6 +196,23 @@ class EventServiceProvider extends ServiceProvider
        PermissionForceDeleted::class => [
            LogPermissionForceDeleted::class,
        ],
+
+
+        SettingCreated::class => [
+            LogSettingCreated::class,
+        ],
+
+        SettingUpdated::class => [
+            LogSettingUpdated::class,
+        ],
+
+        SettingDeleted::class => [
+            LogSettingDeleted::class,
+        ],
+
+        SettingsUpdated::class => [
+            LogSettingsUpdated::class,
+        ],
 
     ];
 
