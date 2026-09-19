@@ -4,17 +4,14 @@ namespace Modules\Core\app\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Modules\Core\app\Contracts\Repositories\PermissionRepositoryInterface;
+use Modules\Core\app\Contracts\Services\PermissionServiceInterface;
 use Modules\Core\app\Http\Resources\PermissionResource;
 
 class PermissionController extends Controller
 {
-    protected $permissionRepository;
-
-    public function __construct(PermissionRepositoryInterface $permissionRepository)
-    {
-        $this->permissionRepository = $permissionRepository;
-    }
+    public function __construct(
+        protected PermissionServiceInterface $permissionService
+    ) {}
 
     /**
      * Display a listing of permissions
@@ -22,7 +19,8 @@ class PermissionController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $permissions = $this->permissionRepository->all();
+            $permissions = $this->permissionService
+                ->getAllPermissions();
 
             return response()->json([
                 'success' => true,
@@ -43,7 +41,8 @@ class PermissionController extends Controller
     public function grouped(): JsonResponse
     {
         try {
-            $permissions = $this->permissionRepository->getAllGrouped();
+            $permissions = $this->permissionService
+                ->getAllGrouped();
 
             return response()->json([
                 'success' => true,

@@ -33,6 +33,37 @@ use Modules\Core\app\Listeners\User\UserRole\NotifyRoleRemoved;
 use Modules\Core\app\Listeners\User\UserUpdated\BroadcastUserUpdated;
 use Modules\Core\app\Listeners\User\UserUpdated\LogUserUpdated;
 
+use Modules\Core\app\Events\Role\RoleCreated;
+use Modules\Core\app\Events\Role\RoleUpdated;
+use Modules\Core\app\Events\Role\RoleDeleted;
+use Modules\Core\app\Events\Role\RoleRestored;
+use Modules\Core\app\Events\Role\RoleForceDeleted;
+use Modules\Core\app\Events\Role\RolePermissionAttached;
+use Modules\Core\app\Events\Role\RolePermissionDetached;
+use Modules\Core\app\Events\Role\RolePermissionsSynced;
+
+use Modules\Core\app\Listeners\Role\LogRoleCreated;
+use Modules\Core\app\Listeners\Role\LogRoleUpdated;
+use Modules\Core\app\Listeners\Role\LogRoleDeleted;
+use Modules\Core\app\Listeners\Role\LogRoleRestored;
+use Modules\Core\app\Listeners\Role\LogRoleForceDeleted;
+use Modules\Core\app\Listeners\Role\LogRolePermissionAttached;
+use Modules\Core\app\Listeners\Role\LogRolePermissionDetached;
+use Modules\Core\app\Listeners\Role\LogRolePermissionsSynced;
+
+use Modules\Core\app\Events\Permission\PermissionCreated;
+use Modules\Core\app\Events\Permission\PermissionUpdated;
+use Modules\Core\app\Events\Permission\PermissionDeleted;
+use Modules\Core\app\Events\Permission\PermissionRestored;
+use Modules\Core\app\Events\Permission\PermissionForceDeleted;
+
+use Modules\Core\app\Listeners\Permission\LogPermissionCreated;
+use Modules\Core\app\Listeners\Permission\LogPermissionUpdated;
+use Modules\Core\app\Listeners\Permission\LogPermissionDeleted;
+use Modules\Core\app\Listeners\Permission\LogPermissionRestored;
+use Modules\Core\app\Listeners\Permission\LogPermissionForceDeleted;
+
+
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -91,6 +122,72 @@ class EventServiceProvider extends ServiceProvider
             LogUserPasswordChanged::class,
             NotifyPasswordChanged::class,
         ],
+
+       /*
+       |--------------------------------------------------------------------------
+       | Role
+       |--------------------------------------------------------------------------
+       */
+
+       RoleCreated::class => [
+           LogRoleCreated::class,
+       ],
+
+       RoleUpdated::class => [
+           LogRoleUpdated::class,
+       ],
+
+       RoleDeleted::class => [
+           LogRoleDeleted::class,
+       ],
+
+       RoleRestored::class => [
+           LogRoleRestored::class,
+       ],
+
+       RoleForceDeleted::class => [
+           LogRoleForceDeleted::class,
+       ],
+
+       RolePermissionAttached::class => [
+           LogRolePermissionAttached::class,
+       ],
+
+       RolePermissionDetached::class => [
+           LogRolePermissionDetached::class,
+       ],
+
+       RolePermissionsSynced::class => [
+           LogRolePermissionsSynced::class,
+       ],
+
+
+       /*
+       |--------------------------------------------------------------------------
+       | Permission
+       |--------------------------------------------------------------------------
+       */
+
+       PermissionCreated::class => [
+           LogPermissionCreated::class,
+       ],
+
+       PermissionUpdated::class => [
+           LogPermissionUpdated::class,
+       ],
+
+       PermissionDeleted::class => [
+           LogPermissionDeleted::class,
+       ],
+
+       PermissionRestored::class => [
+           LogPermissionRestored::class,
+       ],
+
+       PermissionForceDeleted::class => [
+           LogPermissionForceDeleted::class,
+       ],
+
     ];
 
     /**

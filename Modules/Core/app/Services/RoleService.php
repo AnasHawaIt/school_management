@@ -4,22 +4,21 @@ namespace Modules\Core\app\Services;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\app\Contracts\Repositories\ActivityLogRepositoryInterface;
 use Modules\Core\app\Contracts\Repositories\RoleRepositoryInterface;
 use Modules\Core\app\Contracts\Services\RoleServiceInterface;
 use Modules\Core\app\Entities\Role;
+use Modules\Core\app\Events\Role\RoleCreated;
+use Modules\Core\app\Events\Role\RoleDeleted;
+use Modules\Core\app\Events\Role\RolePermissionAttached;
+use Modules\Core\app\Events\Role\RolePermissionDetached;
+use Modules\Core\app\Events\Role\RolePermissionsSynced;
+use Modules\Core\app\Events\Role\RoleUpdated;
 
 class RoleService implements RoleServiceInterface
 {
-    protected $roleRepository;
-    protected $activityLogRepository;
-
     public function __construct(
-        RoleRepositoryInterface $roleRepository,
-        ActivityLogRepositoryInterface $activityLogRepository
+        protected RoleRepositoryInterface $roleRepository
     ) {
-        $this->roleRepository = $roleRepository;
-        $this->activityLogRepository = $activityLogRepository;
     }
 
     public function getAllRoles(): Collection
@@ -32,102 +31,248 @@ class RoleService implements RoleServiceInterface
         return $this->roleRepository->find($id);
     }
 
-    public function createRole(array $data): Role
-    {
-        DB::beginTransaction();
+    /**
+     * Create a new role.
+     */
+    public function createRole(
+        array $data,
+        ?int $userId = null
+    ): Role {
+        return DB::transaction(function () use ($data, $userId) {
 
-        try {
-            $role = $this->roleRepository->createRole($data);
+            $permissionIds = $data['permissions'] ?? [];
 
-            // Attach permissions if provided
-            if (isset($data['permissions'])) {
-                $this->attachPermissions($role->id, $data['permissions']);
+            // Do not pass permissions to role creation.
+            unset($data['permissions']);
+
+            $role = $this->roleRepository->create($data);
+
+            event(new RoleCreated(
+                role: $role,
+                userId: $userId,
+            ));
+
+            if (!empty($permissionIds)) {
+                $this->attachPermissions(
+                    roleId: $role->id,
+                    permissions: $permissionIds,
+                    userId: $userId
+                );
             }
 
-            DB::commit();
-
-            return $role;
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+            return $role->fresh('permissions');
+        });
     }
 
-    public function updateRole(int $id, array $data): bool
-    {
-        DB::beginTransaction();
+    /**
+     * Update an existing role.
+     */
+    public function updateRole(
+        int $id,
+        array $data,
+        ?int $userId = null
+    ): bool {
+        return DB::transaction(function () use ($id, $data, $userId) {
 
-        try {
             $role = $this->roleRepository->findOrFail($id);
+
             $oldValues = $role->toArray();
 
-            $updated = $this->roleRepository->update($id, $data);
+            /*
+             * Keep permissions separate from role attributes.
+             */
+            $permissionIds = $data['permissions'] ?? null;
+            unset($data['permissions']);
 
-            // Update permissions if provided
-            if (isset($data['permissions'])) {
-                $this->syncPermissions($id, $data['permissions']);
+            $updated = $this->roleRepository->update(
+                $id,
+                $data
+            );
+
+            if ($permissionIds !== null) {
+                $this->syncPermissions(
+                    roleId: $id,
+                    permissions: $permissionIds,
+                    userId: $userId
+                );
             }
 
-            // Log activity
-            $this->activityLogRepository->log([
-                'action' => 'update',
-                'model_type' => Role::class,
-          //      'model_id' => $id,
-                'old_values' => $oldValues,
-                'new_values' => $data,
-            ]);
+            $role->refresh();
 
-            DB::commit();
+            event(new RoleUpdated(
+                role: $role,
+                userId: $userId,
+                oldValues: $oldValues,
+                newValues: $data,
+            ));
 
             return $updated;
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+        });
     }
 
-    public function deleteRole(int $id): bool
-    {
-        DB::beginTransaction();
+    /**
+     * Delete a role.
+     */
+    public function deleteRole(
+        int $id,
+        ?int $userId = null
+    ): bool {
+        return DB::transaction(function () use ($id, $userId) {
 
-        try {
             $role = $this->roleRepository->findOrFail($id);
 
             $deleted = $this->roleRepository->delete($id);
 
-            // Log activity
-            $this->activityLogRepository->log([
-                'action' => 'delete',
-                'model_type' => Role::class,
-         //       'model_id' => $id,
-                'old_values' => $role->toArray(),
-            ]);
-
-            DB::commit();
+            if ($deleted) {
+                event(new RoleDeleted(
+                    role: $role,
+                    userId: $userId,
+                ));
+            }
 
             return $deleted;
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw $e;
-        }
+        });
     }
 
-    public function attachPermissions(int $roleId, array $permissions): bool
-    {
-        return $this->roleRepository->attachPermissions($roleId, $permissions);
+    /**
+     * Attach permissions without removing existing permissions.
+     */
+    public function attachPermissions(
+        int $roleId,
+        array $permissions,
+        ?int $userId = null
+    ): bool {
+        return DB::transaction(function () use (
+            $roleId,
+            $permissions,
+            $userId
+        ) {
+            $role = $this->roleRepository->findOrFail($roleId);
+
+            /*
+             * Get current permissions first so the event
+             * contains only actually new permissions.
+             */
+            $existingPermissionIds = $role->permissions()
+                ->pluck('permissions.id')
+                ->map(fn ($id) => (int) $id)
+                ->toArray();
+
+            $permissionIds = array_values(
+                array_unique(
+                    array_map('intval', $permissions)
+                )
+            );
+
+            $attachedPermissionIds = array_values(
+                array_diff(
+                    $permissionIds,
+                    $existingPermissionIds
+                )
+            );
+
+            $result = $this->roleRepository->attachPermissions(
+                $roleId,
+                $permissionIds
+            );
+
+            if ($result && !empty($attachedPermissionIds)) {
+                event(new RolePermissionAttached(
+                    role: $role->fresh('permissions'),
+                    permissionIds: $attachedPermissionIds,
+                    userId: $userId,
+                ));
+            }
+
+            return $result;
+        });
     }
 
-    public function detachPermission(int $roleId, int $permissionId): bool
-    {
-        return $this->roleRepository->detachPermissions($roleId, [$permissionId]);
+    /**
+     * Detach specific permissions from a role.
+     */
+    public function detachPermission(
+        int $roleId,
+        int $permissionId,
+        ?int $userId = null
+    ): bool {
+        return DB::transaction(function () use (
+            $roleId,
+            $permissionId,
+            $userId
+        ) {
+            $role = $this->roleRepository->findOrFail($roleId);
+
+            $exists = $role->permissions()
+                ->where('permissions.id', $permissionId)
+                ->exists();
+
+            $result = $this->roleRepository->detachPermissions(
+                $roleId,
+                [$permissionId]
+            );
+
+            if ($result && $exists) {
+                event(new RolePermissionDetached(
+                    role: $role->fresh('permissions'),
+                    permissionIds: [$permissionId],
+                    userId: $userId,
+                ));
+            }
+
+            return $result;
+        });
     }
 
-    public function syncPermissions(int $roleId, array $permissions): bool
-    {
-        return $this->roleRepository->syncPermissions($roleId, $permissions);
+    /**
+     * Synchronize all permissions for a role.
+     */
+    public function syncPermissions(
+        int $roleId,
+        array $permissions,
+        ?int $userId = null
+    ): bool {
+        return DB::transaction(function () use (
+            $roleId,
+            $permissions,
+            $userId
+        ) {
+            $role = $this->roleRepository->findOrFail($roleId);
+
+            $oldPermissionIds = $role->permissions()
+                ->pluck('permissions.id')
+                ->map(fn ($id) => (int) $id)
+                ->sort()
+                ->values()
+                ->toArray();
+
+            $newPermissionIds = array_values(
+                array_unique(
+                    array_map('intval', $permissions)
+                )
+            );
+
+            sort($newPermissionIds);
+
+            $result = $this->roleRepository->syncPermissions(
+                $roleId,
+                $newPermissionIds
+            );
+
+            if (
+                $result &&
+                $oldPermissionIds !== $newPermissionIds
+            ) {
+                event(new RolePermissionsSynced(
+                    role: $role->fresh('permissions'),
+                    oldPermissionIds: $oldPermissionIds,
+                    newPermissionIds: $newPermissionIds,
+                    userId: $userId,
+                ));
+            }
+
+            return $result;
+        });
     }
 
     public function getRolePermissions(int $roleId): Collection
