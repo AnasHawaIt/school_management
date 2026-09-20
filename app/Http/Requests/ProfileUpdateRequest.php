@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class ProfileUpdateRequest extends FormRequest
 {

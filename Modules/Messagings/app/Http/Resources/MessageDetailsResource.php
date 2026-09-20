@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Messagings\app\Resources;
+namespace Modules\Messagings\app\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 

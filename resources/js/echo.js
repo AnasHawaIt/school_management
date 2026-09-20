@@ -22,74 +22,175 @@ window.Echo = new Echo({
 });
 
 console.log('✅ Echo initialized');
-console.log('🔌 Reverb host:', import.meta.env.VITE_REVERB_HOST);
-console.log('🔌 Reverb port:', import.meta.env.VITE_REVERB_PORT);
+
+console.log(
+    '🔌 Reverb host:',
+    import.meta.env.VITE_REVERB_HOST
+);
+
+console.log(
+    '🔌 Reverb port:',
+    import.meta.env.VITE_REVERB_PORT
+);
+
+
+// =====================================================
+// ANNOUNCEMENT
+// =====================================================
 
 window.Echo
     .channel('announcement')
+
     .subscribed(() => {
-        console.log('🟢 SUBSCRIBED TO ANNOUNCEMENT CHANNEL');
+        console.log(
+            '🟢 SUBSCRIBED TO ANNOUNCEMENT CHANNEL'
+        );
     })
+
     .error((error) => {
-        console.error('❌ ANNOUNCEMENT CHANNEL ERROR:', error);
+        console.error(
+            '❌ ANNOUNCEMENT CHANNEL ERROR:',
+            error
+        );
     })
+
     .listen('.announcement.published', (event) => {
-        console.log('📢 ANNOUNCEMENT PUBLISHED:', event);
+        console.log(
+            '📢 ANNOUNCEMENT PUBLISHED:',
+            event
+        );
     })
+
     .listen('.announcement.expired', (event) => {
-        console.log('⏰ ANNOUNCEMENT EXPIRED:', event);
+        console.log(
+            '⏰ ANNOUNCEMENT EXPIRED:',
+            event
+        );
     })
+
     .listen('.announcement.created', (event) => {
-        console.log('🆕 ANNOUNCEMENT CREATED:', event);
+        console.log(
+            '🆕 ANNOUNCEMENT CREATED:',
+            event
+        );
     })
+
     .listen('.announcement.scheduled', (event) => {
-        console.log('📢⏰🆕 ANNOUNCEMENT SCHEDULED:', event);
+        console.log(
+            '📢⏰🆕 ANNOUNCEMENT SCHEDULED:',
+            event
+        );
     })
+
     .listen('.announcement.updated', (event) => {
-        console.log('✏️ ANNOUNCEMENT UPDATED:', event);
+        console.log(
+            '✏️ ANNOUNCEMENT UPDATED:',
+            event
+        );
     })
+
     .listen('.announcement.deleted', (event) => {
-        console.log('🗑️ ANNOUNCEMENT DELETED:', event);
+        console.log(
+            '🗑️ ANNOUNCEMENT DELETED:',
+            event
+        );
     });
 
-console.log('👂 Listening for announcement events...');
+console.log(
+    '👂 Listening for announcement events...'
+);
+
+
+// =====================================================
+// LIBRARY BOOKS
+// =====================================================
 
 window.Echo
     .channel('library.books')
+
     .subscribed(() => {
-        console.log('🟢 SUBSCRIBED TO LIBRARY BOOKS CHANNEL');
+        console.log(
+            '🟢 SUBSCRIBED TO LIBRARY BOOKS CHANNEL'
+        );
     })
+
     .error((error) => {
-        console.error('❌ LIBRARY BOOKS CHANNEL ERROR:', error);
+        console.error(
+            '❌ LIBRARY BOOKS CHANNEL ERROR:',
+            error
+        );
     })
 
     .listen('.book.updated', (event) => {
-        console.log('✏️ BOOK UPDATED - REAL TIME:', event);
+        console.log(
+            '✏️ BOOK UPDATED - REAL TIME:',
+            event
+        );
     })
 
     .listen('.book.created', (event) => {
-        console.log('➕ BOOK CREATED - REAL TIME:', event);
+        console.log(
+            '➕ BOOK CREATED - REAL TIME:',
+            event
+        );
     })
 
     .listen('.book.deleted', (event) => {
-        console.log('🗑️ BOOK DELETED - REAL TIME:', event);
+        console.log(
+            '🗑️ BOOK DELETED - REAL TIME:',
+            event
+        );
     });
+
+
+// =====================================================
+// LIBRARY BOOK COPIES
+// =====================================================
 
 window.Echo
     .channel('library.book-copies')
+
     .subscribed(() => {
-        console.log('🟢 SUBSCRIBED TO LIBRARY BOOK COPIES CHANNEL');
+        console.log(
+            '🟢 SUBSCRIBED TO LIBRARY BOOK COPIES CHANNEL'
+        );
     })
+
+    .error((error) => {
+        console.error(
+            '❌ LIBRARY BOOK COPIES CHANNEL ERROR:',
+            error
+        );
+    })
+
     .listen('.book-copy.created', (event) => {
-        console.log('➕ BOOK COPY CREATED:', event);
+        console.log(
+            '➕ BOOK COPY CREATED:',
+            event
+        );
     })
+
     .listen('.book-copy.updated', (event) => {
-        console.log('✏️ BOOK COPY UPDATED:', event);
+        console.log(
+            '✏️ BOOK COPY UPDATED:',
+            event
+        );
     })
+
     .listen('.book-copy.deleted', (event) => {
-        console.log('🗑️ BOOK COPY DELETED:', event);
+        console.log(
+            '🗑️ BOOK COPY DELETED:',
+            event
+        );
     })
+
     .listen('.book-copy.status-changed', (event) => {
-        console.log('🔄 BOOK COPY STATUS CHANGED:', event);
+        console.log(
+            '🔄 BOOK COPY STATUS CHANGED:',
+            event
+        );
     });
 
+console.log(
+    '👂 Listening for library events...'
+);

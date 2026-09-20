@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Modules\Activities\Entities\ActivityParticipant;
-use Modules\Core\Entities\User;
+use Modules\Activities\app\Entities\ActivityParticipant;
+use Modules\Core\app\Entities\User;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\AcademicYear;
-use Modules\Transport\Entities\Subscription;
+use Modules\Transport\app\Entities\Subscription;
 
 class Student extends Model
 {

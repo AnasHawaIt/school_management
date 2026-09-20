@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Activities\app\Requests;
+namespace Modules\Activities\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

@@ -4,10 +4,10 @@ namespace Modules\Announcement\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Modules\Announcement\app\Requests\AnnouncementCreateRequest;
-use Modules\Announcement\app\Requests\AnnouncementScheduleRequest;
-use Modules\Announcement\app\Requests\AnnouncementUpdateRequest;
-use Modules\Announcement\app\Resources\AnnouncementResource;
+use Modules\Announcement\app\Http\Requests\AnnouncementCreateRequest;
+use Modules\Announcement\app\Http\Requests\AnnouncementScheduleRequest;
+use Modules\Announcement\app\Http\Requests\AnnouncementUpdateRequest;
+use Modules\Announcement\app\Http\Resources\AnnouncementResource;
 use Modules\Announcement\app\Services\AnnouncementService;
 
 class AnnouncementController extends Controller

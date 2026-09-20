@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Requests;
+namespace Modules\Activities\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UploadActivityAttachmentRequest extends FormRequest
+class AddSupervisorRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,21 +15,24 @@ class UploadActivityAttachmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => [
+            'teacher_id' => [
                 'required',
-                'file',
-                'max:20480',
-
-                'mimes:jpg,jpeg,png,webp,pdf,doc,docx,xls,xlsx,mp4',
+                'integer',
+                'exists:teachers,id',
             ],
 
-            'title' => [
+            'role' => [
                 'nullable',
                 'string',
-                'max:255',
+                'max:100',
             ],
 
-            'description' => [
+            'is_primary' => [
+                'sometimes',
+                'boolean',
+            ],
+
+            'notes' => [
                 'nullable',
                 'string',
             ],

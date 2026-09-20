@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class RegisteredUserController extends Controller
 {
