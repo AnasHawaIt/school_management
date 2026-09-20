@@ -1,16 +1,10 @@
 <?php
 
+namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
 
-<<<<<<<< HEAD:Modules/Library/app/Listeners/BorrowingListeners/LogBorrowingOverdue.php
-namespace Modules\Library\app\Listeners\BorrowingListeners;
+namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
 
 use Modules\Library\app\Events\BorrowingEvents\BorrowingOverdue;
-use Modules\Library\app\Events\BorrowingEvents\BorrowingRejected;
-========
-namespace Modules\Library\Listeners\BorrowingListeners\Logs;
-
-use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
->>>>>>>> 805201b1233d594b84aa4e236cb851d59081984d:Modules/Library/app/Listeners/BorrowingListeners/Logs/LogBorrowingOverdue.php
 
 class LogBorrowingOverdue
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Library\Listeners\BorrowingListeners;
+namespace Modules\Library\app\Listeners\BorrowingListeners;
 
 use Modules\Library\app\Jobs\CreateOverdueFineJob;
-use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingOverdue;
 
 class CreateOverdueFineListener
 {

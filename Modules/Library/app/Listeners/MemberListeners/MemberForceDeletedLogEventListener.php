@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\Listeners\MemberListeners;
+namespace Modules\Library\app\Listeners\MemberListeners;
 
-use Modules\Library\Events\MemberEvents\MemberForceDeleted;
+use Modules\Library\app\Events\MemberEvents\MemberForceDeleted;
 
 class MemberForceDeletedLogEventListener
 {

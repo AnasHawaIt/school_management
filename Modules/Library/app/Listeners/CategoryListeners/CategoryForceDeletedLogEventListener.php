@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\Listeners\CategoryListeners;
+namespace Modules\Library\app\Listeners\CategoryListeners;
 
-use Modules\Library\Events\CategoryEvents\CategoryForceDeleted;
+use Modules\Library\app\Events\CategoryEvents\CategoryForceDeleted;
 
 class CategoryForceDeletedLogEventListener
 {

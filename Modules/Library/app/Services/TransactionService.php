@@ -1,30 +1,30 @@
 <?php
 
-namespace Modules\Library\Services;
+namespace Modules\Library\app\Services;
 
 use Illuminate\Validation\ValidationException;
 use Modules\Library\app\Enums\BookCopiesStatus;
 use Modules\Library\app\Enums\ReservationStatus;
-use Modules\Library\Entities\BookCopy;
-use Modules\Library\Entities\Borrowing;
-use Modules\Library\Entities\Member;
-use Modules\Library\Entities\Reservation;
+use Modules\Library\app\Entities\BookCopy;
+use Modules\Library\app\Entities\Borrowing;
+use Modules\Library\app\Entities\Member;
+use Modules\Library\app\Entities\Reservation;
 use Modules\Library\app\Enums\BorrowingStatus;
-use Modules\Library\Events\BorrowingEvents\BookAvailable;
-use Modules\Library\Events\BorrowingEvents\BorrowingApproved;
-use Modules\Library\Events\BorrowingEvents\BorrowingCancelled;
-use Modules\Library\Events\BorrowingEvents\BorrowingCreated;
-use Modules\Library\Events\BorrowingEvents\BorrowingDeleted;
-use Modules\Library\Events\BorrowingEvents\BorrowingForceDeleted;
-use Modules\Library\Events\BorrowingEvents\BorrowingLost;
-use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
-use Modules\Library\Events\BorrowingEvents\BorrowingPickedUp;
-use Modules\Library\Events\BorrowingEvents\BorrowingRejected;
-use Modules\Library\Events\BorrowingEvents\BorrowingRenewed;
-use Modules\Library\Events\BorrowingEvents\BorrowingRestored;
-use Modules\Library\Events\BorrowingEvents\BorrowingReturned;
-use Modules\Library\Events\BorrowingEvents\BorrowingUpdated;
-use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
+use Modules\Library\app\Events\BorrowingEvents\BookAvailable;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingApproved;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingCancelled;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingCreated;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingDeleted;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingForceDeleted;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingLost;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingOverdue;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingPickedUp;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingRejected;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingRenewed;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingRestored;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingReturned;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingUpdated;
+use Modules\Library\app\Repositories\Interfaces\TransactionRepositoryInterface;
 
 class TransactionService
 {

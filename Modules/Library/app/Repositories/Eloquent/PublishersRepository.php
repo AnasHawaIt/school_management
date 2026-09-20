@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\Repositories\Eloquent;
+namespace Modules\Library\app\Repositories\Eloquent;
 
-use Modules\Library\Entities\Publisher;
-use Modules\Library\Filters\PublisherFilter;
-use Modules\Library\Repositories\Interfaces\PublishersRepositoryInterface;
+use Modules\Library\app\Entities\Publisher;
+use Modules\Library\app\Filters\PublisherFilter;
+use Modules\Library\app\Repositories\Interfaces\PublishersRepositoryInterface;
 
 class PublishersRepository implements PublishersRepositoryInterface
 {

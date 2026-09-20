@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Library\Services;
+namespace Modules\Library\app\Services;
 
 use Modules\Library\app\Http\Resources\PublishersResource;
-use Modules\Library\Events\PublishersEvents\PublishersCreated;
-use Modules\Library\Events\PublishersEvents\PublishersDeleted;
-use Modules\Library\Events\PublishersEvents\PublishersForceDeleted;
-use Modules\Library\Events\PublishersEvents\PublishersRestored;
-use Modules\Library\Events\PublishersEvents\PublishersUpdated;
-use Modules\Library\Repositories\Eloquent\PublishersRepository;
+use Modules\Library\app\Events\PublishersEvents\PublishersCreated;
+use Modules\Library\app\Events\PublishersEvents\PublishersDeleted;
+use Modules\Library\app\Events\PublishersEvents\PublishersForceDeleted;
+use Modules\Library\app\Events\PublishersEvents\PublishersRestored;
+use Modules\Library\app\Events\PublishersEvents\PublishersUpdated;
+use Modules\Library\app\Repositories\Eloquent\PublishersRepository;
 
 class PublishersService
 {

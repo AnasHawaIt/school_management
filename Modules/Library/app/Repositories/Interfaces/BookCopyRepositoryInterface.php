@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\Repositories\Interfaces;
+namespace Modules\Library\app\Repositories\Interfaces;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\BookCopy;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Entities\BookCopy;
 
 interface BookCopyRepositoryInterface
 {

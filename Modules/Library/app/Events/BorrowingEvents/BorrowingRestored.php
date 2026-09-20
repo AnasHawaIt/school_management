@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\Events\BorrowingEvents;
+namespace Modules\Library\app\Events\BorrowingEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Borrowing;
+use Modules\Library\app\Entities\Borrowing;
 
 class BorrowingRestored
 {

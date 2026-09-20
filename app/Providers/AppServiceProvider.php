@@ -10,21 +10,21 @@ use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Activities\Entities\Activity;
 use Modules\Announcement\Entities\Announcement;
-use Modules\Core\Entities\User;
-use Modules\Library\Entities\Author;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\BookCopy;
-use Modules\Library\Entities\Borrowing;
-use Modules\Library\Entities\Category;
-use Modules\Library\Entities\Fine;
-use Modules\Library\Entities\Member;
-use Modules\Library\Entities\Publisher;
-use Modules\Library\Policy\LibraryPolicy;
+use Modules\Core\app\Entities\User;
+use Modules\Library\app\Policy\LibraryPolicy;
+use Modules\Library\app\Entities\Author;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Entities\BookCopy;
+use Modules\Library\app\Entities\Borrowing;
+use Modules\Library\app\Entities\Category;
+use Modules\Library\app\Entities\Fine;
+use Modules\Library\app\Entities\Member;
+use Modules\Library\app\Entities\Publisher;
 use Modules\Messagings\app\Policies\MessagePolicy;
-use Modules\Messagings\Entities\Message;
-use Modules\Messagings\Entities\MessageAttachment;
-use Modules\Notifications\Entities\Notification;
-use Modules\Transport\Entities\Bus;
+use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\app\Entities\MessageAttachment;
+use Modules\Notifications\app\Entities\Notification;
+use Modules\Transport\app\Entities\Bus;
 
 class AppServiceProvider extends ServiceProvider
 {

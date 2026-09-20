@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Modules\Library\Services;
+namespace Modules\Library\app\Services;
 
-use Modules\Library\Events\MemberEvents\MemberCreated;
-use Modules\Library\Events\MemberEvents\MemberDeleted;
-use Modules\Library\Events\MemberEvents\MemberForceDeleted;
-use Modules\Library\Events\MemberEvents\MemberRestored;
-use Modules\Library\Events\MemberEvents\MemberUpdated;
-use Modules\Library\Repositories\Interfaces\MemberRepositoryInterface;
+use Modules\Library\app\Events\MemberEvents\MemberCreated;
+use Modules\Library\app\Events\MemberEvents\MemberDeleted;
+use Modules\Library\app\Events\MemberEvents\MemberForceDeleted;
+use Modules\Library\app\Events\MemberEvents\MemberRestored;
+use Modules\Library\app\Events\MemberEvents\MemberUpdated;
+use Modules\Library\app\Repositories\Interfaces\MemberRepositoryInterface;
 
 class MemberService
 {

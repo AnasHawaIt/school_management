@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreBookRequest;
 use Modules\Library\app\Http\Requests\UpdateBookRequest;
 use Modules\Library\app\Http\Resources\BookResource;
-use Modules\Library\Services\BookService;
+use Modules\Library\app\Services\BookService;
 
 class BookController extends Controller
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\Listeners\BorrowingListeners;
+namespace Modules\Library\app\Listeners\BorrowingListeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
-use Modules\Library\Entities\Reservation;
-use Modules\Library\Events\BorrowingEvents\BookAvailable;
-use Modules\Notifications\Services\NotificationService;
+use Modules\Library\app\Entities\Reservation;
+use Modules\Library\app\Events\BorrowingEvents\BookAvailable;
+use Modules\Notifications\app\Services\NotificationService;
 
 class BookAvailableNotificationListener implements ShouldQueue
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\Services;
+namespace Modules\Library\app\Services;
 
 use App\Services\ImageService;
-use Modules\Library\Events\BookEvents\BookCreated;
-use Modules\Library\Events\BookEvents\BookDeleted;
-use Modules\Library\Events\BookEvents\BookForceDeleted;
-use Modules\Library\Events\BookEvents\BookRestored;
-use Modules\Library\Events\BookEvents\BookUpdated;
+use Modules\Library\app\Events\BookEvents\BookCreated;
+use Modules\Library\app\Events\BookEvents\BookDeleted;
+use Modules\Library\app\Events\BookEvents\BookForceDeleted;
+use Modules\Library\app\Events\BookEvents\BookRestored;
+use Modules\Library\app\Events\BookEvents\BookUpdated;
 use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
 
 class BookService

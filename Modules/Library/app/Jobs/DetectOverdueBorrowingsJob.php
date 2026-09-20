@@ -7,8 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Borrowing;
-use Modules\Library\Services\TransactionService;
+use Modules\Library\app\Entities\Borrowing;
+use Modules\Library\app\Services\TransactionService;
 
 class DetectOverdueBorrowingsJob implements ShouldQueue
 {

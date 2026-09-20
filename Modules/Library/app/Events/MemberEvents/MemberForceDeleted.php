@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\Events\MemberEvents;
+namespace Modules\Library\app\Events\MemberEvents;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Member;
+use Modules\Library\app\Entities\Member;
 
 class MemberForceDeleted
 {

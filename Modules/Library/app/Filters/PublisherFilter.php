@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Library\Filters;
+namespace Modules\Library\app\Filters;
 
 use App\Filters\QueryFilter;
 
