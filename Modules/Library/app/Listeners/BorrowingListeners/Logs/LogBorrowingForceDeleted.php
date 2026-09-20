@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Library\Listeners\BorrowingListeners\Logs;
+namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
 
-use Modules\Library\Events\BorrowingEvents\BorrowingForceDeleted;
+use Modules\Library\app\Events\BorrowingEvents\BorrowingForceDeleted;
 
 class LogBorrowingForceDeleted
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\Repositories\Eloquent;
+namespace Modules\Library\app\Repositories\Eloquent;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Modules\Library\Entities\Fine;
-use Modules\Library\Repositories\Interfaces\FineRepositoryInterface;
+use Modules\Library\app\Entities\Fine;
+use Modules\Library\app\Repositories\Interfaces\FineRepositoryInterface;
 
 class FineRepository implements FineRepositoryInterface
 {

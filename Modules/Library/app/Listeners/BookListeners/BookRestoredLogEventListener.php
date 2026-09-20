@@ -1,9 +1,8 @@
 <?php
 
-namespace Modules\Library\Listeners\BookListeners;
+namespace Modules\Library\app\Listeners\BookListeners;
 
-use Modules\Library\Events\BookEvents\BookRestored;
-use Modules\Library\Events\BorrowingEvents\BorrowingRestored;
+use Modules\Library\app\Events\BookEvents\BookRestored;
 
 class BookRestoredLogEventListener
 {

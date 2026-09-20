@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Library\Services;
+namespace Modules\Library\app\Services;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Library\Events\FinesEvents\FineCreated;
-use Modules\Library\Events\FinesEvents\FinePaid;
-use Modules\Library\Events\FinesEvents\FineWaived;
+use Modules\Library\app\Events\FinesEvents\FineCreated;
+use Modules\Library\app\Events\FinesEvents\FinePaid;
+use Modules\Library\app\Events\FinesEvents\FineWaived;
+use Modules\Library\app\Entities\Fine;
+use Modules\Library\app\Repositories\Interfaces\FineRepositoryInterface;
 use RuntimeException;
-use Modules\Library\Entities\Fine;
-use Modules\Library\Repositories\Interfaces\FineRepositoryInterface;
 
 class FineService
 {

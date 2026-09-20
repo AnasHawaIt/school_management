@@ -5,8 +5,8 @@ namespace Modules\Library\app\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Modules\Library\Entities\Borrowing;
-use Modules\Library\Entities\Fine;
+use Modules\Library\app\Entities\Borrowing;
+use Modules\Library\app\Entities\Fine;
 
 class LibraryReportController extends Controller
 {

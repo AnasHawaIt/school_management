@@ -7,9 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Reservation;
+use Modules\Library\app\Entities\Reservation;
 use Modules\Library\app\Enums\ReservationStatus;
-use Modules\Library\Services\ReservationService;
+use Modules\Library\app\Services\ReservationService;
 
 class ExpireReservationsJob implements ShouldQueue
 {

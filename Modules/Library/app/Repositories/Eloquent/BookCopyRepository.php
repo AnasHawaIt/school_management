@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\Repositories\Eloquent;
+namespace Modules\Library\app\Repositories\Eloquent;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\BookCopy;
-use Modules\Library\Repositories\Interfaces\BookCopyRepositoryInterface;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Entities\BookCopy;
+use Modules\Library\app\Repositories\Interfaces\BookCopyRepositoryInterface;
 
 class BookCopyRepository implements BookCopyRepositoryInterface
 {

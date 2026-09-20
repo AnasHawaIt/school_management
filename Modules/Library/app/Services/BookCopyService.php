@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\Services;
+namespace Modules\Library\app\Services;
 
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\BookCopy;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Entities\BookCopy;
 use Modules\Library\app\Enums\BookCopiesStatus;
-use Modules\Library\Repositories\Interfaces\BookCopyRepositoryInterface;
+use Modules\Library\app\Repositories\Interfaces\BookCopyRepositoryInterface;
 
 class BookCopyService
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\Events\BookEvents;
+namespace Modules\Library\app\Events\BookEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Book;
+use Modules\Library\app\Entities\Book;
 
 class BookForceDeleted
 {

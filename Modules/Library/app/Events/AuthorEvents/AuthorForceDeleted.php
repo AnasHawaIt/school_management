@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\Events\AuthorEvents;
+namespace Modules\Library\app\Events\AuthorEvents;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\Entities\Author;
+use Modules\Library\app\Entities\Author;
 
 class AuthorForceDeleted
 {

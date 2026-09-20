@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreTransactionRequest;
 use Modules\Library\app\Http\Requests\UpdateTransactionRequest;
 use Modules\Library\app\Http\Resources\TransactionResource;
-use Modules\Library\Services\TransactionService;
+use Modules\Library\app\Services\TransactionService;
 
 class TransactionController extends Controller
 {

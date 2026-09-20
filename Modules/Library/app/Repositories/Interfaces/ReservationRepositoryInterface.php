@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\Repositories\Interfaces;
+namespace Modules\Library\app\Repositories\Interfaces;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\Member;
-use Modules\Library\Entities\Reservation;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Entities\Member;
+use Modules\Library\app\Entities\Reservation;
 
 interface ReservationRepositoryInterface
 {

@@ -4,7 +4,7 @@ namespace Modules\Library\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Modules\Library\Entities\Borrowing;
+use Modules\Library\app\Entities\Borrowing;
 
 class UpdateTransactionRequest extends FormRequest
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\Library\Repositories\Eloquent;
+namespace Modules\Library\app\Repositories\Eloquent;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\BookCopy;
-use Modules\Library\Entities\Borrowing;
-use Modules\Library\Filters\TransactionFilter;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Entities\BookCopy;
+use Modules\Library\app\Entities\Borrowing;
+use Modules\Library\app\Filters\TransactionFilter;
 use Modules\Library\app\Enums\BookCopiesStatus;
 use Modules\Library\app\Enums\BorrowingStatus;
-use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
+use Modules\Library\app\Repositories\Interfaces\TransactionRepositoryInterface;
 
 class TransactionRepository implements TransactionRepositoryInterface
 {

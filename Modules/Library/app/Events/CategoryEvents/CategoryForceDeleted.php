@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\Events\CategoryEvents;
+namespace Modules\Library\app\Events\CategoryEvents;
 
-use Modules\Library\Entities\Category;
+use Modules\Library\app\Entities\Category;
 
 class CategoryForceDeleted
 {

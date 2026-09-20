@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Library\Listeners\BorrowingListeners;
+namespace Modules\Library\app\Listeners\BorrowingListeners;
 
 use Modules\Library\app\Jobs\ProcessReservationQueueJob;
-use Modules\Library\Events\BorrowingEvents\BookAvailable;
+use Modules\Library\app\Events\BorrowingEvents\BookAvailable;
 
 class ProcessReservationQueueListener
 {

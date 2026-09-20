@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Library\Repositories\Interfaces;
+namespace Modules\Library\app\Repositories\Interfaces;
 
 use Illuminate\Http\Request;
-use Modules\Library\Entities\Borrowing;
+use Modules\Library\app\Entities\Borrowing;
 
 interface TransactionRepositoryInterface
 {

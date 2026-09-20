@@ -1,18 +1,18 @@
 <?php
 
-namespace Modules\Library\Services;
+namespace Modules\Library\app\Services;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\Library\app\Enums\ReservationStatus;
-use Modules\Library\Entities\Reservation;
-use Modules\Library\Events\ReservationEvents\ReservationCancelled;
-use Modules\Library\Events\ReservationEvents\ReservationCreated;
-use Modules\Library\Events\ReservationEvents\ReservationExpired;
-use Modules\Library\Events\ReservationEvents\ReservationFulfilled;
-use Modules\Library\Events\ReservationEvents\ReservationNotified;
-use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
-use Modules\Library\Repositories\Interfaces\ReservationRepositoryInterface;
+use Modules\Library\app\Events\ReservationEvents\ReservationCancelled;
+use Modules\Library\app\Events\ReservationEvents\ReservationCreated;
+use Modules\Library\app\Events\ReservationEvents\ReservationExpired;
+use Modules\Library\app\Events\ReservationEvents\ReservationFulfilled;
+use Modules\Library\app\Events\ReservationEvents\ReservationNotified;
+use Modules\Library\app\Entities\Reservation;
+use Modules\Library\app\Repositories\Interfaces\BookRepositoryInterface;
+use Modules\Library\app\Repositories\Interfaces\ReservationRepositoryInterface;
 
 class ReservationService
 {

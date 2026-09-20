@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\Library\Repositories\Eloquent;
+namespace Modules\Library\app\Repositories\Eloquent;
 
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Modules\Library\app\Enums\BookCopiesStatus;
 use Modules\Library\app\Enums\ReservationStatus;
-use Modules\Library\Entities\Book;
-use Modules\Library\Entities\Member;
-use Modules\Library\Entities\Reservation;
-use Modules\Library\Repositories\Interfaces\ReservationRepositoryInterface;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Entities\Member;
+use Modules\Library\app\Entities\Reservation;
+use Modules\Library\app\Repositories\Interfaces\ReservationRepositoryInterface;
 
 class ReservationRepository implements ReservationRepositoryInterface
 {

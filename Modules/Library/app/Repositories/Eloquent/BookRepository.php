@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\Repositories\Eloquent;
+namespace Modules\Library\app\Repositories\Eloquent;
 
-use Modules\Library\Entities\Book;
-use Modules\Library\Filters\BookFilter;
+use Modules\Library\app\Entities\Book;
+use Modules\Library\app\Filters\BookFilter;
 use Modules\Library\app\Enums\BookCopiesStatus;
-use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
+use Modules\Library\app\Repositories\Interfaces\BookRepositoryInterface;
 
 class BookRepository implements BookRepositoryInterface
 {

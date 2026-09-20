@@ -1,10 +1,8 @@
 <?php
 
-<<<<<<<< HEAD:Modules/Library/app/Listeners/BorrowingListeners/LogBorrowingApproved.php
 namespace Modules\Library\app\Listeners\BorrowingListeners;
-========
-namespace Modules\Library\Listeners\BorrowingListeners\Logs;
->>>>>>>> 805201b1233d594b84aa4e236cb851d59081984d:Modules/Library/app/Listeners/BorrowingListeners/Logs/LogBorrowingApproved.php
+
+namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
 
 use Modules\Library\app\Events\BorrowingEvents\BorrowingApproved;
 
