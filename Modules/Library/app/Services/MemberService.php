@@ -1,13 +1,14 @@
 <?php
 
 
-namespace Modules\Library\app\Services;
+namespace Modules\Library\Services;
 
-use Modules\Library\app\Events\MemberEvents\MemberCreated;
-use Modules\Library\app\Events\MemberEvents\MemberDeleted;
-use Modules\Library\app\Events\MemberEvents\MemberRestored;
-use Modules\Library\app\Events\MemberEvents\MemberUpdated;
-use Modules\Library\app\Repositories\Interfaces\MemberRepositoryInterface;
+use Modules\Library\Events\MemberEvents\MemberCreated;
+use Modules\Library\Events\MemberEvents\MemberDeleted;
+use Modules\Library\Events\MemberEvents\MemberForceDeleted;
+use Modules\Library\Events\MemberEvents\MemberRestored;
+use Modules\Library\Events\MemberEvents\MemberUpdated;
+use Modules\Library\Repositories\Interfaces\MemberRepositoryInterface;
 
 class MemberService
 {
@@ -36,7 +37,7 @@ class MemberService
     {
         $member= $this->repo->forceDelete($id);
 
-        event(new MemberDeleted($member));
+        event(new MemberForceDeleted($member));
 
         return true;
     }

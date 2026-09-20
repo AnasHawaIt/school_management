@@ -21,7 +21,6 @@ class StoreBookRequest extends FormRequest
             'author_id'   => 'required|exists:authors,id',
             'category_id' => 'required|exists:categories,id',
             'isbn'        => 'required|string|unique:books,isbn',
-            'copies'      => 'required|integer|min:1',
         ];
     }
 
@@ -35,9 +34,6 @@ class StoreBookRequest extends FormRequest
             'publisher_id.exists' => 'Publisher not found',
             'photo.image' => 'Photo is invalid',
             'isbn.unique' => 'ISBN already exists',
-            'copies.required' => 'Copies is required',
-            'copies.integer' => 'Copies is invalid',
-            'copies.min' => 'Copies is invalid',
         ];
     }
 
@@ -46,6 +42,6 @@ class StoreBookRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 }

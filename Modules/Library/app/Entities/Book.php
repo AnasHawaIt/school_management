@@ -1,15 +1,12 @@
 <?php
 
-namespace Modules\Library\app\Entities;
+namespace Modules\Library\Entities;
 
 use App\Models\Images;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Library\app\Entities\Author;
-use Modules\Library\app\Entities\Borrowing;
-use Modules\Library\app\Entities\Category;
-use Nwidart\Modules\Publishing\Publisher;
+use Modules\Library\Entities\Publisher;
 
 // use Modules\Library\Database\Factories\BookFactory;
 
@@ -33,12 +30,17 @@ class Book extends Model
 
     public function publisher()
     {
-        return $this->belongsTo(Publisher::class);
+        return $this->belongsTo(Publisher::class, 'publisher_id');
     }
 
     public function transactions()
     {
         return $this->hasMany(Borrowing::class);
+    }
+
+    public function copies()
+    {
+        return $this->hasMany(BookCopy::class);
     }
 
     public function images()

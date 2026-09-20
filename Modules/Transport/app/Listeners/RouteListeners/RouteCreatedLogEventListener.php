@@ -11,7 +11,7 @@ class RouteCreatedLogEventListener
         $route = $event->route;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($route)
             ->withProperties([
                 'Route_id' => $route->id,

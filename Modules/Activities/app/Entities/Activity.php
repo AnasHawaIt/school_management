@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Modules\Activities\app\Entities;
+namespace Modules\Activities\Entities;
 
-use Modules\Core\app\Entities\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Core\Entities\User;
 
 class Activity extends Model
 {

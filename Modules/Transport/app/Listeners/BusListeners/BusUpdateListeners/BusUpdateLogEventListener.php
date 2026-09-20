@@ -11,7 +11,7 @@ class BusUpdateLogEventListener
         $bus = $event->bus;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($bus)
             ->withProperties([
                 'Bus_id' => $bus->id,

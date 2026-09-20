@@ -26,7 +26,10 @@ return [
              * ------------------------------------------------------------------------
              */
 
-            'credentials' => storage_path('app/firebase/firebase_credentials.json'),
+            'credentials' => env(
+                'FIREBASE_CREDENTIALS_PATH',
+                storage_path('app/firebase/firebase_credentials.json')
+            ),
 
             /*
              * ------------------------------------------------------------------------
@@ -103,7 +106,7 @@ return [
 
                 'timeout' => env('FIREBASE_HTTP_CLIENT_TIMEOUT'),
 
-                'verify' => false,
+                'verify' => filter_var(env('FIREBASE_HTTP_VERIFY', true), FILTER_VALIDATE_BOOL),
 
                 'guzzle_middlewares' => [
                     // MyInvokableMiddleware::class,

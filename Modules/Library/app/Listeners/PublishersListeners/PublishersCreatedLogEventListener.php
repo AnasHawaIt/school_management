@@ -10,8 +10,7 @@ class PublishersCreatedLogEventListener
     {
         $publisher = $event->publisher;
 
-        activity()
-            ->causedBy($event->userId)
+        activity()->causedBy(auth()->user())
             ->performedOn($publisher)
             ->withProperties([
                 'publisher_id' => $publisher->id,

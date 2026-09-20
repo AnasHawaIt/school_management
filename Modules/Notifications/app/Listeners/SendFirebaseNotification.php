@@ -11,11 +11,6 @@ class SendFirebaseNotification implements ShouldQueue
 {
     use InteractsWithQueue;
 
-    public function __construct(
-        protected FirebaseNotificationService $firebase
-    ) {
-    }
-
     public function handle(NotificationCreated $event): void
     {
         $notification = $event->notification;
@@ -32,7 +27,9 @@ class SendFirebaseNotification implements ShouldQueue
 
         try {
 
-            $this->firebase->sendFirebase(
+            $firebase = app(FirebaseNotificationService::class);
+
+            $firebase->sendFirebase(
                 token: $user->fcm_token,
                 title: $notification->title,
                 body: $notification->body,

@@ -10,7 +10,7 @@ class AuthorUpdateLogEventListener
     {
         $author = $event->author;
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($author)
             ->withProperties([
                 'author_id' => $author->id,

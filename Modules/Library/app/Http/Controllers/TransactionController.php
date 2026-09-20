@@ -7,73 +7,198 @@ use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreTransactionRequest;
 use Modules\Library\app\Http\Requests\UpdateTransactionRequest;
 use Modules\Library\app\Http\Resources\TransactionResource;
-use Modules\Library\app\Entities\Borrowing;
-use Modules\Library\app\Services\TransactionService;
+use Modules\Library\Services\TransactionService;
 
 class TransactionController extends Controller
 {
-    protected $service;
+    protected TransactionService $service;
 
     public function __construct(TransactionService $service)
     {
         $this->service = $service;
     }
 
-    public function restore($id)
+    /**
+     * Get borrowing and physical copies status dashboard.
+     */
+    public function statusDashboard()
     {
-        return new TransactionResource( $this->service->restore($id));
+        return response()->json(
+            $this->service->getStatusDashboard()
+        );
     }
 
-    public function forceDelete($id)
-    {
-        $this->service->forceDelete($id);
-
-        return response()->json([
-            'message' => 'Force deleted successfully'
-        ]);
-    }
-
-    public function AllOnlyTrashed()
-    {
-        return TransactionResource::collection($this->service->getTransactionOnlyTrashed());
-    }
-
+    /**
+     * Get all transactions.
+     */
     public function index(Request $request)
     {
-        $transactions =Borrowing::with(['book', 'member'])->get();
+        $transactions = $this->service->getAll($request);
 
-        return  TransactionResource::collection($transactions);
+        return TransactionResource::collection($transactions);
     }
 
+    /**
+     * Create a new borrowing.
+     */
     public function store(StoreTransactionRequest $request)
     {
-        $data = $request->validated();
-        $data['status'] = 'borrowed';
-
-        $transaction = $this->service->create($data);
+        $transaction = $this->service->create(
+            $request->validated()
+        );
 
         return new TransactionResource($transaction);
     }
 
-    public function show($id)
+    /**
+     * Show one transaction.
+     */
+    public function show(int $id)
     {
         $transaction = $this->service->findById($id);
 
         return new TransactionResource($transaction);
     }
 
-    public function update(UpdateTransactionRequest $request, $id)
-    {
-        $transaction = $this->service->update($id, $request->all());
+    /**
+     * Update normal editable fields.
+     *
+     * Lifecycle status changes should use
+     * dedicated lifecycle methods.
+     */
+    public function update(
+        UpdateTransactionRequest $request,
+        int $id
+    ) {
+        $transaction = $this->service->update(
+            $id,
+            $request->validated()
+        );
 
         return new TransactionResource($transaction);
     }
 
-    public function destroy($id)
+    /**
+     * Approve pending borrowing.
+     */
+    public function approve(int $id)
+    {
+        $transaction = $this->service->approve($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Reject pending borrowing.
+     */
+    public function reject(int $id)
+    {
+        $transaction = $this->service->reject($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Pickup approved borrowing.
+     */
+    public function pickup(int $id)
+    {
+        $transaction = $this->service->pickup($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Cancel pending/approved borrowing.
+     */
+    public function cancel(int $id)
+    {
+        $transaction = $this->service->cancel($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Return borrowed/late book.
+     */
+    public function returnBook(int $id)
+    {
+        $transaction = $this->service->returnBook($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Renew active borrowing.
+     */
+    public function renew(int $id)
+    {
+        $transaction = $this->service->renew($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Mark borrowing as lost.
+     */
+    public function markLost(int $id)
+    {
+        $transaction = $this->service->markLost($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Mark borrowing as overdue.
+     */
+    public function markOverdue(int $id)
+    {
+        $transaction = $this->service->markOverdue($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Soft delete transaction.
+     */
+    public function destroy(int $id)
     {
         $this->service->delete($id);
 
-        return response()->json(['message' => 'Deleted']);
+        return response()->json([
+            'message' => 'Transaction deleted successfully.',
+        ]);
     }
 
+    /**
+     * Get only trashed transactions.
+     */
+    public function trashed()
+    {
+        $transactions = $this->service->getTransactionOnlyTrashed();
+
+        return TransactionResource::collection($transactions);
+    }
+
+    /**
+     * Restore soft deleted transaction.
+     */
+    public function restore(int $id)
+    {
+        $transaction = $this->service->restore($id);
+
+        return new TransactionResource($transaction);
+    }
+
+    /**
+     * Permanently delete transaction.
+     */
+    public function forceDelete(int $id)
+    {
+        $this->service->forceDelete($id);
+
+        return response()->json([
+            'message' => 'Transaction permanently deleted successfully.',
+        ]);
+    }
 }

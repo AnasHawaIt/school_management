@@ -8,23 +8,33 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
-use Modules\Activities\app\Entities\Activity;
-use Modules\Announcement\app\Entities\Announcement;
-use Modules\Core\app\Entities\User;
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Entities\MessageAttachment;
+use Modules\Activities\Entities\Activity;
+use Modules\Announcement\Entities\Announcement;
+use Modules\Core\Entities\User;
+use Modules\Library\Entities\Author;
+use Modules\Library\Entities\Book;
+use Modules\Library\Entities\BookCopy;
+use Modules\Library\Entities\Borrowing;
+use Modules\Library\Entities\Category;
+use Modules\Library\Entities\Fine;
+use Modules\Library\Entities\Member;
+use Modules\Library\Entities\Publisher;
+use Modules\Library\Policy\LibraryPolicy;
 use Modules\Messagings\app\Policies\MessagePolicy;
-use Modules\Notifications\app\Entities\Notification;
-use Modules\Transport\app\Entities\Bus;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageAttachment;
+use Modules\Notifications\Entities\Notification;
+use Modules\Transport\Entities\Bus;
 
 class AppServiceProvider extends ServiceProvider
 {
     protected $policies = [
         Message::class => MessagePolicy::class,
+        BookCopy::class => LibraryPolicy::class,
+        Borrowing::class => LibraryPolicy::class,
+        Fine::class => LibraryPolicy::class,
     ];
-    /**
-     * Register any application services.
-     */
+
     public function register(): void
     {
         //
@@ -43,6 +53,14 @@ class AppServiceProvider extends ServiceProvider
             'student' => Student::class,
             'teacher' => Teacher::class,
             'guardian' => Guardian::class,
+            'borrowing' => Borrowing::class,
+            'author' => Author::class,
+            'book' => Book::class,
+            'category' => Category::class,
+            'member' => Member::class,
+            'publisher' => Publisher::class,
+            'book_copy' => BookCopy::class,
+            'fine' => Fine::class,
             'user' => User::class,
             'notification' => Notification::class,
             'activity'     => Activity::class,

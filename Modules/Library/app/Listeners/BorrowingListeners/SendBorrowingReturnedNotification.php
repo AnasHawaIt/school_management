@@ -1,12 +1,13 @@
 <?php
 
 
-namespace Modules\Library\app\Listeners\BorrowingListeners;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
-use Modules\Library\app\Events\BorrowingEvents\BorrowingReturned;
-use Modules\Notifications\app\Services\NotificationService;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Library\Events\BorrowingEvents\BorrowingReturned;
+use Modules\Notifications\Services\NotificationService;
 
-class SendBorrowingReturnedNotification
+class SendBorrowingReturnedNotification implements ShouldQueue
 {
     public function __construct(
         protected NotificationService $notificationService
@@ -18,7 +19,7 @@ class SendBorrowingReturnedNotification
     {
         $borrowing = $event->borrowing;
 
-        $user = $borrowing->user;
+        $user = $borrowing->member?->user;
 
         if (!$user) {
             return;

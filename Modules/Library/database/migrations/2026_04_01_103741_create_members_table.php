@@ -22,6 +22,7 @@ return new class extends Migration
                 'active',
                 'suspended'
             ])->default('active');
+            $table->unsignedInteger('max_active_loans')->nullable();
             $table->string('membership_number')->unique();
             $table->date('end_date')->nullable();
             $table->softDeletes();

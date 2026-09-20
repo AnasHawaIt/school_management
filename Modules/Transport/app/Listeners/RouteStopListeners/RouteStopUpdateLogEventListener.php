@@ -11,7 +11,7 @@ class RouteStopUpdateLogEventListener
         $routeStop = $event->routeStop;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($routeStop)
             ->withProperties([
                 'RouteStop_id' => $routeStop->id,

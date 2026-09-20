@@ -8,7 +8,7 @@ class UpdateBookRequest extends FormRequest
 {
     public function authorize()
     {
-        return true;
+        return auth()->check();
     }
 
     public function rules()
@@ -18,7 +18,6 @@ class UpdateBookRequest extends FormRequest
             'author_id'   => 'sometimes|exists:authors,id',
             'category_id' => 'sometimes|exists:categories,id',
             'isbn' => 'sometimes|string|unique:books,isbn,' . $this->route('id'),
-            'copies'      => 'sometimes|integer|min:0',
              'description' => 'sometimes|string',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
@@ -33,7 +32,6 @@ class UpdateBookRequest extends FormRequest
             'author_id.exists' => 'Author not found',
             'category_id.exists' => 'Category not found',
             'isbn.unique' => 'ISBN already exists',
-            'copies.integer' => 'Copies must be an integer',
             'description.string' => 'Description must be a string',
             'photo.image' => 'Photo must be an image',
         ];

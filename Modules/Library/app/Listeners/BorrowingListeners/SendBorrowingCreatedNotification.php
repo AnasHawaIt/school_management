@@ -20,7 +20,7 @@ class SendBorrowingCreatedNotification implements ShouldQueue
 
         $borrowing = $event->borrowing;
 
-        $user = $borrowing->user;
+        $user = $borrowing->member?->user;
 
         if (!$user) {
             return;
@@ -28,8 +28,8 @@ class SendBorrowingCreatedNotification implements ShouldQueue
 
         $this->notificationService->send(
             user: $user,
-            title: 'كتاب جديد ',
-            body: 'لديك كتاب جديد في المكتبة   .',
+            title: 'طلب استعارة ',
+            body: 'لديك كتاب جديد في الحجز    .',
             type: 'Library',
             data: [
                 'entity' => 'borrowing',

@@ -1,13 +1,14 @@
 <?php
 
 namespace Modules\Academic\Entities;
-use Modules\Core\app\Entities\User;
+
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Activities\app\Entities\ActivityParticipant;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Modules\Activities\Entities\ActivityParticipant;
+use Modules\Core\Entities\User;
 
 class Guardian extends Model
 {

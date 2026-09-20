@@ -13,6 +13,7 @@ class LibraryDatabaseSeeder extends Seeder
             PublisherSeeder::class,
             CategorySeeder::class,
             BookSeeder::class,
+            BookCopySeeder::class,
             MemberSeeder::class,
             TransactionSeeder::class,
         ]);

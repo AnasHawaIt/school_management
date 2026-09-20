@@ -1,24 +1,28 @@
 <?php
 
-namespace Modules\Library\app\Providers;
+namespace Modules\Library\Providers;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Library\app\Providers\EventServiceProvider;
-use Modules\Library\app\Providers\RouteServiceProvider;
-use Modules\Library\app\Repositories\Eloquent\AuthorRepository;
-use Modules\Library\app\Repositories\Eloquent\BookRepository;
-use Modules\Library\app\Repositories\Eloquent\CategoryRepository;
-use Modules\Library\app\Repositories\Eloquent\MemberRepository;
-use Modules\Library\app\Repositories\Eloquent\TransactionRepository;
-use Modules\Library\app\Repositories\Interfaces\AuthorRepositoryInterface;
-use Modules\Library\app\Repositories\Interfaces\BookRepositoryInterface;
-use Modules\Library\app\Repositories\Interfaces\CategoryRepositoryInterface;
-use Modules\Library\app\Repositories\Interfaces\MemberRepositoryInterface;
-use Modules\Library\app\Repositories\Interfaces\TransactionRepositoryInterface;
+use Modules\Library\Console\Commands\CheckOverdueBorrowings;
+use Modules\Library\Repositories\Eloquent\AuthorRepository;
+use Modules\Library\Repositories\Eloquent\BookCopyRepository;
+use Modules\Library\Repositories\Eloquent\BookRepository;
+use Modules\Library\Repositories\Eloquent\CategoryRepository;
+use Modules\Library\Repositories\Eloquent\FineRepository;
+use Modules\Library\Repositories\Eloquent\MemberRepository;
+use Modules\Library\Repositories\Eloquent\ReservationRepository;
+use Modules\Library\Repositories\Eloquent\TransactionRepository;
+use Modules\Library\Repositories\Interfaces\AuthorRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\BookCopyRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\BookRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\FineRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\MemberRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\ReservationRepositoryInterface;
+use Modules\Library\Repositories\Interfaces\TransactionRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 
 class LibraryServiceProvider extends ServiceProvider
 {
@@ -38,7 +42,10 @@ class LibraryServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
-        $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+
+        $this->loadMigrationsFrom(
+            module_path($this->name, 'database/migrations')
+        );
     }
 
     /**
@@ -48,31 +55,67 @@ class LibraryServiceProvider extends ServiceProvider
     {
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-        $this->app->bind(BookRepositoryInterface::class, BookRepository::class);
-        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
-        $this->app->bind(AuthorRepositoryInterface::class, AuthorRepository::class);
-        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
-        $this->app->bind(MemberRepositoryInterface::class, MemberRepository::class);
 
+        $this->app->bind(
+            BookRepositoryInterface::class,
+            BookRepository::class
+        );
+
+        $this->app->bind(
+            BookCopyRepositoryInterface::class,
+            BookCopyRepository::class );
+
+        $this->app->bind(
+            TransactionRepositoryInterface::class,
+            TransactionRepository::class
+        );
+
+        $this->app->bind(
+            AuthorRepositoryInterface::class,
+            AuthorRepository::class
+        );
+
+        $this->app->bind(
+            CategoryRepositoryInterface::class,
+            CategoryRepository::class
+        );
+
+        $this->app->bind(
+            MemberRepositoryInterface::class,
+            MemberRepository::class
+        );
+
+        $this->app->bind(
+            ReservationRepositoryInterface::class,
+            ReservationRepository::class
+        );
+
+        $this->app->bind(
+            FineRepositoryInterface::class,
+            FineRepository::class
+        );
     }
 
     /**
-     * Register commands in the format of Command::class
+     * Register commands.
      */
     protected function registerCommands(): void
     {
-        // $this->commands([]);
+        $this->commands([
+            CheckOverdueBorrowings::class,
+        ]);
     }
 
     /**
-     * Register command Schedules.
+     * Register command schedules.
      */
     protected function registerCommandSchedules(): void
     {
-        // $this->app->booted(function () {
-        //     $schedule = $this->app->make(Schedule::class);
-        //     $schedule->command('inspire')->hourly();
-        // });
+        $this->app->booted(function (): void {
+            $this->app->make(Schedule::class)
+                ->command('library:check-overdue')
+                ->daily();
+        });
     }
 
     /**
@@ -80,59 +123,70 @@ class LibraryServiceProvider extends ServiceProvider
      */
     public function registerTranslations(): void
     {
-        $langPath = resource_path('lang/modules/'.$this->nameLower);
+        $langPath = resource_path(
+            'lang/modules/' . $this->nameLower
+        );
 
         if (is_dir($langPath)) {
-            $this->loadTranslationsFrom($langPath, $this->nameLower);
+            $this->loadTranslationsFrom(
+                $langPath,
+                $this->nameLower
+            );
+
             $this->loadJsonTranslationsFrom($langPath);
-        } else {
-            $this->loadTranslationsFrom(module_path($this->name, 'lang'), $this->nameLower);
-            $this->loadJsonTranslationsFrom(module_path($this->name, 'lang'));
+
+            return;
+        }
+
+        $moduleLangPath = module_path(
+            $this->name,
+            'lang'
+        );
+
+        if (is_dir($moduleLangPath)) {
+            $this->loadTranslationsFrom(
+                $moduleLangPath,
+                $this->nameLower
+            );
+
+            $this->loadJsonTranslationsFrom(
+                $moduleLangPath
+            );
         }
     }
 
     /**
-     * Register config.
+     * Register Library configuration.
+     *
+     * IMPORTANT:
+     * config/config.php belongs to Nwidart module configuration.
+     *
+     * config/library.php contains the actual Library settings:
+     *
+     * config('library.max_active_loans_per_member')
+     * config('library.loan_days')
+     * etc.
      */
     protected function registerConfig(): void
     {
-        $configPath = module_path($this->name, config('modules.paths.generator.config.path'));
+        $libraryConfigPath = module_path(
+            $this->name,
+            'config/library.php'
+        );
 
-        if (is_dir($configPath)) {
-            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($configPath));
+        if (is_file($libraryConfigPath)) {
+            $this->mergeConfigFrom(
+                $libraryConfigPath,
+                $this->nameLower
+            );
 
-            foreach ($iterator as $file) {
-                if ($file->isFile() && $file->getExtension() === 'php') {
-                    $config = str_replace($configPath.DIRECTORY_SEPARATOR, '', $file->getPathname());
-                    $config_key = str_replace([DIRECTORY_SEPARATOR, '.php'], ['.', ''], $config);
-                    $segments = explode('.', $this->nameLower.'.'.$config_key);
-
-                    // Remove duplicated adjacent segments
-                    $normalized = [];
-                    foreach ($segments as $segment) {
-                        if (end($normalized) !== $segment) {
-                            $normalized[] = $segment;
-                        }
-                    }
-
-                    $key = ($config === 'config.php') ? $this->nameLower : implode('.', $normalized);
-
-                    $this->publishes([$file->getPathname() => config_path($config)], 'config');
-                    $this->merge_config_from($file->getPathname(), $key);
-                }
-            }
+            $this->publishes(
+                [
+                    $libraryConfigPath => config_path('library.php'),
+                ],
+                'config'
+            );
         }
-    }
-
-    /**
-     * Merge config from the given path recursively.
-     */
-    protected function merge_config_from(string $path, string $key): void
-    {
-        $existing = config($key, []);
-        $module_config = require $path;
-
-        config([$key => array_replace_recursive($existing, $module_config)]);
     }
 
     /**
@@ -140,14 +194,40 @@ class LibraryServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $viewPath = resource_path('views/modules/'.$this->nameLower);
-        $sourcePath = module_path($this->name, 'resources/views');
+        $viewPath = resource_path(
+            'views/modules/' . $this->nameLower
+        );
 
-        $this->publishes([$sourcePath => $viewPath], ['views', $this->nameLower.'-module-views']);
+        $sourcePath = module_path(
+            $this->name,
+            'resources/views'
+        );
 
-        $this->loadViewsFrom(array_merge($this->getPublishableViewPaths(), [$sourcePath]), $this->nameLower);
+        $this->publishes(
+            [
+                $sourcePath => $viewPath,
+            ],
+            [
+                'views',
+                $this->nameLower . '-module-views',
+            ]
+        );
 
-        Blade::componentNamespace(config('modules.namespace').'\\' . $this->name . '\\View\\Components', $this->nameLower);
+        $this->loadViewsFrom(
+            array_merge(
+                $this->getPublishableViewPaths(),
+                [$sourcePath]
+            ),
+            $this->nameLower
+        );
+
+        Blade::componentNamespace(
+            config('modules.namespace')
+            . '\\'
+            . $this->name
+            . '\\View\\Components',
+            $this->nameLower
+        );
     }
 
     /**
@@ -158,12 +238,20 @@ class LibraryServiceProvider extends ServiceProvider
         return [];
     }
 
+    /**
+     * Get publishable view paths.
+     */
     private function getPublishableViewPaths(): array
     {
         $paths = [];
+
         foreach (config('view.paths') as $path) {
-            if (is_dir($path.'/modules/'.$this->nameLower)) {
-                $paths[] = $path.'/modules/'.$this->nameLower;
+            $moduleViewPath = $path
+                . '/modules/'
+                . $this->nameLower;
+
+            if (is_dir($moduleViewPath)) {
+                $paths[] = $moduleViewPath;
             }
         }
 

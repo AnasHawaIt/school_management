@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\Announcement\app\Entities;
+namespace Modules\Announcement\Entities;
 
 use App\Models\Images;
-use Modules\Core\app\Entities\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Announcement\app\Enums\AnnouncementAudience;
-use Modules\Announcement\app\Enums\AnnouncementPriority;
-use Modules\Announcement\app\Enums\AnnouncementStatus;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Announcement\Enums\AnnouncementAudience;
+use Modules\Announcement\Enums\AnnouncementPriority;
+use Modules\Announcement\Enums\AnnouncementStatus;
+use Modules\Core\Entities\User;
 
 class Announcement extends Model
 {

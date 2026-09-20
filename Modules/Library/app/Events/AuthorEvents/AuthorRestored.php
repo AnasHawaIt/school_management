@@ -1,11 +1,12 @@
 <?php
 
 
-namespace Modules\Library\app\Events\AuthorEvents;
+namespace Modules\Library\Events\AuthorEvents;
 
+use Modules\Core\Entities\User;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Author;
+use Modules\Library\Entities\Author;
 
 class AuthorRestored
 {

@@ -11,10 +11,9 @@ class BookRestored
 {
     use Dispatchable, SerializesModels;
 
-    public Book $book;
-
-    public function __construct(Book $book,public ?int $userId = null )
-    {
-        $this->book = $book;
-    }
+    public function __construct(
+        public Book $book,
+        public ?int $userId = null
+    ) {}
 }
+

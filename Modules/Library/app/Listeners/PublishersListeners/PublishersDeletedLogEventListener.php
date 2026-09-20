@@ -11,7 +11,7 @@ class PublishersDeletedLogEventListener
         $publisher = $event->publisher;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($publisher)
             ->withProperties([
                 'publisher_id' => $publisher->id,
