@@ -9,13 +9,11 @@ class LogTokenRefreshed
 {
     public function handle(TokenRefreshed $event): void
     {
-        $user = $event->user;
-
         activity()
-            ->causedBy($event->userId)
-            ->performedOn($user)
+            ->causedBy($event->user)
+            ->performedOn($event->user)
             ->withProperties([
-                'user_id' => $user->id,
+                'user_id' => $event->userId ?? $event->user->id,
             ])
             ->log('user.token_refreshed');
     }

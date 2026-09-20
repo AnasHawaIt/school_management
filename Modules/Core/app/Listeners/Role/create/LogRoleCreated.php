@@ -12,7 +12,7 @@ class LogRoleCreated
         $role = $event->role;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($role)
             ->withProperties([
                 'role_id' => $role->id,

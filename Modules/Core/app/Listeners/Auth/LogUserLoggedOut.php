@@ -12,7 +12,7 @@ class LogUserLoggedOut
         $user = $event->user;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy($user)
             ->performedOn($user)
             ->withProperties([
                 'user_id' => $user->id,

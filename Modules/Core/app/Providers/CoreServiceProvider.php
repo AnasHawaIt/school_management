@@ -8,6 +8,9 @@ use Illuminate\Support\ServiceProvider;
 use Modules\Core\app\Contracts\Repositories\PermissionRepositoryInterface;
 use Modules\Core\app\Contracts\Repositories\UserRepositoryInterface;
 use Modules\Core\app\Contracts\Services\PermissionServiceInterface;
+use Modules\Core\app\Entities\Permission;
+use Modules\Core\app\Entities\Role;
+use Modules\Core\app\Entities\User;
 use Modules\Core\app\Repositories\PermissionRepository;
 use Modules\Core\app\Repositories\UserRepository;
 use Modules\Core\app\Services\PermissionService;
@@ -35,7 +38,9 @@ class CoreServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
         Relation::morphMap([
-            'user' => \Modules\Core\app\Entities\User::class,
+            'user' => User::class,
+            'role' => Role::class,
+            'permission' => Permission::class,
         ]);
     }
 

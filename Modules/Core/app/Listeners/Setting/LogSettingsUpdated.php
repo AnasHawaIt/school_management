@@ -9,7 +9,7 @@ class LogSettingsUpdated
     public function handle(SettingsUpdated $event): void
     {
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->withProperties([
                 'changes' => $event->changes,
             ])

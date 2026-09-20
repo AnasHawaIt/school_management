@@ -11,7 +11,7 @@ class LogRoleRestored
         $role = $event->role;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(request()->user())
             ->performedOn($role)
             ->withProperties([
                 'role_id' => $role->id,

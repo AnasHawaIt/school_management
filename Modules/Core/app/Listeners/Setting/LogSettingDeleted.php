@@ -11,7 +11,7 @@ class LogSettingDeleted
         $setting = $event->setting;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($setting)
             ->withProperties([
                 'setting_id' => $setting->id,

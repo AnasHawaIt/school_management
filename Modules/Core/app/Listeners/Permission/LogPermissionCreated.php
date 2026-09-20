@@ -12,7 +12,7 @@ class LogPermissionCreated
         $permission = $event->permission;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy(auth()->user())
             ->performedOn($permission)
             ->withProperties([
                 'permission_id' => $permission->id,

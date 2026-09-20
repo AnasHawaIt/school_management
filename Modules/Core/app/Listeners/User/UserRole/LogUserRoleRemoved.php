@@ -12,7 +12,7 @@ class LogUserRoleRemoved
         $role = $event->role;
 
         activity()
-            ->causedBy($event->userId)
+            ->causedBy($user)
             ->performedOn($user)
             ->withProperties([
                 'user_id' => $user->id,
