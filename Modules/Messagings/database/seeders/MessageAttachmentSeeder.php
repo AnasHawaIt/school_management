@@ -3,8 +3,8 @@
 namespace Modules\Messagings\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Messagings\Entities\Message;
-use Modules\Messagings\Entities\MessageAttachment;
+use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\app\Entities\MessageAttachment;
 
 class MessageAttachmentSeeder extends Seeder
 {

@@ -7,9 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\Announcement\Entities\Announcement;
-use Modules\Announcement\Enums\AnnouncementStatus;
-use Modules\Announcement\Events\AnnouncementExpired;
+use Modules\Announcement\app\Entities\Announcement;
+use Modules\Announcement\app\Enums\AnnouncementStatus;
+use Modules\Announcement\app\Events\AnnouncementExpired;
 
 class AnnouncementExpireJob implements ShouldQueue
 {

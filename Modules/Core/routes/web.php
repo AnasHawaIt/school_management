@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Core\Http\Controllers\AuthController;
-use Modules\Core\Http\Controllers\UserController;
-use Modules\Core\Http\Controllers\RoleController;
-use Modules\Core\Http\Controllers\PermissionController;
-use Modules\Core\Http\Controllers\SettingController;
+use Modules\Core\app\Http\Controllers\AuthController;
+use Modules\Core\app\Http\Controllers\PermissionController;
+use Modules\Core\app\Http\Controllers\RoleController;
+use Modules\Core\app\Http\Controllers\SettingController;
+use Modules\Core\app\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------

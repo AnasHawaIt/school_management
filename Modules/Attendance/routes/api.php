@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Attendance\Http\Controllers\StudentAttendanceController;
-use Modules\Attendance\Http\Controllers\TeacherAttendanceController;
-use Modules\Attendance\Http\Controllers\LeaveRequestController;
+use Modules\Attendance\app\Http\Controllers\LeaveRequestController;
+use Modules\Attendance\app\Http\Controllers\StudentAttendanceController;
+use Modules\Attendance\app\Http\Controllers\TeacherAttendanceController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 

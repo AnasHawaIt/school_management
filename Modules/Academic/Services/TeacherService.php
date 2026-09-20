@@ -2,12 +2,12 @@
 
 namespace Modules\Academic\Services;
 
-use Modules\Academic\Contracts\Services\TeacherServiceInterface;
-use Modules\Academic\Contracts\Repositories\TeacherRepositoryInterface;
-use Modules\Academic\Entities\TeacherQualification;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\Entities\User;
+use Modules\Academic\Contracts\Repositories\TeacherRepositoryInterface;
+use Modules\Academic\Contracts\Services\TeacherServiceInterface;
+use Modules\Academic\Entities\TeacherQualification;
+use Modules\Core\app\Entities\User;
 
 class TeacherService implements TeacherServiceInterface
 {

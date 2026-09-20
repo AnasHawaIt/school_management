@@ -3,7 +3,7 @@
 namespace Modules\Activities\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Activities\Entities\ActivityCategory;
+use Modules\Activities\app\Entities\ActivityCategory;
 
 class ActivityCategorySeeder extends Seeder
 {

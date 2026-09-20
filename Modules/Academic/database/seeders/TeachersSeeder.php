@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Modules\Academic\Entities\Teacher;
 use Modules\Academic\Entities\TeacherQualification;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class TeachersSeeder extends Seeder
 {

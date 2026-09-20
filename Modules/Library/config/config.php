@@ -3,6 +3,6 @@
 return [
     'name' => 'Library',
     'providers' => [
-        Modules\Library\Providers\RouteServiceProvider::class,
+        \Modules\Library\app\Providers\RouteServiceProvider::class,
     ]
 ];

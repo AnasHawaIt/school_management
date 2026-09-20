@@ -6,9 +6,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Core\Entities\User;
-use Modules\Messagings\Entities\Conversation;
-use Modules\Messagings\Services\ConversationService;
+use Modules\Core\app\Entities\User;
+use Modules\Messagings\app\Entities\Conversation;
+use Modules\Messagings\app\Services\ConversationService;
 
 class ConversationController extends Controller
 {

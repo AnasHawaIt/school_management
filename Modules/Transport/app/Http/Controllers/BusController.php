@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Transport\app\Http\Requests\StoreBusRequest;
 use Modules\Transport\app\Http\Requests\UpdateBusRequest;
 use Modules\Transport\app\Http\Resources\BusResource;
-use Modules\Transport\Services\BusService;
+use Modules\Transport\app\Services\BusService;
 
 class BusController extends Controller
 {

@@ -5,7 +5,7 @@ namespace Modules\Library\app\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Modules\Library\Providers\RouteServiceProvider;
+use Modules\Library\app\Providers\RouteServiceProvider;
 
 class RedirectIfAuthenticatedMiddleware
 {

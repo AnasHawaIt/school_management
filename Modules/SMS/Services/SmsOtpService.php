@@ -3,12 +3,11 @@
 namespace Modules\SMS\Services;
 
 use Exception;
-use Illuminate\Support\Facades\Hash;
-use Modules\Core\Entities\User;
-
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Modules\Core\app\Entities\User;
 use Modules\SMS\Entities\SmsOtp;
 
 class SmsOtpService

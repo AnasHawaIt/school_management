@@ -4,7 +4,7 @@ namespace Modules\Academic\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class ParentSeeder extends Seeder
 {

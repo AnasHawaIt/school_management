@@ -2,11 +2,11 @@
 
 namespace Modules\Academic\Services;
 
-use Modules\Academic\Contracts\Services\CounselorServiceInterface;
-use Modules\Academic\Contracts\Repositories\CounselorRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\Entities\User;
+use Modules\Academic\Contracts\Repositories\CounselorRepositoryInterface;
+use Modules\Academic\Contracts\Services\CounselorServiceInterface;
+use Modules\Core\app\Entities\User;
 
 class CounselorService implements CounselorServiceInterface
 {

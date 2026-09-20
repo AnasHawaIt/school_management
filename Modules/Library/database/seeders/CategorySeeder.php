@@ -4,7 +4,7 @@
 namespace Modules\Library\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Library\Entities\Category;
+use Modules\Library\app\Entities\Category;
 
 class CategorySeeder extends Seeder
 {

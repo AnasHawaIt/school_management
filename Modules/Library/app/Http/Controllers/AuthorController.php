@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreAuthorRequest;
 use Modules\Library\app\Http\Requests\UpdateAuthorRequest;
 use Modules\Library\app\Http\Resources\AuthorResource;
-use Modules\Library\Services\AuthorService;
+use Modules\Library\app\Services\AuthorService;
 
 class AuthorController extends Controller
 {

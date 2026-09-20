@@ -1,5 +1,8 @@
 {
+    "id": "core",
+    "title": "Core",
     "name": "Core",
+    "version": "1.0.0",
     "alias": "core",
     "description": "Core module for authentication, users, roles and permissions",
     "keywords": [
@@ -11,7 +14,7 @@
     ],
     "priority": 0,
     "providers": [
-        "Modules\\Core\\Providers\\CoreServiceProvider"
+        "Modules\\Core\\app\\Providers\\CoreServiceProvider"
     ],
     "files": []
 }

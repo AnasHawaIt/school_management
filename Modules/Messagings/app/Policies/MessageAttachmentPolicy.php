@@ -3,9 +3,9 @@
 
 namespace Modules\Messagings\app\Policies;
 
-use Modules\Core\Entities\User;
-use Modules\Messagings\Entities\Conversation;
-use Modules\Messagings\Entities\MessageAttachment;
+use Modules\Core\app\Entities\User;
+use Modules\Messagings\app\Entities\Conversation;
+use Modules\Messagings\app\Entities\MessageAttachment;
 
 class MessageAttachmentPolicy
 {

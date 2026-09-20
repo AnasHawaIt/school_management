@@ -3,8 +3,8 @@
 namespace Modules\Messagings\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Messagings\Entities\Message;
-use Modules\Messagings\Entities\MessageStatistic;
+use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\app\Entities\MessageStatistic;
 
 class MessageStatisticsSeeder extends Seeder
 {

@@ -2,13 +2,13 @@
 
 namespace Modules\Academic\Services;
 
-use Modules\Academic\Contracts\Services\StudentServiceInterface;
-use Modules\Academic\Contracts\Repositories\StudentRepositoryInterface;
-use Modules\Academic\Entities\StudentMedicalRecord;
-use Modules\School\Entities\Section;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\Entities\User;
+use Modules\Academic\Contracts\Repositories\StudentRepositoryInterface;
+use Modules\Academic\Contracts\Services\StudentServiceInterface;
+use Modules\Academic\Entities\StudentMedicalRecord;
+use Modules\Core\app\Entities\User;
+use Modules\School\Entities\Section;
 
 class StudentService implements StudentServiceInterface
 {

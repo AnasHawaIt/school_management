@@ -4,8 +4,8 @@ namespace Modules\Core\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\Entities\User;
-use Modules\Core\Entities\Role;
+use Modules\Core\app\Entities\Role;
+use Modules\Core\app\Entities\User;
 
 class UserSeeder extends Seeder
 {

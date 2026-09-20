@@ -4,15 +4,15 @@ namespace Modules\Messagings\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Messagings\app\Entities\Conversation;
+use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\app\Entities\MessageAttachment;
 use Modules\Messagings\app\Requests\ForwardMessageRequest;
 use Modules\Messagings\app\Requests\ReplyMessageRequest;
 use Modules\Messagings\app\Requests\SendMessageRequest;
 use Modules\Messagings\app\Resources\MessageResource;
-use Modules\Messagings\Entities\Conversation;
-use Modules\Messagings\Entities\Message;
-use Modules\Messagings\Entities\MessageAttachment;
-use Modules\Messagings\Services\ConversationService;
-use Modules\Messagings\Services\MessageService;
+use Modules\Messagings\app\Services\ConversationService;
+use Modules\Messagings\app\Services\MessageService;
 
 class MessageController extends Controller
 {

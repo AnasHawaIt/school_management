@@ -1,0 +1,21 @@
+<?php
+
+namespace Modules\Transport\app\Events\BusEvents;
+
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use Modules\Transport\app\Entities\Bus;
+
+
+class BusUpdated
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public function __construct(
+        public Bus $bus,
+        public ?int $userId = null,
+        public array $changes = []
+    ) {}
+}
+

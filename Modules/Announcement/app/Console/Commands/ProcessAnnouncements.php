@@ -3,10 +3,10 @@
 namespace Modules\Announcement\app\Console\Commands;
 
 use Illuminate\Console\Command;
+use Modules\Announcement\app\Entities\Announcement;
+use Modules\Announcement\app\Enums\AnnouncementStatus;
 use Modules\Announcement\app\Jobs\AnnouncementExpireJob;
 use Modules\Announcement\app\Jobs\AnnouncementPublishJob;
-use Modules\Announcement\Entities\Announcement;
-use Modules\Announcement\Enums\AnnouncementStatus;
 
 class ProcessAnnouncements extends Command
 {

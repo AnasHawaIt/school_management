@@ -7,9 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\Announcement\Entities\Announcement;
-use Modules\Announcement\Enums\AnnouncementStatus;
-use Modules\Announcement\Events\AnnouncementPublished;
+use Modules\Announcement\app\Entities\Announcement;
+use Modules\Announcement\app\Enums\AnnouncementStatus;
+use Modules\Announcement\app\Events\AnnouncementPublished;
 
 class AnnouncementPublishJob implements ShouldQueue
 {

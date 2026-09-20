@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StoreCategoryRequest;
 use Modules\Library\app\Http\Requests\UpdateCategoryRequest;
 use Modules\Library\app\Http\Resources\CategoryResource;
-use Modules\Library\Services\CategoryService;
+use Modules\Library\app\Services\CategoryService;
 
 class CategoryController extends Controller
 {

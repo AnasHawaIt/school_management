@@ -2,8 +2,7 @@
 
 namespace Modules\SMS\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Announcement\Events\AnnouncementCreated;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 use Modules\SMS\Jobs\SendSmsJob;
 
 class SendAnnouncementCreate implements ShouldQueue

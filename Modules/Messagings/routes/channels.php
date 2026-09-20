@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
-use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\app\Entities\Conversation;
 
 Broadcast::channel(
     'conversation.{conversationId}',

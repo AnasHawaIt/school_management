@@ -3,8 +3,8 @@
 namespace Modules\Messagings\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Core\Entities\User;
-use Modules\Messagings\Entities\Conversation;
+use Modules\Core\app\Entities\User;
+use Modules\Messagings\app\Entities\Conversation;
 
 class ConversationFactory extends Factory
 {

@@ -3,7 +3,7 @@
 namespace Modules\Library\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Library\Entities\Author;
+use Modules\Library\app\Entities\Author;
 
 class AuthorSeeder extends Seeder
 {

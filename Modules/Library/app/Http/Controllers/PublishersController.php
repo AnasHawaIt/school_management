@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Modules\Library\app\Http\Requests\StorePuiblshersRequest;
 use Modules\Library\app\Http\Requests\UpdatePublishersRequest;
 use Modules\Library\app\Http\Resources\PublishersResource;
-use Modules\Library\Services\PublishersService;
+use Modules\Library\app\Services\PublishersService;
 
 class PublishersController extends Controller
 {

@@ -3,8 +3,8 @@
 namespace Modules\Messagings\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Messagings\Entities\Message;
-use Modules\Messagings\Entities\MessageAttachment;
+use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\app\Entities\MessageAttachment;
 
 class MessageAttachmentFactory extends Factory
 {

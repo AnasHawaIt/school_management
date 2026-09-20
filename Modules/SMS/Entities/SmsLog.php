@@ -2,10 +2,10 @@
 
 namespace Modules\SMS\Entities;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Announcement\Entities\Announcement;
+use Modules\Announcement\app\Entities\Announcement;
 
 // use Modules\SMS\Database\Factories\SmsLogFactory;
 

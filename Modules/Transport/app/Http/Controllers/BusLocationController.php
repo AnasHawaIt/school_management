@@ -5,8 +5,8 @@ namespace Modules\Transport\app\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Transport\Entities\Bus;
-use Modules\Transport\Services\BusLocationService;
+use Modules\Transport\app\Entities\Bus;
+use Modules\Transport\app\Services\BusLocationService;
 
 class BusLocationController extends Controller
 {
