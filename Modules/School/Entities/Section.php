@@ -2,9 +2,9 @@
 
 namespace Modules\School\Entities;
 
+use App\Entities\Teacher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Academic\Entities\Teacher;
 
 class Section extends Model
 {

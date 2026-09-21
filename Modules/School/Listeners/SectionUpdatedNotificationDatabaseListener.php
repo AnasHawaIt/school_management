@@ -2,8 +2,8 @@
 
 namespace Modules\School\Listeners;
 
+use App\Entities\Student;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\Entities\Student;
 use Modules\Notifications\app\Services\NotificationService;
 use Modules\School\Events\SectionUpdated;
 

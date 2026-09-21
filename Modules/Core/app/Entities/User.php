@@ -2,16 +2,16 @@
 
 namespace Modules\Core\app\Entities;
 
-use Illuminate\Contracts\Auth\CanResetPassword;
+use App\Entities\Guardian;
+use App\Entities\Student;
+use App\Entities\Teacher;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Modules\Academic\Entities\Guardian;
-use Modules\Academic\Entities\Student;
-use Modules\Academic\Entities\Teacher;
 use Modules\Core\Database\Factories\UserFactory;
 use Modules\Library\app\Entities\Member;
 use Modules\Messagings\app\Entities\Conversation;

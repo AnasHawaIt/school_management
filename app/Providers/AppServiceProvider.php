@@ -2,16 +2,15 @@
 
 namespace App\Providers;
 
+use App\Entities\Guardian;
+use App\Entities\Student;
+use App\Entities\Teacher;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
-use Modules\Academic\Entities\Guardian;
-use Modules\Academic\Entities\Student;
-use Modules\Academic\Entities\Teacher;
-use Modules\Activities\Entities\Activity;
+use Modules\Activities\app\Entities\Activity;
 use Modules\Announcement\Entities\Announcement;
 use Modules\Core\app\Entities\User;
-use Modules\Library\app\Policy\LibraryPolicy;
 use Modules\Library\app\Entities\Author;
 use Modules\Library\app\Entities\Book;
 use Modules\Library\app\Entities\BookCopy;
@@ -20,9 +19,10 @@ use Modules\Library\app\Entities\Category;
 use Modules\Library\app\Entities\Fine;
 use Modules\Library\app\Entities\Member;
 use Modules\Library\app\Entities\Publisher;
-use Modules\Messagings\app\Policies\MessagePolicy;
+use Modules\Library\app\Policy\LibraryPolicy;
 use Modules\Messagings\app\Entities\Message;
 use Modules\Messagings\app\Entities\MessageAttachment;
+use Modules\Messagings\app\Policies\MessagePolicy;
 use Modules\Notifications\app\Entities\Notification;
 use Modules\Transport\app\Entities\Bus;
 

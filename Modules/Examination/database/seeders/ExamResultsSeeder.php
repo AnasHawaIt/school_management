@@ -2,8 +2,8 @@
 
 namespace Modules\Examination\database\seeders;
 
+use App\Entities\Student;
 use Illuminate\Database\Seeder;
-use Modules\Academic\Entities\Student;
 use Modules\Core\app\Entities\User;
 use Modules\Examination\Entities\Exam;
 use Modules\Examination\Entities\ExamResult;

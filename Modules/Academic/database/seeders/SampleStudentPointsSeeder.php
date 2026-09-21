@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Academic\Database\Seeders;
+namespace Modules\Academic\database\seeders;
 
+use App\Entities\Counselor;
+use App\Entities\PointCategory;
+use App\Entities\Student;
+use App\Entities\StudentPoint;
+use App\Entities\Teacher;
 use Illuminate\Database\Seeder;
-use Modules\Academic\Entities\Counselor;
-use Modules\Academic\Entities\PointCategory;
-use Modules\Academic\Entities\Student;
-use Modules\Academic\Entities\StudentPoint;
-use Modules\Academic\Entities\Teacher;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Semester;
 

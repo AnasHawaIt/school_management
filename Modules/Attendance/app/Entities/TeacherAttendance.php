@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Attendance\Entities;
+namespace Modules\Attendance\app\Entities;
 
+use App\Entities\Teacher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Academic\Entities\Teacher;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class TeacherAttendance extends Model
 {

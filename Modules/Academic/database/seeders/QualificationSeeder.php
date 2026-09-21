@@ -3,7 +3,6 @@
 namespace Modules\Academic\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Academic\Entities\Teacher;
 use Illuminate\Support\Facades\DB;
 
 class

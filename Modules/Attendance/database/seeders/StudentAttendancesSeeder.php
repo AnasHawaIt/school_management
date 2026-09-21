@@ -2,8 +2,8 @@
 
 namespace Modules\Attendance\database\seeders;
 
+use App\Entities\Student;
 use Illuminate\Database\Seeder;
-use Modules\Academic\Entities\Student;
 use Modules\Attendance\app\Entities\AttendanceStatus;
 use Modules\Attendance\app\Entities\StudentAttendance;
 use Modules\Core\app\Entities\User;

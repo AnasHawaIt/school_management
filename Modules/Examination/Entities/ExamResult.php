@@ -2,10 +2,10 @@
 
 namespace Modules\Examination\Entities;
 
+use App\Entities\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Academic\Entities\Student;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class ExamResult extends Model
 {

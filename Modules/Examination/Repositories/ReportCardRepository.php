@@ -2,10 +2,10 @@
 
 namespace Modules\Examination\Repositories;
 
+use App\Entities\Student;
 use Modules\Examination\Contracts\Repositories\ReportCardRepositoryInterface;
-use Modules\Examination\Entities\ReportCard;
 use Modules\Examination\Entities\ExamResult;
-use Modules\Academic\Entities\Student;
+use Modules\Examination\Entities\ReportCard;
 
 class ReportCardRepository implements ReportCardRepositoryInterface
 {

@@ -82,8 +82,8 @@ class LeaveRequestService implements LeaveRequestServiceInterface
     {
         // type: 'student' أو 'teacher'
         $morphMap = [
-            'student' => \Modules\Academic\Entities\Student::class,
-            'teacher' => \Modules\Academic\Entities\Teacher::class,
+            'student' => \App\Entities\Student::class,
+            'teacher' => \App\Entities\Teacher::class,
         ];
 
         if (!isset($morphMap[$type])) {

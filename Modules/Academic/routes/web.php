@@ -1,11 +1,11 @@
 <?php
 
+use app\Http\Controllers\GuardianController;
+use app\Http\Controllers\StudentController;
+use app\Http\Controllers\SubjectController;
+use app\Http\Controllers\TeacherController;
+use app\Http\Controllers\TimetableController;
 use Illuminate\Support\Facades\Route;
-use Modules\Academic\Http\Controllers\TeacherController;
-use Modules\Academic\Http\Controllers\StudentController;
-use Modules\Academic\Http\Controllers\GuardianController;
-use Modules\Academic\Http\Controllers\SubjectController;
-use Modules\Academic\Http\Controllers\TimetableController;
 
 Route::middleware(['auth', 'web'])->group(function () {
 
@@ -60,7 +60,7 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::delete('/{guardian}/detach-student/{student}',  [GuardianController::class, 'detachStudent']);
     });
 
-    // ==================== Subjects ====================
+    // ==================== StudentPoints ====================
     Route::prefix('subjects')->group(function () {
         Route::get('/',                              [SubjectController::class, 'index']);
         Route::post('/',                             [SubjectController::class, 'store']);

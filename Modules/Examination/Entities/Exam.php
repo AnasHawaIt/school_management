@@ -2,14 +2,14 @@
 
 namespace Modules\Examination\Entities;
 
+use App\Entities\Subject;
+use App\Entities\Teacher;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Modules\Academic\Entities\Subject;
-use Modules\Academic\Entities\Teacher;
-use Modules\School\Entities\Section;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\School\Entities\AcademicYear;
+use Modules\School\Entities\Section;
 use Modules\School\Entities\Semester;
 
 class Exam extends Model

@@ -37,8 +37,8 @@ class PermissionSeeder extends Seeder
             ['name' => 'sections.manage', 'display_name' => 'Manage Sections', 'description' => 'Can create and assign sections'],
             ['name' => 'grades.manage', 'display_name' => 'Manage Grades', 'description' => 'Can manage school grades/levels'],
 
-            // Subjects & Timetables
-            ['name' => 'subjects.manage', 'display_name' => 'Manage Subjects', 'description' => 'Can manage school subjects'],
+            // StudentPoints & Timetables
+            ['name' => 'subjects.manage', 'display_name' => 'Manage StudentPoints', 'description' => 'Can manage school subjects'],
             ['name' => 'timetables.view', 'display_name' => 'View Timetables', 'description' => 'Can view class schedules'],
             ['name' => 'timetables.manage', 'display_name' => 'Manage Timetables', 'description' => 'Can create and edit schedules'],
         ];

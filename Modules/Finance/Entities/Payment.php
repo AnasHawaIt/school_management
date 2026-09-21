@@ -2,9 +2,9 @@
 
 namespace Modules\Finance\Entities;
 
+use App\Entities\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Academic\Entities\Student;
 use Modules\Core\app\Entities\User;
 
 class Payment extends Model
