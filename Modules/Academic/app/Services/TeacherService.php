@@ -6,6 +6,14 @@ use App\Contracts\Repositories\TeacherRepositoryInterface;
 use App\Contracts\Services\TeacherServiceInterface;
 use App\Entities\Teacher;
 use App\Entities\TeacherQualification;
+use App\Events\TeacherEvents\QualificationAdded;
+use App\Events\TeacherEvents\QualificationDeleted;
+use App\Events\TeacherEvents\TeacherCreated;
+use App\Events\TeacherEvents\TeacherDeleted;
+use App\Events\TeacherEvents\TeacherRestored;
+use App\Events\TeacherEvents\TeacherStatusToggled;
+use App\Events\TeacherEvents\TeacherUpdated;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Modules\Core\app\Entities\User;
@@ -25,102 +33,229 @@ class TeacherService implements TeacherServiceInterface
     {
         return $this->teacherRepository->findById($id);
     }
+    public function getTeacherWithQualifications(int $id)
+    {
+        return $this->teacherRepository->getWithQualifications($id);
+    }
+
+    public function getTeacherTimetable(
+        int $teacherId,
+        int $semesterId
+    ) {
+        return $this->teacherRepository
+            ->getTeacherTimetable($teacherId, $semesterId);
+    }
 
     public function createTeacher(array $data): Teacher
     {
         return DB::transaction(function () use ($data) {
             $user = User::create([
-                'first_name'     => $data['first_name'],
+                'first_name'    => $data['first_name'],
                 'last_name'     => $data['last_name'],
                 'first_name_ar' => $data['first_name_ar'],
-                'last_name_ar'     => $data['last_name_ar'],
-                'gender'     => $data['gender'],
-                'date_of_birth'     => $data['date_of_birth'],
-                'phone'     => $data['phone'],
-                'avatar' => $data['avatar'],
-                'email'    => $data['email'],
-                'password' => Hash::make($data['password'] ?? 'Teacher@123'),
+                'last_name_ar'  => $data['last_name_ar'],
+                'gender'        => $data['gender'],
+                'date_of_birth' => $data['date_of_birth'],
+                'phone'         => $data['phone'],
+                'avatar'        => $data['avatar'] ?? null,
+                'email'         => $data['email'],
+                'password'      => Hash::make(
+                    $data['password'] ?? 'Teacher@123'
+                ),
                 'user_type'     => 'teacher',
             ]);
 
             $data['user_id']     = $user->id;
-            $data['employee_id'] = $this->teacherRepository->generateEmployeeId();
+            $data['employee_id'] =
+                $this->teacherRepository->generateEmployeeId();
 
             $teacher = $this->teacherRepository->create($data);
 
             if (!empty($data['qualifications'])) {
-                foreach ($data['qualifications'] as $q) {
-                    TeacherQualification::create(array_merge($q, ['teacher_id' => $teacher->id]));
+
+                foreach ($data['qualifications'] as $qualification) {
+
+                    TeacherQualification::create([
+                        ...$qualification,
+                        'teacher_id' => $teacher->id,
+                    ]);
                 }
             }
 
             $user->assignRole('teacher');
 
-            return $teacher->load(['user', 'qualifications']);
+            event(new TeacherCreated(
+                $teacher,
+                Auth::id()
+            ));
+
+            return $teacher->load([
+                'user',
+                'qualifications',
+            ]);
         });
     }
 
     public function updateTeacher(int $id, array $data): Teacher
     {
         return DB::transaction(function () use ($id, $data) {
-            $teacher    = $this->teacherRepository->update($id, $data);
+
+            $teacher = $this->teacherRepository->findById($id);
+
+            $teacher->fill($data);
+
+            $changes = $teacher->getDirty();
+
+            $teacher->save();
+
             $userUpdate = [];
 
-            if (!empty($data['email'])) {
-                $userUpdate['email'] = $data['email'];
-                $userUpdate['name']  = ($data['first_name'] ?? $teacher->first_name)
-                    . ' ' . ($data['last_name'] ?? $teacher->last_name);
+            if (isset($data['first_name'])) {
+                $userUpdate['first_name'] = $data['first_name'];
             }
-            if (!empty($data['password'])) {
-                $userUpdate['password'] = Hash::make($data['password']);
+
+            if (isset($data['last_name'])) {
+                $userUpdate['last_name'] = $data['last_name'];
             }
-            if (!empty($userUpdate)) {
+
+            if (isset($data['password'])) {
+                $userUpdate['password'] = Hash::make(
+                    $data['password']
+                );
+            }
+
+            if (isset($userUpdate)) {
                 $teacher->user->update($userUpdate);
             }
 
-            return $teacher;
+            event(new TeacherUpdated(
+                $teacher->fresh(),
+                $changes,
+                Auth::id()
+            ));
+
+            return $teacher->fresh([
+                'user',
+                'qualifications',
+            ]);
         });
     }
 
     public function deleteTeacher(int $id): bool
     {
         return DB::transaction(function () use ($id) {
-            $teacher = $this->teacherRepository->findById($id);
-            $teacher->user->update(['status' => 'inactive']);
-            return $this->teacherRepository->delete($id);
+            $teacher = $this->teacherRepository
+                ->findById($id);
+
+            $teacher->user->update([
+                'status' => 'inactive',
+            ]);
+
+            $result = $this->teacherRepository
+                ->delete($id);
+
+            if ($result) {
+
+                event(new TeacherDeleted(
+                    $teacher,
+                    Auth::id()
+                ));
+            }
+
+            return $result;
         });
     }
 
     public function restoreTeacher(int $id): bool
     {
-        return $this->teacherRepository->restore($id);
+        $teacher = $this->teacherRepository
+            ->findById($id);
+
+        $result = $this->teacherRepository
+            ->restore($id);
+        if ($result) {
+
+            $teacher->user->update([
+                'status' => 'active',
+            ]);
+
+            event(new TeacherRestored(
+                $teacher,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 
-    public function getTeacherWithQualifications(int $id)
-    {
-        return $this->teacherRepository->getWithQualifications($id);
+    public function addQualification(
+        int $teacherId,
+        array $data
+    ): object {
+
+        $teacher = $this->teacherRepository
+            ->findById($teacherId);
+
+        $qualification = TeacherQualification::create([
+            ...$data,
+            'teacher_id' => $teacherId,
+        ]);
+
+        event(new QualificationAdded(
+            $teacher,
+            $qualification,
+            Auth::id()
+        ));
+
+        return $qualification;
     }
 
-    public function addQualification(int $teacherId, array $data): object
-    {
-        $this->teacherRepository->findById($teacherId); // ensure exists
-        return TeacherQualification::create(array_merge($data, ['teacher_id' => $teacherId]));
-    }
+    public function deleteQualification(
+        int $qualificationId
+    ): bool {
 
-    public function deleteQualification(int $qualificationId): bool
-    {
-        return TeacherQualification::findOrFail($qualificationId)->delete();
-    }
+        $qualification = TeacherQualification::findOrFail(
+            $qualificationId
+        );
 
-    public function getTeacherTimetable(int $teacherId, int $semesterId)
-    {
-        return $this->teacherRepository->getTeacherTimetable($teacherId, $semesterId);
+        $teacherId = $qualification->teacher_id;
+
+        $result = $qualification->delete();
+
+        if ($result) {
+
+            event(new QualificationDeleted(
+                $qualification,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 
     public function toggleStatus(int $id): Teacher
     {
-        $teacher   = $this->teacherRepository->findById($id);
-        $newStatus = $teacher->status === 'active' ? 'inactive' : 'active';
-        return $this->teacherRepository->update($id, ['status' => $newStatus]);
+        $teacher = $this->teacherRepository
+            ->findById($id);
+
+        $oldStatus = $teacher->status;
+
+        $newStatus = $oldStatus === 'active'
+            ? 'inactive'
+            : 'active';
+
+        $teacher = $this->teacherRepository
+            ->update($id, [
+                'status' => $newStatus,
+            ]);
+
+        event(new TeacherStatusToggled(
+            $teacher,
+            $oldStatus,
+            $newStatus,
+            Auth::id()
+        ));
+
+        return $teacher;
     }
 }

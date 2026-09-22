@@ -2,6 +2,10 @@
 
 namespace Modules\Attendance\app\Services;
 
+use App\Events\StudentAttendance\StudentAttendanceBulkRecorded;
+use App\Events\StudentAttendance\StudentAttendanceDeleted;
+use App\Events\StudentAttendance\StudentAttendanceRecorded;
+use App\Events\StudentAttendance\StudentAttendanceUpdated;
 use Illuminate\Support\Facades\Auth;
 use Modules\Attendance\app\Contracts\Repositories\StudentAttendanceRepositoryInterface;
 use Modules\Attendance\app\Contracts\Services\StudentAttendanceServiceInterface;
@@ -24,52 +28,154 @@ class StudentAttendanceService implements StudentAttendanceServiceInterface
     }
 
     public function recordAttendance(array $data): StudentAttendance
-    {
-        $data['recorded_by'] = Auth::id();
-        $existing = $this->repository->findByStudentAndDate($data['student_id'], $data['date']);
-        return $existing
-            ? $this->repository->update($existing->id, $data)
-            : $this->repository->create($data);
+    { $userId = Auth::id();
+
+        $data['recorded_by'] = $userId;
+
+        $existing = $this->repository->findByStudentAndDate(
+            $data['student_id'],
+            $data['date']
+        );
+
+        if ($existing) {
+            $oldStatus = $existing->status;
+
+            $attendance = $this->repository->update(
+                $existing->id,
+                $data
+            );
+
+            event(new StudentAttendanceUpdated(
+                attendance: $attendance,
+                changes: [
+                    'old_status' => $oldStatus,
+                    ...$attendance->getChanges(),
+                ],
+                userId: $userId,
+            ));
+
+            return $attendance;
+        }
+
+        $attendance = $this->repository->create($data);
+
+        event(new StudentAttendanceRecorded(
+            attendance: $attendance,
+            userId: $userId,
+        ));
+
+        return $attendance;
     }
 
-    public function bulkRecord(int $sectionId, string $date, array $records): bool
-    {
+    public function bulkRecord(
+        int $sectionId,
+        string $date,
+        array $records
+    ): StudentAttendance {
         $recordedBy = Auth::id();
-        $timestamp  = now()->toDateTimeString();
+        $timestamp = now()->toDateTimeString();
 
-        $prepared = collect($records)->map(fn($r) => array_merge($r, [
-            'section_id'  => $sectionId,
-            'date'        => $date,
-            'recorded_by' => $recordedBy,
-            'created_at'  => $timestamp,
-            'updated_at'  => $timestamp,
-        ]))->toArray();
+        $prepared = collect($records)
+            ->map(fn ($record) => array_merge($record, [
+                'section_id' => $sectionId,
+                'date' => $date,
+                'recorded_by' => $recordedBy,
+                'created_at' => $timestamp,
+                'updated_at' => $timestamp,
+            ]))
+            ->toArray();
 
-        return $this->repository->bulkCreate($prepared);
+        $result = $this->repository->bulkCreate($prepared);
+
+        if ($result) {
+            event(new StudentAttendanceBulkRecorded(
+                sectionId: $sectionId,
+                date: $date,
+                records: $prepared,
+                userId: $recordedBy,
+            ));
+            return $result;
+        }
+
+        return $result;
     }
 
-    public function updateAttendance(int $id, array $data): StudentAttendance
-    {
-        return $this->repository->update($id, $data);
+    public function updateAttendance(
+        int $id,
+        array $data
+    ): StudentAttendance {
+        $userId = Auth::id();
+
+        $existing = $this->repository->findById($id);
+
+        $oldStatus = $existing?->status;
+
+        $attendance = $this->repository->update(
+            $id,
+            $data
+        );
+
+        event(new StudentAttendanceUpdated(
+            attendance: $attendance,
+            changes: [
+                'old_status' => $oldStatus,
+                ...$attendance->getChanges(),
+            ],
+            userId: $userId,
+        ));
+
+        return $attendance;
     }
 
     public function deleteAttendance(int $id): bool
     {
-        return $this->repository->delete($id);
+        $userId = Auth::id();
+
+        $attendance = $this->repository->findById($id);
+
+        if (!$attendance) {
+            return false;
+        }
+
+        $result = $this->repository->delete($id);
+
+        if ($result) {
+            event(new StudentAttendanceDeleted(
+                attendance: $attendance,
+                userId: $userId,
+            ));
+        }
+
+        return $result;
     }
 
-    public function getStudentReport(int $studentId, array $filters = [])
-    {
-        return $this->repository->getByStudent($studentId, $filters);
+    public function getStudentReport(
+        int $studentId,
+        array $filters = []
+    ) {
+        return $this->repository->getByStudent(
+            $studentId,
+            $filters
+        );
     }
 
-    public function getStudentStats(int $studentId, int $semesterId): array
-    {
-        return $this->repository->getStudentStats($studentId, $semesterId);
+    public function getStudentStats(
+        int $studentId,
+        int $semesterId
+    ): array {
+        return $this->repository->getStudentStats(
+            $studentId,
+            $semesterId
+        );
     }
 
-    public function getSectionStats(int $sectionId, int $semesterId): array
-    {
-        return $this->repository->getSectionStats($sectionId, $semesterId);
+    public function getSectionStats(
+        int $sectionId,
+        int $semesterId
+    ): array {
+        return $this->repository->getSectionStats(
+            $sectionId,
+            $semesterId
+        );
     }
 }

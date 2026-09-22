@@ -4,13 +4,25 @@ namespace App\Services;
 
 use App\Contracts\Repositories\InspectionProgramRepositoryInterface;
 use App\Contracts\Services\InspectionProgramServiceInterface;
+use App\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
+use App\Events\InspectionProgramEvents\InspectionProgramCreated;
+use App\Events\InspectionProgramEvents\InspectionProgramDeleted;
+use App\Events\InspectionProgramEvents\InspectionProgramRestored;
+use App\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
+use App\Events\InspectionProgramEvents\InspectionProgramStatusUpdated;
+use App\Events\InspectionProgramEvents\InspectionProgramUpdated;
+use App\Events\InspectionProgramEvents\ObservationSubmitted;
 use Illuminate\Support\Facades\Auth;
+use App\Entities\InspectionProgram;
+use Modules\Academic\app\Events\InspectionProgramEvents\CounselorAssignedToInspectionProgram;
 
 class InspectionProgramService implements InspectionProgramServiceInterface
 {
     protected $repository;
 
-    public function __construct( InspectionProgramRepositoryInterface $repository)
+    public function __construct(
+        InspectionProgramRepositoryInterface $repository
+    )
     {
         $this->repository = $repository;
     }
@@ -25,86 +37,345 @@ class InspectionProgramService implements InspectionProgramServiceInterface
         return $this->repository->findById($id);
     }
 
-    public function createProgram(array $data): object
+    public function getSectionPrograms(
+        int $sectionId,
+        array $filters = []
+    ) {
+        return $this->repository->getBySection(
+            $sectionId,
+            $filters
+        );
+    }
+
+    public function getCounselorPrograms(
+        int $counselorId,
+        array $filters = []
+    ) {
+        return $this->repository->getByCounselor(
+            $counselorId,
+            $filters
+        );
+    }
+
+    public function getCurrentCounselorProgram(
+        int $counselorId
+    ) {
+        return $this->repository->getCurrentCounselorProgram(
+            $counselorId
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | CRUD
+    |--------------------------------------------------------------------------
+    */
+    public function createProgram(array $data): InspectionProgram
     {
-        $data['created_by'] = Auth::id();
+        $userId = Auth::id();
+
+        $data['created_by'] = $userId;
+
+        /*
+         * Remove counselors before creating the program
+         * because counselors are assigned separately.
+         */
+        $counselors = $data['counselors'] ?? [];
+
+        unset($data['counselors']);
+
         $program = $this->repository->create($data);
 
-        if (!empty($data['counselors'])) {
-            foreach ($data['counselors'] as $c) {
-                $this->repository->assignCounselor(
-                    $program->id,
-                    $c['counselor_id'],
-                    $c['role'] ?? 'member'
-                );
+        /*
+       * Assign counselors
+       */
+        foreach ($counselors as $counselor) {
+
+            $role = $counselor['role'] ?? 'member';
+
+            $this->repository->assignCounselor(
+                $program->id,
+                $counselor['counselor_id'],
+                $role
+            );
+
+            event(new CounselorAssignedToInspectionProgram(
+                $program,
+                $counselor['counselor_id'],
+                $role,
+                $userId
+            ));
+        }
+
+        event(new InspectionProgramCreated(
+            $program,
+            $userId
+        ));
+
+        return $program->load([
+            'section.class.grade',
+            'counselors.user',
+            'semester',
+        ]);
+    }
+
+    public function updateProgram(
+        int $id,
+        array $data
+    ): InspectionProgram {
+        $program = $this->repository->findById($id);
+
+        if (!$program) {
+            throw new \Exception(
+                'Inspection program not found.'
+            );
+        }
+
+        if ($program->status === 'completed') {
+            throw new \Exception(
+                'Cannot edit a completed inspection program.'
+            );
+        }
+
+        /*
+        * Keep the original values before update.
+        */
+        $oldData = $program->getAttributes();
+
+        $program = $this->repository->update(
+            $id,
+            $data
+        );
+
+        /*
+         * Calculate changes.
+         */
+        $changes = [];
+
+        foreach ($data as $key => $value) {
+            if (
+                array_key_exists($key, $oldData)
+                && $oldData[$key] != $value
+            ) {
+                $changes[$key] = [
+                    'old' => $oldData[$key],
+                    'new' => $value,
+                ];
             }
         }
 
-        return $program->load(['section.class.grade', 'counselors.user', 'semester']);
-    }
+        event(new InspectionProgramUpdated(
+            $program,
+            $changes,
+            Auth::id()
+        ));
 
-    public function updateProgram(int $id, array $data): object
-    {
-        $program = $this->repository->findById($id);
-
-        if ($program->status === 'completed') {
-            throw new \Exception('Cannot edit a completed inspection program.');
-        }
-
-        return $this->repository->update($id, $data);
+        return $program;
     }
 
     public function deleteProgram(int $id): bool
     {
-        return $this->repository->delete($id);
+        $program = $this->repository->findById($id);
+
+        if (!$program) {
+            throw new \Exception(
+                'Inspection program not found.'
+            );
+        }
+
+        $result = $this->repository->delete($id);
+
+        if ($result) {
+            event(new InspectionProgramDeleted(
+                $program,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 
     public function restoreProgram(int $id): bool
     {
-        return $this->repository->restore($id);
+        $result = $this->repository->restore($id);
+
+        if ($result) {
+            $program = $this->repository->findById($id);
+
+            event(new InspectionProgramRestored(
+                $program,
+                Auth::id()
+            ));
+        }
+
+        return $result;
+
     }
 
-    public function assignCounselor(int $programId, int $counselorId, string $role): bool
-    {
-        return $this->repository->assignCounselor($programId, $counselorId, $role);
+    /*
+   |--------------------------------------------------------------------------
+   | Counselors
+   |--------------------------------------------------------------------------
+   */
+
+    public function assignCounselor(
+        int $programId,
+        int $counselorId,
+        string $role
+    ): bool {
+        $result = $this->repository->assignCounselor(
+            $programId,
+            $counselorId,
+            $role
+        );
+
+        if ($result) {
+
+            $program = $this->repository->findById(
+                $programId
+            );
+
+            event(new CounselorAssignedToInspectionProgram(
+                $program,
+                $counselorId,
+                $role,
+                Auth::id()
+            ));
+        }
+
+        return $result;
+    }
+    public function unassignCounselor(
+        int $programId,
+        int $counselorId
+    ): bool {
+        $result = $this->repository->unassignCounselor(
+            $programId,
+            $counselorId
+        );
+
+        if ($result) {
+
+            $program = $this->repository->findById(
+                $programId
+            );
+
+            event(new CounselorUnassignedFromInspectionProgram(
+                $program,
+                $counselorId,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 
-    public function unassignCounselor(int $programId, int $counselorId): bool
-    {
-        return $this->repository->unassignCounselor($programId, $counselorId);
+    /*
+       |--------------------------------------------------------------------------
+       | Observation
+       |--------------------------------------------------------------------------
+       */
+
+    public function submitObservation(
+        int $programId,
+        int $counselorId,
+        array $data
+    ): bool {
+        $result = $this->repository->updateCounselorObservation(
+            $programId,
+            $counselorId,
+            $data
+        );
+
+        if ($result) {
+
+            $program = $this->repository->findById(
+                $programId
+            );
+
+            event(new ObservationSubmitted(
+                $program,
+                $counselorId,
+                $data,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 
-    public function submitObservation(int $programId, int $counselorId, array $data): bool
-    {
-        return $this->repository->updateCounselorObservation($programId, $counselorId, $data);
+    /*
+  |--------------------------------------------------------------------------
+  | Status
+  |--------------------------------------------------------------------------
+  */
+
+    public function updateStatus(
+        int $id,
+        string $status
+    ): InspectionProgram {
+        $program = $this->repository->findById($id);
+
+        if (!$program) {
+            throw new \Exception(
+                'Inspection program not found.'
+            );
+        }
+
+        $oldStatus = $program->status;
+
+        /*
+         * Don't create an event if the status
+         * is actually unchanged.
+         */
+        if ($oldStatus === $status) {
+            return $program;
+        }
+
+        $program = $this->repository->updateStatus(
+            $id,
+            $status
+        );
+
+        event(new InspectionProgramStatusUpdated(
+            $program,
+            $oldStatus,
+            $status,
+            Auth::id()
+        ));
+
+        return $program;
     }
 
-    public function updateStatus(int $id, string $status): object
-    {
-        return $this->repository->updateStatus($id, $status);
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Current Program
+    |--------------------------------------------------------------------------
+    */
 
-    public function getSectionPrograms(int $sectionId, array $filters = [])
-    {
-        return $this->repository->getBySection($sectionId, $filters);
-    }
 
-    public function getCounselorPrograms(int $counselorId, array $filters = [])
-    {
-        return $this->repository->getByCounselor($counselorId, $filters);
-    }
     public function setCurrent(int $id): bool
     {
         $program = $this->repository->findById($id);
 
         if (!$program) {
-            throw new \Exception('Inspection program not found.');
+            throw new \Exception(
+                'Inspection program not found.'
+            );
         }
 
-        return $this->repository->setCurrent($id);
-    }
-    public function getCurrentCounselorProgram(int $counselorId)
-    {
-        return $this->repository->getCurrentCounselorProgram($counselorId);
+        $result = $this->repository->setCurrent($id);
+
+        if ($result) {
+
+            $program = $program->fresh();
+
+            event(new InspectionProgramSetCurrent(
+                $program,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 }

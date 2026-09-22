@@ -11,7 +11,7 @@ interface StudentAttendanceRepositoryInterface
     public function create(array $data): StudentAttendance;
     public function update(int $id, array $data): StudentAttendance;
     public function delete(int $id): bool;
-    public function bulkCreate(array $records): bool;
+    public function bulkCreate(array $records): StudentAttendance;
     public function getBySection(int $sectionId, string $date);
     public function getByStudent(int $studentId, array $filters = []);
     public function getStudentStats(int $studentId, int $semesterId): array;

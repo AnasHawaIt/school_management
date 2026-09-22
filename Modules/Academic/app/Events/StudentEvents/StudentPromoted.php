@@ -12,7 +12,6 @@ class StudentPromoted
     use Dispatchable, SerializesModels;
 
     public function __construct(
-        public Collection $students,
         public int $fromSectionId,
         public int $toSectionId,
         public int $promotedCount,

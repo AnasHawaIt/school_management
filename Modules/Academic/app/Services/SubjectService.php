@@ -5,6 +5,13 @@ namespace App\Services;
 use App\Contracts\Repositories\SubjectRepositoryInterface;
 use App\Contracts\Services\SubjectServiceInterface;
 use App\Entities\Subject;
+use App\Events\SubjectsEvents\SubjectDeleted;
+use App\Events\SubjectsEvents\SubjectRestored;
+use App\Events\SubjectsEvents\SubjectUpdated;
+use App\Events\SubjectsEvents\TeacherAssignedToSubject;
+use App\Events\SubjectsEvents\TeacherUnassignedFromSubject;
+use Illuminate\Support\Facades\Auth;
+use Modules\Academic\app\Events\SubjectsEvents\SubjectCreated;
 
 class SubjectService implements SubjectServiceInterface
 {
@@ -24,22 +31,69 @@ class SubjectService implements SubjectServiceInterface
 
     public function createSubject(array $data): Subject
     {
-        return $this->subjectRepository->create($data);
+        $subject = $this->subjectRepository->create($data);
+
+        event(new SubjectCreated(
+            $subject,
+            Auth::id()
+        ));
+
+        return $subject;
     }
 
     public function updateSubject(int $id, array $data): Subject
     {
-        return $this->subjectRepository->update($id, $data);
+        $subject = $this->subjectRepository->findById($id);
+
+        if(!$subject){
+            throw new \Exception('Subject not found');
+        }
+
+        $subject = $this->subjectRepository->update($id, $data);
+
+        event(new SubjectUpdated(
+            $subject,
+            $subject->getChanges(),
+            Auth::id()
+        ));
+
+        return $subject;
     }
 
     public function deleteSubject(int $id): bool
     {
-        return $this->subjectRepository->delete($id);
+        $subject = $this->subjectRepository->findById($id);
+
+        if(!$subject){
+            throw new \Exception('Subject not found');
+        }
+
+        $result = $this->subjectRepository->delete($id);
+
+        if ($result) {
+            event(new SubjectDeleted(
+                $subject,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 
     public function restoreSubject(int $id): bool
     {
-        return $this->subjectRepository->restore($id);
+        $result = $this->subjectRepository->restore($id);
+
+        if ($result) {
+            $subject = $this->subjectRepository->findById($id);
+
+            event(new SubjectRestored(
+                $subject,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 
     public function getSubjectsByGrade(int $gradeId)
@@ -47,15 +101,62 @@ class SubjectService implements SubjectServiceInterface
         return $this->subjectRepository->getByGrade($gradeId);
     }
 
-    public function assignTeacher(int $subjectId, int $teacherId, int $sectionId, int $academicYearId): bool
-    {
-        return $this->subjectRepository->assignTeacher($subjectId, $teacherId, $sectionId, $academicYearId);
+    public function assignTeacher(
+        int $subjectId,
+        int $teacherId,
+        int $sectionId,
+        int $academicYearId
+    ): bool {
+
+        $result = $this->subjectRepository->assignTeacher(
+            $subjectId,
+            $teacherId,
+            $sectionId,
+            $academicYearId
+        );
+
+        if ($result) {
+            $subject = $this->subjectRepository->findById($subjectId);
+
+            event(new TeacherAssignedToSubject(
+                $subject,
+                $teacherId,
+                $sectionId,
+                $academicYearId,
+                Auth::id()
+            ));
+        }
+
+        return $result;
     }
 
-    public function unassignTeacher(int $subjectId, int $teacherId, int $sectionId, int $academicYearId): bool
-    {
-        return $this->subjectRepository->unassignTeacher($subjectId, $teacherId, $sectionId, $academicYearId);
-    }
+    public function unassignTeacher(
+        int $subjectId,
+        int $teacherId,
+        int $sectionId,
+        int $academicYearId
+    ): bool {
+
+        $result = $this->subjectRepository->unassignTeacher(
+            $subjectId,
+            $teacherId,
+            $sectionId,
+            $academicYearId
+        );
+
+        if ($result) {
+            $subject = $this->subjectRepository->findById($subjectId);
+
+            event(new TeacherUnassignedFromSubject(
+                $subject,
+                $teacherId,
+                $sectionId,
+                $academicYearId,
+                Auth::id()
+            ));
+        }
+
+        return $result;}
 
     public function getSubjectWithTeachers(int $id)
     {
@@ -64,8 +165,22 @@ class SubjectService implements SubjectServiceInterface
 
     public function toggleStatus(int $id): Subject
     {
-        $subject   = $this->subjectRepository->findById($id);
-        $newStatus = $subject->status === 'active' ? 'inactive' : 'active';
-        return $this->subjectRepository->update($id, ['status' => $newStatus]);
-    }
+        $subject = $this->subjectRepository->findById($id);
+
+        $newStatus = $subject->status === 'active'
+            ? 'inactive'
+            : 'active';
+
+        $subject = $this->subjectRepository->update(
+            $id,
+            ['status' => $newStatus]
+        );
+
+        event(new SubjectUpdated(
+            $subject,
+            $subject->getChanges(),
+            Auth::id()
+        ));
+
+        return $subject;}
 }

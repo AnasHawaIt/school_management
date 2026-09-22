@@ -2,9 +2,17 @@
 
 namespace Modules\Attendance\app\Services;
 
+use App\Entities\Student;
+use App\Entities\Teacher;
+use App\Events\LeaveRequests\LeaveRequestApproved;
+use App\Events\LeaveRequests\LeaveRequestCreated;
+use App\Events\LeaveRequests\LeaveRequestDeleted;
+use App\Events\LeaveRequests\LeaveRequestRejected;
+use App\Events\LeaveRequests\LeaveRequestUpdated;
 use Illuminate\Support\Facades\Auth;
 use Modules\Attendance\app\Contracts\Repositories\LeaveRequestRepositoryInterface;
 use Modules\Attendance\app\Contracts\Services\LeaveRequestServiceInterface;
+use Modules\Attendance\Entities\LeaveRequest;
 
 class LeaveRequestService implements LeaveRequestServiceInterface
 {
@@ -22,22 +30,42 @@ class LeaveRequestService implements LeaveRequestServiceInterface
         return $this->repository->findById($id);
     }
 
-    public function createRequest(array $data): object
+    public function createRequest(array $data): LeaveRequest
     {
-        $data['created_by'] = Auth::id();
-        return $this->repository->create($data);
+        $userId = Auth::id();
+
+        $data['created_by'] = $userId;
+
+        $request = $this->repository->create($data);
+
+        event(new LeaveRequestCreated(
+            request: $request,
+            userId: $userId,
+        ));
+
+        return $request;
     }
 
-    public function updateRequest(int $id, array $data): object
+    public function updateRequest(int $id, array $data): LeaveRequest
     {
         $request = $this->repository->findById($id);
 
         // لا يمكن تعديل طلب تمت مراجعته
         if ($request->status !== 'pending') {
-            throw new \Exception('Cannot update a request that has already been reviewed.');
+            throw new \Exception(
+                'Cannot update a request that has already been reviewed.'
+            );
         }
 
-        return $this->repository->update($id, $data);
+        $updated = $this->repository->update($id, $data);
+
+        event(new LeaveRequestUpdated(
+            request: $updated,
+            changes: $updated->getChanges(),
+            userId: Auth::id(),
+        ));
+
+        return $updated;
     }
 
     public function deleteRequest(int $id): bool
@@ -45,32 +73,72 @@ class LeaveRequestService implements LeaveRequestServiceInterface
         $request = $this->repository->findById($id);
 
         if ($request->status !== 'pending') {
-            throw new \Exception('Cannot delete a request that has already been reviewed.');
+            throw new \Exception(
+                'Cannot delete a request that has already been reviewed.'
+            );
         }
 
-        return $this->repository->delete($id);
+        $result = $this->repository->delete($id);
+
+        if ($result) {
+            event(new LeaveRequestDeleted(
+                request: $request,
+                userId: Auth::id(),
+            ));
+        }
+
+        return $result;
+
     }
 
-    public function approve(int $id, int $reviewerId, ?string $notes = null): object
+    public function approve(int $id, int $reviewerId, ?string $notes = null): LeaveRequest
     {
         $request = $this->repository->findById($id);
 
         if ($request->status !== 'pending') {
-            throw new \Exception('Request has already been reviewed.');
+            throw new \Exception(
+                'Request has already been reviewed.'
+            );
         }
 
-        return $this->repository->approve($id, $reviewerId, $notes);
+        $request = $this->repository->approve(
+            $id,
+            $reviewerId,
+            $notes
+        );
+
+        event(new LeaveRequestApproved(
+            request: $request,
+            reviewerId: $reviewerId,
+            notes: $notes,
+        ));
+
+        return $request;
     }
 
-    public function reject(int $id, int $reviewerId, ?string $notes = null): object
+    public function reject(int $id, int $reviewerId, ?string $notes = null): LeaveRequest
     {
         $request = $this->repository->findById($id);
 
         if ($request->status !== 'pending') {
-            throw new \Exception('Request has already been reviewed.');
+            throw new \Exception(
+                'Request has already been reviewed.'
+            );
         }
 
-        return $this->repository->reject($id, $reviewerId, $notes);
+        $request = $this->repository->reject(
+            $id,
+            $reviewerId,
+            $notes
+        );
+
+        event(new LeaveRequestRejected(
+            request: $request,
+            reviewerId: $reviewerId,
+            notes: $notes,
+        ));
+
+        return $request;
     }
 
     public function getPending()
@@ -80,16 +148,21 @@ class LeaveRequestService implements LeaveRequestServiceInterface
 
     public function getByRequestable(string $type, int $id)
     {
-        // type: 'student' أو 'teacher'
         $morphMap = [
-            'student' => \App\Entities\Student::class,
-            'teacher' => \App\Entities\Teacher::class,
+            'student' =>Student::class,
+            'teacher' =>Teacher::class,
         ];
 
         if (!isset($morphMap[$type])) {
-            throw new \Exception("Invalid requestable type: {$type}. Use 'student' or 'teacher'.");
+            throw new \Exception(
+                "Invalid requestable type: {$type}.
+                 Use 'student' or 'teacher'."
+            );
         }
 
-        return $this->repository->getByRequestable($morphMap[$type], $id);
+        return $this->repository->getByRequestable(
+            $morphMap[$type],
+            $id
+        );
     }
 }

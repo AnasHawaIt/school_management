@@ -80,7 +80,7 @@ class TeacherRepository implements TeacherRepositoryInterface
         return $this->model->with(['subjects.grade'])->findOrFail($id);
     }
 
-    public function  getTeacherTimetable(int $teacherId, int $semesterId): \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection|Teacher|null
+    public function  getTeacherTimetable(int $teacherId, int $semesterId)
     {
         return $this->model->with([
             'timetables' => fn($q) => $q

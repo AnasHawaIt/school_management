@@ -52,10 +52,12 @@ class StudentAttendanceRepository implements StudentAttendanceRepositoryInterfac
         return $this->model->findOrFail($id)->delete();
     }
 
-    public function bulkCreate(array $records): bool
+    public function bulkCreate(array $records): StudentAttendance
     {
-        if (empty($records)) return false;
-
+        if (empty($records))
+        {
+            throw new \Exception("Empty records");
+        }
 
         $this->model
             ->where('section_id', $records[0]['section_id'])
@@ -63,7 +65,8 @@ class StudentAttendanceRepository implements StudentAttendanceRepositoryInterfac
             ->delete();
 
         $this->model->insert($records);
-        return true;
+
+        return $this->model;
     }
 
     public function getBySection(int $sectionId, string $date): \Illuminate\Database\Eloquent\Collection
