@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\StudentPoints\LogStudentPoints;
+namespace App\Listeners\StudentPoints;
 
 use App\Events\StudentPointEvents\StudentPointsBulkGiven;
 use Illuminate\Contracts\Queue\ShouldQueue;
