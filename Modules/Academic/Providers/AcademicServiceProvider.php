@@ -4,48 +4,48 @@ namespace Modules\Academic\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Academic\app\Contracts\Repositories\CounselorRepositoryInterface;
+use Modules\Academic\app\Contracts\Repositories\GuardianRepositoryInterface;
+use Modules\Academic\app\Contracts\Repositories\InspectionProgramRepositoryInterface;
+use Modules\Academic\app\Contracts\Repositories\StudentPointRepositoryInterface;
+use Modules\Academic\app\Contracts\Repositories\StudentRepositoryInterface;
+use Modules\Academic\app\Contracts\Repositories\SubjectRepositoryInterface;
+use Modules\Academic\app\Contracts\Repositories\TeacherRepositoryInterface;
+use Modules\Academic\app\Contracts\Repositories\TimetableRepositoryInterface;
+use Modules\Academic\app\Contracts\Services\CounselorServiceInterface;
+use Modules\Academic\app\Contracts\Services\GuardianServiceInterface;
+use Modules\Academic\app\Contracts\Services\InspectionProgramServiceInterface;
+use Modules\Academic\app\Contracts\Services\StudentServiceInterface;
+use Modules\Academic\app\Contracts\Services\SubjectServiceInterface;
+use Modules\Academic\app\Contracts\Services\TeacherServiceInterface;
+use Modules\Academic\app\Contracts\Services\TimetableServiceInterface;
+use Modules\Academic\app\Repositories\CounselorRepository;
+use Modules\Academic\app\Repositories\GuardianRepository;
+use Modules\Academic\app\Repositories\InspectionProgramRepository;
+use Modules\Academic\app\Repositories\StudentPointRepository;
+use Modules\Academic\app\Repositories\StudentRepository;
+use Modules\Academic\app\Repositories\SubjectRepository;
+use Modules\Academic\app\Repositories\TeacherRepository;
+use Modules\Academic\app\Repositories\TimetableRepository;
+use Modules\Academic\app\Services\CounselorService;
+use Modules\Academic\app\Services\GuardianService;
+use Modules\Academic\app\Services\InspectionProgramService;
+use Modules\Academic\app\Services\StudentPointService;
+use Modules\Academic\app\Services\StudentService;
+use Modules\Academic\app\Services\SubjectService;
+use Modules\Academic\app\Services\TeacherService;
+use Modules\Academic\app\Services\TimetableService;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 // Repository Contracts
-use Modules\Academic\Contracts\Repositories\TeacherRepositoryInterface;
-use Modules\Academic\Contracts\Repositories\StudentRepositoryInterface;
-use Modules\Academic\Contracts\Repositories\GuardianRepositoryInterface;
-use Modules\Academic\Contracts\Repositories\SubjectRepositoryInterface;
-use Modules\Academic\Contracts\Repositories\TimetableRepositoryInterface;
-use Modules\Academic\Contracts\Repositories\CounselorRepositoryInterface;
-use Modules\Academic\Contracts\Repositories\InspectionProgramRepositoryInterface;
-use Modules\Academic\Contracts\Repositories\StudentPointRepositoryInterface;
 
 // Repository Implementations
-use Modules\Academic\Repositories\TeacherRepository;
-use Modules\Academic\Repositories\StudentRepository;
-use Modules\Academic\Repositories\GuardianRepository;
-use Modules\Academic\Repositories\SubjectRepository;
-use Modules\Academic\Repositories\TimetableRepository;
-use Modules\Academic\Repositories\CounselorRepository;
-use Modules\Academic\Repositories\InspectionProgramRepository;
-use Modules\Academic\Repositories\StudentPointRepository;
 
 // Service Contracts
-use Modules\Academic\Contracts\Services\TeacherServiceInterface;
-use Modules\Academic\Contracts\Services\StudentServiceInterface;
-use Modules\Academic\Contracts\Services\GuardianServiceInterface;
-use Modules\Academic\Contracts\Services\SubjectServiceInterface;
-use Modules\Academic\Contracts\Services\TimetableServiceInterface;
-use Modules\Academic\Contracts\Services\CounselorServiceInterface;
-use Modules\Academic\Contracts\Services\InspectionProgramServiceInterface;
 
 // Service Implementations
-use Modules\Academic\Services\TeacherService;
-use Modules\Academic\Services\StudentService;
-use Modules\Academic\Services\GuardianService;
-use Modules\Academic\Services\SubjectService;
-use Modules\Academic\Services\TimetableService;
-use Modules\Academic\Services\CounselorService;
-use Modules\Academic\Services\InspectionProgramService;
-use Modules\Academic\Services\StudentPointService;
 
 class AcademicServiceProvider extends ServiceProvider
 {

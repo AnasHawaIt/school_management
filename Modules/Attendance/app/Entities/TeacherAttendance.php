@@ -4,7 +4,7 @@ namespace Modules\Attendance\app\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Academic\Entities\Teacher;
+use Modules\Academic\app\Entities\Teacher;
 use Modules\Core\app\Entities\User;
 
 class TeacherAttendance extends Model

@@ -4,7 +4,7 @@ namespace Modules\School\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Academic\Entities\Teacher;
+use Modules\Academic\app\Entities\Teacher;
 
 class Section extends Model
 {

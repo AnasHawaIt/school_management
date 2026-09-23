@@ -3,8 +3,8 @@
 namespace Modules\Academic\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Academic\Entities\Counselor;
-use Modules\Academic\Entities\InspectionProgram;
+use Modules\Academic\app\Entities\Counselor;
+use Modules\Academic\app\Entities\InspectionProgram;
 use Modules\Core\app\Entities\User;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;

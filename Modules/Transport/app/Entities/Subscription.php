@@ -5,7 +5,7 @@ namespace Modules\Transport\app\Entities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Academic\Entities\Student;
+use Modules\Academic\app\Entities\Student;
 
 // use Modules\Transport\Database\Factories\SubscriptionFactory;
 

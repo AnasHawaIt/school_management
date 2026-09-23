@@ -3,8 +3,12 @@
 namespace Modules\Attendance\app\Services;
 
 use Illuminate\Support\Facades\Auth;
+use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceDeleted;
+use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceRecorded;
+use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceUpdated;
 use Modules\Attendance\app\Contracts\Repositories\TeacherAttendanceRepositoryInterface;
 use Modules\Attendance\app\Contracts\Services\TeacherAttendanceServiceInterface;
+use Modules\Attendance\app\Entities\TeacherAttendance;
 
 class TeacherAttendanceService implements TeacherAttendanceServiceInterface
 {
@@ -22,34 +26,114 @@ class TeacherAttendanceService implements TeacherAttendanceServiceInterface
         return $this->repository->getByDate($date);
     }
 
-    public function recordAttendance(array $data): object
+    public function recordAttendance(array $data): TeacherAttendance
     {
-        $data['recorded_by'] = Auth::id();
+        $userId = Auth::id();
 
-        $existing = $this->repository->findByTeacherAndDate($data['teacher_id'], $data['date']);
+        $data['recorded_by'] = $userId;
 
-        return $existing
-            ? $this->repository->update($existing->id, $data)
-            : $this->repository->create($data);
+        $existing = $this->repository->findByTeacherAndDate(
+            $data['teacher_id'],
+            $data['date']
+        );
+
+        if ($existing) {
+            $oldStatus = $existing->status;
+
+            $attendance = $this->repository->update(
+                $existing->id,
+                $data
+            );
+
+            event(new TeacherAttendanceUpdated(
+                attendance: $attendance,
+                changes: [
+                    'old_status' => $oldStatus,
+                    ...$attendance->getChanges(),
+                ],
+                userId: $userId,
+            ));
+
+            return $attendance;
+        }
+
+        $attendance = $this->repository->create($data);
+
+        event(new TeacherAttendanceRecorded(
+            attendance: $attendance,
+            userId: $userId,
+        ));
+
+        return $attendance;
     }
 
-    public function updateAttendance(int $id, array $data): object
-    {
-        return $this->repository->update($id, $data);
+
+    public function updateAttendance(
+        int $id,
+        array $data
+    ): TeacherAttendance {
+        $userId = Auth::id();
+
+        $existing = $this->repository->findById($id);
+
+        $oldStatus = $existing?->status;
+
+        $attendance = $this->repository->update(
+            $id,
+            $data
+        );
+
+        event(new TeacherAttendanceUpdated(
+            attendance: $attendance,
+            changes: [
+                'old_status' => $oldStatus,
+                ...$attendance->getChanges(),
+            ],
+            userId: $userId,
+        ));
+
+        return $attendance;
     }
 
     public function deleteAttendance(int $id): bool
     {
-        return $this->repository->delete($id);
+        $userId = Auth::id();
+
+        $attendance = $this->repository->findById($id);
+
+        if (!$attendance) {
+            return false;
+        }
+
+        $result = $this->repository->delete($id);
+
+        if ($result) {
+            event(new TeacherAttendanceDeleted(
+                attendance: $attendance,
+                userId: $userId,
+            ));
+        }
+
+        return $result;
     }
 
-    public function getTeacherReport(int $teacherId, array $filters = [])
-    {
-        return $this->repository->getByTeacher($teacherId, $filters);
+    public function getTeacherReport(
+        int $teacherId,
+        array $filters = []
+    ) {
+        return $this->repository->getByTeacher(
+            $teacherId,
+            $filters
+        );
     }
 
-    public function getTeacherStats(int $teacherId, array $filters = []): array
-    {
-        return $this->repository->getTeacherStats($teacherId, $filters);
+    public function getTeacherStats(
+        int $teacherId,
+        array $filters = []
+    ): array {
+        return $this->repository->getTeacherStats(
+            $teacherId,
+            $filters
+        );
     }
 }

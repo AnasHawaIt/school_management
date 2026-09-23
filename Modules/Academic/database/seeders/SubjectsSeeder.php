@@ -3,7 +3,7 @@
 namespace Modules\Academic\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Academic\Entities\Subject;
+use Modules\Academic\app\Entities\Subject;
 use Modules\School\Entities\Grade;
 
 class SubjectsSeeder extends Seeder
@@ -49,7 +49,7 @@ class SubjectsSeeder extends Seeder
                     ]
                 );
             }
-            $this->command->info("✅ Subjects created for grade: {$grade->name}");
+            $this->command->info("✅ StudentPoints created for grade: {$grade->name}");
         }
     }
 }

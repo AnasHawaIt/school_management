@@ -4,9 +4,9 @@ namespace Modules\Examination\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Academic\Entities\Student;
-use Modules\School\Entities\Section;
+use Modules\Academic\app\Entities\Student;
 use Modules\School\Entities\AcademicYear;
+use Modules\School\Entities\Section;
 use Modules\School\Entities\Semester;
 
 class ReportCard extends Model

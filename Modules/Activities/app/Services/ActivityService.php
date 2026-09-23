@@ -4,7 +4,7 @@
 namespace Modules\Activities\app\Services;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Academic\Entities\Teacher;
+use Modules\Academic\app\Entities\Teacher;
 use Modules\Activities\app\Entities\Activity;
 use Modules\Activities\app\Entities\ActivityParticipant;
 use Modules\Activities\app\Entities\ActivitySupervisor;

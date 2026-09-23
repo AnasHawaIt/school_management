@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Academic\Http\Controllers\TeacherController;
-use Modules\Academic\Http\Controllers\StudentController;
-use Modules\Academic\Http\Controllers\GuardianController;
-use Modules\Academic\Http\Controllers\SubjectController;
-use Modules\Academic\Http\Controllers\TimetableController;
-use Modules\Academic\Http\Controllers\CounselorController;
-use Modules\Academic\Http\Controllers\InspectionProgramController;
-use Modules\Academic\Http\Controllers\StudentPointController;
+use Modules\Academic\app\Http\Controllers\CounselorController;
+use Modules\Academic\app\Http\Controllers\GuardianController;
+use Modules\Academic\app\Http\Controllers\InspectionProgramController;
+use Modules\Academic\app\Http\Controllers\StudentController;
+use Modules\Academic\app\Http\Controllers\StudentPointController;
+use Modules\Academic\app\Http\Controllers\SubjectController;
+use Modules\Academic\app\Http\Controllers\TeacherController;
+use Modules\Academic\app\Http\Controllers\TimetableController;
 
 Route::middleware(['auth:sanctum'])->group(function(){
 
@@ -65,7 +65,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
         Route::delete('/{guardian}/detach-student/{student}',  [GuardianController::class, 'detachStudent']);
     });
 
-    // ==================== Subjects ====================
+    // ==================== StudentPoints ====================
     Route::prefix('subjects')->group(function () {
         Route::get('/',                              [SubjectController::class, 'index']);
         Route::post('/',                             [SubjectController::class, 'store']);
@@ -144,9 +144,9 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('/sections/{section}/points/ranking', [StudentPointController::class, 'sectionRanking']);
 
     Route::prefix('point-categories')->group(function () {
-        Route::get('/', [\Modules\Academic\Http\Controllers\PointCategoryController::class, 'index']);
-        Route::post('/', [\Modules\Academic\Http\Controllers\PointCategoryController::class, 'store']);
-        Route::put('/{id}', [\Modules\Academic\Http\Controllers\PointCategoryController::class, 'update']);
-        Route::delete('/{id}', [\Modules\Academic\Http\Controllers\PointCategoryController::class, 'destroy']);
+        Route::get('/', [\Modules\Academic\app\Http\Controllers\PointCategoryController::class, 'index']);
+        Route::post('/', [\Modules\Academic\app\Http\Controllers\PointCategoryController::class, 'store']);
+        Route::put('/{id}', [\Modules\Academic\app\Http\Controllers\PointCategoryController::class, 'update']);
+        Route::delete('/{id}', [\Modules\Academic\app\Http\Controllers\PointCategoryController::class, 'destroy']);
     });
 });

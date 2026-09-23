@@ -4,8 +4,8 @@ namespace Modules\Academic\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Modules\Academic\Entities\Teacher;
-use Modules\Academic\Entities\TeacherQualification;
+use Modules\Academic\app\Entities\Teacher;
+use Modules\Academic\app\Entities\TeacherQualification;
 use Modules\Core\app\Entities\User;
 
 class TeachersSeeder extends Seeder

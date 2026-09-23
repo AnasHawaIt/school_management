@@ -5,7 +5,7 @@ namespace Modules\Attendance\app\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Academic\Services\StudentPointService;
+use Modules\Academic\app\Services\StudentPointService;
 use Modules\Attendance\app\Contracts\Services\StudentAttendanceServiceInterface;
 use Modules\Attendance\app\Http\Requests\BulkRecordAttendanceRequest;
 use Modules\Attendance\app\Http\Requests\RecordStudentAttendanceRequest;

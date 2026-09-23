@@ -9,7 +9,7 @@ interface StudentAttendanceServiceInterface
     public function getAll(array $filters = []);
     public function getSectionAttendance(int $sectionId, string $date);
     public function recordAttendance(array $data): StudentAttendance;
-    public function bulkRecord(int $sectionId, string $date, array $records): bool;
+    public function bulkRecord(int $sectionId, string $date, array $records): StudentAttendance;
     public function updateAttendance(int $id, array $data): StudentAttendance;
     public function deleteAttendance(int $id): bool;
     public function getStudentReport(int $studentId, array $filters = []);

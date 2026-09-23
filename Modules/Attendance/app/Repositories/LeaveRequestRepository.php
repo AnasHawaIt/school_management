@@ -3,7 +3,7 @@
 namespace Modules\Attendance\app\Repositories;
 
 use Modules\Attendance\app\Contracts\Repositories\LeaveRequestRepositoryInterface;
-use Modules\Attendance\app\Entities\LeaveRequest;
+use Modules\Attendance\Entities\LeaveRequest;
 
 class LeaveRequestRepository implements LeaveRequestRepositoryInterface
 {
@@ -27,12 +27,12 @@ class LeaveRequestRepository implements LeaveRequestRepositoryInterface
         return $this->model->with(['requestable.user', 'reviewer', 'creator'])->findOrFail($id);
     }
 
-    public function create(array $data): object
+    public function create(array $data): LeaveRequest
     {
         return $this->model->create($data);
     }
 
-    public function update(int $id, array $data): object
+    public function update(int $id, array $data): LeaveRequest
     {
         $request = $this->model->findOrFail($id);
         $request->update($data);
@@ -44,7 +44,7 @@ class LeaveRequestRepository implements LeaveRequestRepositoryInterface
         return $this->model->findOrFail($id)->delete();
     }
 
-    public function approve(int $id, int $reviewerId, ?string $notes = null): object
+    public function approve(int $id, int $reviewerId, ?string $notes = null): LeaveRequest
     {
         $request = $this->model->findOrFail($id);
         $request->update([
@@ -56,7 +56,7 @@ class LeaveRequestRepository implements LeaveRequestRepositoryInterface
         return $request->fresh('requestable.user');
     }
 
-    public function reject(int $id, int $reviewerId, ?string $notes = null): object
+    public function reject(int $id, int $reviewerId, ?string $notes = null): LeaveRequest
     {
         $request = $this->model->findOrFail($id);
         $request->update([
