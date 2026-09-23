@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services;
+namespace Modules\Academic\app\Services;
 
-use App\Contracts\Repositories\TimetableRepositoryInterface;
-use App\Contracts\Services\TimetableServiceInterface;
-use App\Entities\Timetable;
-use App\Events\TimetableEvents\TimetableEntryDeleted;
-use App\Events\TimetableEvents\TimetableEntryUpdated;
 use Illuminate\Support\Facades\Auth;
+use Modules\Academic\app\Contracts\Repositories\TimetableRepositoryInterface;
+use Modules\Academic\app\Contracts\Services\TimetableServiceInterface;
+use Modules\Academic\app\Entities\Timetable;
 use Modules\Academic\app\Events\TimetableEvents\TimetableEntryCreated;
+use Modules\Academic\app\Events\TimetableEvents\TimetableEntryDeleted;
+use Modules\Academic\app\Events\TimetableEvents\TimetableEntryUpdated;
 
 class TimetableService implements TimetableServiceInterface
 {

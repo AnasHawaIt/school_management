@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Listeners\StudentPoints\LogStudentPoints;
+namespace Modules\Academic\app\Listeners\StudentPoints\LogStudentPoints;
 
 
-use App\Events\StudentPointEvents\StudentPointsBulkGiven;
+use Modules\Academic\app\Events\StudentPointEvents\StudentPointsBulkGiven;
 
 class LogStudentPointsBulkGiven
 {

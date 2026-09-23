@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace Modules\Academic\app\Repositories;
 
-use App\Contracts\Repositories\TimetableRepositoryInterface;
-use App\Entities\Timetable;
+use Modules\Academic\app\Contracts\Repositories\TimetableRepositoryInterface;
+use Modules\Academic\app\Entities\Timetable;
 
 class TimetableRepository implements TimetableRepositoryInterface
 {

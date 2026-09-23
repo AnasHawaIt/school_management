@@ -2,9 +2,9 @@
 
 namespace Modules\Academic\database\seeders;
 
-use App\Entities\Counselor;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Modules\Academic\app\Entities\Counselor;
 use Modules\Core\app\Entities\User;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\LeaveRequests;
+namespace Modules\Academic\app\Listeners\LeaveRequests;
 
-use App\Events\LeaveRequests\LeaveRequestRejected;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\LeaveRequests\LeaveRequestRejected;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyLeaveRequestRejected implements ShouldQueue

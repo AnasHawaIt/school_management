@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\Teachers\LogTeachers;
+namespace Modules\Academic\app\Listeners\Teachers\LogTeachers;
 
-use App\Events\TeacherEvents\QualificationAdded;
+use Modules\Academic\app\Events\TeacherEvents\QualificationAdded;
 
 class LogTeacherQualificationAdded
 {

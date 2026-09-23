@@ -2,12 +2,12 @@
 
 namespace Modules\Academic\database\seeders;
 
-use App\Entities\Counselor;
-use App\Entities\PointCategory;
-use App\Entities\Student;
-use App\Entities\StudentPoint;
-use App\Entities\Teacher;
 use Illuminate\Database\Seeder;
+use Modules\Academic\app\Entities\Counselor;
+use Modules\Academic\app\Entities\PointCategory;
+use Modules\Academic\app\Entities\Student;
+use Modules\Academic\app\Entities\StudentPoint;
+use Modules\Academic\app\Entities\Teacher;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Semester;
 

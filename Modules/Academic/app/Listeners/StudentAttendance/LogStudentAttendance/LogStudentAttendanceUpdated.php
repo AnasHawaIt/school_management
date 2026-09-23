@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Listeners\StudentAttendance\LogStudentAttendance;
+namespace Modules\Academic\app\Listeners\StudentAttendance\LogStudentAttendance;
 
-use App\Events\StudentAttendance\StudentAttendanceBulkRecorded;
-use App\Events\StudentAttendance\StudentAttendanceUpdated;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\StudentAttendance\StudentAttendanceUpdated;
 
 class LogStudentAttendanceUpdated implements ShouldQueue
 {

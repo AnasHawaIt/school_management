@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Academic\app\Http\Controllers;
 
-use App\Contracts\Services\GuardianServiceInterface;
-use app\Http\Requests\StoreGuardianRequest;
-use app\Http\Resources\GuardianResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Academic\app\Contracts\Services\GuardianServiceInterface;
+use Modules\Academic\app\Http\Requests\StoreGuardianRequest;
+use Modules\Academic\app\Http\Resources\GuardianResource;
 
 class GuardianController extends Controller
 {

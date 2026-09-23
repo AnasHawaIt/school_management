@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Services;
+namespace Modules\Academic\app\Services;
 
-use App\Contracts\Services\CounselorServiceInterface;
-use App\Events\CounselorEvents\CounselorStatusToggled;
-use App\Events\CounselorEvents\CounselorUpdated;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Entities\Counselor;
 use Modules\Academic\app\Contracts\Repositories\CounselorRepositoryInterface;
+use Modules\Academic\app\Contracts\Services\CounselorServiceInterface;
+use Modules\Academic\app\Entities\Counselor;
 use Modules\Academic\app\Events\CounselorEvents\CounselorCreated;
 use Modules\Academic\app\Events\CounselorEvents\CounselorDeleted;
 use Modules\Academic\app\Events\CounselorEvents\CounselorRestored;
 use Modules\Academic\app\Events\CounselorEvents\CounselorSectionAssigned;
 use Modules\Academic\app\Events\CounselorEvents\CounselorSectionUnassigned;
+use Modules\Academic\app\Events\CounselorEvents\CounselorStatusToggled;
+use Modules\Academic\app\Events\CounselorEvents\CounselorUpdated;
 use Modules\Core\app\Entities\User;
 
 class CounselorService implements CounselorServiceInterface

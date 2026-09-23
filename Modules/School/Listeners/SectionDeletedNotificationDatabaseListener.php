@@ -3,8 +3,8 @@
 
 namespace Modules\School\Listeners;
 
-use App\Entities\Student;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Entities\Student;
 use Modules\Notifications\app\Services\NotificationService;
 use Modules\School\Events\SectionDeleted;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities;
+namespace Modules\Academic\app\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,7 +59,7 @@ class StudentPoint extends Model
         if ($this->given_by_type === 'counselor') {
             return $this->belongsTo(Counselor::class, 'given_by_id');
         }
-        return $this->belongsTo(\App\Entities\Teacher::class, 'given_by_id');
+        return $this->belongsTo(\Modules\Academic\app\Entities\Teacher::class, 'given_by_id');
     }
 
     // ===================== Accessors =====================

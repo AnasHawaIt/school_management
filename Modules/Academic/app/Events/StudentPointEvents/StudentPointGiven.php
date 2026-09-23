@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Events\StudentPointEvents;
+namespace Modules\Academic\app\Events\StudentPointEvents;
 
-use App\Entities\StudentPoint;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Modules\Academic\app\Entities\StudentPoint;
 
 class StudentPointGiven
 {

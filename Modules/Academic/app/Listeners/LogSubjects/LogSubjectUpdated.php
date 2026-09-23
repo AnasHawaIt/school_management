@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\LogSubjects;
+namespace Modules\Academic\app\Listeners\LogSubjects;
 
 
-use App\Events\SubjectsEvents\SubjectUpdated;
+use Modules\Academic\app\Events\SubjectsEvents\SubjectUpdated;
 
 class LogSubjectUpdated
 {

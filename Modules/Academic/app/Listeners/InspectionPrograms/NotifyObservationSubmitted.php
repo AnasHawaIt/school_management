@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Listeners\InspectionPrograms;
+namespace Modules\Academic\app\Listeners\InspectionPrograms;
 
-use App\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
-use App\Events\InspectionProgramEvents\ObservationSubmitted;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\InspectionProgramEvents\ObservationSubmitted;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyObservationSubmitted implements ShouldQueue

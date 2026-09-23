@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Academic\app\Http\Controllers;
 
-use App\Contracts\Services\SubjectServiceInterface;
-use app\Http\Requests\StoreSubjectRequest;
-use app\Http\Resources\SubjectResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Academic\app\Contracts\Services\SubjectServiceInterface;
+use Modules\Academic\app\Http\Requests\StoreSubjectRequest;
+use Modules\Academic\app\Http\Resources\SubjectResource;
 
 class SubjectController extends Controller
 {

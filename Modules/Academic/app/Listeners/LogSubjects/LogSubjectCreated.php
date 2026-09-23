@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\LogSubjects;
+namespace Modules\Academic\app\Listeners\LogSubjects;
 
 
 use Modules\Academic\app\Events\SubjectsEvents\SubjectCreated;

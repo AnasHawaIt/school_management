@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Academic\app\Http\Controllers;
 
-use App\Contracts\Services\StudentServiceInterface;
-use app\Http\Requests\StoreStudentRequest;
-use app\Http\Requests\UpdateStudentRequest;
-use app\Http\Resources\StudentResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Academic\app\Contracts\Services\StudentServiceInterface;
+use Modules\Academic\app\Http\Requests\StoreStudentRequest;
+use Modules\Academic\app\Http\Requests\UpdateStudentRequest;
+use Modules\Academic\app\Http\Resources\StudentResource;
 
 class StudentController extends Controller
 {

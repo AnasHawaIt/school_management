@@ -3,8 +3,8 @@
 
 namespace Modules\Transport\database\seeders;
 
-use App\Entities\Student;
 use Illuminate\Database\Seeder;
+use Modules\Academic\app\Entities\Student;
 use Modules\Transport\app\Entities\Route;
 use Modules\Transport\app\Entities\RouteStop;
 use Modules\Transport\app\Entities\Subscription;

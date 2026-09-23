@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Services;
+namespace Modules\Academic\app\Services;
 
-use App\Contracts\Repositories\StudentRepositoryInterface;
-use App\Contracts\Services\StudentServiceInterface;
-use App\Entities\Student;
-use App\Entities\StudentMedicalRecord;
-use App\Events\StudentEvents\StudentAssignedToSection;
-use App\Events\StudentEvents\StudentCreated;
-use App\Events\StudentEvents\StudentDeleted;
-use App\Events\StudentEvents\StudentPromoted;
-use App\Events\StudentEvents\StudentRestored;
-use App\Events\StudentEvents\StudentStatusUpdated;
-use App\Events\StudentEvents\StudentTransferred;
-use App\Events\StudentEvents\StudentUpdated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Modules\Academic\app\Contracts\Repositories\StudentRepositoryInterface;
+use Modules\Academic\app\Contracts\Services\StudentServiceInterface;
+use Modules\Academic\app\Entities\Student;
+use Modules\Academic\app\Entities\StudentMedicalRecord;
 use Modules\Academic\app\Events\StudentEvents\MedicalRecordUpdated;
+use Modules\Academic\app\Events\StudentEvents\StudentAssignedToSection;
+use Modules\Academic\app\Events\StudentEvents\StudentCreated;
+use Modules\Academic\app\Events\StudentEvents\StudentDeleted;
+use Modules\Academic\app\Events\StudentEvents\StudentPromoted;
+use Modules\Academic\app\Events\StudentEvents\StudentRestored;
+use Modules\Academic\app\Events\StudentEvents\StudentStatusUpdated;
+use Modules\Academic\app\Events\StudentEvents\StudentTransferred;
+use Modules\Academic\app\Events\StudentEvents\StudentUpdated;
 use Modules\Core\app\Entities\User;
 use Modules\School\Entities\Section;
 
@@ -268,6 +268,19 @@ class StudentService implements StudentServiceInterface
             $toSectionId
         ) {
 
+            // Get students before promotion
+            $students = $this->studentRepository
+                ->getBySection($fromSectionId);
+
+            if ($students->isEmpty()) {
+                return [
+                    'promoted_count' => 0,
+                    'from_section'   => $fromSectionId,
+                    'to_section'     => $toSectionId,
+                ];
+            }
+
+            // Perform promotion
             $count = $this->studentRepository
                 ->promoteStudents(
                     $fromSectionId,
@@ -276,13 +289,14 @@ class StudentService implements StudentServiceInterface
 
             if ($count > 0) {
 
-                event(new StudentPromoted(
-                    $fromSectionId,
-                    $toSectionId,
-                    $count,
-                    Auth::id()
-                ));
+                StudentPromoted::dispatch(
+                    students: $students,
+                    fromSectionId: $fromSectionId,
+                    toSectionId: $toSectionId,
+                    userId: Auth::id(),
+                );
             }
+
             return [
                 'promoted_count' => $count,
                 'from_section'   => $fromSectionId,

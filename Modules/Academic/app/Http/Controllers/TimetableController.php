@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Academic\app\Http\Controllers;
 
-use App\Contracts\Services\TimetableServiceInterface;
-use app\Http\Requests\StoreTimetableRequest;
-use app\Http\Resources\TimetableResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Academic\app\Contracts\Services\TimetableServiceInterface;
+use Modules\Academic\app\Http\Requests\StoreTimetableRequest;
+use Modules\Academic\app\Http\Resources\TimetableResource;
 
 class TimetableController extends Controller
 {

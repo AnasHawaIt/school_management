@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\Teachers\LogTeachers;
+namespace Modules\Academic\app\Listeners\Teachers\LogTeachers;
 
 
-use App\Events\TeacherEvents\TeacherUpdated;
+use Modules\Academic\app\Events\TeacherEvents\TeacherUpdated;
 
 class LogTeacherUpdated
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Events\GuardianEvens;
+namespace Modules\Academic\app\Events\GuardianEvens;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Entities\Guardian;
+use Modules\Academic\app\Entities\Guardian;
 
 class StudentDetachedFromGuardian
 {

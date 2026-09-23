@@ -2,9 +2,9 @@
 
 namespace Modules\Examination\database\seeders;
 
-use App\Entities\Subject;
-use App\Entities\Teacher;
 use Illuminate\Database\Seeder;
+use Modules\Academic\app\Entities\Subject;
+use Modules\Academic\app\Entities\Teacher;
 use Modules\Core\app\Entities\User;
 use Modules\Examination\Entities\Exam;
 use Modules\Examination\Entities\ExamType;

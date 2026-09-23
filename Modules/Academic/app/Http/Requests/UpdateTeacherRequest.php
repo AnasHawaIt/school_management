@@ -1,4 +1,4 @@
-<?php namespace App\Http\Requests;
+<?php namespace Modules\Academic\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -7,7 +7,7 @@ class UpdateTeacherRequest extends FormRequest
     public function authorize(): bool { return true; }
     public function rules(): array
     {
-        $teacher = \App\Entities\Teacher::findOrFail($this->route('teacher'));
+        $teacher = \Modules\Academic\app\Entities\Teacher::findOrFail($this->route('teacher'));
         return [
             'first_name'        => 'sometimes|string|max:100',
             'last_name'         => 'sometimes|string|max:100',

@@ -1,14 +1,14 @@
 <?php
 
-use app\Http\Controllers\CounselorController;
-use app\Http\Controllers\GuardianController;
-use app\Http\Controllers\InspectionProgramController;
-use app\Http\Controllers\StudentController;
-use app\Http\Controllers\StudentPointController;
-use app\Http\Controllers\SubjectController;
-use app\Http\Controllers\TeacherController;
-use app\Http\Controllers\TimetableController;
 use Illuminate\Support\Facades\Route;
+use Modules\Academic\app\Http\Controllers\CounselorController;
+use Modules\Academic\app\Http\Controllers\GuardianController;
+use Modules\Academic\app\Http\Controllers\InspectionProgramController;
+use Modules\Academic\app\Http\Controllers\StudentController;
+use Modules\Academic\app\Http\Controllers\StudentPointController;
+use Modules\Academic\app\Http\Controllers\SubjectController;
+use Modules\Academic\app\Http\Controllers\TeacherController;
+use Modules\Academic\app\Http\Controllers\TimetableController;
 
 Route::middleware(['auth:sanctum'])->group(function(){
 
@@ -144,9 +144,9 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::get('/sections/{section}/points/ranking', [StudentPointController::class, 'sectionRanking']);
 
     Route::prefix('point-categories')->group(function () {
-        Route::get('/', [\app\Http\Controllers\PointCategoryController::class, 'index']);
-        Route::post('/', [\app\Http\Controllers\PointCategoryController::class, 'store']);
-        Route::put('/{id}', [\app\Http\Controllers\PointCategoryController::class, 'update']);
-        Route::delete('/{id}', [\app\Http\Controllers\PointCategoryController::class, 'destroy']);
+        Route::get('/', [\Modules\Academic\app\Http\Controllers\PointCategoryController::class, 'index']);
+        Route::post('/', [\Modules\Academic\app\Http\Controllers\PointCategoryController::class, 'store']);
+        Route::put('/{id}', [\Modules\Academic\app\Http\Controllers\PointCategoryController::class, 'update']);
+        Route::delete('/{id}', [\Modules\Academic\app\Http\Controllers\PointCategoryController::class, 'destroy']);
     });
 });

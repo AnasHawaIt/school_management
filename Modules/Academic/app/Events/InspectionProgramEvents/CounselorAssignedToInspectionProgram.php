@@ -2,9 +2,9 @@
 
 namespace Modules\Academic\app\Events\InspectionProgramEvents;
 
-use App\Entities\InspectionProgram;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Modules\Academic\app\Entities\InspectionProgram;
 
 class CounselorAssignedToInspectionProgram
 {

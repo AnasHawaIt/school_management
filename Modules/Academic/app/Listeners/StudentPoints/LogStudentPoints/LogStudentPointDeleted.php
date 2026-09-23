@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Listeners\StudentPoints\LogStudentPoints;
+namespace Modules\Academic\app\Listeners\StudentPoints\LogStudentPoints;
 
 
 use Modules\Academic\app\Events\StudentPointEvents\StudentPointDeleted;

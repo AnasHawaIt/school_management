@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\InspectionPrograms;
+namespace Modules\Academic\app\Listeners\InspectionPrograms;
 
-use App\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyInspectionProgramSetCurrent implements ShouldQueue

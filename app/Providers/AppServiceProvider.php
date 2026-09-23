@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Entities\Guardian;
-use App\Entities\Student;
-use App\Entities\Teacher;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use Modules\Academic\app\Entities\Guardian;
+use Modules\Academic\app\Entities\Student;
+use Modules\Academic\app\Entities\Teacher;
 use Modules\Activities\app\Entities\Activity;
 use Modules\Announcement\Entities\Announcement;
 use Modules\Core\app\Entities\User;

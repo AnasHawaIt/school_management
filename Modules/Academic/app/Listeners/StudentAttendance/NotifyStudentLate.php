@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\StudentAttendance;
+namespace Modules\Academic\app\Listeners\StudentAttendance;
 
-use App\Events\StudentAttendance\StudentAttendanceRecorded;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\StudentAttendance\StudentAttendanceRecorded;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyStudentLate implements ShouldQueue

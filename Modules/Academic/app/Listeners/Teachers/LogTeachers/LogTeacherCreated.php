@@ -2,7 +2,7 @@
 
 namespace Modules\Academic\app\Listeners\Teachers\LogTeachers;
 
-use App\Events\TeacherEvents\TeacherCreated;
+use Modules\Academic\app\Events\TeacherEvents\TeacherCreated;
 
 class LogTeacherCreated
 {

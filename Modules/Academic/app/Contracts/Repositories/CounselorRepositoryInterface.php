@@ -2,7 +2,7 @@
 
 namespace Modules\Academic\app\Contracts\Repositories;
 
-use App\Entities\Counselor;
+use Modules\Academic\app\Entities\Counselor;
 
 interface CounselorRepositoryInterface
 {

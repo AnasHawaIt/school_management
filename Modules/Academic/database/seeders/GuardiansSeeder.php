@@ -2,10 +2,10 @@
 
 namespace Modules\Academic\database\seeders;
 
-use App\Entities\Guardian;
-use App\Entities\Student;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Modules\Academic\app\Entities\Guardian;
+use Modules\Academic\app\Entities\Student;
 use Modules\Core\app\Entities\User;
 
 class GuardiansSeeder extends Seeder

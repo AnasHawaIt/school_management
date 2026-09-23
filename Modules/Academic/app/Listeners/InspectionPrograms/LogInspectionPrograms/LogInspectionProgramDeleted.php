@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\InspectionPrograms\LogInspectionPrograms;
+namespace Modules\Academic\app\Listeners\InspectionPrograms\LogInspectionPrograms;
 
-use App\Events\InspectionProgramEvents\InspectionProgramDeleted;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramDeleted;
 
 class LogInspectionProgramDeleted
 {

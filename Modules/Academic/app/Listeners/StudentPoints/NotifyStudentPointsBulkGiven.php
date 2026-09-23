@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\StudentPoints;
+namespace Modules\Academic\app\Listeners\StudentPoints;
 
-use App\Events\StudentPointEvents\StudentPointsBulkGiven;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\StudentPointEvents\StudentPointsBulkGiven;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyStudentPointsBulkGiven implements ShouldQueue

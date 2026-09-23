@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\InspectionPrograms\LogInspectionPrograms;
+namespace Modules\Academic\app\Listeners\InspectionPrograms\LogInspectionPrograms;
 
-use App\Events\InspectionProgramEvents\InspectionProgramStatusUpdated;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramStatusUpdated;
 
 class LogInspectionProgramStatusUpdated
 {

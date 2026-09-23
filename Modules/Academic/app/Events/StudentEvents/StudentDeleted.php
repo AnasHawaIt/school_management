@@ -1,9 +1,9 @@
 <?php
-namespace App\Events\StudentEvents;
+namespace Modules\Academic\app\Events\StudentEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Entities\Student;
+use Modules\Academic\app\Entities\Student;
 
 class StudentDeleted
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Services;
+namespace Modules\Academic\app\Services;
 
-use App\Contracts\Repositories\StudentPointRepositoryInterface;
-use App\Entities\PointCategory;
-use App\Entities\StudentPoint;
-use App\Events\StudentPointEvents\StudentPointGiven;
-use App\Events\StudentPointEvents\StudentPointsBulkGiven;
 use Illuminate\Support\Facades\Auth;
+use Modules\Academic\app\Contracts\Repositories\StudentPointRepositoryInterface;
+use Modules\Academic\app\Entities\PointCategory;
+use Modules\Academic\app\Entities\StudentPoint;
 use Modules\Academic\app\Events\StudentPointEvents\StudentPointDeleted;
+use Modules\Academic\app\Events\StudentPointEvents\StudentPointGiven;
+use Modules\Academic\app\Events\StudentPointEvents\StudentPointsBulkGiven;
 use Modules\Attendance\app\Entities\StudentAttendance;
 
 class StudentPointService

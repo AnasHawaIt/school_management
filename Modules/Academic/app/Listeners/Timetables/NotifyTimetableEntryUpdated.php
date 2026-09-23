@@ -1,8 +1,8 @@
 <?php
-namespace App\Listeners\Timetables;
+namespace Modules\Academic\app\Listeners\Timetables;
 
-use App\Events\TimetableEvents\TimetableEntryUpdated;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\TimetableEvents\TimetableEntryUpdated;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyTimetableEntryUpdated implements ShouldQueue

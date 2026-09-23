@@ -2,9 +2,9 @@
 
 namespace Modules\Academic\database\seeders;
 
-use App\Entities\Counselor;
-use App\Entities\InspectionProgram;
 use Illuminate\Database\Seeder;
+use Modules\Academic\app\Entities\Counselor;
+use Modules\Academic\app\Entities\InspectionProgram;
 use Modules\Core\app\Entities\User;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;

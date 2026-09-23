@@ -2,12 +2,12 @@
 
 namespace Modules\Examination\Entities;
 
-use App\Entities\Subject;
-use App\Entities\Teacher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Academic\app\Entities\Subject;
+use Modules\Academic\app\Entities\Teacher;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\Semester;

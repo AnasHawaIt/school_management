@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\InspectionPrograms;
+namespace Modules\Academic\app\Listeners\InspectionPrograms;
 
-use App\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyCounselorUnassignedFromInspectionProgram implements ShouldQueue

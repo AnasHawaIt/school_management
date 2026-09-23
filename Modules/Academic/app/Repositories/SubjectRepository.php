@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace Modules\Academic\app\Repositories;
 
-use App\Contracts\Repositories\SubjectRepositoryInterface;
-use App\Entities\Subject;
 use Illuminate\Support\Facades\DB;
+use Modules\Academic\app\Contracts\Repositories\SubjectRepositoryInterface;
+use Modules\Academic\app\Entities\Subject;
 
 class SubjectRepository implements SubjectRepositoryInterface
 {

@@ -2,9 +2,9 @@
 
 namespace Modules\Finance\Entities;
 
-use App\Entities\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Academic\app\Entities\Student;
 use Modules\School\Entities\AcademicYear;
 
 class StudentFee extends Model

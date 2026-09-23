@@ -2,8 +2,8 @@
 
 namespace Modules\Academic\app\Listeners\Students;
 
-use App\Events\StudentEvents\StudentAssignedToSection;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\StudentEvents\StudentAssignedToSection;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyStudentAssignedToSection implements ShouldQueue

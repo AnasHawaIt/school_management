@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contracts\Services;
+namespace Modules\Academic\app\Contracts\Services;
 
-use App\Entities\InspectionProgram;
+use Modules\Academic\app\Entities\InspectionProgram;
 
 interface InspectionProgramServiceInterface
 {

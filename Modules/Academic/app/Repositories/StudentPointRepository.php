@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace Modules\Academic\app\Repositories;
 
-use App\Contracts\Repositories\StudentPointRepositoryInterface;
-use App\Entities\Student;
-use App\Entities\StudentPoint;
+use Modules\Academic\app\Contracts\Repositories\StudentPointRepositoryInterface;
+use Modules\Academic\app\Entities\Student;
+use Modules\Academic\app\Entities\StudentPoint;
 
 class StudentPointRepository implements StudentPointRepositoryInterface
 {

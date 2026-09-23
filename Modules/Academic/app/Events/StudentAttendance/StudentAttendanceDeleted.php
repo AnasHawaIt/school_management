@@ -1,5 +1,5 @@
 <?php
-namespace App\Events\StudentAttendance;
+namespace Modules\Academic\app\Events\StudentAttendance;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

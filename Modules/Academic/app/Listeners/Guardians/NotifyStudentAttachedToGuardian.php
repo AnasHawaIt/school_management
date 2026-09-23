@@ -2,8 +2,8 @@
 
 namespace Modules\Academic\app\Listeners\Guardians;
 
-use App\Events\GuardianEvens\StudentAttachedToGuardian;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\GuardianEvens\StudentAttachedToGuardian;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyStudentAttachedToGuardian implements ShouldQueue

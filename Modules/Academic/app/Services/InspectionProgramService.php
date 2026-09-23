@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Services;
+namespace Modules\Academic\app\Services;
 
-use App\Contracts\Repositories\InspectionProgramRepositoryInterface;
-use App\Contracts\Services\InspectionProgramServiceInterface;
-use App\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
-use App\Events\InspectionProgramEvents\InspectionProgramCreated;
-use App\Events\InspectionProgramEvents\InspectionProgramDeleted;
-use App\Events\InspectionProgramEvents\InspectionProgramRestored;
-use App\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
-use App\Events\InspectionProgramEvents\InspectionProgramStatusUpdated;
-use App\Events\InspectionProgramEvents\InspectionProgramUpdated;
-use App\Events\InspectionProgramEvents\ObservationSubmitted;
 use Illuminate\Support\Facades\Auth;
-use App\Entities\InspectionProgram;
+use Modules\Academic\app\Contracts\Repositories\InspectionProgramRepositoryInterface;
+use Modules\Academic\app\Contracts\Services\InspectionProgramServiceInterface;
+use Modules\Academic\app\Entities\InspectionProgram;
 use Modules\Academic\app\Events\InspectionProgramEvents\CounselorAssignedToInspectionProgram;
+use Modules\Academic\app\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramCreated;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramDeleted;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramRestored;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramStatusUpdated;
+use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramUpdated;
+use Modules\Academic\app\Events\InspectionProgramEvents\ObservationSubmitted;
 
 class InspectionProgramService implements InspectionProgramServiceInterface
 {

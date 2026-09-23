@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Events\CounselorEvents;
+namespace Modules\Academic\app\Events\CounselorEvents;
 
-use App\Entities\Counselor;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Modules\Academic\app\Entities\Counselor;
 
 class CounselorUpdated
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\Students\LogSudents;
+namespace Modules\Academic\app\Listeners\Students\LogSudents;
 
-use App\Events\StudentEvents\StudentTransferred;
+use Modules\Academic\app\Events\StudentEvents\StudentTransferred;
 
 class LogStudentTransferred
 {

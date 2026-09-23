@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contracts\Repositories;
+namespace Modules\Academic\app\Contracts\Repositories;
 
-use App\Entities\Subject;
+use Modules\Academic\app\Entities\Subject;
 
 interface SubjectRepositoryInterface
 {

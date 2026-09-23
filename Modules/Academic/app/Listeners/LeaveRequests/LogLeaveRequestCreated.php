@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\LeaveRequests;
+namespace Modules\Academic\app\Listeners\LeaveRequests;
 
-use App\Events\LeaveRequests\LeaveRequestCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\LeaveRequests\LeaveRequestCreated;
 
 
 class LogLeaveRequestCreated implements ShouldQueue

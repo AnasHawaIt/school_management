@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\Guardians\LogGuardians;
+namespace Modules\Academic\app\Listeners\Guardians\LogGuardians;
 
-use App\Events\GuardianEvens\GuardianUpdated;
+use Modules\Academic\app\Events\GuardianEvens\GuardianUpdated;
 
 class LogGuardianUpdated
 {

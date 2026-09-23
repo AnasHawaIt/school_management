@@ -2,7 +2,7 @@
 
 namespace Modules\Examination\Repositories;
 
-use App\Entities\Student;
+use Modules\Academic\app\Entities\Student;
 use Modules\Examination\Contracts\Repositories\ReportCardRepositoryInterface;
 use Modules\Examination\Entities\ExamResult;
 use Modules\Examination\Entities\ReportCard;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories;
+namespace Modules\Academic\app\Repositories;
 
-use App\Contracts\Repositories\GuardianRepositoryInterface;
-use App\Entities\Guardian;
+use Modules\Academic\app\Contracts\Repositories\GuardianRepositoryInterface;
+use Modules\Academic\app\Entities\Guardian;
 
 class GuardianRepository implements GuardianRepositoryInterface
 {

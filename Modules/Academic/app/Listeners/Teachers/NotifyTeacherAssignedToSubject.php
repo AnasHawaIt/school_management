@@ -2,8 +2,8 @@
 
 namespace Modules\Academic\app\Listeners\Teachers;
 
-use App\Events\SubjectsEvents\TeacherAssignedToSubject;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\SubjectsEvents\TeacherAssignedToSubject;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyTeacherAssignedToSubject implements ShouldQueue

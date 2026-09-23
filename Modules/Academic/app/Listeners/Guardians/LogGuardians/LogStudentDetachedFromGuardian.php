@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\Guardians\LogGuardians;
+namespace Modules\Academic\app\Listeners\Guardians\LogGuardians;
 
-use App\Events\GuardianEvens\StudentDetachedFromGuardian;
+use Modules\Academic\app\Events\GuardianEvens\StudentDetachedFromGuardian;
 
 class LogStudentDetachedFromGuardian
 {

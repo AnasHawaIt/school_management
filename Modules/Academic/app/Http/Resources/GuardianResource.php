@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace Modules\Academic\app\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +21,6 @@ class GuardianResource extends JsonResource
             'age' => $this->user?->date_of_birth ? \Carbon\Carbon::parse($this->user?->date_of_birth)->age : null,            'national_id'      => $this->national_id,
             'phone'            => $this->user?->phone,
             'email'            => $this->user?->email,
-            'national_id'     => $this->national_id,
             'phone_secondary' => $this->phone_secondary,
             'address'         => $this->address,
             'city'            => $this->city,

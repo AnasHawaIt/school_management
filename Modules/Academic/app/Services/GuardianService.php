@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Services;
+namespace Modules\Academic\app\Services;
 
-use App\Contracts\Repositories\GuardianRepositoryInterface;
-use App\Contracts\Services\GuardianServiceInterface;
-use App\Entities\Guardian;
-use App\Events\GuardianEvens\GuardianDeleted;
-use App\Events\GuardianEvens\GuardianRestored;
-use App\Events\GuardianEvens\GuardianUpdated;
-use App\Events\GuardianEvens\StudentAttachedToGuardian;
-use App\Events\GuardianEvens\StudentDetachedFromGuardian;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Modules\Academic\app\Contracts\Repositories\GuardianRepositoryInterface;
+use Modules\Academic\app\Contracts\Services\GuardianServiceInterface;
+use Modules\Academic\app\Entities\Guardian;
 use Modules\Academic\app\Events\GuardianEvens\GuardianCreated;
+use Modules\Academic\app\Events\GuardianEvens\GuardianDeleted;
+use Modules\Academic\app\Events\GuardianEvens\GuardianRestored;
+use Modules\Academic\app\Events\GuardianEvens\GuardianUpdated;
+use Modules\Academic\app\Events\GuardianEvens\StudentAttachedToGuardian;
+use Modules\Academic\app\Events\GuardianEvens\StudentDetachedFromGuardian;
 use Modules\Core\app\Entities\User;
 
 

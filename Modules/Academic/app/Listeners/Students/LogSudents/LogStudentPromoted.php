@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\Students\LogSudents;
+namespace Modules\Academic\app\Listeners\Students\LogSudents;
 
 
-use App\Events\StudentEvents\StudentPromoted;
+use Modules\Academic\app\Events\StudentEvents\StudentPromoted;
 
 class LogStudentPromoted
 {
@@ -14,7 +14,6 @@ class LogStudentPromoted
             ->withProperties([
                 'from_section_id' => $event->fromSectionId,
                 'to_section_id'   => $event->toSectionId,
-                'promoted_count'  => $event->promotedCount,
             ])
             ->log('Students promoted');
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Events\TeacherEvents;
+namespace Modules\Academic\app\Events\TeacherEvents;
 
-use App\Entities\TeacherQualification;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Modules\Academic\app\Entities\TeacherQualification;
 
 class QualificationDeleted
 {

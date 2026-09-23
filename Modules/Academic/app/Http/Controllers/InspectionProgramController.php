@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Academic\app\Http\Controllers;
 
-use App\Contracts\Services\InspectionProgramServiceInterface;
-use app\Http\Requests\StoreInspectionProgramRequest;
-use app\Http\Resources\InspectionProgramResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Academic\app\Contracts\Services\InspectionProgramServiceInterface;
+use Modules\Academic\app\Http\Requests\StoreInspectionProgramRequest;
+use Modules\Academic\app\Http\Resources\InspectionProgramResource;
 
 class InspectionProgramController extends Controller
 {
@@ -101,12 +101,12 @@ class InspectionProgramController extends Controller
 
     public function submitObservation(Request $request, int $id): JsonResponse
     {
-        $user = auth()->user();
+
         $data = $request->validate([
             'objectives'  => 'required|string',
             'result'       => 'nullable|in:excellent,good,average,weak',
         ]);
-        $data['counselor_id'] = $user->id;
+        $data['counselor_id'] = auth()->id();
         $counselorId = $data['counselor_id'];
         unset($data['counselor_id']);
 
@@ -149,7 +149,7 @@ class InspectionProgramController extends Controller
     }
     public function currentCounselorProgram(): JsonResponse
     {
-        $counselor = \App\Entities\Counselor::where('user_id', auth()->id())->firstOrFail();
+        $counselor = \Modules\Academic\app\Entities\Counselor::where('user_id', auth()->id())->firstOrFail();
         $program = $this->programService->getCurrentCounselorProgram($counselor->id);
 
         return response()->json([

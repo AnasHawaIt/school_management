@@ -2,11 +2,11 @@
 
 namespace Modules\Attendance\app\Services;
 
-use App\Events\StudentAttendance\StudentAttendanceBulkRecorded;
-use App\Events\StudentAttendance\StudentAttendanceDeleted;
-use App\Events\StudentAttendance\StudentAttendanceRecorded;
-use App\Events\StudentAttendance\StudentAttendanceUpdated;
 use Illuminate\Support\Facades\Auth;
+use Modules\Academic\app\Events\StudentAttendance\StudentAttendanceBulkRecorded;
+use Modules\Academic\app\Events\StudentAttendance\StudentAttendanceDeleted;
+use Modules\Academic\app\Events\StudentAttendance\StudentAttendanceRecorded;
+use Modules\Academic\app\Events\StudentAttendance\StudentAttendanceUpdated;
 use Modules\Attendance\app\Contracts\Repositories\StudentAttendanceRepositoryInterface;
 use Modules\Attendance\app\Contracts\Services\StudentAttendanceServiceInterface;
 use Modules\Attendance\app\Entities\StudentAttendance;

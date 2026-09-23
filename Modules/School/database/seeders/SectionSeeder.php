@@ -2,8 +2,8 @@
 
 namespace Modules\School\database\seeders;
 
-use App\Entities\Teacher;
 use Illuminate\Database\Seeder;
+use Modules\Academic\app\Entities\Teacher;
 use Modules\School\Entities\SchoolClass;
 use Modules\School\Entities\Section;
 

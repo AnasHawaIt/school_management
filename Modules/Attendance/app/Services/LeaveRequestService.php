@@ -2,14 +2,14 @@
 
 namespace Modules\Attendance\app\Services;
 
-use App\Entities\Student;
-use App\Entities\Teacher;
-use App\Events\LeaveRequests\LeaveRequestApproved;
-use App\Events\LeaveRequests\LeaveRequestCreated;
-use App\Events\LeaveRequests\LeaveRequestDeleted;
-use App\Events\LeaveRequests\LeaveRequestRejected;
-use App\Events\LeaveRequests\LeaveRequestUpdated;
 use Illuminate\Support\Facades\Auth;
+use Modules\Academic\app\Entities\Student;
+use Modules\Academic\app\Entities\Teacher;
+use Modules\Academic\app\Events\LeaveRequests\LeaveRequestApproved;
+use Modules\Academic\app\Events\LeaveRequests\LeaveRequestCreated;
+use Modules\Academic\app\Events\LeaveRequests\LeaveRequestDeleted;
+use Modules\Academic\app\Events\LeaveRequests\LeaveRequestRejected;
+use Modules\Academic\app\Events\LeaveRequests\LeaveRequestUpdated;
 use Modules\Attendance\app\Contracts\Repositories\LeaveRequestRepositoryInterface;
 use Modules\Attendance\app\Contracts\Services\LeaveRequestServiceInterface;
 use Modules\Attendance\Entities\LeaveRequest;

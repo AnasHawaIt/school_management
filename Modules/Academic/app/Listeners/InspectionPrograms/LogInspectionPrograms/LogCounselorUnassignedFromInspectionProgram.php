@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\InspectionPrograms\LogInspectionPrograms;
+namespace Modules\Academic\app\Listeners\InspectionPrograms\LogInspectionPrograms;
 
-use App\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
+use Modules\Academic\app\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
 
 class LogCounselorUnassignedFromInspectionProgram
 {

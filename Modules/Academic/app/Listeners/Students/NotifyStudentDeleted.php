@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Listeners\Students;
+namespace Modules\Academic\app\Listeners\Students;
 
-use App\Events\StudentEvents\StudentDeleted;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Modules\Academic\app\Events\StudentEvents\StudentDeleted;
 use Modules\Notifications\app\Services\NotificationService;
 
 class NotifyStudentDeleted implements ShouldQueue

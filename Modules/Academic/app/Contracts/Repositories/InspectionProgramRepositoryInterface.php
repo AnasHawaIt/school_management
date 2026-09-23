@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Contracts\Repositories;
+namespace Modules\Academic\app\Contracts\Repositories;
 
-use App\Entities\InspectionProgram;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Modules\Academic\app\Entities\InspectionProgram;
 
 interface InspectionProgramRepositoryInterface
 {

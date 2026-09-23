@@ -2,10 +2,10 @@
 
 namespace Modules\Attendance\app\Services;
 
-use App\Events\TeacherAttendance\TeacherAttendanceDeleted;
-use App\Events\TeacherAttendance\TeacherAttendanceRecorded;
-use App\Events\TeacherAttendance\TeacherAttendanceUpdated;
 use Illuminate\Support\Facades\Auth;
+use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceDeleted;
+use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceRecorded;
+use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceUpdated;
 use Modules\Attendance\app\Contracts\Repositories\TeacherAttendanceRepositoryInterface;
 use Modules\Attendance\app\Contracts\Services\TeacherAttendanceServiceInterface;
 use Modules\Attendance\app\Entities\TeacherAttendance;

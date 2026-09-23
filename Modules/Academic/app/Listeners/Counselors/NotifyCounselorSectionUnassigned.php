@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners\Counselors;
+namespace Modules\Academic\app\Listeners\Counselors;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Modules\Academic\app\Events\CounselorEvents\CounselorSectionUnassigned;

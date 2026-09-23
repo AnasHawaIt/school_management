@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Events\TimetableEvents;
+namespace Modules\Academic\app\Events\TimetableEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Entities\Timetable;
+use Modules\Academic\app\Entities\Timetable;
 
 class TimetableEntryUpdated
 {

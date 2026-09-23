@@ -2,9 +2,9 @@
 
 namespace Modules\Attendance\app\Entities;
 
-use App\Entities\Teacher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\Academic\app\Entities\Teacher;
 use Modules\Core\app\Entities\User;
 
 class TeacherAttendance extends Model

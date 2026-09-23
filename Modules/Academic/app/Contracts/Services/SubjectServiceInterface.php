@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contracts\Services;
+namespace Modules\Academic\app\Contracts\Services;
 
-use App\Entities\Subject;
+use Modules\Academic\app\Entities\Subject;
 
 interface SubjectServiceInterface
 {

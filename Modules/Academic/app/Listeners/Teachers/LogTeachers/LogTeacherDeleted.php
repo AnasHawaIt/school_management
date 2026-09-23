@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Listeners\Teachers\LogTeachers;
+namespace Modules\Academic\app\Listeners\Teachers\LogTeachers;
 
-use App\Events\TeacherEvents\TeacherDeleted;
+use Modules\Academic\app\Events\TeacherEvents\TeacherDeleted;
 
 class LogTeacherDeleted
 {

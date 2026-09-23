@@ -2,10 +2,10 @@
 
 namespace Modules\Academic\database\seeders;
 
-use App\Entities\Student;
-use App\Entities\StudentMedicalRecord;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Modules\Academic\app\Entities\Student;
+use Modules\Academic\app\Entities\StudentMedicalRecord;
 use Modules\Core\app\Entities\User;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;

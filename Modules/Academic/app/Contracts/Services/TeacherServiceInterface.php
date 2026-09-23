@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contracts\Services;
+namespace Modules\Academic\app\Contracts\Services;
 
-use App\Entities\Teacher;
+use Modules\Academic\app\Entities\Teacher;
 
 interface TeacherServiceInterface
 {
