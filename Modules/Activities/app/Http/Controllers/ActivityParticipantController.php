@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Modules\Activities\app\Entities\Activity;
 use Modules\Activities\app\Entities\ActivityParticipant;
-use Modules\Activities\app\Requests\RegisterParticipantRequest;
+use Modules\Activities\app\Http\Requests\RegisterParticipantRequest;
 use Modules\Activities\app\Services\ActivityService;
 
 class ActivityParticipantController extends Controller

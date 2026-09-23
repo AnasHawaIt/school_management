@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Attendance\Entities;
+namespace Modules\Attendance\app\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class LeaveRequest extends Model
 {

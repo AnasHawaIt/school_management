@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Activities\app\Entities\Activity;
-use Modules\Activities\app\Requests\StoreActivityRequest;
-use Modules\Activities\app\Requests\UpdateActivityRequest;
+use Modules\Activities\app\Http\Requests\StoreActivityRequest;
+use Modules\Activities\app\Http\Requests\UpdateActivityRequest;
 use Modules\Activities\app\Services\ActivityService;
 
 

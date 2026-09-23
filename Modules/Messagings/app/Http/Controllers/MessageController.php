@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use Modules\Messagings\app\Entities\Conversation;
 use Modules\Messagings\app\Entities\Message;
 use Modules\Messagings\app\Entities\MessageAttachment;
-use Modules\Messagings\app\Requests\ForwardMessageRequest;
-use Modules\Messagings\app\Requests\ReplyMessageRequest;
-use Modules\Messagings\app\Requests\SendMessageRequest;
-use Modules\Messagings\app\Resources\MessageResource;
+use Modules\Messagings\app\Http\Requests\ForwardMessageRequest;
+use Modules\Messagings\app\Http\Requests\ReplyMessageRequest;
+use Modules\Messagings\app\Http\Requests\SendMessageRequest;
+use Modules\Messagings\app\Http\Resources\MessageResource;
 use Modules\Messagings\app\Services\ConversationService;
 use Modules\Messagings\app\Services\MessageService;
 

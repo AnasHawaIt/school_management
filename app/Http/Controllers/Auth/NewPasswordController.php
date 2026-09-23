@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class NewPasswordController extends Controller
 {

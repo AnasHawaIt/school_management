@@ -3,15 +3,15 @@
 namespace Modules\Academic\app\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Activities\app\Entities\ActivityParticipant;
 use Modules\Core\app\Entities\User;
-use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;
+use Modules\School\Entities\AcademicYear;
 use Modules\Transport\app\Entities\Subscription;
 
 class Student extends Model

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 test('password can be updated', function () {
     $user = User::factory()->create();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Activities\Entities;
+namespace Modules\Activities\app\Entities;
 
 
 use Illuminate\Database\Eloquent\Builder;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 class ActivityAttachment extends Model
 {

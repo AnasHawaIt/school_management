@@ -1,7 +1,7 @@
 <?php
 
 
-use Modules\Core\Entities\User;
+use Modules\Core\app\Entities\User;
 
 test('confirm password screen can be rendered', function () {
     $user = User::factory()->create();
