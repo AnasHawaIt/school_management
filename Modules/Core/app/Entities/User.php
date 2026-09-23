@@ -22,7 +22,6 @@ use Modules\SMS\Entities\SmsOtp;
 class User extends Authenticatable implements CanResetPassword
 {
     use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CanResetPasswordTrait;
-    use HasFactory, Notifiable, SoftDeletes, HasApiTokens;
 
     protected $fillable = [
         'first_name',

@@ -26,8 +26,21 @@ class AuthController extends Controller
             $result = $this->authService->login($request->validated());
 
             if ($request->filled('fcm_token')) {
-                $result['user']->update([
-                    'fcm_token' => $request->fcm_token,
+
+                $user = $result['user'];
+
+                $token = $request->input('fcm_token');
+
+                $updated = $user->update([
+                    'fcm_token' => $token,
+                ]);
+
+                $user->refresh();
+
+                dd([
+                    'request_token' => $token,
+                    'update_result' => $updated,
+                    'database_token' => $user->fcm_token,
                 ]);
             }
 
