@@ -24,6 +24,13 @@ class AuthController extends Controller
     {
         try {
             $result = $this->authService->login($request->validated());
+
+            if ($request->filled('fcm_token')) {
+                $result['user']->update([
+                    'fcm_token' => $request->fcm_token,
+                ]);
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful',
@@ -73,6 +80,13 @@ class AuthController extends Controller
     public function logout(): JsonResponse
     {
         try {
+            $user = auth()->user();
+            if ($user) {
+                $user->update([
+                    'fcm_token' => null,
+                ]);
+            }
+
             $this->authService->logout();
 
             return response()->json([

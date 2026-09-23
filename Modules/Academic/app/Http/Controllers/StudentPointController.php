@@ -37,15 +37,14 @@ class StudentPointController extends Controller
             'inspection_program_id'   => 'nullable|exists:inspection_programs,id',
             'notes'                   => 'nullable|string|max:500',
         ]);
-        $data['given_by_type'] = $user->user_type;
-        $data['given_by_id'] = $user->id;
+        $data['given_by_type'] = $user;
+        $data['given_by_id'] = auth()->id();
         $point = $this->pointService->givePoint($data);
         return response()->json(['success' => true, 'message' => 'Point assigned successfully.', 'data' => $point], 201);
     }
 
     public function bulk(Request $request): JsonResponse
     {
-        $user = auth()->user();
         $data = $request->validate([
             'student_ids'             => 'required|array|min:1',
             'student_ids.*'           => 'required|exists:students,id',
@@ -58,8 +57,8 @@ class StudentPointController extends Controller
             'inspection_program_id'   => 'nullable|exists:inspection_programs,id',
             'notes'                   => 'nullable|string|max:500',
         ]);
-        $data['given_by_type'] = $user->user_type;
-        $data['given_by_id'] = $user->id;
+        $data['given_by_type'] = auth()->user();
+        $data['given_by_id'] = auth()->id();
         $this->pointService->bulkGive($data);
         return response()->json([
             'success' => true,
@@ -91,8 +90,7 @@ class StudentPointController extends Controller
         ]]);
     }
 
-
-   ,, public function sectionRanking(Request $request, int $sectionId): JsonResponse
+    public function sectionRanking(Request $request, int $sectionId): JsonResponse
     {
         $request->validate(['semester_id' => 'required|exists:semesters,id']);
         $ranking = $this->pointService->getSectionRanking($sectionId, $request->semester_id);
