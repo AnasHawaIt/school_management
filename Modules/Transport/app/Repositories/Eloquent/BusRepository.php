@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Transport\app\Repositories\Eloquent;
+namespace Modules\Transport\Repositories\Eloquent;
 
-use Modules\Transport\app\Entities\Bus;
-use Modules\Transport\app\Filters\BusFilter;
-use Modules\Transport\app\Repositories\Interfaces\BusRepositoryInterface;
+use Modules\Transport\Entities\Bus;
+use Modules\Transport\Filters\BusFilter;
+use Modules\Transport\Repositories\Interfaces\BusRepositoryInterface;
 
 class BusRepository implements BusRepositoryInterface
 {

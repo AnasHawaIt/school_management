@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Library\app\Filters;
+namespace Modules\Library\Filters;
 
 use App\Filters\QueryFilter;
 

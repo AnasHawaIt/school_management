@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role\RolePermissionsSynced;
+namespace Modules\Core\Listeners\Role\RolePermissionsSynced;
 
-use Modules\Core\app\Events\Role\RolePermissionsSynced;
-use Modules\Core\app\Jobs\Role\BroadcastRoleChangedJob;
+use Modules\Core\Events\Role\RolePermissionsSynced;
+use Modules\Core\Jobs\Role\BroadcastRoleChangedJob;
 
 class BroadcastRolePermissionsSynced
 {

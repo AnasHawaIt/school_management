@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\Core\app\Http\Controllers;
+namespace Modules\Core\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Core\app\Contracts\Services\RoleServiceInterface;
-use Modules\Core\app\Entities\Permission;
-use Modules\Core\app\Http\Requests\StoreRoleRequest;
-use Modules\Core\app\Http\Requests\UpdateRoleRequest;
-use Modules\Core\app\Http\Resources\RoleResource;
+use Modules\Core\Contracts\Services\RoleServiceInterface;
+use Modules\Core\Entities\Permission;
+use Modules\Core\Http\Requests\StoreRoleRequest;
+use Modules\Core\Http\Requests\UpdateRoleRequest;
+use Modules\Core\Http\Resources\RoleResource;
 
 class RoleController extends Controller
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\InspectionPrograms\LogInspectionPrograms;
+namespace Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms;
 
-use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramRestored;
+use Modules\Academic\Events\InspectionProgramEvents\InspectionProgramRestored;
 
 class LogInspectionProgramRestored
 {

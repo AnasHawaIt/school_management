@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Announcement\app\Repositories\Interfaces;
+namespace Modules\Announcement\Repositories\Interfaces;
 
-use Modules\Announcement\app\Entities\Announcement;
+use Modules\Announcement\Entities\Announcement;
 
 interface AnnouncementRepositoryInterface
 

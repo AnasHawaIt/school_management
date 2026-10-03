@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Events\PublishersEvents;
+namespace Modules\Library\Events\PublishersEvents;
 
-use Modules\Library\app\Entities\Publisher;
+use Modules\Library\Entities\Publisher;
 
 class PublishersForceDeleted
 {

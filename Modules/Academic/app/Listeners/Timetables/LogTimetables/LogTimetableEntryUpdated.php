@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Timetables\LogTimetables;
+namespace Modules\Academic\Listeners\Timetables\LogTimetables;
 
-use Modules\Academic\app\Events\TimetableEvents\TimetableEntryUpdated;
+use Modules\Academic\Events\TimetableEvents\TimetableEntryUpdated;
 
 class LogTimetableEntryUpdated
 {

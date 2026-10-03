@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Events\AttachmentDeleted;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\AttachmentDeletedBroadcast;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Events\AttachmentDeleted;
+use Modules\Messagings\Listeners\Broadcasting\Events\AttachmentDeletedBroadcast;
 
 class BroadcastAttachmentDeleted
 {

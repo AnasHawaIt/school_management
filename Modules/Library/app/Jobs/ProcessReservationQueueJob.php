@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Jobs;
+namespace Modules\Library\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Services\ReservationService;
+use Modules\Library\Services\ReservationService;
 
 class ProcessReservationQueueJob implements ShouldQueue
 {

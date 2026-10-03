@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Events\InspectionProgramEvents;
+namespace Modules\Academic\Events\InspectionProgramEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Academic\app\Entities\InspectionProgram;
+use Modules\Academic\Entities\InspectionProgram;
 
 class InspectionProgramSetCurrent
 {

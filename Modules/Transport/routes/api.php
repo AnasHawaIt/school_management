@@ -1,13 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Transport\app\Http\Controllers\BusController;
-use Modules\Transport\app\Http\Controllers\BusLocationController;
-use Modules\Transport\app\Http\Controllers\BusTrackingController;
-use Modules\Transport\app\Http\Controllers\RouteController;
-use Modules\Transport\app\Http\Controllers\RouteStopController;
-use Modules\Transport\app\Http\Controllers\SubscriptionController;
-use Modules\Transport\app\Http\Controllers\TransportController;
+use Modules\Transport\Http\Controllers\BusController;
+use Modules\Transport\Http\Controllers\BusLocationController;
+use Modules\Transport\Http\Controllers\BusTrackingController;
+use Modules\Transport\Http\Controllers\RouteController;
+use Modules\Transport\Http\Controllers\RouteStopController;
+use Modules\Transport\Http\Controllers\SubscriptionController;
+use Modules\Transport\Http\Controllers\TransportController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
     Route::apiResource('transports', TransportController::class)->names('transport');

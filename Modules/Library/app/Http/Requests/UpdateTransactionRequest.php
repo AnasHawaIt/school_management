@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Http\Requests;
+namespace Modules\Library\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Modules\Library\app\Entities\Borrowing;
+use Modules\Library\Entities\Borrowing;
 
 class UpdateTransactionRequest extends FormRequest
 {

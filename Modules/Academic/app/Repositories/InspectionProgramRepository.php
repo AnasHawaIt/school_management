@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Academic\app\Repositories;
+namespace Modules\Academic\Repositories;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Modules\Academic\app\Contracts\Repositories\InspectionProgramRepositoryInterface;
-use Modules\Academic\app\Entities\InspectionProgram;
+use Modules\Academic\Contracts\Repositories\InspectionProgramRepositoryInterface;
+use Modules\Academic\Entities\InspectionProgram;
 
 class InspectionProgramRepository implements InspectionProgramRepositoryInterface
 {

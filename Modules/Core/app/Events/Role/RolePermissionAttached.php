@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\app\Events\Role;
+namespace Modules\Core\Events\Role;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Core\app\Entities\Role;
+use Modules\Core\Entities\Role;
 
 class RolePermissionAttached
 {

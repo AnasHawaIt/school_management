@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Transport\app\Events\SubscriptionEvents;
+namespace Modules\Transport\Events\SubscriptionEvents;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Transport\app\Entities\Subscription;
+use Modules\Transport\Entities\Subscription;
 
 
 class SubscriptionCreated

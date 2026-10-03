@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Announcement\app\Enums;
+namespace Modules\Announcement\Enums;
 
 enum AnnouncementAudience: string
 {

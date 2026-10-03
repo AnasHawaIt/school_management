@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\app\Events\PublishersEvents;
+namespace Modules\Library\Events\PublishersEvents;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Publisher;
+use Modules\Library\Entities\Publisher;
 
 
 class PublishersUpdated

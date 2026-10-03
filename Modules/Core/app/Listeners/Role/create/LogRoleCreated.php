@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Core\app\Listeners\Role\create;
+namespace Modules\Core\Listeners\Role\create;
 
-use Modules\Core\app\Events\Role\RoleCreated;
+use Modules\Core\Events\Role\RoleCreated;
 
 class LogRoleCreated
 {

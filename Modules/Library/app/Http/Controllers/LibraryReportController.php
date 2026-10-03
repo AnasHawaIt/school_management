@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Modules\Library\app\Entities\Borrowing;
-use Modules\Library\app\Entities\Fine;
+use Modules\Library\Entities\Borrowing;
+use Modules\Library\Entities\Fine;
 
 class LibraryReportController extends Controller
 {

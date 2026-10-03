@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Transport\app\Http\Controllers;
+namespace Modules\Transport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Transport\app\Http\Requests\StoreRouteRequest;
-use Modules\Transport\app\Http\Requests\UpdateRouteRequest;
-use Modules\Transport\app\Http\Resources\RouteResource;
-use Modules\Transport\app\Services\RouteService;
+use Modules\Transport\Http\Requests\StoreRouteRequest;
+use Modules\Transport\Http\Requests\UpdateRouteRequest;
+use Modules\Transport\Http\Resources\RouteResource;
+use Modules\Transport\Services\RouteService;
 
 class RouteController extends Controller
 {

@@ -4,9 +4,9 @@ namespace Modules\Academic\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Modules\Academic\app\Entities\Guardian;
-use Modules\Academic\app\Entities\Student;
-use Modules\Core\app\Entities\User;
+use Modules\Academic\Entities\Guardian;
+use Modules\Academic\Entities\Student;
+use Modules\Core\Entities\User;
 
 class GuardiansSeeder extends Seeder
 {

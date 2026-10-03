@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementScheduledListener;
+namespace Modules\Announcement\Listeners\AnnouncementScheduledListener;
 
-use Modules\Announcement\app\Events\AnnouncementScheduled;
+use Modules\Announcement\Events\AnnouncementScheduled;
 
 class AnnouncementScheduledLogEventListener
 {

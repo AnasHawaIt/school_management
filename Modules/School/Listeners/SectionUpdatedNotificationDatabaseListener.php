@@ -3,8 +3,8 @@
 namespace Modules\School\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Entities\Student;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Entities\Student;
+use Modules\Notifications\Services\NotificationService;
 use Modules\School\Events\SectionUpdated;
 
 class SectionUpdatedNotificationDatabaseListener implements ShouldQueue

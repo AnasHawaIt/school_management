@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Transport\app\Events\SubscriptionEvents;
+namespace Modules\Transport\Events\SubscriptionEvents;
 
-use Modules\Transport\app\Entities\Subscription;
+use Modules\Transport\Entities\Subscription;
 
 class SubscriptionDeleted
 {

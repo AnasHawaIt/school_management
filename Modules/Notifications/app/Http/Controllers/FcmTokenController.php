@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Notifications\app\Http\Controllers;
+namespace Modules\Notifications\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

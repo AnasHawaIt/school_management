@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\Attendance\app\Services;
+namespace Modules\Attendance\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Modules\Academic\app\Entities\Student;
-use Modules\Academic\app\Entities\Teacher;
-use Modules\Academic\app\Events\LeaveRequests\LeaveRequestApproved;
-use Modules\Academic\app\Events\LeaveRequests\LeaveRequestCreated;
-use Modules\Academic\app\Events\LeaveRequests\LeaveRequestDeleted;
-use Modules\Academic\app\Events\LeaveRequests\LeaveRequestRejected;
-use Modules\Academic\app\Events\LeaveRequests\LeaveRequestUpdated;
-use Modules\Attendance\app\Contracts\Repositories\LeaveRequestRepositoryInterface;
-use Modules\Attendance\app\Contracts\Services\LeaveRequestServiceInterface;
+use Modules\Academic\Entities\Student;
+use Modules\Academic\Entities\Teacher;
+use Modules\Academic\Events\LeaveRequests\LeaveRequestApproved;
+use Modules\Academic\Events\LeaveRequests\LeaveRequestCreated;
+use Modules\Academic\Events\LeaveRequests\LeaveRequestDeleted;
+use Modules\Academic\Events\LeaveRequests\LeaveRequestRejected;
+use Modules\Academic\Events\LeaveRequests\LeaveRequestUpdated;
+use Modules\Attendance\Contracts\Repositories\LeaveRequestRepositoryInterface;
+use Modules\Attendance\Contracts\Services\LeaveRequestServiceInterface;
 use Modules\Attendance\Entities\LeaveRequest;
 
 class LeaveRequestService implements LeaveRequestServiceInterface

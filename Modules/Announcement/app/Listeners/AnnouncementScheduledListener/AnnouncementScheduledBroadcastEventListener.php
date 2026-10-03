@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementScheduledListener;
+namespace Modules\Announcement\Listeners\AnnouncementScheduledListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Announcement\app\Events\AnnouncementScheduled;
-use Modules\Announcement\app\Events\Broadcasts\AnnouncementBroadcast;
+use Modules\Announcement\Events\AnnouncementScheduled;
+use Modules\Announcement\Events\Broadcasts\AnnouncementBroadcast;
 
 class AnnouncementScheduledBroadcastEventListener implements ShouldQueue
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\MemberListeners;
+namespace Modules\Library\Listeners\MemberListeners;
 
-use Modules\Library\app\Events\MemberEvents\MemberRestored;
+use Modules\Library\Events\MemberEvents\MemberRestored;
 
 class MemberRestoredLogEventListener
 {

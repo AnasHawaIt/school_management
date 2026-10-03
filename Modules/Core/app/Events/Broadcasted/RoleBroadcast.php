@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Core\app\Events\Broadcasted;
+namespace Modules\Core\Events\Broadcasted;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Core\app\Entities\Role;
+use Modules\Core\Entities\Role;
 
 class RoleBroadcast implements ShouldBroadcast
 {

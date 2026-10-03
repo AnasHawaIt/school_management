@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\app\Events\FinesEvents;
+namespace Modules\Library\Events\FinesEvents;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Fine;
+use Modules\Library\Entities\Fine;
 
 class FinePaidBroadcast implements ShouldBroadcast
 {

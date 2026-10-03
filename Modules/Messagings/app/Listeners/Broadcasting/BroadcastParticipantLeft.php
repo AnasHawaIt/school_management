@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Events\ParticipantLeft;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\ParticipantLeftBroadcast;
+use Modules\Messagings\Events\ParticipantLeft;
+use Modules\Messagings\Listeners\Broadcasting\Events\ParticipantLeftBroadcast;
 
 class BroadcastParticipantLeft
 {

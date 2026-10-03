@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Academic\app\Http\Controllers\GuardianController;
-use Modules\Academic\app\Http\Controllers\StudentController;
-use Modules\Academic\app\Http\Controllers\SubjectController;
-use Modules\Academic\app\Http\Controllers\TeacherController;
-use Modules\Academic\app\Http\Controllers\TimetableController;
+use Modules\Academic\Http\Controllers\GuardianController;
+use Modules\Academic\Http\Controllers\StudentController;
+use Modules\Academic\Http\Controllers\SubjectController;
+use Modules\Academic\Http\Controllers\TeacherController;
+use Modules\Academic\Http\Controllers\TimetableController;
 
 Route::middleware(['auth', 'web'])->group(function () {
 

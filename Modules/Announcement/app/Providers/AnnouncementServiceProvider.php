@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Announcement\app\Providers;
+namespace Modules\Announcement\Providers;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Announcement\app\Console\Commands\ProcessAnnouncements;
-use Modules\Announcement\app\Repositories\Eloquent\AnnouncementRepository;
-use Modules\Announcement\app\Repositories\Interfaces\AnnouncementRepositoryInterface;
+use Modules\Announcement\Console\Commands\ProcessAnnouncements;
+use Modules\Announcement\Repositories\Eloquent\AnnouncementRepository;
+use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

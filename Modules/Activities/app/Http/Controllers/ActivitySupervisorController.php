@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Activities\app\Http\Controllers;
+namespace Modules\Activities\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Modules\Activities\app\Entities\Activity;
-use Modules\Activities\app\Entities\ActivitySupervisor;
-use Modules\Activities\app\Http\Requests\AddSupervisorRequest;
-use Modules\Activities\app\Services\ActivityService;
+use Modules\Activities\Entities\Activity;
+use Modules\Activities\Entities\ActivitySupervisor;
+use Modules\Activities\Http\Requests\AddSupervisorRequest;
+use Modules\Activities\Services\ActivityService;
 
 class ActivitySupervisorController extends Controller
 {

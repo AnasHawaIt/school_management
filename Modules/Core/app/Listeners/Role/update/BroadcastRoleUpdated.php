@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role\update;
+namespace Modules\Core\Listeners\Role\update;
 
-use Modules\Core\app\Events\Role\RoleUpdated;
-use Modules\Core\app\Jobs\Role\BroadcastRoleChangedJob;
+use Modules\Core\Events\Role\RoleUpdated;
+use Modules\Core\Jobs\Role\BroadcastRoleChangedJob;
 
 class BroadcastRoleUpdated
 {

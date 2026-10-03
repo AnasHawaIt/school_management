@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Events\AdminPromoted;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\AdminPromotedBroadcast;
+use Modules\Messagings\Events\AdminPromoted;
+use Modules\Messagings\Listeners\Broadcasting\Events\AdminPromotedBroadcast;
 
 class BroadcastAdminPromoted
 {

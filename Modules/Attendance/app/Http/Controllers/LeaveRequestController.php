@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Attendance\app\Http\Controllers;
+namespace Modules\Attendance\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
-use Modules\Attendance\app\Contracts\Services\LeaveRequestServiceInterface;
-use Modules\Attendance\app\Http\Requests\StoreLeaveRequestRequest;
-use Modules\Attendance\app\Http\Resources\LeaveRequestResource;
+use Modules\Attendance\Contracts\Services\LeaveRequestServiceInterface;
+use Modules\Attendance\Http\Requests\StoreLeaveRequestRequest;
+use Modules\Attendance\Http\Resources\LeaveRequestResource;
 
 class LeaveRequestController extends Controller
 {

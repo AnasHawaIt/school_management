@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionDeletedListener;
+namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedListener;
 
 
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionDeleted;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
 
 class SubscriptionDeletedLogEventListener
 {

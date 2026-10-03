@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Activities\app\Listeners\Supervisor;
+namespace Modules\Activities\Listeners\Supervisor;
 
-use Modules\Activities\app\Events\ActivityPrimarySupervisorChanged;
+use Modules\Activities\Events\ActivityPrimarySupervisorChanged;
 
 class LogActivityPrimarySupervisorChanged
 {

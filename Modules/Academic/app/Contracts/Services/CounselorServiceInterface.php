@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Academic\app\Contracts\Services;
+namespace Modules\Academic\Contracts\Services;
 
 use App\Http\Controllers\Controller;
-use Modules\Academic\app\Entities\Counselor;
+use Modules\Academic\Entities\Counselor;
 
 interface CounselorServiceInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Attendance\app\Repositories;
+namespace Modules\Attendance\Repositories;
 
-use Modules\Attendance\app\Contracts\Repositories\TeacherAttendanceRepositoryInterface;
-use Modules\Attendance\app\Entities\TeacherAttendance;
+use Modules\Attendance\Contracts\Repositories\TeacherAttendanceRepositoryInterface;
+use Modules\Attendance\Entities\TeacherAttendance;
 
 class TeacherAttendanceRepository implements TeacherAttendanceRepositoryInterface
 {

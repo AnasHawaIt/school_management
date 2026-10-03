@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Activities\app\Repositories\Eloquent;
+namespace Modules\Activities\Repositories\Eloquent;
 
-use Modules\Activities\app\Entities\ActivityParticipant;
-use Modules\Activities\app\Repositories\Interfaces\ActivityParticipantRepositoryInterface;
+use Modules\Activities\Entities\ActivityParticipant;
+use Modules\Activities\Repositories\Interfaces\ActivityParticipantRepositoryInterface;
 
 class ActivityParticipantRepository implements ActivityParticipantRepositoryInterface
 {

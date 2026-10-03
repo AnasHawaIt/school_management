@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Core\app\Http\Controllers\AuthController;
-use Modules\Core\app\Http\Controllers\PermissionController;
-use Modules\Core\app\Http\Controllers\RoleController;
-use Modules\Core\app\Http\Controllers\SettingController;
-use Modules\Core\app\Http\Controllers\UserController;
+use Modules\Core\Http\Controllers\AuthController;
+use Modules\Core\Http\Controllers\PermissionController;
+use Modules\Core\Http\Controllers\RoleController;
+use Modules\Core\Http\Controllers\SettingController;
+use Modules\Core\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +16,11 @@ use Modules\Core\app\Http\Controllers\UserController;
 // Public routes (No authentication required)
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('users/', [UserController::class, 'store']);
 // Protected routes (Authentication required)
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/users/fcm-token', [UserController::class, 'updateFcmToken']);
+    Route::post('users/', [UserController::class, 'store']);
 
     // Authentication
     Route::prefix('auth')->group(function () {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Core\app\Repositories;
+namespace Modules\Core\Repositories;
 
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Modules\Core\app\Contracts\Repositories\UserRepositoryInterface;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
+use Modules\Core\Entities\User;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {

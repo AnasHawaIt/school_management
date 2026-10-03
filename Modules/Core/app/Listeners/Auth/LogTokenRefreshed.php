@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Auth;
+namespace Modules\Core\Listeners\Auth;
 
-use Modules\Core\app\Events\Auth\TokenRefreshed;
+use Modules\Core\Events\Auth\TokenRefreshed;
 
 
 class LogTokenRefreshed

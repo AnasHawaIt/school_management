@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionDeletedListener;
+namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedListener;
 
-use Modules\Notifications\app\Services\NotificationService;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionDeleted;
+use Modules\Notifications\Services\NotificationService;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
 
 class SubscriptionDeletedNotificationDatabaseListener
 {

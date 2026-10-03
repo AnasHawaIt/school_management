@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Repositories\Eloquent;
+namespace Modules\Library\Repositories\Eloquent;
 
-use Modules\Library\app\Entities\Author;
-use Modules\Library\app\Filters\AuthorFilter;
-use Modules\Library\app\Repositories\Interfaces\AuthorRepositoryInterface;
+use Modules\Library\Entities\Author;
+use Modules\Library\Filters\AuthorFilter;
+use Modules\Library\Repositories\Interfaces\AuthorRepositoryInterface;
 
 class AuthorRepository implements AuthorRepositoryInterface
 {

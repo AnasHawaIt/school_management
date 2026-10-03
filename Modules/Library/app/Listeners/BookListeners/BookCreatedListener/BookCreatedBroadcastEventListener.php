@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Modules\Library\app\Listeners\BookListeners\BookCreatedListener;
+namespace Modules\Library\Listeners\BookListeners\BookCreatedListener;
 
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\BookEvents\BookCreated;
-use Modules\Library\app\Events\Broadcasts\BookBroadcast;
+use Modules\Library\Events\BookEvents\BookCreated;
+use Modules\Library\Events\Broadcasts\BookBroadcast;
 
 class BookCreatedBroadcastEventListener  implements ShouldQueue
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Events\ReservationEvents;
+namespace Modules\Library\Events\ReservationEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Reservation;
+use Modules\Library\Entities\Reservation;
 
 class ReservationNotified
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Core\app\Events\Broadcasted;
+namespace Modules\Core\Events\Broadcasted;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 
 class UserUpdatedBroadcasted implements ShouldBroadcast
 {

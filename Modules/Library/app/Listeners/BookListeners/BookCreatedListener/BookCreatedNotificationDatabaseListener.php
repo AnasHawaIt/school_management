@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BookListeners\BookCreatedListener;
+namespace Modules\Library\Listeners\BookListeners\BookCreatedListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\BookEvents\BookCreated;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Library\Events\BookEvents\BookCreated;
+use Modules\Notifications\Services\NotificationService;
 
 class BookCreatedNotificationDatabaseListener implements ShouldQueue
 {

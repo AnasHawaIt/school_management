@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
+namespace Modules\Library\Listeners\BorrowingListeners\Logs;
 
-use Modules\Library\app\Events\BorrowingEvents\BorrowingRenewed;
+use Modules\Library\Events\BorrowingEvents\BorrowingRenewed;
 
 class LogBorrowingRenewed
 {

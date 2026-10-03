@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementDeletedListener;
+namespace Modules\Announcement\Listeners\AnnouncementDeletedListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Announcement\app\Events\AnnouncementDeleted;
-use Modules\Announcement\app\Events\Broadcasts\AnnouncementBroadcast;
+use Modules\Announcement\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\Broadcasts\AnnouncementBroadcast;
 
 class AnnouncementDeletedBroadcastEventListener implements ShouldQueue
 {

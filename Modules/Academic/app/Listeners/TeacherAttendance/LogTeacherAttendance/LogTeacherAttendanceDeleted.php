@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\TeacherAttendance\LogTeacherAttendance;
+namespace Modules\Academic\Listeners\TeacherAttendance\LogTeacherAttendance;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceDeleted;
+use Modules\Academic\Events\TeacherAttendance\TeacherAttendanceDeleted;
 
 class LogTeacherAttendanceDeleted implements ShouldQueue
 {

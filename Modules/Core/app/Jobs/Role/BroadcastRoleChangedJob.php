@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\app\Jobs\Role;
+namespace Modules\Core\Jobs\Role;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -8,8 +8,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Modules\Core\app\Entities\Role;
-use Modules\Core\app\Events\Broadcasted\RoleBroadcast;
+use Modules\Core\Entities\Role;
+use Modules\Core\Events\Broadcasted\RoleBroadcast;
 
 class BroadcastRoleChangedJob implements ShouldQueue
 {

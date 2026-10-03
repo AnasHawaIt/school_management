@@ -3,7 +3,7 @@
 namespace Modules\Academic\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Academic\app\Entities\PointCategory;
+use Modules\Academic\Entities\PointCategory;
 
 class PointCategoriesSeeder extends Seeder
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role\RolePermissionAttached;
+namespace Modules\Core\Listeners\Role\RolePermissionAttached;
 
-use Modules\Core\app\Events\Role\RolePermissionAttached;
-use Modules\Core\app\Events\Role\RolePermissionDetached;
+use Modules\Core\Events\Role\RolePermissionAttached;
+use Modules\Core\Events\Role\RolePermissionDetached;
 
-use Modules\Core\app\Jobs\Role\BroadcastRoleChangedJob;
+use Modules\Core\Jobs\Role\BroadcastRoleChangedJob;
 
 class BroadcastRolePermissionChanged
 {

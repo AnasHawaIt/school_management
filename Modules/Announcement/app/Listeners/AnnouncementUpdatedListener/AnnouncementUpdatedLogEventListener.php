@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementUpdatedListener;
+namespace Modules\Announcement\Listeners\AnnouncementUpdatedListener;
 
-use Modules\Announcement\app\Events\AnnouncementUpdated;
+use Modules\Announcement\Events\AnnouncementUpdated;
 
 class AnnouncementUpdatedLogEventListener
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\PublishersListeners;
+namespace Modules\Library\Listeners\PublishersListeners;
 
-use Modules\Library\app\Events\PublishersEvents\PublishersForceDeleted;
+use Modules\Library\Events\PublishersEvents\PublishersForceDeleted;
 
 class PublishersForceDeletedLogEventListener
 {

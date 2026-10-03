@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
+namespace Modules\Library\Listeners\BorrowingListeners\Logs;
 
-namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
+namespace Modules\Library\Listeners\BorrowingListeners\Logs;
 
-use Modules\Library\app\Events\BorrowingEvents\BorrowingOverdue;
+use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
 
 class LogBorrowingOverdue
 {

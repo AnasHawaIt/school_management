@@ -4,8 +4,8 @@ namespace Modules\Examination\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Academic\app\Entities\Student;
-use Modules\Core\app\Entities\User;
+use Modules\Academic\Entities\Student;
+use Modules\Core\Entities\User;
 
 class ExamResult extends Model
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Events\CounselorEvents;
+namespace Modules\Academic\Events\CounselorEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Academic\app\Entities\Counselor;
+use Modules\Academic\Entities\Counselor;
 
 class CounselorSectionUnassigned
 {

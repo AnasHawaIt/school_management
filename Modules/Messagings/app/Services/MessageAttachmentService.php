@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Messagings\app\Services;
+namespace Modules\Messagings\Services;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Entities\MessageAttachment;
-use Modules\Messagings\app\Events\AttachmentDeleted;
-use Modules\Messagings\app\Events\AttachmentUploaded;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageAttachment;
+use Modules\Messagings\Events\AttachmentDeleted;
+use Modules\Messagings\Events\AttachmentUploaded;
 
 class MessageAttachmentService
 {

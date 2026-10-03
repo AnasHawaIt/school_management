@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\app\Events\Permission;
+namespace Modules\Core\Events\Permission;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Core\app\Entities\Permission;
+use Modules\Core\Entities\Permission;
 
 class PermissionUpdated
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\Academic\app\Http\Controllers;
+namespace Modules\Academic\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Academic\app\Contracts\Services\TeacherServiceInterface;
-use Modules\Academic\app\Http\Requests\StoreTeacherRequest;
-use Modules\Academic\app\Http\Requests\UpdateTeacherRequest;
-use Modules\Academic\app\Http\Resources\TeacherQualificationsResource;
-use Modules\Academic\app\Http\Resources\TeacherResource;
+use Modules\Academic\Contracts\Services\TeacherServiceInterface;
+use Modules\Academic\Http\Requests\StoreTeacherRequest;
+use Modules\Academic\Http\Requests\UpdateTeacherRequest;
+use Modules\Academic\Http\Resources\TeacherQualificationsResource;
+use Modules\Academic\Http\Resources\TeacherResource;
 
 class TeacherController extends Controller
 {

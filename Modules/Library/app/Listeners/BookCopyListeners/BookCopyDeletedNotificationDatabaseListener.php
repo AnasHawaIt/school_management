@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BookCopyListeners;
+namespace Modules\Library\Listeners\BookCopyListeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\BookCopiesEvents\BookCopyDeleted;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Library\Events\BookCopiesEvents\BookCopyDeleted;
+use Modules\Notifications\Services\NotificationService;
 
 class BookCopyDeletedNotificationDatabaseListener implements ShouldQueue
 {

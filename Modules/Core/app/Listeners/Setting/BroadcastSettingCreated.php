@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Setting;
+namespace Modules\Core\Listeners\Setting;
 
-use Modules\Core\app\Events\Broadcasted\SettingBroadcast;
-use Modules\Core\app\Events\Setting\SettingCreated;
+use Modules\Core\Events\Broadcasted\SettingBroadcast;
+use Modules\Core\Events\Setting\SettingCreated;
 
 class BroadcastSettingCreated
 {

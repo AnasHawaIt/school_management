@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\app\Events\Auth;
+namespace Modules\Core\Events\Auth;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 
 class UserLoggedIn
 {

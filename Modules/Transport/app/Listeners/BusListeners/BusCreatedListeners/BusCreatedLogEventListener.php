@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\BusListeners\BusCreatedListeners;
+namespace Modules\Transport\Listeners\BusListeners\BusCreatedListeners;
 
-use Modules\Transport\app\Events\BusEvents\BusCreated;
+use Modules\Transport\Events\BusEvents\BusCreated;
 
 class BusCreatedLogEventListener
 {

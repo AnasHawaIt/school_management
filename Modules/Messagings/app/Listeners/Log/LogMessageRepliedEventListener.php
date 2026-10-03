@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners\Log;
+namespace Modules\Messagings\Listeners\Log;
 
-use Modules\Core\app\Entities\User;
-use Modules\Messagings\app\Events\Message\MessageReplied;
+use Modules\Core\Entities\User;
+use Modules\Messagings\Events\Message\MessageReplied;
 
 class LogMessageRepliedEventListener
 {

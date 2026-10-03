@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Transport\app\Services;
+namespace Modules\Transport\Services;
 
-use Modules\Transport\app\Events\BusEvents\BusCreated;
-use Modules\Transport\app\Events\BusEvents\BusDeleted;
-use Modules\Transport\app\Events\BusEvents\BusRestored;
-use Modules\Transport\app\Events\BusEvents\BusUpdated;
-use Modules\Transport\app\Repositories\Interfaces\BusRepositoryInterface;
+use Modules\Transport\Events\BusEvents\BusCreated;
+use Modules\Transport\Events\BusEvents\BusDeleted;
+use Modules\Transport\Events\BusEvents\BusRestored;
+use Modules\Transport\Events\BusEvents\BusUpdated;
+use Modules\Transport\Repositories\Interfaces\BusRepositoryInterface;
 
 class BusService
 {

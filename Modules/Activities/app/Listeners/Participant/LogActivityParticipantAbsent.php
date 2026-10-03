@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Activities\app\Listeners\Participant;
+namespace Modules\Activities\Listeners\Participant;
 
-use Modules\Activities\app\Events\ActivityParticipantAbsent;
+use Modules\Activities\Events\ActivityParticipantAbsent;
 
 class LogActivityParticipantAbsent
 {

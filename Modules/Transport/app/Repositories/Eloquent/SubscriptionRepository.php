@@ -1,9 +1,9 @@
 <?php
-namespace Modules\Transport\app\Repositories\Eloquent;
+namespace Modules\Transport\Repositories\Eloquent;
 
-use Modules\Transport\app\Entities\Subscription;
-use Modules\Transport\app\Filters\SubscriptionFilter;
-use Modules\Transport\app\Repositories\Interfaces\SubscriptionRepositoryInterface;
+use Modules\Transport\Entities\Subscription;
+use Modules\Transport\Filters\SubscriptionFilter;
+use Modules\Transport\Repositories\Interfaces\SubscriptionRepositoryInterface;
 
 class SubscriptionRepository implements SubscriptionRepositoryInterface
 {

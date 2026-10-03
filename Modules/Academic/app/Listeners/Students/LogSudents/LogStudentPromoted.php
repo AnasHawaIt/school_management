@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Students\LogSudents;
+namespace Modules\Academic\Listeners\Students\LogSudents;
 
 
-use Modules\Academic\app\Events\StudentEvents\StudentPromoted;
+use Modules\Academic\Events\StudentEvents\StudentPromoted;
 
 class LogStudentPromoted
 {

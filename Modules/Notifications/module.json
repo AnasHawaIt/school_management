@@ -5,8 +5,8 @@
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\Notifications\\app\\Providers\\NotificationsServiceProvider",
-        "Modules\\Notifications\\app\\Providers\\RouteServiceProvider"
+        "Modules\\Notifications\\Providers\\NotificationsServiceProvider",
+        "Modules\\Notifications\\Providers\\RouteServiceProvider"
     ],
     "files": [],
     "id": "Notifications",

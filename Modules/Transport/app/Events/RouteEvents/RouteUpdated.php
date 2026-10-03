@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Transport\app\Events\RouteEvents;
+namespace Modules\Transport\Events\RouteEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Transport\app\Entities\Route;
+use Modules\Transport\Entities\Route;
 
 class RouteUpdated
 {

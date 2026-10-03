@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\app\Http\Requests\StoreAuthorRequest;
-use Modules\Library\app\Http\Requests\UpdateAuthorRequest;
-use Modules\Library\app\Http\Resources\AuthorResource;
-use Modules\Library\app\Services\AuthorService;
+use Modules\Library\Http\Requests\StoreAuthorRequest;
+use Modules\Library\Http\Requests\UpdateAuthorRequest;
+use Modules\Library\Http\Resources\AuthorResource;
+use Modules\Library\Services\AuthorService;
 
 class AuthorController extends Controller
 {

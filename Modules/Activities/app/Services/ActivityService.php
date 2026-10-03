@@ -1,30 +1,30 @@
 <?php
 
 
-namespace Modules\Activities\app\Services;
+namespace Modules\Activities\Services;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Academic\app\Entities\Teacher;
-use Modules\Activities\app\Entities\Activity;
-use Modules\Activities\app\Entities\ActivityParticipant;
-use Modules\Activities\app\Entities\ActivitySupervisor;
-use Modules\Activities\app\Events\ActivityCancelled;
-use Modules\Activities\app\Events\ActivityCompleted;
-use Modules\Activities\app\Events\ActivityCreated;
-use Modules\Activities\app\Events\ActivityParticipantAbsent;
-use Modules\Activities\app\Events\ActivityParticipantAttended;
-use Modules\Activities\app\Events\ActivityParticipantCancelled;
-use Modules\Activities\app\Events\ActivityParticipantConfirmed;
-use Modules\Activities\app\Events\ActivityParticipantRegistered;
-use Modules\Activities\app\Events\ActivityPrimarySupervisorChanged;
-use Modules\Activities\app\Events\ActivityPublished;
-use Modules\Activities\app\Events\ActivityStarted;
-use Modules\Activities\app\Events\ActivitySupervisorAdded;
-use Modules\Activities\app\Events\ActivitySupervisorRemoved;
-use Modules\Activities\app\Events\ActivityUpdated;
-use Modules\Activities\app\Repositories\Interfaces\ActivityParticipantRepositoryInterface;
-use Modules\Activities\app\Repositories\Interfaces\ActivityRepositoryInterface;
-use Modules\Activities\app\Repositories\Interfaces\ActivitySupervisorRepositoryInterface;
+use Modules\Academic\Entities\Teacher;
+use Modules\Activities\Entities\Activity;
+use Modules\Activities\Entities\ActivityParticipant;
+use Modules\Activities\Entities\ActivitySupervisor;
+use Modules\Activities\Events\ActivityCancelled;
+use Modules\Activities\Events\ActivityCompleted;
+use Modules\Activities\Events\ActivityCreated;
+use Modules\Activities\Events\ActivityParticipantAbsent;
+use Modules\Activities\Events\ActivityParticipantAttended;
+use Modules\Activities\Events\ActivityParticipantCancelled;
+use Modules\Activities\Events\ActivityParticipantConfirmed;
+use Modules\Activities\Events\ActivityParticipantRegistered;
+use Modules\Activities\Events\ActivityPrimarySupervisorChanged;
+use Modules\Activities\Events\ActivityPublished;
+use Modules\Activities\Events\ActivityStarted;
+use Modules\Activities\Events\ActivitySupervisorAdded;
+use Modules\Activities\Events\ActivitySupervisorRemoved;
+use Modules\Activities\Events\ActivityUpdated;
+use Modules\Activities\Repositories\Interfaces\ActivityParticipantRepositoryInterface;
+use Modules\Activities\Repositories\Interfaces\ActivityRepositoryInterface;
+use Modules\Activities\Repositories\Interfaces\ActivitySupervisorRepositoryInterface;
 
 class ActivityService
 {

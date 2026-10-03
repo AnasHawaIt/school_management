@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Messagings\app\Emails;
+namespace Modules\Messagings\Emails;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\Entities\Message;
 
 class MessageMail extends Mailable
 {

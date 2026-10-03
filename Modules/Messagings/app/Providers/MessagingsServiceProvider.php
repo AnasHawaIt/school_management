@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Messagings\app\Providers;
+namespace Modules\Messagings\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Messagings\app\Repositories\Eloquent\MessageRepository;
-use Modules\Messagings\app\Repositories\Interfaces\MessageRepositoryInterface;
+use Modules\Messagings\Repositories\Eloquent\MessageRepository;
+use Modules\Messagings\Repositories\Interfaces\MessageRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

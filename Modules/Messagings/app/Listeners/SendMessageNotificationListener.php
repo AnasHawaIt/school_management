@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners;
+namespace Modules\Messagings\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Messagings\app\Events\Message\MessageCreated;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Messagings\Events\Message\MessageCreated;
+use Modules\Notifications\Services\NotificationService;
 
 class SendMessageNotificationListener implements ShouldQueue
 {

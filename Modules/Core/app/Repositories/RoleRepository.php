@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Core\app\Repositories;
+namespace Modules\Core\Repositories;
 
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\app\Contracts\Repositories\RoleRepositoryInterface;
-use Modules\Core\app\Entities\Role;
+use Modules\Core\Contracts\Repositories\RoleRepositoryInterface;
+use Modules\Core\Entities\Role;
 
 class RoleRepository extends BaseRepository implements RoleRepositoryInterface
 {

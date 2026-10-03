@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Core\app\Http\Controllers;
+namespace Modules\Core\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Modules\Core\app\Contracts\Services\PermissionServiceInterface;
-use Modules\Core\app\Http\Resources\PermissionResource;
+use Modules\Core\Contracts\Services\PermissionServiceInterface;
+use Modules\Core\Http\Resources\PermissionResource;
 
 class PermissionController extends Controller
 {

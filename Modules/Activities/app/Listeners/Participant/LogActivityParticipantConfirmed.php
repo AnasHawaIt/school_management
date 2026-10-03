@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Activities\app\Listeners\Participant;
+namespace Modules\Activities\Listeners\Participant;
 
-use Modules\Activities\app\Events\ActivityParticipantConfirmed;
+use Modules\Activities\Events\ActivityParticipantConfirmed;
 
 class LogActivityParticipantConfirmed
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Messagings\app\Events\Message;
+namespace Modules\Messagings\Events\Message;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\Entities\Message;
 
 class MessageDeleted
 {

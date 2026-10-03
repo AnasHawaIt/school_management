@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Core\app\Jobs;
+namespace Modules\Core\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -8,10 +8,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Modules\Core\app\Entities\User;
-use Modules\Core\app\Events\Broadcasted\UserCreatedBroadcasted;
-use Modules\Core\app\Events\Broadcasted\UserDeletedBroadcasted;
-use Modules\Core\app\Events\Broadcasted\UserUpdatedBroadcasted;
+use Modules\Core\Entities\User;
+use Modules\Core\Events\Broadcasted\UserCreatedBroadcasted;
+use Modules\Core\Events\Broadcasted\UserDeletedBroadcasted;
+use Modules\Core\Events\Broadcasted\UserUpdatedBroadcasted;
 
 class BroadcastUserChangedJob implements ShouldQueue
 {

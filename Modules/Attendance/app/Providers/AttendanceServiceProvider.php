@@ -1,21 +1,21 @@
 <?php
 
-namespace Modules\Attendance\app\Providers;
+namespace Modules\Attendance\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Attendance\app\Contracts\Repositories\LeaveRequestRepositoryInterface;
-use Modules\Attendance\app\Contracts\Repositories\StudentAttendanceRepositoryInterface;
-use Modules\Attendance\app\Contracts\Repositories\TeacherAttendanceRepositoryInterface;
-use Modules\Attendance\app\Contracts\Services\LeaveRequestServiceInterface;
-use Modules\Attendance\app\Contracts\Services\StudentAttendanceServiceInterface;
-use Modules\Attendance\app\Contracts\Services\TeacherAttendanceServiceInterface;
-use Modules\Attendance\app\Repositories\LeaveRequestRepository;
-use Modules\Attendance\app\Repositories\StudentAttendanceRepository;
-use Modules\Attendance\app\Repositories\TeacherAttendanceRepository;
-use Modules\Attendance\app\Services\LeaveRequestService;
-use Modules\Attendance\app\Services\StudentAttendanceService;
-use Modules\Attendance\app\Services\TeacherAttendanceService;
+use Modules\Attendance\Contracts\Repositories\LeaveRequestRepositoryInterface;
+use Modules\Attendance\Contracts\Repositories\StudentAttendanceRepositoryInterface;
+use Modules\Attendance\Contracts\Repositories\TeacherAttendanceRepositoryInterface;
+use Modules\Attendance\Contracts\Services\LeaveRequestServiceInterface;
+use Modules\Attendance\Contracts\Services\StudentAttendanceServiceInterface;
+use Modules\Attendance\Contracts\Services\TeacherAttendanceServiceInterface;
+use Modules\Attendance\Repositories\LeaveRequestRepository;
+use Modules\Attendance\Repositories\StudentAttendanceRepository;
+use Modules\Attendance\Repositories\TeacherAttendanceRepository;
+use Modules\Attendance\Services\LeaveRequestService;
+use Modules\Attendance\Services\StudentAttendanceService;
+use Modules\Attendance\Services\TeacherAttendanceService;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

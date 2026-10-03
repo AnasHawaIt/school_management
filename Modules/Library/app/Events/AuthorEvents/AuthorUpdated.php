@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Events\AuthorEvents;
+namespace Modules\Library\Events\AuthorEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Author;
+use Modules\Library\Entities\Author;
 
 class AuthorUpdated
 {

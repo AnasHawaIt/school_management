@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Repositories\Eloquent;
+namespace Modules\Activities\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Activities\app\Entities\ActivityCategory;
-use Modules\Activities\app\Repositories\Interfaces\ActivityCategoryRepositoryInterface;
+use Modules\Activities\Entities\ActivityCategory;
+use Modules\Activities\Repositories\Interfaces\ActivityCategoryRepositoryInterface;
 
 
 class ActivityCategoryRepository implements ActivityCategoryRepositoryInterface

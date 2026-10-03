@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User;
+namespace Modules\Core\Listeners\User;
 
-use Modules\Core\app\Events\User\UserForceDeleted;
+use Modules\Core\Events\User\UserForceDeleted;
 
 class LogUserForceDeleted
 {

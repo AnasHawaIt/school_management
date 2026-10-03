@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Academic\app\Http\Controllers;
+namespace Modules\Academic\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Academic\app\Contracts\Services\InspectionProgramServiceInterface;
-use Modules\Academic\app\Http\Requests\StoreInspectionProgramRequest;
-use Modules\Academic\app\Http\Resources\InspectionProgramResource;
+use Modules\Academic\Contracts\Services\InspectionProgramServiceInterface;
+use Modules\Academic\Http\Requests\StoreInspectionProgramRequest;
+use Modules\Academic\Http\Resources\InspectionProgramResource;
 
 class InspectionProgramController extends Controller
 {
@@ -149,7 +149,7 @@ class InspectionProgramController extends Controller
     }
     public function currentCounselorProgram(): JsonResponse
     {
-        $counselor = \Modules\Academic\app\Entities\Counselor::where('user_id', auth()->id())->firstOrFail();
+        $counselor = \Modules\Academic\Entities\Counselor::where('user_id', auth()->id())->firstOrFail();
         $program = $this->programService->getCurrentCounselorProgram($counselor->id);
 
         return response()->json([

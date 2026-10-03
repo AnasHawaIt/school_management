@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Modules\Library\app\Entities\Book;
-use Modules\Library\app\Entities\BookCopy;
-use Modules\Library\app\Enums\BookCopiesStatus;
-use Modules\Library\app\Http\Requests\StoreBookCopyRequest;
-use Modules\Library\app\Http\Requests\UpdateBookCopyRequest;
-use Modules\Library\app\Services\BookCopyService;
+use Modules\Library\Entities\Book;
+use Modules\Library\Entities\BookCopy;
+use Modules\Library\Enums\BookCopiesStatus;
+use Modules\Library\Http\Requests\StoreBookCopyRequest;
+use Modules\Library\Http\Requests\UpdateBookCopyRequest;
+use Modules\Library\Services\BookCopyService;
 
 class BookCopyController extends Controller
 {

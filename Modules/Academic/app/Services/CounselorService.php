@@ -1,22 +1,22 @@
 <?php
 
-namespace Modules\Academic\app\Services;
+namespace Modules\Academic\Services;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Academic\app\Contracts\Repositories\CounselorRepositoryInterface;
-use Modules\Academic\app\Contracts\Services\CounselorServiceInterface;
-use Modules\Academic\app\Entities\Counselor;
-use Modules\Academic\app\Events\CounselorEvents\CounselorCreated;
-use Modules\Academic\app\Events\CounselorEvents\CounselorDeleted;
-use Modules\Academic\app\Events\CounselorEvents\CounselorRestored;
-use Modules\Academic\app\Events\CounselorEvents\CounselorSectionAssigned;
-use Modules\Academic\app\Events\CounselorEvents\CounselorSectionUnassigned;
-use Modules\Academic\app\Events\CounselorEvents\CounselorStatusToggled;
-use Modules\Academic\app\Events\CounselorEvents\CounselorUpdated;
-use Modules\Core\app\Entities\User;
+use Modules\Academic\Contracts\Repositories\CounselorRepositoryInterface;
+use Modules\Academic\Contracts\Services\CounselorServiceInterface;
+use Modules\Academic\Entities\Counselor;
+use Modules\Academic\Events\CounselorEvents\CounselorCreated;
+use Modules\Academic\Events\CounselorEvents\CounselorDeleted;
+use Modules\Academic\Events\CounselorEvents\CounselorRestored;
+use Modules\Academic\Events\CounselorEvents\CounselorSectionAssigned;
+use Modules\Academic\Events\CounselorEvents\CounselorSectionUnassigned;
+use Modules\Academic\Events\CounselorEvents\CounselorStatusToggled;
+use Modules\Academic\Events\CounselorEvents\CounselorUpdated;
+use Modules\Core\Entities\User;
 
 class CounselorService implements CounselorServiceInterface
 {

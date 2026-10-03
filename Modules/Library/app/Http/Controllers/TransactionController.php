@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\app\Http\Requests\StoreTransactionRequest;
-use Modules\Library\app\Http\Requests\UpdateTransactionRequest;
-use Modules\Library\app\Http\Resources\TransactionResource;
-use Modules\Library\app\Services\TransactionService;
+use Modules\Library\Http\Requests\StoreTransactionRequest;
+use Modules\Library\Http\Requests\UpdateTransactionRequest;
+use Modules\Library\Http\Resources\TransactionResource;
+use Modules\Library\Services\TransactionService;
 
 class TransactionController extends Controller
 {

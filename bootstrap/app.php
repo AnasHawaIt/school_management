@@ -4,7 +4,7 @@ use App\Http\Middleware\EnsureEmailIsVerified;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Modules\Library\app\Http\Middleware\CheckPermission;
+use Modules\Library\Http\Middleware\CheckPermission;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(

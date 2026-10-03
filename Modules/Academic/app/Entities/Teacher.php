@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Academic\app\Entities;
+namespace Modules\Academic\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Activities\app\Entities\ActivityParticipant;
-use Modules\Activities\app\Entities\ActivitySupervisor;
-use Modules\Core\app\Entities\User;
+use Modules\Activities\Entities\ActivityParticipant;
+use Modules\Activities\Entities\ActivitySupervisor;
+use Modules\Core\Entities\User;
 
 class Teacher extends Model
 {

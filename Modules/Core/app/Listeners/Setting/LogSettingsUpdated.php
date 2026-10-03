@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Setting;
+namespace Modules\Core\Listeners\Setting;
 
-use Modules\Core\app\Events\Setting\SettingsUpdated;
+use Modules\Core\Events\Setting\SettingsUpdated;
 
 class LogSettingsUpdated
 {

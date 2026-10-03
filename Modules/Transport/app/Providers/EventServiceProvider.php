@@ -1,42 +1,42 @@
 <?php
 
-namespace Modules\Transport\app\Providers;
+namespace Modules\Transport\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\Library\app\Listeners\BookListeners\BookDeletedListener\BookDeletedLogEventListener;
-use Modules\Library\app\Listeners\BookListeners\BookUpdatedListener\BookUpdatedLogEventListener;
-use Modules\Transport\app\Events\BusEvents\BusCreated;
-use Modules\Transport\app\Events\BusEvents\BusDeleted;
-use Modules\Transport\app\Events\BusEvents\BusStopStageChanged;
-use Modules\Transport\app\Events\BusEvents\BusUpdated;
-use Modules\Transport\app\Events\RouteEvents\RouteCreated;
-use Modules\Transport\app\Events\RouteEvents\RouteDeleted;
-use Modules\Transport\app\Events\RouteEvents\RouteUpdated;
-use Modules\Transport\app\Events\RouteStopEvents\RouteStopCreated;
-use Modules\Transport\app\Events\RouteStopEvents\RouteStopDeleted;
-use Modules\Transport\app\Events\RouteStopEvents\RouteStopUpdated;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionCreated;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionDeleted;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionUpdated;
-use Modules\Transport\app\Listeners\BusListeners\BusCreatedListeners\BusCreatedBroadcastEventListener;
-use Modules\Transport\app\Listeners\BusListeners\BusCreatedListeners\BusCreatedLogEventListener;
-use Modules\Transport\app\Listeners\BusListeners\BusCreatedListeners\BusCreatedNotificationDatabaseListener;
-use Modules\Transport\app\Listeners\BusListeners\BusDeletedListeners\BusDeletedBroadcastEventListener;
-use Modules\Transport\app\Listeners\BusListeners\BusStopStageChangedListener;
-use Modules\Transport\app\Listeners\BusListeners\BusUpdateListeners\BusUpdateBroadcastEventListener;
-use Modules\Transport\app\Listeners\RouteListeners\RouteCreatedLogEventListener;
-use Modules\Transport\app\Listeners\RouteListeners\RouteCreatedNotificationDatabaseListener;
-use Modules\Transport\app\Listeners\RouteListeners\RouteDeletedLogEventListener;
-use Modules\Transport\app\Listeners\RouteListeners\RouteUpdatedLogEventListener;
-use Modules\Transport\app\Listeners\RouteStopListeners\RouteStopCreatedLogEventListener;
-use Modules\Transport\app\Listeners\RouteStopListeners\RouteStopDeletedLogEventListener;
-use Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedBroadcastEventListener;
-use Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedLogEventListener;
-use Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedNotificationDatabaseListener;
-use Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionDeletedListener\SubscriptionDeletedLogEventListener;
-use Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionDeletedListener\SubscriptionDeletedNotificationDatabaseListener;
-use Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionUpdatedListener\SubscriptionUpdatedBroadcastEventListener;
-use Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionUpdatedListener\SubscriptionUpdatedLogEventListener;
+use Modules\Library\Listeners\BookListeners\BookDeletedListener\BookDeletedLogEventListener;
+use Modules\Library\Listeners\BookListeners\BookUpdatedListener\BookUpdatedLogEventListener;
+use Modules\Transport\Events\BusEvents\BusCreated;
+use Modules\Transport\Events\BusEvents\BusDeleted;
+use Modules\Transport\Events\BusEvents\BusStopStageChanged;
+use Modules\Transport\Events\BusEvents\BusUpdated;
+use Modules\Transport\Events\RouteEvents\RouteCreated;
+use Modules\Transport\Events\RouteEvents\RouteDeleted;
+use Modules\Transport\Events\RouteEvents\RouteUpdated;
+use Modules\Transport\Events\RouteStopEvents\RouteStopCreated;
+use Modules\Transport\Events\RouteStopEvents\RouteStopDeleted;
+use Modules\Transport\Events\RouteStopEvents\RouteStopUpdated;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
+use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedBroadcastEventListener;
+use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedLogEventListener;
+use Modules\Transport\Listeners\BusListeners\BusCreatedListeners\BusCreatedNotificationDatabaseListener;
+use Modules\Transport\Listeners\BusListeners\BusDeletedListeners\BusDeletedBroadcastEventListener;
+use Modules\Transport\Listeners\BusListeners\BusStopStageChangedListener;
+use Modules\Transport\Listeners\BusListeners\BusUpdateListeners\BusUpdateBroadcastEventListener;
+use Modules\Transport\Listeners\RouteListeners\RouteCreatedLogEventListener;
+use Modules\Transport\Listeners\RouteListeners\RouteCreatedNotificationDatabaseListener;
+use Modules\Transport\Listeners\RouteListeners\RouteDeletedLogEventListener;
+use Modules\Transport\Listeners\RouteListeners\RouteUpdatedLogEventListener;
+use Modules\Transport\Listeners\RouteStopListeners\RouteStopCreatedLogEventListener;
+use Modules\Transport\Listeners\RouteStopListeners\RouteStopDeletedLogEventListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedBroadcastEventListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedLogEventListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener\SubscriptionCreatedNotificationDatabaseListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedListener\SubscriptionDeletedLogEventListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionDeletedListener\SubscriptionDeletedNotificationDatabaseListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionUpdatedListener\SubscriptionUpdatedBroadcastEventListener;
+use Modules\Transport\Listeners\SubscriptionListeners\SubscriptionUpdatedListener\SubscriptionUpdatedLogEventListener;
 
 
 class EventServiceProvider extends ServiceProvider

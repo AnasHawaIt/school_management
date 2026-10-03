@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Transport\app\Repositories\Eloquent;
+namespace Modules\Transport\Repositories\Eloquent;
 
 use Illuminate\Http\Request;
-use Modules\Transport\app\Entities\BusLocation;
-use Modules\Transport\app\Repositories\Interfaces\BusLocationRepositoryInterface;
+use Modules\Transport\Entities\BusLocation;
+use Modules\Transport\Repositories\Interfaces\BusLocationRepositoryInterface;
 
 class BusLocationRepository implements BusLocationRepositoryInterface
 {

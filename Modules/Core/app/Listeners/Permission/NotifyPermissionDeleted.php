@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Permission;
+namespace Modules\Core\Listeners\Permission;
 
-use Modules\Core\app\Events\Permission\PermissionDeleted;
-use Modules\Core\app\Jobs\Permission\SendPermissionNotificationJob;
+use Modules\Core\Events\Permission\PermissionDeleted;
+use Modules\Core\Jobs\Permission\SendPermissionNotificationJob;
 
 class NotifyPermissionDeleted
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Academic\app\Entities;
+namespace Modules\Academic\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 use Modules\School\Entities\Section;
 
 class Counselor extends Model

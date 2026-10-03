@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Modules\Activities\app\Listeners\Activity;
+namespace Modules\Activities\Listeners\Activity;
 
 
-use Modules\Activities\app\Events\ActivityUpdated;
+use Modules\Activities\Events\ActivityUpdated;
 
 class LogActivityUpdated
 {

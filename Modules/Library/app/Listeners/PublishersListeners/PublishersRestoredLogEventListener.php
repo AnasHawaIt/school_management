@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\PublishersListeners;
+namespace Modules\Library\Listeners\PublishersListeners;
 
-use Modules\Library\app\Events\PublishersEvents\PublishersRestored;
+use Modules\Library\Events\PublishersEvents\PublishersRestored;
 
 class PublishersRestoredLogEventListener
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Entities\Message;
+use Modules\Messagings\Entities\Message;
 
 final class MessagePayload
 {

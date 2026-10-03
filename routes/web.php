@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Kreait\Firebase\Contract\Messaging;
-use Modules\Library\app\Http\Controllers\LibraryDashboardController;
+use Modules\Library\Http\Controllers\LibraryDashboardController;
 
 Route::get('/', function () {
     return view('welcome');

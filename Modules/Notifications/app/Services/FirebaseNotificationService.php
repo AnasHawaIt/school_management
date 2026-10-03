@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Notifications\app\Services;
+namespace Modules\Notifications\Services;
 
 use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Contract\Messaging;
 use Kreait\Firebase\Messaging\AndroidConfig;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification as FirebaseNotification;
-use Modules\Notifications\app\Entities\Notification;
+use Modules\Notifications\Entities\Notification;
 
 class FirebaseNotificationService
 {

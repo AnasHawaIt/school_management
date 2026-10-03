@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\app\Listeners\MemberListeners;
+namespace Modules\Library\Listeners\MemberListeners;
 
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\MemberEvents\MemberDeleted;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Library\Events\MemberEvents\MemberDeleted;
+use Modules\Notifications\Services\NotificationService;
 
 class MemberDeletedNotificationDatabaseListener  implements ShouldQueue
 {

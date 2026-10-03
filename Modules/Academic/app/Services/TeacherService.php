@@ -1,22 +1,22 @@
 <?php
 
-namespace Modules\Academic\app\Services;
+namespace Modules\Academic\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Academic\app\Contracts\Repositories\TeacherRepositoryInterface;
-use Modules\Academic\app\Contracts\Services\TeacherServiceInterface;
-use Modules\Academic\app\Entities\Teacher;
-use Modules\Academic\app\Entities\TeacherQualification;
-use Modules\Academic\app\Events\TeacherEvents\QualificationAdded;
-use Modules\Academic\app\Events\TeacherEvents\QualificationDeleted;
-use Modules\Academic\app\Events\TeacherEvents\TeacherCreated;
-use Modules\Academic\app\Events\TeacherEvents\TeacherDeleted;
-use Modules\Academic\app\Events\TeacherEvents\TeacherRestored;
-use Modules\Academic\app\Events\TeacherEvents\TeacherStatusToggled;
-use Modules\Academic\app\Events\TeacherEvents\TeacherUpdated;
-use Modules\Core\app\Entities\User;
+use Modules\Academic\Contracts\Repositories\TeacherRepositoryInterface;
+use Modules\Academic\Contracts\Services\TeacherServiceInterface;
+use Modules\Academic\Entities\Teacher;
+use Modules\Academic\Entities\TeacherQualification;
+use Modules\Academic\Events\TeacherEvents\QualificationAdded;
+use Modules\Academic\Events\TeacherEvents\QualificationDeleted;
+use Modules\Academic\Events\TeacherEvents\TeacherCreated;
+use Modules\Academic\Events\TeacherEvents\TeacherDeleted;
+use Modules\Academic\Events\TeacherEvents\TeacherRestored;
+use Modules\Academic\Events\TeacherEvents\TeacherStatusToggled;
+use Modules\Academic\Events\TeacherEvents\TeacherUpdated;
+use Modules\Core\Entities\User;
 
 class TeacherService implements TeacherServiceInterface
 {

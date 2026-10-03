@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Events\Broadcasts;
+namespace Modules\Library\Events\Broadcasts;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Borrowing;
+use Modules\Library\Entities\Borrowing;
 
 class TransactionBroadcast implements ShouldBroadcast
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Transport\app\Events\BusEvents;
+namespace Modules\Transport\Events\BusEvents;
 
-use Modules\Transport\app\Entities\Bus;
+use Modules\Transport\Entities\Bus;
 
 class BusDeleted
 {

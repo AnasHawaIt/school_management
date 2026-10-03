@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Repositories\Eloquent;
+namespace Modules\Activities\Repositories\Eloquent;
 
 
-use Modules\Activities\app\Entities\ActivitySupervisor;
-use Modules\Activities\app\Repositories\Interfaces\ActivitySupervisorRepositoryInterface;
+use Modules\Activities\Entities\ActivitySupervisor;
+use Modules\Activities\Repositories\Interfaces\ActivitySupervisorRepositoryInterface;
 
 class ActivitySupervisorRepository implements ActivitySupervisorRepositoryInterface
 {

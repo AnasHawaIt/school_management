@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Transport\app\Http\Controllers;
+namespace Modules\Transport\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Modules\Transport\app\Entities\Bus;
-use Modules\Transport\app\Services\BusTrackingService;
+use Modules\Transport\Entities\Bus;
+use Modules\Transport\Services\BusTrackingService;
 
 class BusTrackingController extends Controller
 {

@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Schedule;
-use Modules\Library\app\Jobs\DetectOverdueBorrowingsJob;
-use Modules\Library\app\Jobs\ExpireReservationsJob;
+use Modules\Library\Jobs\DetectOverdueBorrowingsJob;
+use Modules\Library\Jobs\ExpireReservationsJob;
 
 /*
 |--------------------------------------------------------------------------

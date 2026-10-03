@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Library\app\Services;
+namespace Modules\Library\Services;
 
 use App\Services\ImageService;
-use Modules\library\app\Events\AuthorEvents\AuthorCreated;
-use Modules\library\app\Events\AuthorEvents\AuthorDeleted;
-use Modules\Library\app\Events\AuthorEvents\AuthorForceDeleted;
-use Modules\library\app\Events\AuthorEvents\AuthorRestored;
-use Modules\library\app\Events\AuthorEvents\AuthorUpdated;
-use Modules\Library\app\Repositories\Interfaces\AuthorRepositoryInterface;
+use Modules\Library\Events\AuthorEvents\AuthorCreated;
+use Modules\Library\Events\AuthorEvents\AuthorDeleted;
+use Modules\Library\Events\AuthorEvents\AuthorForceDeleted;
+use Modules\Library\Events\AuthorEvents\AuthorRestored;
+use Modules\Library\Events\AuthorEvents\AuthorUpdated;
+use Modules\Library\Repositories\Interfaces\AuthorRepositoryInterface;
 
 class AuthorService
 {

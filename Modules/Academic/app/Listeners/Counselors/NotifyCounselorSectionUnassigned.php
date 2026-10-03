@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Counselors;
+namespace Modules\Academic\Listeners\Counselors;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\CounselorEvents\CounselorSectionUnassigned;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\CounselorEvents\CounselorSectionUnassigned;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyCounselorSectionUnassigned implements ShouldQueue
 {

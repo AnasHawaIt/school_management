@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\Academic\app\Http\Controllers;
+namespace Modules\Academic\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Academic\app\Contracts\Services\CounselorServiceInterface;
-use Modules\Academic\app\Entities\Counselor;
-use Modules\Academic\app\Http\Requests\StoreCounselorRequest;
-use Modules\Academic\app\Http\Requests\UpdateCounselorRequest;
-use Modules\Academic\app\Http\Resources\CounselorResource;
+use Modules\Academic\Contracts\Services\CounselorServiceInterface;
+use Modules\Academic\Entities\Counselor;
+use Modules\Academic\Http\Requests\StoreCounselorRequest;
+use Modules\Academic\Http\Requests\UpdateCounselorRequest;
+use Modules\Academic\Http\Resources\CounselorResource;
 
 class CounselorController extends Controller
 {

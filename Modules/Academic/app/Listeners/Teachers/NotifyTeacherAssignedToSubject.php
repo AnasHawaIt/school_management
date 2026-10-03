@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Teachers;
+namespace Modules\Academic\Listeners\Teachers;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\SubjectsEvents\TeacherAssignedToSubject;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\SubjectsEvents\TeacherAssignedToSubject;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyTeacherAssignedToSubject implements ShouldQueue
 {

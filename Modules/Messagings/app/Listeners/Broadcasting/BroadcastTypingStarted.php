@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Events\Message\TypingStarted;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\TypingStartedBroadcast;
+use Modules\Messagings\Events\Message\TypingStarted;
+use Modules\Messagings\Listeners\Broadcasting\Events\TypingStartedBroadcast;
 
 class BroadcastTypingStarted
 {

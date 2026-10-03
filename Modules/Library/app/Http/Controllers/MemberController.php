@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\app\Http\Requests\StoreMemberRequest;
-use Modules\Library\app\Http\Requests\UpdateMemberRequest;
-use Modules\Library\app\Http\Resources\MemberResource;
-use Modules\Library\app\Services\MemberService;
+use Modules\Library\Http\Requests\StoreMemberRequest;
+use Modules\Library\Http\Requests\UpdateMemberRequest;
+use Modules\Library\Http\Resources\MemberResource;
+use Modules\Library\Services\MemberService;
 
 class MemberController extends Controller
 {

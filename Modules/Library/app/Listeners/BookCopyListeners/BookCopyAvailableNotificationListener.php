@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BookCopyListeners;
+namespace Modules\Library\Listeners\BookCopyListeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
-use Modules\Library\app\Entities\Reservation;
-use Modules\Library\app\Events\BookCopiesEvents\BookCopyAvailable;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Library\Entities\Reservation;
+use Modules\Library\Events\BookCopiesEvents\BookCopyAvailable;
+use Modules\Notifications\Services\NotificationService;
 
 class BookCopyAvailableNotificationListener implements ShouldQueue
 {

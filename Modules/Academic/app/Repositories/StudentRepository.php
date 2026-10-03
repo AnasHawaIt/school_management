@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Academic\app\Repositories;
+namespace Modules\Academic\Repositories;
 
-use Modules\Academic\app\Contracts\Repositories\StudentRepositoryInterface;
-use Modules\Academic\app\Entities\Student;
+use Modules\Academic\Contracts\Repositories\StudentRepositoryInterface;
+use Modules\Academic\Entities\Student;
 use Modules\School\Entities\Section;
 
 class StudentRepository implements StudentRepositoryInterface

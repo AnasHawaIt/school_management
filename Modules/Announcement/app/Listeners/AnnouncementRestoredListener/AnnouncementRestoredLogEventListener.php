@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementRestoredListener;
+namespace Modules\Announcement\Listeners\AnnouncementRestoredListener;
 
-use Modules\Announcement\app\Events\AnnouncementRestored;
+use Modules\Announcement\Events\AnnouncementRestored;
 
 class AnnouncementRestoredLogEventListener
 {

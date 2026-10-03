@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners\Log;
+namespace Modules\Messagings\Listeners\Log;
 
-use Modules\Core\app\Entities\User;
-use Modules\Messagings\app\Events\ConversationCreated;
+use Modules\Core\Entities\User;
+use Modules\Messagings\Events\ConversationCreated;
 
 class LogConversationCreatedEventListener
 {

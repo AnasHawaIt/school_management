@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\AuthorListeners;
+namespace Modules\Library\Listeners\AuthorListeners;
 
-use Modules\Library\app\Events\AuthorEvents\AuthorForceDeleted;
+use Modules\Library\Events\AuthorEvents\AuthorForceDeleted;
 
 class AuthorForceDeletedLogEventListener
 {

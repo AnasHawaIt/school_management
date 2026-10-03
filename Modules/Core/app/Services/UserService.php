@@ -1,22 +1,22 @@
 <?php
 
-namespace Modules\Core\app\Services;
+namespace Modules\Core\Services;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\app\Contracts\Repositories\UserRepositoryInterface;
-use Modules\Core\app\Contracts\Services\UserServiceInterface;
-use Modules\Core\app\Entities\Role;
-use Modules\Core\app\Entities\User;
-use Modules\Core\app\Events\User\UserCreated;
-use Modules\Core\app\Events\User\UserDeleted;
-use Modules\Core\app\Events\User\UserPasswordChanged;
-use Modules\Core\app\Events\User\UserRestored;
-use Modules\Core\app\Events\User\UserRoleAssigned;
-use Modules\Core\app\Events\User\UserRoleRemoved;
-use Modules\Core\app\Events\User\UserUpdated;
+use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
+use Modules\Core\Contracts\Services\UserServiceInterface;
+use Modules\Core\Entities\Role;
+use Modules\Core\Entities\User;
+use Modules\Core\Events\User\UserCreated;
+use Modules\Core\Events\User\UserDeleted;
+use Modules\Core\Events\User\UserPasswordChanged;
+use Modules\Core\Events\User\UserRestored;
+use Modules\Core\Events\User\UserRoleAssigned;
+use Modules\Core\Events\User\UserRoleRemoved;
+use Modules\Core\Events\User\UserUpdated;
 
 class UserService implements UserServiceInterface
 {

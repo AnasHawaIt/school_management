@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\MemberListeners;
+namespace Modules\Library\Listeners\MemberListeners;
 
-use Modules\Library\app\Events\MemberEvents\MemberCreated;
+use Modules\Library\Events\MemberEvents\MemberCreated;
 
 class MemberCreatedLogEventListener
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Library\app\Jobs;
+namespace Modules\Library\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Borrowing;
-use Modules\Library\app\Services\TransactionService;
+use Modules\Library\Entities\Borrowing;
+use Modules\Library\Services\TransactionService;
 
 class DetectOverdueBorrowingsJob implements ShouldQueue
 {

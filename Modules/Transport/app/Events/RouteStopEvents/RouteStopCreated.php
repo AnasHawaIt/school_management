@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Transport\app\Events\RouteStopEvents;
+namespace Modules\Transport\Events\RouteStopEvents;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Transport\app\Entities\RouteStop;
+use Modules\Transport\Entities\RouteStop;
 
 class RouteStopCreated
 {

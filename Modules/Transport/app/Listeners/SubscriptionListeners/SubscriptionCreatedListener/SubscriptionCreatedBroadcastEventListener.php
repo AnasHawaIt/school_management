@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionCreatedListener;
+namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener;
 
 
-use Modules\Transport\app\Events\Broadcasts\SubscriptionBroadcast;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionCreated;
+use Modules\Transport\Events\Broadcasts\SubscriptionBroadcast;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
 
 class SubscriptionCreatedBroadcastEventListener
 {

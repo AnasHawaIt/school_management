@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\Announcement\app\Services;
+namespace Modules\Announcement\Services;
 
 use App\Services\ImageService;
-use Modules\Announcement\app\Entities\Announcement;
-use Modules\Announcement\app\Events\AnnouncementCreated;
-use Modules\Announcement\app\Events\AnnouncementDeleted;
-use Modules\Announcement\app\Events\AnnouncementExpired;
-use Modules\Announcement\app\Events\AnnouncementPublished;
-use Modules\Announcement\app\Events\AnnouncementRestored;
-use Modules\Announcement\app\Events\AnnouncementScheduled;
-use Modules\Announcement\app\Events\AnnouncementUpdated;
-use Modules\Announcement\app\Repositories\Interfaces\AnnouncementRepositoryInterface;
+use Modules\Announcement\Entities\Announcement;
+use Modules\Announcement\Events\AnnouncementCreated;
+use Modules\Announcement\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\AnnouncementExpired;
+use Modules\Announcement\Events\AnnouncementPublished;
+use Modules\Announcement\Events\AnnouncementRestored;
+use Modules\Announcement\Events\AnnouncementScheduled;
+use Modules\Announcement\Events\AnnouncementUpdated;
+use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
 
 class AnnouncementService
 {

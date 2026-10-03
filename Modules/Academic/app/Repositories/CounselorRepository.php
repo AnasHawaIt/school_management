@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Repositories;
+namespace Modules\Academic\Repositories;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Academic\app\Contracts\Repositories\CounselorRepositoryInterface;
-use Modules\Academic\app\Entities\Counselor;
+use Modules\Academic\Contracts\Repositories\CounselorRepositoryInterface;
+use Modules\Academic\Entities\Counselor;
 
 class CounselorRepository implements CounselorRepositoryInterface
 {

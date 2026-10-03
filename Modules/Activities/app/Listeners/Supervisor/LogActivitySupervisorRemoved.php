@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Activities\app\Listeners\Supervisor;
+namespace Modules\Activities\Listeners\Supervisor;
 
-use Modules\Activities\app\Events\ActivitySupervisorRemoved;
+use Modules\Activities\Events\ActivitySupervisorRemoved;
 
 class LogActivitySupervisorRemoved
 {

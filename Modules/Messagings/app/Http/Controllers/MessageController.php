@@ -1,18 +1,18 @@
 <?php
 
-namespace Modules\Messagings\app\Http\Controllers;
+namespace Modules\Messagings\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Messagings\app\Entities\Conversation;
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Entities\MessageAttachment;
-use Modules\Messagings\app\Http\Requests\ForwardMessageRequest;
-use Modules\Messagings\app\Http\Requests\ReplyMessageRequest;
-use Modules\Messagings\app\Http\Requests\SendMessageRequest;
-use Modules\Messagings\app\Http\Resources\MessageResource;
-use Modules\Messagings\app\Services\ConversationService;
-use Modules\Messagings\app\Services\MessageService;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageAttachment;
+use Modules\Messagings\Http\Requests\ForwardMessageRequest;
+use Modules\Messagings\Http\Requests\ReplyMessageRequest;
+use Modules\Messagings\Http\Requests\SendMessageRequest;
+use Modules\Messagings\Http\Resources\MessageResource;
+use Modules\Messagings\Services\ConversationService;
+use Modules\Messagings\Services\MessageService;
 
 class MessageController extends Controller
 {

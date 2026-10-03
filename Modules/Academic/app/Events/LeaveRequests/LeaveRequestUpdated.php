@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Academic\app\Events\LeaveRequests;
+namespace Modules\Academic\Events\LeaveRequests;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

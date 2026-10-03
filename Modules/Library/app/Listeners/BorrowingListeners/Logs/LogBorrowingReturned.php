@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BorrowingListeners;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
-namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
-use Modules\Library\app\Events\BorrowingEvents\BorrowingReturned;
+namespace Modules\Library\Listeners\BorrowingListeners\Logs;
+use Modules\Library\Events\BorrowingEvents\BorrowingReturned;
 
 class LogBorrowingReturned
 {

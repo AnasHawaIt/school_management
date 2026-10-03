@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Activities\app\Listeners\Attachment;
+namespace Modules\Activities\Listeners\Attachment;
 
-use Modules\Activities\app\Events\ActivityAttachmentUploaded;
+use Modules\Activities\Events\ActivityAttachmentUploaded;
 
 class LogActivityAttachmentUploaded
 {

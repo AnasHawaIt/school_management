@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Events\Message\MessageDeleted;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\MessageDeletedBroadcast;
+use Modules\Messagings\Events\Message\MessageDeleted;
+use Modules\Messagings\Listeners\Broadcasting\Events\MessageDeletedBroadcast;
 
 class BroadcastMessageDeleted
 {

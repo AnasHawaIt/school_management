@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Permission;
+namespace Modules\Core\Listeners\Permission;
 
 
-use Modules\Core\app\Events\Broadcasted\PermissionBroadcast;
-use Modules\Core\app\Events\Permission\PermissionDeleted;
+use Modules\Core\Events\Broadcasted\PermissionBroadcast;
+use Modules\Core\Events\Permission\PermissionDeleted;
 
 class BroadcastPermissionDeleted
 {

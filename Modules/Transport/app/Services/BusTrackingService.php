@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Transport\app\Services;
+namespace Modules\Transport\Services;
 
 use Exception;
-use Modules\Transport\app\Entities\Bus;
-use Modules\Transport\app\Entities\BusLocation;
-use Modules\Transport\app\Entities\BusTrackingState;
-use Modules\Transport\app\Entities\RouteStop;
-use Modules\Transport\app\Events\BusEvents\BusStopStageChanged;
+use Modules\Transport\Entities\Bus;
+use Modules\Transport\Entities\BusLocation;
+use Modules\Transport\Entities\BusTrackingState;
+use Modules\Transport\Entities\RouteStop;
+use Modules\Transport\Events\BusEvents\BusStopStageChanged;
 
 
 class BusTrackingService

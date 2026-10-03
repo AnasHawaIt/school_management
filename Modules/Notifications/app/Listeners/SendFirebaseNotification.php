@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Notifications\app\Listeners;
+namespace Modules\Notifications\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Modules\Notifications\app\Events\NotificationCreated;
-use Modules\Notifications\app\Services\FirebaseNotificationService;
+use Modules\Notifications\Events\NotificationCreated;
+use Modules\Notifications\Services\FirebaseNotificationService;
 
 class SendFirebaseNotification implements ShouldQueue
 {

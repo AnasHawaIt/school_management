@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Announcement\app\Http\Controllers;
+namespace Modules\Announcement\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Modules\Announcement\app\Http\Requests\AnnouncementCreateRequest;
-use Modules\Announcement\app\Http\Requests\AnnouncementScheduleRequest;
-use Modules\Announcement\app\Http\Requests\AnnouncementUpdateRequest;
-use Modules\Announcement\app\Http\Resources\AnnouncementResource;
-use Modules\Announcement\app\Services\AnnouncementService;
+use Modules\Announcement\Http\Requests\AnnouncementCreateRequest;
+use Modules\Announcement\Http\Requests\AnnouncementScheduleRequest;
+use Modules\Announcement\Http\Requests\AnnouncementUpdateRequest;
+use Modules\Announcement\Http\Resources\AnnouncementResource;
+use Modules\Announcement\Services\AnnouncementService;
 
 class AnnouncementController extends Controller
 {

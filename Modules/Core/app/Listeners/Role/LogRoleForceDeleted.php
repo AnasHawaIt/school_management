@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role;
+namespace Modules\Core\Listeners\Role;
 
-use Modules\Core\app\Events\Role\RoleForceDeleted;
+use Modules\Core\Events\Role\RoleForceDeleted;
 
 class LogRoleForceDeleted
 {

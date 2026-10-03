@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Listeners\Supervisor;
+namespace Modules\Activities\Listeners\Supervisor;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Activities\app\Events\ActivitySupervisorAdded;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Activities\Events\ActivitySupervisorAdded;
+use Modules\Notifications\Services\NotificationService;
 
 class ActivitySupervisorAddedNotificationDatabaseListener implements ShouldQueue
 {

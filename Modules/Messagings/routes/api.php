@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Messagings\app\Http\Controllers\ConversationController;
-use Modules\Messagings\app\Http\Controllers\MessageController;
-use Modules\Messagings\app\Http\Controllers\TypingController;
+use Modules\Messagings\Http\Controllers\ConversationController;
+use Modules\Messagings\Http\Controllers\MessageController;
+use Modules\Messagings\Http\Controllers\TypingController;
 
 
 Route::prefix('conversations')->middleware('auth:sanctum')->group(function () {

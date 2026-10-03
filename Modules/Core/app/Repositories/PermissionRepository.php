@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Core\app\Repositories;
+namespace Modules\Core\Repositories;
 
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\app\Contracts\Repositories\PermissionRepositoryInterface;
-use Modules\Core\app\Entities\Permission;
+use Modules\Core\Contracts\Repositories\PermissionRepositoryInterface;
+use Modules\Core\Entities\Permission;
 
 /**
  * @extends BaseRepository<Permission>

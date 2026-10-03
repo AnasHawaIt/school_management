@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Messagings\app\Events\Message;
+namespace Modules\Messagings\Events\Message;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;

@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Entities;
+namespace Modules\Library\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Library\app\Enums\BookCopiesStatus;
+use Modules\Library\Enums\BookCopiesStatus;
 
 class BookCopy extends Model
 {

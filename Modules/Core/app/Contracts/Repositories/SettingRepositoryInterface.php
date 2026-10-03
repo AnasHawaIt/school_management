@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Contracts\Repositories;
+namespace Modules\Core\Contracts\Repositories;
 
 use App\Contracts\Repositories\BaseRepositoryInterface;
-use Modules\Core\app\Entities\Setting;
+use Modules\Core\Entities\Setting;
 
 interface SettingRepositoryInterface extends BaseRepositoryInterface
 {

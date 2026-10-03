@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Announcement\app\Http\Controllers\AnnouncementController;
+use Modules\Announcement\Http\Controllers\AnnouncementController;
 
 Route::prefix('announcement')->middleware('auth:sanctum')->group(function () {
 

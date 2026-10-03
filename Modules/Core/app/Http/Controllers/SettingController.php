@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Core\app\Http\Controllers;
+namespace Modules\Core\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Core\app\Contracts\Services\SettingServiceInterface;
+use Modules\Core\Contracts\Services\SettingServiceInterface;
 
 class SettingController extends Controller
 {

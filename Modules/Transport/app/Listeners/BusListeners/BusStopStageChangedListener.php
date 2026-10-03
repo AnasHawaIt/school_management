@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\BusListeners;
+namespace Modules\Transport\Listeners\BusListeners;
 
 use Illuminate\Support\Facades\Log;
-use Modules\Notifications\app\Services\FirebaseNotificationService;
-use Modules\Transport\app\Entities\Subscription;
-use Modules\Transport\app\Events\BusEvents\BusStopStageChanged;
+use Modules\Notifications\Services\FirebaseNotificationService;
+use Modules\Transport\Entities\Subscription;
+use Modules\Transport\Events\BusEvents\BusStopStageChanged;
 
 class BusStopStageChangedListener
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\SubscriptionListeners\SubscriptionCreatedListener;
+namespace Modules\Transport\Listeners\SubscriptionListeners\SubscriptionCreatedListener;
 
-use Modules\Notifications\app\Services\NotificationService;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionCreated;
+use Modules\Notifications\Services\NotificationService;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
 
 class SubscriptionCreatedNotificationDatabaseListener
 {

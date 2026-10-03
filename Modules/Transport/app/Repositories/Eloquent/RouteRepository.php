@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Transport\app\Repositories\Eloquent;
+namespace Modules\Transport\Repositories\Eloquent;
 
-use Modules\Transport\app\Entities\Route;
-use Modules\Transport\app\Filters\RouteFilter;
-use Modules\Transport\app\Repositories\Interfaces\RouteRepositoryInterface;
+use Modules\Transport\Entities\Route;
+use Modules\Transport\Filters\RouteFilter;
+use Modules\Transport\Repositories\Interfaces\RouteRepositoryInterface;
 
 class RouteRepository implements RouteRepositoryInterface
 {

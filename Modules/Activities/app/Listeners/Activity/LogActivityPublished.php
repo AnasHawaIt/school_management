@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Activities\app\Listeners\Activity;
+namespace Modules\Activities\Listeners\Activity;
 
-use Modules\Activities\app\Events\ActivityPublished;
+use Modules\Activities\Events\ActivityPublished;
 
 class LogActivityPublished
 {

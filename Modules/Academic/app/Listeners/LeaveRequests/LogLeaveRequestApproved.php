@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\LeaveRequests;
+namespace Modules\Academic\Listeners\LeaveRequests;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\LeaveRequests\LeaveRequestApproved;
+use Modules\Academic\Events\LeaveRequests\LeaveRequestApproved;
 
 class LogLeaveRequestApproved implements ShouldQueue
 {

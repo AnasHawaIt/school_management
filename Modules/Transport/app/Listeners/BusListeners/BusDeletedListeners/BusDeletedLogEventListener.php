@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\BusListeners\BusDeletedListeners;
+namespace Modules\Transport\Listeners\BusListeners\BusDeletedListeners;
 
-use Modules\Transport\app\Events\BusEvents\BusDeleted;
+use Modules\Transport\Events\BusEvents\BusDeleted;
 
 class BusDeletedLogEventListener
 {

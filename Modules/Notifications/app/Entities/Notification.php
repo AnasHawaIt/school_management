@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Notifications\app\Entities;
+namespace Modules\Notifications\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 
 class Notification extends Model
 {

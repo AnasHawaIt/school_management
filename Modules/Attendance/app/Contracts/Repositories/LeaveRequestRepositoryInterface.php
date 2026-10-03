@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Attendance\app\Contracts\Repositories;
+namespace Modules\Attendance\Contracts\Repositories;
 
 use Modules\Attendance\Entities\LeaveRequest;
 

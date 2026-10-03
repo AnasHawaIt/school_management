@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\RouteListeners;
+namespace Modules\Transport\Listeners\RouteListeners;
 
-use Modules\Transport\app\Events\RouteEvents\RouteUpdated;
+use Modules\Transport\Events\RouteEvents\RouteUpdated;
 
 class RouteUpdatedLogEventListener
 {

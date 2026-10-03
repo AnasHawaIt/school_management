@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementPublishedListener;
+namespace Modules\Announcement\Listeners\AnnouncementPublishedListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Announcement\app\Enums\AnnouncementAudience;
-use Modules\Announcement\app\Events\AnnouncementPublished;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Announcement\Enums\AnnouncementAudience;
+use Modules\Announcement\Events\AnnouncementPublished;
+use Modules\Notifications\Services\NotificationService;
 
 class AnnouncementPublishedNotificationDatabaseListener implements ShouldQueue
 {

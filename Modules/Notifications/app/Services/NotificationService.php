@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Notifications\app\Services;
+namespace Modules\Notifications\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\app\Entities\User;
-use Modules\Notifications\app\Entities\Notification;
-use Modules\Notifications\app\Events\NotificationCreated;
+use Modules\Core\Entities\User;
+use Modules\Notifications\Entities\Notification;
+use Modules\Notifications\Events\NotificationCreated;
 
 class NotificationService
 {

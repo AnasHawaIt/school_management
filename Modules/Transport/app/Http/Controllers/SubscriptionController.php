@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Transport\app\Http\Controllers;
+namespace Modules\Transport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Transport\app\Http\Requests\StoreSubscriptionRequest;
-use Modules\Transport\app\Http\Requests\UpdateSubscriptionRequest;
-use Modules\Transport\app\Http\Resources\SubscriptionResource;
+use Modules\Transport\Http\Requests\StoreSubscriptionRequest;
+use Modules\Transport\Http\Requests\UpdateSubscriptionRequest;
+use Modules\Transport\Http\Resources\SubscriptionResource;
 use Modules\Transport\Events\SubscriptionEvents\TransactionDeleted;
 use Modules\Transport\Events\SubscriptionEvents\TransactionRestored;
 use Modules\Transport\Services\TransactionService;

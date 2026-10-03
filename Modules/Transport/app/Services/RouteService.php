@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Transport\app\Services;
+namespace Modules\Transport\Services;
 
-use Modules\Transport\app\Events\RouteEvents\RouteCreated;
-use Modules\Transport\app\Events\RouteEvents\RouteDeleted;
-use Modules\Transport\app\Events\RouteEvents\RouteRestored;
-use Modules\Transport\app\Events\RouteEvents\RouteUpdated;
-use Modules\Transport\app\Repositories\Interfaces\RouteRepositoryInterface;
+use Modules\Transport\Events\RouteEvents\RouteCreated;
+use Modules\Transport\Events\RouteEvents\RouteDeleted;
+use Modules\Transport\Events\RouteEvents\RouteRestored;
+use Modules\Transport\Events\RouteEvents\RouteUpdated;
+use Modules\Transport\Repositories\Interfaces\RouteRepositoryInterface;
 
 class RouteService
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Transport\app\Repositories\Eloquent;
+namespace Modules\Transport\Repositories\Eloquent;
 
-use Modules\Transport\app\Entities\RouteStop;
-use Modules\Transport\app\Filters\RouteStopFilter;
-use Modules\Transport\app\Repositories\Interfaces\RouteStopRepositoryInterface;
+use Modules\Transport\Entities\RouteStop;
+use Modules\Transport\Filters\RouteStopFilter;
+use Modules\Transport\Repositories\Interfaces\RouteStopRepositoryInterface;
 
 class RouteStopRepository implements RouteStopRepositoryInterface
 {

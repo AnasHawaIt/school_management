@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Messagings\app\Entities;
+namespace Modules\Messagings\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 
 class ConversationParticipant extends Model
 {

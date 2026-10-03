@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User\UserRole;
+namespace Modules\Core\Listeners\User\UserRole;
 
-use Modules\Core\app\Events\User\UserRoleAssigned;
+use Modules\Core\Events\User\UserRoleAssigned;
 
 class LogUserRoleAssigned
 {

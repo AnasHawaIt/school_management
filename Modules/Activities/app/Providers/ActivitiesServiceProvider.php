@@ -1,19 +1,19 @@
 <?php
 
-namespace Modules\Activities\app\Providers;
+namespace Modules\Activities\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Activities\app\Repositories\Eloquent\ActivityAttachmentRepository;
-use Modules\Activities\app\Repositories\Eloquent\ActivityCategoryRepository;
-use Modules\Activities\app\Repositories\Eloquent\ActivityParticipantRepository;
-use Modules\Activities\app\Repositories\Eloquent\ActivityRepository;
-use Modules\Activities\app\Repositories\Eloquent\ActivitySupervisorRepository;
-use Modules\Activities\app\Repositories\Interfaces\ActivityAttachmentRepositoryInterface;
-use Modules\Activities\app\Repositories\Interfaces\ActivityCategoryRepositoryInterface;
-use Modules\Activities\app\Repositories\Interfaces\ActivityParticipantRepositoryInterface;
-use Modules\Activities\app\Repositories\Interfaces\ActivityRepositoryInterface;
-use Modules\Activities\app\Repositories\Interfaces\ActivitySupervisorRepositoryInterface;
+use Modules\Activities\Repositories\Eloquent\ActivityAttachmentRepository;
+use Modules\Activities\Repositories\Eloquent\ActivityCategoryRepository;
+use Modules\Activities\Repositories\Eloquent\ActivityParticipantRepository;
+use Modules\Activities\Repositories\Eloquent\ActivityRepository;
+use Modules\Activities\Repositories\Eloquent\ActivitySupervisorRepository;
+use Modules\Activities\Repositories\Interfaces\ActivityAttachmentRepositoryInterface;
+use Modules\Activities\Repositories\Interfaces\ActivityCategoryRepositoryInterface;
+use Modules\Activities\Repositories\Interfaces\ActivityParticipantRepositoryInterface;
+use Modules\Activities\Repositories\Interfaces\ActivityRepositoryInterface;
+use Modules\Activities\Repositories\Interfaces\ActivitySupervisorRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

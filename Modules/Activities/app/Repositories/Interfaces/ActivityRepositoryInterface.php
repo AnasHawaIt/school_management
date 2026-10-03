@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Modules\Activities\app\Repositories\Interfaces;
+namespace Modules\Activities\Repositories\Interfaces;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Modules\Activities\app\Entities\Activity;
+use Modules\Activities\Entities\Activity;
 
 interface ActivityRepositoryInterface
 {

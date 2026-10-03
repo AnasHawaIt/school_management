@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Library\app\Events\CategoryEvents;
+namespace Modules\Library\Events\CategoryEvents;
 
-use Modules\Library\app\Entities\Category;
+use Modules\Library\Entities\Category;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 

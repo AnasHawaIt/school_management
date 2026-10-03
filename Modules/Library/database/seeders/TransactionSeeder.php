@@ -4,9 +4,9 @@
 namespace Modules\Library\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Library\app\Entities\Book;
-use Modules\Library\app\Entities\Borrowing;
-use Modules\Library\app\Entities\Member;
+use Modules\Library\Entities\Book;
+use Modules\Library\Entities\Borrowing;
+use Modules\Library\Entities\Member;
 
 class TransactionSeeder extends Seeder
 {

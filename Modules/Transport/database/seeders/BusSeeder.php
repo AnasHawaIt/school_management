@@ -4,7 +4,7 @@
 namespace Modules\Transport\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Transport\app\Entities\Bus;
+use Modules\Transport\Entities\Bus;
 
 class BusSeeder extends Seeder
 {

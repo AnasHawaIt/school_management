@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Messagings\app\Entities;
+namespace Modules\Messagings\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

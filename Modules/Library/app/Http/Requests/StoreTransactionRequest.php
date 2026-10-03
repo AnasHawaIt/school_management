@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Http\Requests;
+namespace Modules\Library\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Modules\Library\app\Enums\BookCopiesStatus;
+use Modules\Library\Enums\BookCopiesStatus;
 
 class StoreTransactionRequest extends FormRequest
 {

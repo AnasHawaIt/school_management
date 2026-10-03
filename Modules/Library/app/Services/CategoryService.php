@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Services;
+namespace Modules\Library\Services;
 
-use Modules\library\app\Events\CategoryEvents\CategoryCreated;
-use Modules\Library\app\Events\CategoryEvents\CategoryDeleted;
-use Modules\Library\app\Events\CategoryEvents\CategoryForceDeleted;
-use Modules\Library\app\Events\CategoryEvents\CategoryRestored;
-use Modules\Library\app\Events\CategoryEvents\CategoryUpdated;
-use Modules\Library\app\Repositories\Interfaces\CategoryRepositoryInterface;
+use Modules\Library\Events\CategoryEvents\CategoryCreated;
+use Modules\Library\Events\CategoryEvents\CategoryDeleted;
+use Modules\Library\Events\CategoryEvents\CategoryForceDeleted;
+use Modules\Library\Events\CategoryEvents\CategoryRestored;
+use Modules\Library\Events\CategoryEvents\CategoryUpdated;
+use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
 
 class CategoryService
 {

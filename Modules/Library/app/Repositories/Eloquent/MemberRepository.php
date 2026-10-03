@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Repositories\Eloquent;
+namespace Modules\Library\Repositories\Eloquent;
 
-use Modules\Library\app\Entities\Member;
-use Modules\Library\app\Filters\MemberFilter;
-use Modules\Library\app\Repositories\Interfaces\MemberRepositoryInterface;
+use Modules\Library\Entities\Member;
+use Modules\Library\Filters\MemberFilter;
+use Modules\Library\Repositories\Interfaces\MemberRepositoryInterface;
 
 class MemberRepository implements MemberRepositoryInterface
 {

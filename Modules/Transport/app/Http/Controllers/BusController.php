@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Transport\app\Http\Controllers;
+namespace Modules\Transport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Transport\app\Http\Requests\StoreBusRequest;
-use Modules\Transport\app\Http\Requests\UpdateBusRequest;
-use Modules\Transport\app\Http\Resources\BusResource;
-use Modules\Transport\app\Services\BusService;
+use Modules\Transport\Http\Requests\StoreBusRequest;
+use Modules\Transport\Http\Requests\UpdateBusRequest;
+use Modules\Transport\Http\Resources\BusResource;
+use Modules\Transport\Services\BusService;
 
 class BusController extends Controller
 {

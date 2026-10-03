@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Library\app\Repositories\Eloquent;
+namespace Modules\Library\Repositories\Eloquent;
 
-use Modules\Library\app\Entities\Category;
-use Modules\Library\app\Filters\CategoryFilter;
-use Modules\Library\app\Repositories\Interfaces\CategoryRepositoryInterface;
+use Modules\Library\Entities\Category;
+use Modules\Library\Filters\CategoryFilter;
+use Modules\Library\Repositories\Interfaces\CategoryRepositoryInterface;
 
 class CategoryRepository implements CategoryRepositoryInterface
 {

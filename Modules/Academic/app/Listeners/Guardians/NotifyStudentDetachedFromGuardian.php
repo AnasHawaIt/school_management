@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Guardians;
+namespace Modules\Academic\Listeners\Guardians;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\GuardianEvens\StudentDetachedFromGuardian;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\GuardianEvens\StudentDetachedFromGuardian;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyStudentDetachedFromGuardian implements ShouldQueue
 {

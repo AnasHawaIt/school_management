@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Events\BookCopiesEvents;
+namespace Modules\Library\Events\BookCopiesEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\BookCopy;
+use Modules\Library\Entities\BookCopy;
 
 class BookCopyAvailable
 {

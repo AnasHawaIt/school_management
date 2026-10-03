@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User\UserRole;
+namespace Modules\Core\Listeners\User\UserRole;
 
-use Modules\Core\app\Events\User\UserRoleRemoved;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Core\Events\User\UserRoleRemoved;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyRoleRemoved
 {

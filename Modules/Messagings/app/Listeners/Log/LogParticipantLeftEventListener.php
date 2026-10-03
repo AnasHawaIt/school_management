@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners\Log;
+namespace Modules\Messagings\Listeners\Log;
 
-use Modules\Messagings\app\Events\ParticipantLeft;
+use Modules\Messagings\Events\ParticipantLeft;
 
 class LogParticipantLeftEventListener
 {

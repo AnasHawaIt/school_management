@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\Messagings\app\Services;
+namespace Modules\Messagings\Services;
 
 use Exception;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\app\Entities\User;
-use Modules\Messagings\app\Entities\Conversation;
-use Modules\Messagings\app\Entities\ConversationParticipant;
-use Modules\Messagings\app\Events\AdminDemoted;
-use Modules\Messagings\app\Events\AdminPromoted;
-use Modules\Messagings\app\Events\ConversationCreated;
-use Modules\Messagings\app\Events\ConversationDeleted;
-use Modules\Messagings\app\Events\ParticipantAdded;
-use Modules\Messagings\app\Events\ParticipantLeft;
-use Modules\Messagings\app\Events\ParticipantRemoved;
-use Modules\Messagings\app\Repositories\Eloquent\ConversationRepository;
+use Modules\Core\Entities\User;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\ConversationParticipant;
+use Modules\Messagings\Events\AdminDemoted;
+use Modules\Messagings\Events\AdminPromoted;
+use Modules\Messagings\Events\ConversationCreated;
+use Modules\Messagings\Events\ConversationDeleted;
+use Modules\Messagings\Events\ParticipantAdded;
+use Modules\Messagings\Events\ParticipantLeft;
+use Modules\Messagings\Events\ParticipantRemoved;
+use Modules\Messagings\Repositories\Eloquent\ConversationRepository;
 
 class ConversationService
 {

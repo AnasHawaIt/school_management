@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Transport\app\Services;
+namespace Modules\Transport\Services;
 
 use Exception;
 use Illuminate\Support\Facades\Http;

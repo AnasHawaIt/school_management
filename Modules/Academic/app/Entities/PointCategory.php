@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Academic\app\Entities;
+namespace Modules\Academic\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

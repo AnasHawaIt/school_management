@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners;
+namespace Modules\Messagings\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
-use Modules\Messagings\app\Emails\MessageMail;
-use Modules\Messagings\app\Events\Message\MessageCreated;
+use Modules\Messagings\Emails\MessageMail;
+use Modules\Messagings\Events\Message\MessageCreated;
 
 class SendEmailListener implements ShouldQueue
 {

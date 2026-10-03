@@ -1,9 +1,9 @@
 <?php
-namespace Modules\Messagings\app\Repositories\Eloquent;
+namespace Modules\Messagings\Repositories\Eloquent;
 
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Entities\MessageRecipient;
-use Modules\Messagings\app\Repositories\Interfaces\MessageRepositoryInterface;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageRecipient;
+use Modules\Messagings\Repositories\Interfaces\MessageRepositoryInterface;
 
 class MessageRepository implements MessageRepositoryInterface
 {

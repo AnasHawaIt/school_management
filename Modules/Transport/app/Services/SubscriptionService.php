@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Transport\app\Services;
+namespace Modules\Transport\Services;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Transport\app\Entities\Route;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionCreated;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionDeleted;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionRestored;
-use Modules\Transport\app\Events\SubscriptionEvents\SubscriptionUpdated;
-use Modules\Transport\app\Repositories\Interfaces\SubscriptionRepositoryInterface;
+use Modules\Transport\Entities\Route;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionCreated;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionDeleted;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionRestored;
+use Modules\Transport\Events\SubscriptionEvents\SubscriptionUpdated;
+use Modules\Transport\Repositories\Interfaces\SubscriptionRepositoryInterface;
 
 class SubscriptionService
 {

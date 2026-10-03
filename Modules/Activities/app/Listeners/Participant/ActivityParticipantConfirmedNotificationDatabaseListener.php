@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Listeners\Participant;
+namespace Modules\Activities\Listeners\Participant;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Activities\app\Events\ActivityParticipantConfirmed;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Activities\Events\ActivityParticipantConfirmed;
+use Modules\Notifications\Services\NotificationService;
 
 class ActivityParticipantConfirmedNotificationDatabaseListener implements ShouldQueue
 {

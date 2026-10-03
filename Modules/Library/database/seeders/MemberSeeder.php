@@ -5,8 +5,8 @@ namespace Modules\Library\database\seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Modules\Core\app\Entities\User;
-use Modules\Library\app\Entities\Member;
+use Modules\Core\Entities\User;
+use Modules\Library\Entities\Member;
 
 class MemberSeeder extends Seeder
 {

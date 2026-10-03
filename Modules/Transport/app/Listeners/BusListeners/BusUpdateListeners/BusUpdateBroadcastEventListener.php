@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Transport\app\Listeners\BusListeners\BusUpdateListeners;
+namespace Modules\Transport\Listeners\BusListeners\BusUpdateListeners;
 
 
-use Modules\Transport\app\Events\Broadcasts\BusBroadcast;
-use Modules\Transport\app\Events\BusEvents\BusUpdated;
+use Modules\Transport\Events\Broadcasts\BusBroadcast;
+use Modules\Transport\Events\BusEvents\BusUpdated;
 
 class BusUpdateBroadcastEventListener
 {

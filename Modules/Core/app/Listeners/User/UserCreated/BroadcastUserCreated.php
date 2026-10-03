@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User\UserCreated;
+namespace Modules\Core\Listeners\User\UserCreated;
 
-use Modules\Core\app\Events\Broadcasted\UserCreatedBroadcasted;
-use Modules\Core\app\Events\User\UserCreated;
+use Modules\Core\Events\Broadcasted\UserCreatedBroadcasted;
+use Modules\Core\Events\User\UserCreated;
 
 class BroadcastUserCreated
 {

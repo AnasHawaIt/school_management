@@ -3,7 +3,7 @@
 namespace Modules\Academic\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Academic\app\Entities\Subject;
+use Modules\Academic\Entities\Subject;
 use Modules\School\Entities\Grade;
 
 class SubjectsSeeder extends Seeder

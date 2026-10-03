@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\app\Events\Broadcasts;
+namespace Modules\Library\Events\Broadcasts;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\BookCopy;
+use Modules\Library\Entities\BookCopy;
 
 class BookCopyBroadcast implements ShouldBroadcast
 {

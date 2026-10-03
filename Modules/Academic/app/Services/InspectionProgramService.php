@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\Academic\app\Services;
+namespace Modules\Academic\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Modules\Academic\app\Contracts\Repositories\InspectionProgramRepositoryInterface;
-use Modules\Academic\app\Contracts\Services\InspectionProgramServiceInterface;
-use Modules\Academic\app\Entities\InspectionProgram;
-use Modules\Academic\app\Events\InspectionProgramEvents\CounselorAssignedToInspectionProgram;
-use Modules\Academic\app\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
-use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramCreated;
-use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramDeleted;
-use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramRestored;
-use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
-use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramStatusUpdated;
-use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramUpdated;
-use Modules\Academic\app\Events\InspectionProgramEvents\ObservationSubmitted;
+use Modules\Academic\Contracts\Repositories\InspectionProgramRepositoryInterface;
+use Modules\Academic\Contracts\Services\InspectionProgramServiceInterface;
+use Modules\Academic\Entities\InspectionProgram;
+use Modules\Academic\Events\InspectionProgramEvents\CounselorAssignedToInspectionProgram;
+use Modules\Academic\Events\InspectionProgramEvents\CounselorUnassignedFromInspectionProgram;
+use Modules\Academic\Events\InspectionProgramEvents\InspectionProgramCreated;
+use Modules\Academic\Events\InspectionProgramEvents\InspectionProgramDeleted;
+use Modules\Academic\Events\InspectionProgramEvents\InspectionProgramRestored;
+use Modules\Academic\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
+use Modules\Academic\Events\InspectionProgramEvents\InspectionProgramStatusUpdated;
+use Modules\Academic\Events\InspectionProgramEvents\InspectionProgramUpdated;
+use Modules\Academic\Events\InspectionProgramEvents\ObservationSubmitted;
 
 class InspectionProgramService implements InspectionProgramServiceInterface
 {

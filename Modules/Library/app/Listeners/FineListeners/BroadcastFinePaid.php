@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Modules\Library\app\Listeners\FineListeners;
+namespace Modules\Library\Listeners\FineListeners;
 
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\FinesEvents\FinePaid;
-use Modules\Library\app\Events\FinesEvents\FinePaidBroadcast;
+use Modules\Library\Events\FinesEvents\FinePaid;
+use Modules\Library\Events\FinesEvents\FinePaidBroadcast;
 
 class BroadcastFinePaid implements ShouldQueue
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BookListeners\BookUpdatedListener;
+namespace Modules\Library\Listeners\BookListeners\BookUpdatedListener;
 
-use Modules\Library\app\Events\BookEvents\BookUpdated;
+use Modules\Library\Events\BookEvents\BookUpdated;
 
 class BookUpdatedLogEventListener
 {

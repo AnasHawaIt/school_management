@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Academic\app\Contracts\Repositories;
+namespace Modules\Academic\Contracts\Repositories;
 
-use Modules\Academic\app\Entities\Counselor;
+use Modules\Academic\Entities\Counselor;
 
 interface CounselorRepositoryInterface
 {

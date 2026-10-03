@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Core\app\Listeners\Role\update;
+namespace Modules\Core\Listeners\Role\update;
 
-use Modules\Core\app\Events\Role\RoleUpdated;
+use Modules\Core\Events\Role\RoleUpdated;
 
 class LogRoleUpdated
 {

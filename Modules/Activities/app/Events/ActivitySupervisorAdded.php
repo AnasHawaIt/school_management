@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Events;
+namespace Modules\Activities\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Activities\app\Entities\ActivitySupervisor;
+use Modules\Activities\Entities\ActivitySupervisor;
 
 
 class ActivitySupervisorAdded

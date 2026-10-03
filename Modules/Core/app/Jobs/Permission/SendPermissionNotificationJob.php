@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Core\app\Jobs\Permission;
+namespace Modules\Core\Jobs\Permission;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Modules\Core\app\Entities\User;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Core\Entities\User;
+use Modules\Notifications\Services\NotificationService;
 
 class SendPermissionNotificationJob implements ShouldQueue
 {

@@ -14,7 +14,7 @@
     ],
     "priority": 0,
     "providers": [
-        "Modules\\Core\\app\\Providers\\CoreServiceProvider"
+        "Modules\\Core\\Providers\\CoreServiceProvider"
     ],
     "files": []
 }

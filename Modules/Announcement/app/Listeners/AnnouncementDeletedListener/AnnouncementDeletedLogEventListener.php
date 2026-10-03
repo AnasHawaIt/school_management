@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementDeletedListener;
+namespace Modules\Announcement\Listeners\AnnouncementDeletedListener;
 
-use Modules\Announcement\app\Events\AnnouncementDeleted;
+use Modules\Announcement\Events\AnnouncementDeleted;
 
 class AnnouncementDeletedLogEventListener
 {

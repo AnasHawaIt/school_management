@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Repositories\Interfaces;
+namespace Modules\Library\Repositories\Interfaces;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Modules\Library\app\Entities\Fine;
+use Modules\Library\Entities\Fine;
 
 interface FineRepositoryInterface
 {

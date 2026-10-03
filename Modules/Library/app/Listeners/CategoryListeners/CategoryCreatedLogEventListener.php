@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\CategoryListeners;
+namespace Modules\Library\Listeners\CategoryListeners;
 
-use Modules\Library\app\Events\CategoryEvents\CategoryCreated;
+use Modules\Library\Events\CategoryEvents\CategoryCreated;
 
 class CategoryCreatedLogEventListener
 {

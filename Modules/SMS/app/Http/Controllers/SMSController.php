@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\SMS\app\Http\Controllers;
+namespace Modules\SMS\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

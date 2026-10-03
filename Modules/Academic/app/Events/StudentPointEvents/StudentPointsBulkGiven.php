@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Academic\app\Events\StudentPointEvents;
+namespace Modules\Academic\Events\StudentPointEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

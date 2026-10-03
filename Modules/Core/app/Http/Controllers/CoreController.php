@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\app\Http\Controllers;
+namespace Modules\Core\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Core\app\Services\UserService;
+use Modules\Core\Services\UserService;
 
 class CoreController extends Controller
 {

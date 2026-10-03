@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BookListeners\BookDeletedListener;
+namespace Modules\Library\Listeners\BookListeners\BookDeletedListener;
 
-use Modules\Library\app\Events\BookEvents\BookDeleted;
+use Modules\Library\Events\BookEvents\BookDeleted;
 
 class BookDeletedLogEventListener
 {

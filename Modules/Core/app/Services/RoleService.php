@@ -1,18 +1,18 @@
 <?php
 
-namespace Modules\Core\app\Services;
+namespace Modules\Core\Services;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\app\Contracts\Repositories\RoleRepositoryInterface;
-use Modules\Core\app\Contracts\Services\RoleServiceInterface;
-use Modules\Core\app\Entities\Role;
-use Modules\Core\app\Events\Role\RoleCreated;
-use Modules\Core\app\Events\Role\RoleDeleted;
-use Modules\Core\app\Events\Role\RolePermissionAttached;
-use Modules\Core\app\Events\Role\RolePermissionDetached;
-use Modules\Core\app\Events\Role\RolePermissionsSynced;
-use Modules\Core\app\Events\Role\RoleUpdated;
+use Modules\Core\Contracts\Repositories\RoleRepositoryInterface;
+use Modules\Core\Contracts\Services\RoleServiceInterface;
+use Modules\Core\Entities\Role;
+use Modules\Core\Events\Role\RoleCreated;
+use Modules\Core\Events\Role\RoleDeleted;
+use Modules\Core\Events\Role\RolePermissionAttached;
+use Modules\Core\Events\Role\RolePermissionDetached;
+use Modules\Core\Events\Role\RolePermissionsSynced;
+use Modules\Core\Events\Role\RoleUpdated;
 
 class RoleService implements RoleServiceInterface
 {

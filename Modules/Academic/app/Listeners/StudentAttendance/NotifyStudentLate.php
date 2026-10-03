@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\StudentAttendance;
+namespace Modules\Academic\Listeners\StudentAttendance;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\StudentAttendance\StudentAttendanceRecorded;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\StudentAttendance\StudentAttendanceRecorded;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyStudentLate implements ShouldQueue
 {

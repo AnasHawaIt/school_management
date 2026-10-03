@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\ReservationListeners;
+namespace Modules\Library\Listeners\ReservationListeners;
 
-use Modules\Library\app\Events\ReservationEvents\ReservationExpired;
+use Modules\Library\Events\ReservationEvents\ReservationExpired;
 
 class ReservationExpiredLogEventListener
 {

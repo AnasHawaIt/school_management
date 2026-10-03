@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementExpiredListener;
+namespace Modules\Announcement\Listeners\AnnouncementExpiredListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Announcement\app\Events\AnnouncementExpired;
-use Modules\Announcement\app\Events\Broadcasts\AnnouncementBroadcast;
+use Modules\Announcement\Events\AnnouncementExpired;
+use Modules\Announcement\Events\Broadcasts\AnnouncementBroadcast;
 
 class AnnouncementExpiredBroadcastEventListener implements ShouldQueue
 {

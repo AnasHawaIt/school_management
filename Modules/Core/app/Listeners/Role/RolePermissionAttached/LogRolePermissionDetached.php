@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role\RolePermissionAttached;
+namespace Modules\Core\Listeners\Role\RolePermissionAttached;
 
-use Modules\Core\app\Events\Role\RolePermissionDetached;
+use Modules\Core\Events\Role\RolePermissionDetached;
 
 class LogRolePermissionDetached
 {

@@ -1,19 +1,19 @@
 <?php
 
-namespace Modules\Core\app\Http\Controllers;
+namespace Modules\Core\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Modules\Core\app\Contracts\Repositories\ActivityLogRepositoryInterface;
-use Modules\Core\app\Contracts\Repositories\UserRepositoryInterface;
-use Modules\Core\app\Contracts\Services\UserServiceInterface;
-use Modules\Core\app\Entities\User;
-use Modules\Core\app\Http\Requests\StoreUserRequest;
-use Modules\Core\app\Http\Requests\UpdateUserRequest;
-use Modules\Core\app\Http\Resources\UserResource;
+use Modules\Core\Contracts\Repositories\ActivityLogRepositoryInterface;
+use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
+use Modules\Core\Contracts\Services\UserServiceInterface;
+use Modules\Core\Entities\User;
+use Modules\Core\Http\Requests\StoreUserRequest;
+use Modules\Core\Http\Requests\UpdateUserRequest;
+use Modules\Core\Http\Resources\UserResource;
 
 class UserController extends Controller
 {

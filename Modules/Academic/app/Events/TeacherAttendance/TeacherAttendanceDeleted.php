@@ -1,9 +1,9 @@
 <?php
-namespace Modules\Academic\app\Events\TeacherAttendance;
+namespace Modules\Academic\Events\TeacherAttendance;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Attendance\app\Entities\StudentAttendance;
+use Modules\Attendance\Entities\StudentAttendance;
 
 class TeacherAttendanceDeleted
 {

@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Modules\Library\app\Events\BookEvents;
+namespace Modules\Library\Events\BookEvents;
 
-namespace Modules\Library\app\Events\BorrowingEvents;
+namespace Modules\Library\Events\BorrowingEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Book;
+use Modules\Library\Entities\Book;
 
 class BookAvailable
 {

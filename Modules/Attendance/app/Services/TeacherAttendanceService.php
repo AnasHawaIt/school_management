@@ -1,14 +1,14 @@
 <?php
 
-namespace Modules\Attendance\app\Services;
+namespace Modules\Attendance\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceDeleted;
-use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceRecorded;
-use Modules\Academic\app\Events\TeacherAttendance\TeacherAttendanceUpdated;
-use Modules\Attendance\app\Contracts\Repositories\TeacherAttendanceRepositoryInterface;
-use Modules\Attendance\app\Contracts\Services\TeacherAttendanceServiceInterface;
-use Modules\Attendance\app\Entities\TeacherAttendance;
+use Modules\Academic\Events\TeacherAttendance\TeacherAttendanceDeleted;
+use Modules\Academic\Events\TeacherAttendance\TeacherAttendanceRecorded;
+use Modules\Academic\Events\TeacherAttendance\TeacherAttendanceUpdated;
+use Modules\Attendance\Contracts\Repositories\TeacherAttendanceRepositoryInterface;
+use Modules\Attendance\Contracts\Services\TeacherAttendanceServiceInterface;
+use Modules\Attendance\Entities\TeacherAttendance;
 
 class TeacherAttendanceService implements TeacherAttendanceServiceInterface
 {

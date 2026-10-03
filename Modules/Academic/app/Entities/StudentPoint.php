@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Entities;
+namespace Modules\Academic\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Attendance\app\Entities\StudentAttendance;
+use Modules\Attendance\Entities\StudentAttendance;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Semester;
 
@@ -59,7 +59,7 @@ class StudentPoint extends Model
         if ($this->given_by_type === 'counselor') {
             return $this->belongsTo(Counselor::class, 'given_by_id');
         }
-        return $this->belongsTo(\Modules\Academic\app\Entities\Teacher::class, 'given_by_id');
+        return $this->belongsTo(\Modules\Academic\Entities\Teacher::class, 'given_by_id');
     }
 
     // ===================== Accessors =====================

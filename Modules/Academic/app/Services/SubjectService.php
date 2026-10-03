@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\Academic\app\Services;
+namespace Modules\Academic\Services;
 
 use Illuminate\Support\Facades\Auth;
-use Modules\Academic\app\Contracts\Repositories\SubjectRepositoryInterface;
-use Modules\Academic\app\Contracts\Services\SubjectServiceInterface;
-use Modules\Academic\app\Entities\Subject;
-use Modules\Academic\app\Events\SubjectsEvents\SubjectCreated;
-use Modules\Academic\app\Events\SubjectsEvents\SubjectDeleted;
-use Modules\Academic\app\Events\SubjectsEvents\SubjectRestored;
-use Modules\Academic\app\Events\SubjectsEvents\SubjectUpdated;
-use Modules\Academic\app\Events\SubjectsEvents\TeacherAssignedToSubject;
-use Modules\Academic\app\Events\SubjectsEvents\TeacherUnassignedFromSubject;
+use Modules\Academic\Contracts\Repositories\SubjectRepositoryInterface;
+use Modules\Academic\Contracts\Services\SubjectServiceInterface;
+use Modules\Academic\Entities\Subject;
+use Modules\Academic\Events\SubjectsEvents\SubjectCreated;
+use Modules\Academic\Events\SubjectsEvents\SubjectDeleted;
+use Modules\Academic\Events\SubjectsEvents\SubjectRestored;
+use Modules\Academic\Events\SubjectsEvents\SubjectUpdated;
+use Modules\Academic\Events\SubjectsEvents\TeacherAssignedToSubject;
+use Modules\Academic\Events\SubjectsEvents\TeacherUnassignedFromSubject;
 
 class SubjectService implements SubjectServiceInterface
 {

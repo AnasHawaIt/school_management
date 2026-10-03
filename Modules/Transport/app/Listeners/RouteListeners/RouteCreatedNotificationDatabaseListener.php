@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\RouteListeners;
+namespace Modules\Transport\Listeners\RouteListeners;
 
-use Modules\Notifications\app\Services\NotificationService;
-use Modules\Transport\app\Events\RouteEvents\RouteCreated;
+use Modules\Notifications\Services\NotificationService;
+use Modules\Transport\Events\RouteEvents\RouteCreated;
 
 class RouteCreatedNotificationDatabaseListener
 {

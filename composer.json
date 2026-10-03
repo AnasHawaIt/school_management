@@ -27,11 +27,25 @@
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^3.8",
+        "pestphp/pest-plugin-arch": "^3.1",
         "pestphp/pest-plugin-laravel": "^3.2"
     },
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Modules\\Academic\\": "Modules/Academic/app/",
+            "Modules\\Activities\\": "Modules/Activities/app/",
+            "Modules\\Announcement\\": "Modules/Announcement/app/",
+            "Modules\\Attendance\\": "Modules/Attendance/app/",
+            "Modules\\Core\\": "Modules/Core/app/",
+            "Modules\\Examination\\": "Modules/Examination/app/",
+            "Modules\\Finance\\": "Modules/Finance/app/",
+            "Modules\\Library\\": "Modules/Library/app/",
+            "Modules\\Messagings\\": "Modules/Messagings/app/",
+            "Modules\\Notifications\\": "Modules/Notifications/app/",
+            "Modules\\SMS\\": "Modules/SMS/app/",
+            "Modules\\School\\": "Modules/School/app/",
+            "Modules\\Transport\\": "Modules/Transport/app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\": "Modules/"

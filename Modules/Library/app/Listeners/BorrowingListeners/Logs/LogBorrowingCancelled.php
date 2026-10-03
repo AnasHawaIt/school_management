@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BorrowingListeners;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
-namespace Modules\Library\app\Listeners\BorrowingListeners\Logs;
+namespace Modules\Library\Listeners\BorrowingListeners\Logs;
 
-use Modules\Library\app\Events\BorrowingEvents\BorrowingCancelled;
+use Modules\Library\Events\BorrowingEvents\BorrowingCancelled;
 
 class LogBorrowingCancelled
 {

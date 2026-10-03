@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\View\View;
-use Modules\Library\app\Enums\BookCopiesStatus;
-use Modules\Library\app\Entities\Book;
-use Modules\Library\app\Entities\BookCopy;
-use Modules\Library\app\Entities\Borrowing;
-use Modules\Library\app\Entities\Fine;
-use Modules\Library\app\Entities\Member;
-use Modules\Library\app\Entities\Reservation;
+use Modules\Library\Enums\BookCopiesStatus;
+use Modules\Library\Entities\Book;
+use Modules\Library\Entities\BookCopy;
+use Modules\Library\Entities\Borrowing;
+use Modules\Library\Entities\Fine;
+use Modules\Library\Entities\Member;
+use Modules\Library\Entities\Reservation;
 
 class LibraryDashboardController extends Controller
 {

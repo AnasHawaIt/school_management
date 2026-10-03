@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\BookListeners\BookCreatedListener;
+namespace Modules\Library\Listeners\BookListeners\BookCreatedListener;
 
-use Modules\Library\app\Events\BookEvents\BookCreated;
+use Modules\Library\Events\BookEvents\BookCreated;
 
 class BookCreatedLogEventListener
 {

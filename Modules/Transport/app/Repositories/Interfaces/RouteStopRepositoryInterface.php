@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Transport\app\Repositories\Interfaces;
+namespace Modules\Transport\Repositories\Interfaces;
 
 interface RouteStopRepositoryInterface
 {

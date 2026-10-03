@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\app\Http\Requests\StoreBookRequest;
-use Modules\Library\app\Http\Requests\UpdateBookRequest;
-use Modules\Library\app\Http\Resources\BookResource;
-use Modules\Library\app\Services\BookService;
+use Modules\Library\Http\Requests\StoreBookRequest;
+use Modules\Library\Http\Requests\UpdateBookRequest;
+use Modules\Library\Http\Resources\BookResource;
+use Modules\Library\Services\BookService;
 
 class BookController extends Controller
 {

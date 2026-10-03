@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Announcement\app\Events;
+namespace Modules\Announcement\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Announcement\app\Entities\Announcement;
+use Modules\Announcement\Entities\Announcement;
 
 class AnnouncementPublished
 {

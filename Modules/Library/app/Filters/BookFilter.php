@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Library\app\Filters;
+namespace Modules\Library\Filters;
 
 use App\Filters\QueryFilter;
-use Modules\Library\app\Enums\BookCopiesStatus;
+use Modules\Library\Enums\BookCopiesStatus;
 
 class BookFilter extends QueryFilter
 {

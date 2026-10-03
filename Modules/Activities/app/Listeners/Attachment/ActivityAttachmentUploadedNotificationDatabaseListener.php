@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Listeners\Attachment;
+namespace Modules\Activities\Listeners\Attachment;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Activities\app\Events\ActivityAttachmentUploaded;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Activities\Events\ActivityAttachmentUploaded;
+use Modules\Notifications\Services\NotificationService;
 
 class ActivityAttachmentUploadedNotificationDatabaseListener implements ShouldQueue
 {

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners;
+namespace Modules\Messagings\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Messagings\app\Events\AdminDemoted;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Messagings\Events\AdminDemoted;
+use Modules\Notifications\Services\NotificationService;
 
 class SendAdminDemotedNotificationListener implements ShouldQueue
 {

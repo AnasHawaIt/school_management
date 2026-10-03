@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Repositories\Eloquent;
+namespace Modules\Activities\Repositories\Eloquent;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Modules\Activities\app\Entities\Activity;
-use Modules\Activities\app\Repositories\Interfaces\ActivityRepositoryInterface;
+use Modules\Activities\Entities\Activity;
+use Modules\Activities\Repositories\Interfaces\ActivityRepositoryInterface;
 
 class ActivityRepository implements ActivityRepositoryInterface
 {

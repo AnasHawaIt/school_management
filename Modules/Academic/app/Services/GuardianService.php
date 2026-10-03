@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\Academic\app\Services;
+namespace Modules\Academic\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Academic\app\Contracts\Repositories\GuardianRepositoryInterface;
-use Modules\Academic\app\Contracts\Services\GuardianServiceInterface;
-use Modules\Academic\app\Entities\Guardian;
-use Modules\Academic\app\Events\GuardianEvens\GuardianCreated;
-use Modules\Academic\app\Events\GuardianEvens\GuardianDeleted;
-use Modules\Academic\app\Events\GuardianEvens\GuardianRestored;
-use Modules\Academic\app\Events\GuardianEvens\GuardianUpdated;
-use Modules\Academic\app\Events\GuardianEvens\StudentAttachedToGuardian;
-use Modules\Academic\app\Events\GuardianEvens\StudentDetachedFromGuardian;
-use Modules\Core\app\Entities\User;
+use Modules\Academic\Contracts\Repositories\GuardianRepositoryInterface;
+use Modules\Academic\Contracts\Services\GuardianServiceInterface;
+use Modules\Academic\Entities\Guardian;
+use Modules\Academic\Events\GuardianEvens\GuardianCreated;
+use Modules\Academic\Events\GuardianEvens\GuardianDeleted;
+use Modules\Academic\Events\GuardianEvens\GuardianRestored;
+use Modules\Academic\Events\GuardianEvens\GuardianUpdated;
+use Modules\Academic\Events\GuardianEvens\StudentAttachedToGuardian;
+use Modules\Academic\Events\GuardianEvens\StudentDetachedFromGuardian;
+use Modules\Core\Entities\User;
 
 
 class GuardianService implements GuardianServiceInterface

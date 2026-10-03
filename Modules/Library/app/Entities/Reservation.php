@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\app\Entities;
+namespace Modules\Library\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Library\app\Enums\ReservationStatus;
+use Modules\Library\Enums\ReservationStatus;
 
 class Reservation extends Model
 {

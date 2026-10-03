@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\LeaveRequests;
+namespace Modules\Academic\Listeners\LeaveRequests;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\LeaveRequests\LeaveRequestApproved;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\LeaveRequests\LeaveRequestApproved;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyLeaveRequestApproved implements ShouldQueue
 {

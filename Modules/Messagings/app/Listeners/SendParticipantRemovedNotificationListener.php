@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners;
+namespace Modules\Messagings\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Messagings\app\Events\ParticipantRemoved;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Messagings\Events\ParticipantRemoved;
+use Modules\Notifications\Services\NotificationService;
 
 class SendParticipantRemovedNotificationListener implements ShouldQueue
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Attendance\app\Repositories;
+namespace Modules\Attendance\Repositories;
 
-use Modules\Attendance\app\Contracts\Repositories\LeaveRequestRepositoryInterface;
+use Modules\Attendance\Contracts\Repositories\LeaveRequestRepositoryInterface;
 use Modules\Attendance\Entities\LeaveRequest;
 
 class LeaveRequestRepository implements LeaveRequestRepositoryInterface

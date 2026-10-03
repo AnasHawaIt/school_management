@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Notifications\app\Listeners;
+namespace Modules\Notifications\Listeners;
 
-use Modules\Notifications\app\Events\NotificationCreated;
+use Modules\Notifications\Events\NotificationCreated;
 
 class NotificationCreatedLogEventListener
 {

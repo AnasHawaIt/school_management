@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\RouteListeners;
+namespace Modules\Transport\Listeners\RouteListeners;
 
-use Modules\Transport\app\Events\RouteEvents\RouteDeleted;
+use Modules\Transport\Events\RouteEvents\RouteDeleted;
 
 class RouteDeletedLogEventListener
 {

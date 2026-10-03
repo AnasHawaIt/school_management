@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Modules\Messagings\app\Http\Controllers;
+namespace Modules\Messagings\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Modules\Messagings\app\Entities\Conversation;
-use Modules\Messagings\app\Events\Message\TypingStarted;
-use Modules\Messagings\app\Events\Message\TypingStopped;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Events\Message\TypingStarted;
+use Modules\Messagings\Events\Message\TypingStopped;
 
 class TypingController extends Controller
 {

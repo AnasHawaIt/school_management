@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Listeners\ReservationListeners;
+namespace Modules\Library\Listeners\ReservationListeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\ReservationEvents\ReservationNotified;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Library\Events\ReservationEvents\ReservationNotified;
+use Modules\Notifications\Services\NotificationService;
 
 class SendReservationNotification implements ShouldQueue
 {

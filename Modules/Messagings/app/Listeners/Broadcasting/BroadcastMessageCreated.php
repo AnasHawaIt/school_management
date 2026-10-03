@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Events\Message\MessageCreated;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\MessageCreatedBroadcast;
+use Modules\Messagings\Events\Message\MessageCreated;
+use Modules\Messagings\Listeners\Broadcasting\Events\MessageCreatedBroadcast;
 
 class BroadcastMessageCreated
 {

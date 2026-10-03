@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User\UserCreated;
+namespace Modules\Core\Listeners\User\UserCreated;
 
-use Modules\Core\app\Events\User\UserCreated;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Core\Events\User\UserCreated;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyUserCreated
 {

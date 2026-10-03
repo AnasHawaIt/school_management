@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Timetables\LogTimetables;
+namespace Modules\Academic\Listeners\Timetables\LogTimetables;
 
 
-use Modules\Academic\app\Events\TimetableEvents\TimetableEntryDeleted;
+use Modules\Academic\Events\TimetableEvents\TimetableEntryDeleted;
 
 class LogTimetableEntryDeleted
 {

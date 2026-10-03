@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\app\Http\Requests\StorePuiblshersRequest;
-use Modules\Library\app\Http\Requests\UpdatePublishersRequest;
-use Modules\Library\app\Http\Resources\PublishersResource;
-use Modules\Library\app\Services\PublishersService;
+use Modules\Library\Http\Requests\StorePuiblshersRequest;
+use Modules\Library\Http\Requests\UpdatePublishersRequest;
+use Modules\Library\Http\Resources\PublishersResource;
+use Modules\Library\Services\PublishersService;
 
 class PublishersController extends Controller
 {

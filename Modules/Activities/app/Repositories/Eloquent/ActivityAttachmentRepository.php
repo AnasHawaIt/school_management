@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Repositories\Eloquent;
+namespace Modules\Activities\Repositories\Eloquent;
 
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Activities\app\Entities\ActivityAttachment;
-use Modules\Activities\app\Repositories\Interfaces\ActivityAttachmentRepositoryInterface;
+use Modules\Activities\Entities\ActivityAttachment;
+use Modules\Activities\Repositories\Interfaces\ActivityAttachmentRepositoryInterface;
 
 class ActivityAttachmentRepository implements ActivityAttachmentRepositoryInterface
 {

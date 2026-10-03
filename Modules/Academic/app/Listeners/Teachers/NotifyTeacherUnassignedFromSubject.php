@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Teachers;
+namespace Modules\Academic\Listeners\Teachers;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\SubjectsEvents\TeacherUnassignedFromSubject;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\SubjectsEvents\TeacherUnassignedFromSubject;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyTeacherUnassignedFromSubject implements ShouldQueue
 {

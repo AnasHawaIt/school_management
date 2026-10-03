@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Notifications\app\Providers;
+namespace Modules\Notifications\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;

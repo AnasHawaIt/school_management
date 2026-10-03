@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Announcement\app\Console\Commands;
+namespace Modules\Announcement\Console\Commands;
 
 use Illuminate\Console\Command;
-use Modules\Announcement\app\Entities\Announcement;
-use Modules\Announcement\app\Enums\AnnouncementStatus;
-use Modules\Announcement\app\Jobs\AnnouncementExpireJob;
-use Modules\Announcement\app\Jobs\AnnouncementPublishJob;
+use Modules\Announcement\Entities\Announcement;
+use Modules\Announcement\Enums\AnnouncementStatus;
+use Modules\Announcement\Jobs\AnnouncementExpireJob;
+use Modules\Announcement\Jobs\AnnouncementPublishJob;
 
 class ProcessAnnouncements extends Command
 {

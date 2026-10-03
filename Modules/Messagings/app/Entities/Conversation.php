@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Messagings\app\Entities;
+namespace Modules\Messagings\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 use Modules\Messagings\Database\Factories\ConversationFactory;
 
 class Conversation extends Model

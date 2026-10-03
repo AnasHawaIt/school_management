@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\app\Entities;
+namespace Modules\Library\Entities;
 
 use App\Models\Images;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Library\app\Entities\Publisher;
+use Modules\Library\Entities\Publisher;
 
 // use Modules\Library\Database\Factories\BookFactory;
 

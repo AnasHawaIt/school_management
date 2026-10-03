@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Notifications\app\Providers;
+namespace Modules\Notifications\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;

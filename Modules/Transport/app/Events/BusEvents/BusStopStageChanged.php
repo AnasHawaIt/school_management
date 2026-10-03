@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Modules\Transport\app\Events\BusEvents;
+namespace Modules\Transport\Events\BusEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Transport\app\Entities\Bus;
-use Modules\Transport\app\Entities\RouteStop;
+use Modules\Transport\Entities\Bus;
+use Modules\Transport\Entities\RouteStop;
 
 class BusStopStageChanged
 {

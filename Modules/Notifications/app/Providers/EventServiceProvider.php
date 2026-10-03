@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Notifications\app\Providers;
+namespace Modules\Notifications\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Modules\Notifications\app\Events\NotificationCreated;
-use Modules\Notifications\app\Listeners\NotificationCreatedLogEventListener;
-use Modules\Notifications\app\Listeners\SendFirebaseNotification;
+use Modules\Notifications\Events\NotificationCreated;
+use Modules\Notifications\Listeners\NotificationCreatedLogEventListener;
+use Modules\Notifications\Listeners\SendFirebaseNotification;
 
 class EventServiceProvider extends ServiceProvider
 {

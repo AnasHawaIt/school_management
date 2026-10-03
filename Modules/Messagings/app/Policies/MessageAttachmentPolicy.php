@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Messagings\app\Policies;
+namespace Modules\Messagings\Policies;
 
-use Modules\Core\app\Entities\User;
-use Modules\Messagings\app\Entities\Conversation;
-use Modules\Messagings\app\Entities\MessageAttachment;
+use Modules\Core\Entities\User;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\MessageAttachment;
 
 class MessageAttachmentPolicy
 {

@@ -5,7 +5,7 @@
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\Announcement\\app\\Providers\\AnnouncementServiceProvider"
+        "Modules\\Announcement\\Providers\\AnnouncementServiceProvider"
     ],
     "files": []
 }

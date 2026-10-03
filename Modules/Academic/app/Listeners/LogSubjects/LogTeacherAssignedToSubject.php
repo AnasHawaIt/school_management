@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Academic\app\Listeners\LogSubjects;
+namespace Modules\Academic\Listeners\LogSubjects;
 
-use Modules\Academic\app\Events\SubjectsEvents\TeacherAssignedToSubject;
+use Modules\Academic\Events\SubjectsEvents\TeacherAssignedToSubject;
 
 class LogTeacherAssignedToSubject
 {

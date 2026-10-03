@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Transport\app\Listeners\BusListeners\BusCreatedListeners;
+namespace Modules\Transport\Listeners\BusListeners\BusCreatedListeners;
 
-use Modules\Notifications\app\Services\NotificationService;
-use Modules\Transport\app\Events\BusEvents\BusCreated;
+use Modules\Notifications\Services\NotificationService;
+use Modules\Transport\Events\BusEvents\BusCreated;
 
 class BusCreatedNotificationDatabaseListener
 {

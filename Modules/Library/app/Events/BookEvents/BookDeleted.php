@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Events\BookEvents;
+namespace Modules\Library\Events\BookEvents;
 
-use Modules\Library\app\Entities\Book;
+use Modules\Library\Entities\Book;
 
 class BookDeleted
 {

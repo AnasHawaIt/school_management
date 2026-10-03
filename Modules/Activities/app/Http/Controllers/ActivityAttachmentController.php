@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Activities\app\Http\Controllers;
+namespace Modules\Activities\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
-use Modules\Activities\app\Entities\Activity;
-use Modules\Activities\app\Entities\ActivityAttachment;
-use Modules\Activities\app\Http\Requests\UploadActivityAttachmentRequest;
-use Modules\Activities\app\Services\ActivityAttachmentService;
+use Modules\Activities\Entities\Activity;
+use Modules\Activities\Entities\ActivityAttachment;
+use Modules\Activities\Http\Requests\UploadActivityAttachmentRequest;
+use Modules\Activities\Services\ActivityAttachmentService;
 
 class ActivityAttachmentController extends Controller
 {

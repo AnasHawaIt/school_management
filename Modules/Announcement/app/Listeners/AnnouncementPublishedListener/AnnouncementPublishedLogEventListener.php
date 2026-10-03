@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementPublishedListener;
+namespace Modules\Announcement\Listeners\AnnouncementPublishedListener;
 
-use Modules\Announcement\app\Events\AnnouncementPublished;
+use Modules\Announcement\Events\AnnouncementPublished;
 
 class AnnouncementPublishedLogEventListener
 {

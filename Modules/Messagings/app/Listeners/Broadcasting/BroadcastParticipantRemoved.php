@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Events\ParticipantRemoved;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\ParticipantRemovedBroadcast;
+use Modules\Messagings\Events\ParticipantRemoved;
+use Modules\Messagings\Listeners\Broadcasting\Events\ParticipantRemovedBroadcast;
 
 class BroadcastParticipantRemoved
 {

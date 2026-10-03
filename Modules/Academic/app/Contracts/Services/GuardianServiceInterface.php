@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Academic\app\Contracts\Services;
+namespace Modules\Academic\Contracts\Services;
 
-use Modules\Academic\app\Entities\Guardian;
+use Modules\Academic\Entities\Guardian;
 
 interface GuardianServiceInterface
 {

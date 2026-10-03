@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User\UserRole;
+namespace Modules\Core\Listeners\User\UserRole;
 
-use Modules\Core\app\Events\User\UserRoleAssigned;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Core\Events\User\UserRoleAssigned;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyRoleAssigned
 {

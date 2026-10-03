@@ -1,19 +1,19 @@
 <?php
 
-namespace Modules\Core\app\Providers;
+namespace Modules\Core\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Core\app\Contracts\Repositories\PermissionRepositoryInterface;
-use Modules\Core\app\Contracts\Repositories\UserRepositoryInterface;
-use Modules\Core\app\Contracts\Services\PermissionServiceInterface;
-use Modules\Core\app\Entities\Permission;
-use Modules\Core\app\Entities\Role;
-use Modules\Core\app\Entities\User;
-use Modules\Core\app\Repositories\PermissionRepository;
-use Modules\Core\app\Repositories\UserRepository;
-use Modules\Core\app\Services\PermissionService;
+use Modules\Core\Contracts\Repositories\PermissionRepositoryInterface;
+use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
+use Modules\Core\Contracts\Services\PermissionServiceInterface;
+use Modules\Core\Entities\Permission;
+use Modules\Core\Entities\Role;
+use Modules\Core\Entities\User;
+use Modules\Core\Repositories\PermissionRepository;
+use Modules\Core\Repositories\UserRepository;
+use Modules\Core\Services\PermissionService;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -66,8 +66,8 @@ class CoreServiceProvider extends ServiceProvider
 
         // Role Repository
         $this->app->bind(
-            \Modules\Core\app\Contracts\Repositories\RoleRepositoryInterface::class,
-            \Modules\Core\app\Repositories\RoleRepository::class
+            \Modules\Core\Contracts\Repositories\RoleRepositoryInterface::class,
+            \Modules\Core\Repositories\RoleRepository::class
         );
 
         // Permission Repository
@@ -78,14 +78,14 @@ class CoreServiceProvider extends ServiceProvider
 
         // ActivityLog Repository
         $this->app->bind(
-            \Modules\Core\app\Contracts\Repositories\ActivityLogRepositoryInterface::class,
-            \Modules\Core\app\Repositories\ActivityLogRepository::class
+            \Modules\Core\Contracts\Repositories\ActivityLogRepositoryInterface::class,
+            \Modules\Core\Repositories\ActivityLogRepository::class
         );
 
         // Setting Repository
         $this->app->bind(
-            \Modules\Core\app\Contracts\Repositories\SettingRepositoryInterface::class,
-            \Modules\Core\app\Repositories\SettingRepository::class
+            \Modules\Core\Contracts\Repositories\SettingRepositoryInterface::class,
+            \Modules\Core\Repositories\SettingRepository::class
         );
     }
 
@@ -188,20 +188,20 @@ class CoreServiceProvider extends ServiceProvider
     {
         // Auth Service
         $this->app->bind(
-            \Modules\Core\app\Contracts\Services\AuthServiceInterface::class,
-            \Modules\Core\app\Services\AuthService::class
+            \Modules\Core\Contracts\Services\AuthServiceInterface::class,
+            \Modules\Core\Services\AuthService::class
         );
 
         // User Service
         $this->app->bind(
-            \Modules\Core\app\Contracts\Services\UserServiceInterface::class,
-            \Modules\Core\app\Services\UserService::class
+            \Modules\Core\Contracts\Services\UserServiceInterface::class,
+            \Modules\Core\Services\UserService::class
         );
 
         // Role Service
         $this->app->bind(
-            \Modules\Core\app\Contracts\Services\RoleServiceInterface::class,
-            \Modules\Core\app\Services\RoleService::class
+            \Modules\Core\Contracts\Services\RoleServiceInterface::class,
+            \Modules\Core\Services\RoleService::class
         );
 
         // Permission Service
@@ -212,8 +212,8 @@ class CoreServiceProvider extends ServiceProvider
 
         // Setting Service
         $this->app->bind(
-            \Modules\Core\app\Contracts\Services\SettingServiceInterface::class,
-            \Modules\Core\app\Services\SettingService::class
+            \Modules\Core\Contracts\Services\SettingServiceInterface::class,
+            \Modules\Core\Services\SettingService::class
         );
     }
 

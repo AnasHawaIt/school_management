@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User\UserDeleted;
+namespace Modules\Core\Listeners\User\UserDeleted;
 
-use Modules\Core\app\Events\Broadcasted\UserDeletedBroadcasted;
-use Modules\Core\app\Events\User\UserDeleted;
+use Modules\Core\Events\Broadcasted\UserDeletedBroadcasted;
+use Modules\Core\Events\User\UserDeleted;
 
 class BroadcastUserDeleted
 {

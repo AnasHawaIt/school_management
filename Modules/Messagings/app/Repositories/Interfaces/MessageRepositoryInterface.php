@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Messagings\app\Repositories\Interfaces;
+namespace Modules\Messagings\Repositories\Interfaces;
 
 interface MessageRepositoryInterface
 {

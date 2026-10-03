@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Permission;
+namespace Modules\Core\Listeners\Permission;
 
-use Modules\Core\app\Events\Permission\PermissionRestored;
+use Modules\Core\Events\Permission\PermissionRestored;
 
 class LogPermissionRestored
 {

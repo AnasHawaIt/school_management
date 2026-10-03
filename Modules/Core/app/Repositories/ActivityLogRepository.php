@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Core\app\Repositories;
+namespace Modules\Core\Repositories;
 
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Modules\Core\app\Contracts\Repositories\ActivityLogRepositoryInterface;
-use Modules\Core\app\Entities\EventLogs;
+use Modules\Core\Contracts\Repositories\ActivityLogRepositoryInterface;
+use Modules\Core\Entities\EventLogs;
 
 class ActivityLogRepository extends BaseRepository implements ActivityLogRepositoryInterface
 {

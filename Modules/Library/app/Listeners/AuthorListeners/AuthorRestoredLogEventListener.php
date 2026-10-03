@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Library\app\Listeners\AuthorListeners;
+namespace Modules\Library\Listeners\AuthorListeners;
 
-use Modules\Library\app\Events\AuthorEvents\AuthorRestored;
+use Modules\Library\Events\AuthorEvents\AuthorRestored;
 
 class AuthorRestoredLogEventListener
 {

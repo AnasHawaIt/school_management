@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role\delete;
+namespace Modules\Core\Listeners\Role\delete;
 
-use Modules\Core\app\Events\Role\RoleDeleted;
-use Modules\Core\app\Jobs\Role\SendRoleNotificationJob;
+use Modules\Core\Events\Role\RoleDeleted;
+use Modules\Core\Jobs\Role\SendRoleNotificationJob;
 
 class NotifyRoleDeleted
 {

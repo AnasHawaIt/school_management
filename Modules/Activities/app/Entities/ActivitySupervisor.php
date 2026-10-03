@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Modules\Activities\app\Entities;
+namespace Modules\Activities\Entities;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Academic\app\Entities\Teacher;
+use Modules\Academic\Entities\Teacher;
 
 class ActivitySupervisor extends Model
 {

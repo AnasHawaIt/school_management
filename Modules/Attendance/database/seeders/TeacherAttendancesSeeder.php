@@ -3,10 +3,10 @@
 namespace Modules\Attendance\database\seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Academic\app\Entities\Teacher;
-use Modules\Attendance\app\Entities\AttendanceStatus;
-use Modules\Attendance\app\Entities\TeacherAttendance;
-use Modules\Core\app\Entities\User;
+use Modules\Academic\Entities\Teacher;
+use Modules\Attendance\Entities\AttendanceStatus;
+use Modules\Attendance\Entities\TeacherAttendance;
+use Modules\Core\Entities\User;
 
 class TeacherAttendancesSeeder extends Seeder
 {

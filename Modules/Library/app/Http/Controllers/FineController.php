@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Library\app\Http\Resources\FineResource;
-use Modules\Library\app\Entities\Fine;
-use Modules\Library\app\Services\FineService;
-use Modules\Library\app\Repositories\Interfaces\FineRepositoryInterface;
+use Modules\Library\Http\Resources\FineResource;
+use Modules\Library\Entities\Fine;
+use Modules\Library\Services\FineService;
+use Modules\Library\Repositories\Interfaces\FineRepositoryInterface;
 
 class FineController extends Controller
 {

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Activities\app\Listeners\Activity;
+namespace Modules\Activities\Listeners\Activity;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Activities\app\Events\ActivityCreated;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Activities\Events\ActivityCreated;
+use Modules\Notifications\Services\NotificationService;
 
 class ActivityCreatedNotificationListener implements ShouldQueue
 {

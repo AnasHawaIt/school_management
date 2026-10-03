@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\Messagings\app\Providers;
+namespace Modules\Messagings\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use Modules\Messagings\app\Entities\Conversation;
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Entities\MessageAttachment;
-use Modules\Messagings\app\Policies\ConversationPolicy;
-use Modules\Messagings\app\Policies\MessageAttachmentPolicy;
-use Modules\Messagings\app\Policies\MessagePolicy;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageAttachment;
+use Modules\Messagings\Policies\ConversationPolicy;
+use Modules\Messagings\Policies\MessageAttachmentPolicy;
+use Modules\Messagings\Policies\MessagePolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {

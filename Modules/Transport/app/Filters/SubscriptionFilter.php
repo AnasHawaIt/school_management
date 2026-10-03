@@ -1,5 +1,5 @@
 <?php
-namespace Modules\Transport\app\Filters;
+namespace Modules\Transport\Filters;
 
 use App\Filters\QueryFilter;
 

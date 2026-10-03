@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\app\Policy;
+namespace Modules\Library\Policy;
 
-use Modules\Core\app\Entities\User;
-use Modules\Library\app\Entities\BookCopy;
-use Modules\Library\app\Entities\Borrowing;
-use Modules\Library\app\Entities\Fine;
+use Modules\Core\Entities\User;
+use Modules\Library\Entities\BookCopy;
+use Modules\Library\Entities\Borrowing;
+use Modules\Library\Entities\Fine;
 
 class LibraryPolicy
 {

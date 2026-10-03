@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Counselors\LogCounselors;
+namespace Modules\Academic\Listeners\Counselors\LogCounselors;
 
-use Modules\Academic\app\Events\CounselorEvents\CounselorStatusToggled;
+use Modules\Academic\Events\CounselorEvents\CounselorStatusToggled;
 
 class LogCounselorStatusToggled
 {

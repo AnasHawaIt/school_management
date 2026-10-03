@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Modules\Library\app\Console\Commands;
+namespace Modules\Library\Console\Commands;
 
 use Illuminate\Console\Command;
-use Modules\Library\app\Entities\Borrowing;
-use Modules\Library\app\Entities\Fine;
-use Modules\Library\app\Events\BorrowingEvents\BorrowingOverdue;
+use Modules\Library\Entities\Borrowing;
+use Modules\Library\Entities\Fine;
+use Modules\Library\Events\BorrowingEvents\BorrowingOverdue;
 
 class CheckOverdueBorrowings extends Command
 {

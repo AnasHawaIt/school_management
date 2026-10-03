@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Library\app\Enums;
+namespace Modules\Library\Enums;
 
 enum BorrowingStatus: string
 {

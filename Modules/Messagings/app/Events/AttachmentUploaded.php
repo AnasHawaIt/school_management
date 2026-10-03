@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Messagings\app\Events;
+namespace Modules\Messagings\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Entities\MessageAttachment;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageAttachment;
 
 class AttachmentUploaded
 {

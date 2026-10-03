@@ -1,24 +1,24 @@
 <?php
 
-namespace Modules\Academic\app\Services;
+namespace Modules\Academic\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Modules\Academic\app\Contracts\Repositories\StudentRepositoryInterface;
-use Modules\Academic\app\Contracts\Services\StudentServiceInterface;
-use Modules\Academic\app\Entities\Student;
-use Modules\Academic\app\Entities\StudentMedicalRecord;
-use Modules\Academic\app\Events\StudentEvents\MedicalRecordUpdated;
-use Modules\Academic\app\Events\StudentEvents\StudentAssignedToSection;
-use Modules\Academic\app\Events\StudentEvents\StudentCreated;
-use Modules\Academic\app\Events\StudentEvents\StudentDeleted;
-use Modules\Academic\app\Events\StudentEvents\StudentPromoted;
-use Modules\Academic\app\Events\StudentEvents\StudentRestored;
-use Modules\Academic\app\Events\StudentEvents\StudentStatusUpdated;
-use Modules\Academic\app\Events\StudentEvents\StudentTransferred;
-use Modules\Academic\app\Events\StudentEvents\StudentUpdated;
-use Modules\Core\app\Entities\User;
+use Modules\Academic\Contracts\Repositories\StudentRepositoryInterface;
+use Modules\Academic\Contracts\Services\StudentServiceInterface;
+use Modules\Academic\Entities\Student;
+use Modules\Academic\Entities\StudentMedicalRecord;
+use Modules\Academic\Events\StudentEvents\MedicalRecordUpdated;
+use Modules\Academic\Events\StudentEvents\StudentAssignedToSection;
+use Modules\Academic\Events\StudentEvents\StudentCreated;
+use Modules\Academic\Events\StudentEvents\StudentDeleted;
+use Modules\Academic\Events\StudentEvents\StudentPromoted;
+use Modules\Academic\Events\StudentEvents\StudentRestored;
+use Modules\Academic\Events\StudentEvents\StudentStatusUpdated;
+use Modules\Academic\Events\StudentEvents\StudentTransferred;
+use Modules\Academic\Events\StudentEvents\StudentUpdated;
+use Modules\Core\Entities\User;
 use Modules\School\Entities\Section;
 
 class StudentService implements StudentServiceInterface

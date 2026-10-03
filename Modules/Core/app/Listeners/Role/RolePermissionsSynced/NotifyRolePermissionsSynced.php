@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role\RolePermissionsSynced;
+namespace Modules\Core\Listeners\Role\RolePermissionsSynced;
 
-use Modules\Core\app\Events\Role\RolePermissionsSynced;
-use Modules\Core\app\Jobs\Role\SendRoleNotificationJob;
+use Modules\Core\Events\Role\RolePermissionsSynced;
+use Modules\Core\Jobs\Role\SendRoleNotificationJob;
 
 class NotifyRolePermissionsSynced
 {

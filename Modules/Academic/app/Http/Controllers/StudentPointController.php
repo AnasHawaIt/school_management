@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Academic\app\Http\Controllers;
+namespace Modules\Academic\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Academic\app\Services\StudentPointService;
+use Modules\Academic\Services\StudentPointService;
 
 class StudentPointController extends Controller
 {

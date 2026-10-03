@@ -1,9 +1,9 @@
 <?php
-namespace Modules\Academic\app\Listeners\Timetables;
+namespace Modules\Academic\Listeners\Timetables;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\TimetableEvents\TimetableEntryDeleted;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\TimetableEvents\TimetableEntryDeleted;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyTimetableEntryDeleted implements ShouldQueue
 {

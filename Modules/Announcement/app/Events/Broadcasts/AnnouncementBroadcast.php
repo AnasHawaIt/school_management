@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Announcement\app\Events\Broadcasts;
+namespace Modules\Announcement\Events\Broadcasts;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Announcement\app\Entities\Announcement;
+use Modules\Announcement\Entities\Announcement;
 
 class AnnouncementBroadcast implements ShouldBroadcast
 {

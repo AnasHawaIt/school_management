@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Role;
+namespace Modules\Core\Listeners\Role;
 
-use Modules\Core\app\Events\Role\RoleRestored;
+use Modules\Core\Events\Role\RoleRestored;
 
 class LogRoleRestored
 {

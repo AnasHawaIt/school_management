@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
 
-use Modules\Messagings\app\Events\Message\MessageRestored;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\MessageRestoredBroadcast;
+use Modules\Messagings\Events\Message\MessageRestored;
+use Modules\Messagings\Listeners\Broadcasting\Events\MessageRestoredBroadcast;
 
 class BroadcastMessageRestored
 {

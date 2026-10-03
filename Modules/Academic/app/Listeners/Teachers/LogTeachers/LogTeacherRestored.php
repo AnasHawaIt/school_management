@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Teachers\LogTeachers;
+namespace Modules\Academic\Listeners\Teachers\LogTeachers;
 
-use Modules\Academic\app\Events\TeacherEvents\TeacherRestored;
+use Modules\Academic\Events\TeacherEvents\TeacherRestored;
 
 class LogTeacherRestored
 {

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Transport\app\Services;
+namespace Modules\Transport\Services;
 
 use Illuminate\Http\Request;
-use Modules\Transport\app\Entities\Bus;
-use Modules\Transport\app\Repositories\Interfaces\BusLocationRepositoryInterface;
+use Modules\Transport\Entities\Bus;
+use Modules\Transport\Repositories\Interfaces\BusLocationRepositoryInterface;
 
 class BusLocationService
 {

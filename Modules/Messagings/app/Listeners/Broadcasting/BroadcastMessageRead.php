@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Events\Message\MessageRead;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\MessageReadBroadcast;
+use Modules\Messagings\Events\Message\MessageRead;
+use Modules\Messagings\Listeners\Broadcasting\Events\MessageReadBroadcast;
 
 class BroadcastMessageRead
 {

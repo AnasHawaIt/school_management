@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners;
+namespace Modules\Messagings\Listeners;
 
-use Modules\Messagings\app\Entities\MessageStatistic;
-use Modules\Messagings\app\Events\Message\MessageReplied;
+use Modules\Messagings\Entities\MessageStatistic;
+use Modules\Messagings\Events\Message\MessageReplied;
 
 class UpdateMessageReplyStatistic
 {

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners\Broadcasting\Events;
+namespace Modules\Messagings\Listeners\Broadcasting\Events;
 
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;

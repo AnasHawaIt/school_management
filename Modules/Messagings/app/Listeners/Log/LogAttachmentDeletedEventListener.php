@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Messagings\app\Listeners\Log;
+namespace Modules\Messagings\Listeners\Log;
 
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Events\AttachmentDeleted;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Events\AttachmentDeleted;
 
 class LogAttachmentDeletedEventListener
 {

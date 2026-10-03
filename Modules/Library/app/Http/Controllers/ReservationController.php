@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\app\Entities\Reservation;
-use Modules\Library\app\Services\ReservationService;
-use Modules\Library\app\Http\Requests\StoreReservationRequest;
+use Modules\Library\Entities\Reservation;
+use Modules\Library\Services\ReservationService;
+use Modules\Library\Http\Requests\StoreReservationRequest;
 
 class ReservationController extends Controller
 {

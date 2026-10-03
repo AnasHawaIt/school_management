@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Notifications\app\Http\Controllers;
+namespace Modules\Notifications\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Modules\Core\app\Entities\User;
-use Modules\Notifications\app\Entities\Notification;
-use Modules\Notifications\app\Http\Requests\StoreNotificationRequest;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Core\Entities\User;
+use Modules\Notifications\Entities\Notification;
+use Modules\Notifications\Http\Requests\StoreNotificationRequest;
+use Modules\Notifications\Services\NotificationService;
 
 class NotificationController extends Controller
 {

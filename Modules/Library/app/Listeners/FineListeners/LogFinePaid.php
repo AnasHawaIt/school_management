@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Library\app\Listeners\FineListeners;
+namespace Modules\Library\Listeners\FineListeners;
 
 use Illuminate\Support\Facades\Log;
-use Modules\Library\app\Events\FinesEvents\FinePaid;
+use Modules\Library\Events\FinesEvents\FinePaid;
 
 class LogFinePaid
 {

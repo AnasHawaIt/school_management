@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Events\TeacherEvents;
+namespace Modules\Academic\Events\TeacherEvents;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Academic\app\Entities\Teacher;
+use Modules\Academic\Entities\Teacher;
 
 class TeacherUpdated
 {

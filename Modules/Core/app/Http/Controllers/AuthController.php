@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Core\app\Http\Controllers;
+namespace Modules\Core\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use Modules\Core\app\Contracts\Services\AuthServiceInterface;
-use Modules\Core\app\Http\Requests\LoginRequest;
-use Modules\Core\app\Http\Resources\UserResource;
+use Modules\Core\Contracts\Services\AuthServiceInterface;
+use Modules\Core\Http\Requests\LoginRequest;
+use Modules\Core\Http\Resources\UserResource;
 
 class AuthController extends Controller
 {

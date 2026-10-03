@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Modules\Library\app\Listeners\BorrowingListeners;
+namespace Modules\Library\Listeners\BorrowingListeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\BorrowingEvents\BorrowingRenewed;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Library\Events\BorrowingEvents\BorrowingRenewed;
+use Modules\Notifications\Services\NotificationService;
 
 class SendBorrowingRenewedNotification implements ShouldQueue
 {

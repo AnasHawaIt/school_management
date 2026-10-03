@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\app\Listeners\MemberListeners;
+namespace Modules\Library\Listeners\MemberListeners;
 
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\MemberEvents\MemberCreated;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Library\Events\MemberEvents\MemberCreated;
+use Modules\Notifications\Services\NotificationService;
 
 class MemberCreatedNotificationDatabaseListener implements ShouldQueue
 {

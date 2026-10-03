@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\Core\app\Services;
+namespace Modules\Core\Services;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Modules\Core\app\Contracts\Repositories\UserRepositoryInterface;
-use Modules\Core\app\Contracts\Services\AuthServiceInterface;
-use Modules\Core\app\Entities\User;
-use Modules\Core\app\Events\Auth\TokenRefreshed;
-use Modules\Core\app\Events\Auth\UserLoggedIn;
-use Modules\Core\app\Events\Auth\UserLoggedOut;
+use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
+use Modules\Core\Contracts\Services\AuthServiceInterface;
+use Modules\Core\Entities\User;
+use Modules\Core\Events\Auth\TokenRefreshed;
+use Modules\Core\Events\Auth\UserLoggedIn;
+use Modules\Core\Events\Auth\UserLoggedOut;
 
 class AuthService implements AuthServiceInterface
 {

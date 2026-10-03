@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\InspectionPrograms;
+namespace Modules\Academic\Listeners\InspectionPrograms;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\InspectionProgramEvents\InspectionProgramSetCurrent;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyInspectionProgramSetCurrent implements ShouldQueue
 {

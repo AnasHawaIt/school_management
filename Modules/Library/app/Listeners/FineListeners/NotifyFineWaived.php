@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\app\Listeners\FineListeners;
+namespace Modules\Library\Listeners\FineListeners;
 
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\FinesEvents\FineWaived;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Library\Events\FinesEvents\FineWaived;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyFineWaived implements ShouldQueue
 {

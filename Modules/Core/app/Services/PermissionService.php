@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\Core\app\Services;
+namespace Modules\Core\Services;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\app\Contracts\Repositories\PermissionRepositoryInterface;
-use Modules\Core\app\Contracts\Services\PermissionServiceInterface;
-use Modules\Core\app\Entities\Permission;
-use Modules\Core\app\Events\Permission\PermissionCreated;
-use Modules\Core\app\Events\Permission\PermissionDeleted;
-use Modules\Core\app\Events\Permission\PermissionForceDeleted;
-use Modules\Core\app\Events\Permission\PermissionRestored;
-use Modules\Core\app\Events\Permission\PermissionUpdated;
+use Modules\Core\Contracts\Repositories\PermissionRepositoryInterface;
+use Modules\Core\Contracts\Services\PermissionServiceInterface;
+use Modules\Core\Entities\Permission;
+use Modules\Core\Events\Permission\PermissionCreated;
+use Modules\Core\Events\Permission\PermissionDeleted;
+use Modules\Core\Events\Permission\PermissionForceDeleted;
+use Modules\Core\Events\Permission\PermissionRestored;
+use Modules\Core\Events\Permission\PermissionUpdated;
 
 class PermissionService implements PermissionServiceInterface
 {

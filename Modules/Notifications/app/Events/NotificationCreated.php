@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Notifications\app\Events;
+namespace Modules\Notifications\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Notifications\app\Entities\Notification;
+use Modules\Notifications\Entities\Notification;
 
 class NotificationCreated
 {

@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Modules\Transport\app\Services;
+namespace Modules\Transport\Services;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Transport\app\Events\RouteStopEvents\RouteStopCreated;
-use Modules\Transport\app\Events\RouteStopEvents\RouteStopDeleted;
-use Modules\Transport\app\Events\RouteStopEvents\RouteStopRestored;
-use Modules\Transport\app\Events\RouteStopEvents\RouteStopUpdated;
-use Modules\Transport\app\Repositories\Interfaces\RouteStopRepositoryInterface;
+use Modules\Transport\Events\RouteStopEvents\RouteStopCreated;
+use Modules\Transport\Events\RouteStopEvents\RouteStopDeleted;
+use Modules\Transport\Events\RouteStopEvents\RouteStopRestored;
+use Modules\Transport\Events\RouteStopEvents\RouteStopUpdated;
+use Modules\Transport\Repositories\Interfaces\RouteStopRepositoryInterface;
 
 class RouteStopService
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Library\app\Http\Controllers;
+namespace Modules\Library\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Library\app\Http\Requests\StoreCategoryRequest;
-use Modules\Library\app\Http\Requests\UpdateCategoryRequest;
-use Modules\Library\app\Http\Resources\CategoryResource;
-use Modules\Library\app\Services\CategoryService;
+use Modules\Library\Http\Requests\StoreCategoryRequest;
+use Modules\Library\Http\Requests\UpdateCategoryRequest;
+use Modules\Library\Http\Resources\CategoryResource;
+use Modules\Library\Services\CategoryService;
 
 class CategoryController extends Controller
 {

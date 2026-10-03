@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\Students\LogSudents;
+namespace Modules\Academic\Listeners\Students\LogSudents;
 
-use Modules\Academic\app\Events\StudentEvents\StudentAssignedToSection;
+use Modules\Academic\Events\StudentEvents\StudentAssignedToSection;
 
 class LogStudentAssignedToSection
 {

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Modules\Messagings\app\Listeners\Broadcasting;
+namespace Modules\Messagings\Listeners\Broadcasting;
 
-use Modules\Messagings\app\Events\Message\TypingStopped;
-use Modules\Messagings\app\Listeners\Broadcasting\Events\TypingStoppedBroadcast;
+use Modules\Messagings\Events\Message\TypingStopped;
+use Modules\Messagings\Listeners\Broadcasting\Events\TypingStoppedBroadcast;
 
 class BroadcastTypingStopped
 {

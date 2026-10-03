@@ -2,17 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-use Modules\Library\app\Http\Controllers\AuthorController;
-use Modules\Library\app\Http\Controllers\BookController;
-use Modules\Library\app\Http\Controllers\BookCopyController;
-use Modules\Library\app\Http\Controllers\CategoryController;
-use Modules\Library\app\Http\Controllers\LibraryController;
-use Modules\Library\app\Http\Controllers\MemberController;
-use Modules\Library\app\Http\Controllers\PublishersController;
-use Modules\Library\app\Http\Controllers\TransactionController;
-use Modules\Library\app\Http\Controllers\FineController;
-use Modules\Library\app\Http\Controllers\ReservationController;
-use Modules\Library\app\Http\Controllers\LibraryReportController;
+use Modules\Library\Http\Controllers\AuthorController;
+use Modules\Library\Http\Controllers\BookController;
+use Modules\Library\Http\Controllers\BookCopyController;
+use Modules\Library\Http\Controllers\CategoryController;
+use Modules\Library\Http\Controllers\LibraryController;
+use Modules\Library\Http\Controllers\MemberController;
+use Modules\Library\Http\Controllers\PublishersController;
+use Modules\Library\Http\Controllers\TransactionController;
+use Modules\Library\Http\Controllers\FineController;
+use Modules\Library\Http\Controllers\ReservationController;
+use Modules\Library\Http\Controllers\LibraryReportController;
 
 
 /*

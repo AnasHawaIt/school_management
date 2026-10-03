@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\StudentPoints;
+namespace Modules\Academic\Listeners\StudentPoints;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\StudentPointEvents\StudentPointDeleted;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Academic\Events\StudentPointEvents\StudentPointDeleted;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyStudentPointDeleted implements ShouldQueue
 {

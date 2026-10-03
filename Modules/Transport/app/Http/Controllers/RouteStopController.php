@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Transport\app\Http\Controllers;
+namespace Modules\Transport\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Transport\app\Http\Requests\StoreRouteStopRequest;
-use Modules\Transport\app\Http\Requests\UpdateRouteStopRequest;
-use Modules\Transport\app\Http\Resources\RouteStopResource;
+use Modules\Transport\Http\Requests\StoreRouteStopRequest;
+use Modules\Transport\Http\Requests\UpdateRouteStopRequest;
+use Modules\Transport\Http\Resources\RouteStopResource;
 use Modules\Transport\Events\RouteStopEvents\MemberDeleted;
 use Modules\Transport\Events\RouteStopEvents\MemberRestored;
 use Modules\Transport\Services\MemberService;

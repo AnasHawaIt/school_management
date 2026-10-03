@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\app\Events\User;
+namespace Modules\Core\Events\User;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 
 class UserCreated
 {

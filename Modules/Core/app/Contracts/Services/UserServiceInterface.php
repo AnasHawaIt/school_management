@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Contracts\Services;
+namespace Modules\Core\Contracts\Services;
 
 use Illuminate\Pagination\LengthAwarePaginator;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 
 interface UserServiceInterface
 {

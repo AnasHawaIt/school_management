@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Notifications\app\Http\Resources;
+namespace Modules\Notifications\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

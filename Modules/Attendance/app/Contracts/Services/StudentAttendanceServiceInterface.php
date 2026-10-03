@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Attendance\app\Contracts\Services;
+namespace Modules\Attendance\Contracts\Services;
 
-use Modules\Attendance\app\Entities\StudentAttendance;
+use Modules\Attendance\Entities\StudentAttendance;
 
 interface StudentAttendanceServiceInterface
 {

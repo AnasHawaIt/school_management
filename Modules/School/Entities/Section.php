@@ -4,11 +4,12 @@ namespace Modules\School\Entities;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Modules\Academic\app\Entities\Teacher;
-
+use Modules\Academic\Entities\Teacher;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 class Section extends Model
 {
-    use HasFactory;
+    use HasFactory,LogsActivity;
 
     protected $fillable = [
         'class_id',
@@ -79,5 +80,12 @@ class Section extends Model
         if ($this->current_students > 0) {
             $this->decrement('current_students');
         }
+    }
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnlyDirty()
+            ->logOnly(['name', 'class_id', 'teacher_id', 'is_active'])
+            ->useLogName('section');
     }
 }

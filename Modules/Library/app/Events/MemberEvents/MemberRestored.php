@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Modules\Library\app\Events\MemberEvents;
+namespace Modules\Library\Events\MemberEvents;
 
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Member;
+use Modules\Library\Entities\Member;
 
 class MemberRestored
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Messagings\app\Entities;
+namespace Modules\Messagings\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Modules\Core\app\Entities\User;
+use Modules\Core\Entities\User;
 
 
 class MessageStatistic extends Model

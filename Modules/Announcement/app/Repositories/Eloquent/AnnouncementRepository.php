@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Announcement\app\Repositories\Eloquent;
+namespace Modules\Announcement\Repositories\Eloquent;
 
-use Modules\Announcement\app\Entities\Announcement;
-use Modules\Announcement\app\Repositories\Interfaces\AnnouncementRepositoryInterface;
+use Modules\Announcement\Entities\Announcement;
+use Modules\Announcement\Repositories\Interfaces\AnnouncementRepositoryInterface;
 
 class AnnouncementRepository implements AnnouncementRepositoryInterface
 {

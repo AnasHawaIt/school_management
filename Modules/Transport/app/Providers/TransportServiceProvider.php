@@ -1,19 +1,19 @@
 <?php
 
-namespace Modules\Transport\app\Providers;
+namespace Modules\Transport\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Transport\app\Repositories\Eloquent\BusLocationRepository;
-use Modules\Transport\app\Repositories\Eloquent\BusRepository;
-use Modules\Transport\app\Repositories\Eloquent\RouteRepository;
-use Modules\Transport\app\Repositories\Eloquent\RouteStopRepository;
-use Modules\Transport\app\Repositories\Eloquent\SubscriptionRepository;
-use Modules\Transport\app\Repositories\Interfaces\BusLocationRepositoryInterface;
-use Modules\Transport\app\Repositories\Interfaces\BusRepositoryInterface;
-use Modules\Transport\app\Repositories\Interfaces\RouteRepositoryInterface;
-use Modules\Transport\app\Repositories\Interfaces\RouteStopRepositoryInterface;
-use Modules\Transport\app\Repositories\Interfaces\SubscriptionRepositoryInterface;
+use Modules\Transport\Repositories\Eloquent\BusLocationRepository;
+use Modules\Transport\Repositories\Eloquent\BusRepository;
+use Modules\Transport\Repositories\Eloquent\RouteRepository;
+use Modules\Transport\Repositories\Eloquent\RouteStopRepository;
+use Modules\Transport\Repositories\Eloquent\SubscriptionRepository;
+use Modules\Transport\Repositories\Interfaces\BusLocationRepositoryInterface;
+use Modules\Transport\Repositories\Interfaces\BusRepositoryInterface;
+use Modules\Transport\Repositories\Interfaces\RouteRepositoryInterface;
+use Modules\Transport\Repositories\Interfaces\RouteStopRepositoryInterface;
+use Modules\Transport\Repositories\Interfaces\SubscriptionRepositoryInterface;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

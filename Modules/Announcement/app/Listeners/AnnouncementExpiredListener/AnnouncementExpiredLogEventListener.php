@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Announcement\app\Listeners\AnnouncementExpiredListener;
+namespace Modules\Announcement\Listeners\AnnouncementExpiredListener;
 
-use Modules\Announcement\app\Events\AnnouncementExpired;
+use Modules\Announcement\Events\AnnouncementExpired;
 
 class AnnouncementExpiredLogEventListener
 {

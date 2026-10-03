@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Modules\Activities\app\Repositories\Interfaces;
+namespace Modules\Activities\Repositories\Interfaces;
 
-use Modules\Activities\app\Entities\ActivitySupervisor;
+use Modules\Activities\Entities\ActivitySupervisor;
 
 interface ActivitySupervisorRepositoryInterface
 {

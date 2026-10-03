@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Library\app\Listeners\ReservationListeners;
+namespace Modules\Library\Listeners\ReservationListeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Library\app\Events\BorrowingEvents\BookAvailable;
-use Modules\Library\app\Services\ReservationService;
+use Modules\Library\Events\BorrowingEvents\BookAvailable;
+use Modules\Library\Services\ReservationService;
 
 class ProcessBookReservations implements ShouldQueue
 {

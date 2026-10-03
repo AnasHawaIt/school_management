@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\Core\app\Services;
+namespace Modules\Core\Services;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Modules\Core\app\Contracts\Repositories\SettingRepositoryInterface;
-use Modules\Core\app\Contracts\Services\SettingServiceInterface;
-use Modules\Core\app\Entities\Setting;
-use Modules\Core\app\Events\Setting\SettingCreated;
-use Modules\Core\app\Events\Setting\SettingDeleted;
-use Modules\Core\app\Events\Setting\SettingUpdated;
-use Modules\Core\app\Events\Setting\SettingsUpdated;
+use Modules\Core\Contracts\Repositories\SettingRepositoryInterface;
+use Modules\Core\Contracts\Services\SettingServiceInterface;
+use Modules\Core\Entities\Setting;
+use Modules\Core\Events\Setting\SettingCreated;
+use Modules\Core\Events\Setting\SettingDeleted;
+use Modules\Core\Events\Setting\SettingUpdated;
+use Modules\Core\Events\Setting\SettingsUpdated;
 
 class SettingService implements SettingServiceInterface
 {

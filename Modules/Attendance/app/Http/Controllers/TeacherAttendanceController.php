@@ -1,13 +1,13 @@
 <?php
 
-namespace Modules\Attendance\app\Http\Controllers;
+namespace Modules\Attendance\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Attendance\app\Contracts\Services\TeacherAttendanceServiceInterface;
-use Modules\Attendance\app\Http\Requests\RecordTeacherAttendanceRequest;
-use Modules\Attendance\app\Http\Resources\TeacherAttendanceResource;
+use Modules\Attendance\Contracts\Services\TeacherAttendanceServiceInterface;
+use Modules\Attendance\Http\Requests\RecordTeacherAttendanceRequest;
+use Modules\Attendance\Http\Resources\TeacherAttendanceResource;
 
 class TeacherAttendanceController extends Controller
 {

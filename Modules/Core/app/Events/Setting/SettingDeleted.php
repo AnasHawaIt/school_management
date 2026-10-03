@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Core\app\Events\Setting;
+namespace Modules\Core\Events\Setting;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Core\app\Entities\Setting;
+use Modules\Core\Entities\Setting;
 
 class SettingDeleted
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User;
+namespace Modules\Core\Listeners\User;
 
-use Modules\Core\app\Events\User\UserPasswordChanged;
-use Modules\Notifications\app\Services\NotificationService;
+use Modules\Core\Events\User\UserPasswordChanged;
+use Modules\Notifications\Services\NotificationService;
 
 class NotifyPasswordChanged
 {

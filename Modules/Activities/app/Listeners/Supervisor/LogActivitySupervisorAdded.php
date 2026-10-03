@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Activities\app\Listeners\Supervisor;
+namespace Modules\Activities\Listeners\Supervisor;
 
-use Modules\Activities\app\Events\ActivitySupervisorAdded;
+use Modules\Activities\Events\ActivitySupervisorAdded;
 
 class LogActivitySupervisorAdded
 {

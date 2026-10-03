@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Academic\app\Listeners\LeaveRequests;
+namespace Modules\Academic\Listeners\LeaveRequests;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Modules\Academic\app\Events\LeaveRequests\LeaveRequestDeleted;
+use Modules\Academic\Events\LeaveRequests\LeaveRequestDeleted;
 
 class LogLeaveRequestDeleted implements ShouldQueue
 {

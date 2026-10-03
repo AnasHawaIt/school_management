@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Activities\app\Listeners\Participant;
+namespace Modules\Activities\Listeners\Participant;
 
-use Modules\Activities\app\Events\ActivityParticipantAttended;
+use Modules\Activities\Events\ActivityParticipantAttended;
 
 class LogActivityParticipantAttended
 {

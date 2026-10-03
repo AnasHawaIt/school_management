@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Library\app\Events\CategoryEvents;
+namespace Modules\Library\Events\CategoryEvents;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\Library\app\Entities\Category;
+use Modules\Library\Entities\Category;
 
 
 class CategoryUpdated

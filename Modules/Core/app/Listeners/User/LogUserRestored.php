@@ -1,8 +1,8 @@
 <?php
 
-namespace Modules\Core\app\Listeners\User;
+namespace Modules\Core\Listeners\User;
 
-use Modules\Core\app\Events\User\UserRestored;
+use Modules\Core\Events\User\UserRestored;
 
 class LogUserRestored
 {

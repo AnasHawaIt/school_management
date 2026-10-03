@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Library\app\Listeners\ReservationListeners;
+namespace Modules\Library\Listeners\ReservationListeners;
 
 
-use Modules\Library\app\Events\ReservationEvents\ReservationFulfilled;
+use Modules\Library\Events\ReservationEvents\ReservationFulfilled;
 
 class ReservationFulfilledLogEventListener
 {

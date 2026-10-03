@@ -1,9 +1,9 @@
 <?php
 
-namespace Modules\Core\app\Listeners\Auth;
+namespace Modules\Core\Listeners\Auth;
 
 
-use Modules\Core\app\Events\Auth\UserLoggedIn;
+use Modules\Core\Events\Auth\UserLoggedIn;
 
 class LogUserLoggedIn{
     public function handle(UserLoggedIn $event): void

@@ -1,22 +1,22 @@
 <?php
 
-namespace Modules\Messagings\app\Services;
+namespace Modules\Messagings\Services;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
-use Modules\Messagings\app\Entities\Conversation;
-use Modules\Messagings\app\Entities\ConversationParticipant;
-use Modules\Messagings\app\Entities\Message;
-use Modules\Messagings\app\Entities\MessageStatistic;
-use Modules\Messagings\app\Events\AttachmentDeleted;
-use Modules\Messagings\app\Events\AttachmentUploaded;
-use Modules\Messagings\app\Events\Message\MessageCreated;
-use Modules\Messagings\app\Events\Message\MessageDeleted;
-use Modules\Messagings\app\Events\Message\MessageForwarded;
-use Modules\Messagings\app\Events\Message\MessageRead;
-use Modules\Messagings\app\Events\Message\MessageReplied;
-use Modules\Messagings\app\Events\Message\MessageRestored;
-use Modules\Messagings\app\Repositories\Interfaces\MessageRepositoryInterface;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\ConversationParticipant;
+use Modules\Messagings\Entities\Message;
+use Modules\Messagings\Entities\MessageStatistic;
+use Modules\Messagings\Events\AttachmentDeleted;
+use Modules\Messagings\Events\AttachmentUploaded;
+use Modules\Messagings\Events\Message\MessageCreated;
+use Modules\Messagings\Events\Message\MessageDeleted;
+use Modules\Messagings\Events\Message\MessageForwarded;
+use Modules\Messagings\Events\Message\MessageRead;
+use Modules\Messagings\Events\Message\MessageReplied;
+use Modules\Messagings\Events\Message\MessageRestored;
+use Modules\Messagings\Repositories\Interfaces\MessageRepositoryInterface;
 
 class MessageService
 {

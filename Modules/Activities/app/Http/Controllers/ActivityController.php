@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Modules\Activities\app\Http\Controllers;
+namespace Modules\Activities\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Modules\Activities\app\Entities\Activity;
-use Modules\Activities\app\Http\Requests\StoreActivityRequest;
-use Modules\Activities\app\Http\Requests\UpdateActivityRequest;
-use Modules\Activities\app\Services\ActivityService;
+use Modules\Activities\Entities\Activity;
+use Modules\Activities\Http\Requests\StoreActivityRequest;
+use Modules\Activities\Http\Requests\UpdateActivityRequest;
+use Modules\Activities\Services\ActivityService;
 
 
 class ActivityController extends Controller
