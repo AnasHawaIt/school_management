@@ -2,8 +2,12 @@
 
 namespace Modules\Examination\Providers;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Messagings\Entities\Conversation;
+use Modules\Messagings\Entities\Message;
+use Modules\School\Entities\Section;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -48,6 +52,11 @@ class ExaminationServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        Relation::enforceMorphMap([
+            'message' => Message::class,
+            'conversation' => Conversation::class,
+            'section' => Section::class,
+        ]);
     }
 
     /**

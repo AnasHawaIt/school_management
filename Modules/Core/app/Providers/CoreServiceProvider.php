@@ -10,6 +10,7 @@ use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
 use Modules\Core\Contracts\Services\PermissionServiceInterface;
 use Modules\Core\Entities\Permission;
 use Modules\Core\Entities\Role;
+use Modules\Core\Entities\Setting;
 use Modules\Core\Entities\User;
 use Modules\Core\Repositories\PermissionRepository;
 use Modules\Core\Repositories\UserRepository;
@@ -41,6 +42,7 @@ class CoreServiceProvider extends ServiceProvider
             'user' => User::class,
             'role' => Role::class,
             'permission' => Permission::class,
+            'setting' => Setting::class,
         ]);
     }
 

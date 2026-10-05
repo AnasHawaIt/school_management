@@ -11,11 +11,17 @@ use Modules\Announcement\Enums\AnnouncementAudience;
 use Modules\Announcement\Enums\AnnouncementPriority;
 use Modules\Announcement\Enums\AnnouncementStatus;
 use Modules\Core\Entities\User;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Announcement extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logOnlyDirty()->useLogName('announcement');
+    }
     protected $fillable = [
         'created_by',
         'title',

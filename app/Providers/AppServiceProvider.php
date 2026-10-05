@@ -9,6 +9,9 @@ use Modules\Academic\Entities\Guardian;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Activities\Entities\Activity;
+use Modules\Activities\Entities\ActivityParticipant;
+use Modules\Activities\Entities\ActivitySupervisor;
+use Modules\Activities\Entities\ActivityAttachment;
 use Modules\Announcement\Entities\Announcement;
 use Modules\Core\Entities\User;
 use Modules\Library\Entities\Author;
@@ -25,6 +28,7 @@ use Modules\Messagings\Entities\MessageAttachment;
 use Modules\Messagings\Policies\MessagePolicy;
 use Modules\Notifications\Entities\Notification;
 use Modules\Transport\Entities\Bus;
+use Modules\Examination\Entities\Exam;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -64,10 +68,14 @@ class AppServiceProvider extends ServiceProvider
             'user' => User::class,
             'notification' => Notification::class,
             'activity'     => Activity::class,
+            'activity_participant' => ActivityParticipant::class,
+            'activity_supervisor' => ActivitySupervisor::class,
+            'activity_attachment' => ActivityAttachment::class,
             'bus'          => Bus::class,
             'message' => Message::class,
             'message_attachment' => MessageAttachment::class,
             'announcement' =>Announcement::class,
+            'exam' => Exam::class,
         ]);
     }
 }

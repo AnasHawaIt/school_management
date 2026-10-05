@@ -11,10 +11,12 @@ use Modules\Academic\Entities\Teacher;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\Semester;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Exam extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, LogsActivity;
 
     protected $fillable = [
         'name', 'name_ar', 'exam_type_id', 'subject_id', 'section_id',
@@ -87,5 +89,12 @@ class Exam extends Model
     public function scopeCompleted($query)
     {
         return $query->where('status', 'completed');
+    }
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnlyDirty()
+            ->logOnly(['name', 'status', 'exam_date'])
+            ->useLogName('exam');
     }
 }

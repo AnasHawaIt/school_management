@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Modules\Academic\Entities\Guardian;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Modules\Academic\Entities\Student;
 use Modules\Academic\Entities\Teacher;
 use Modules\Core\Database\Factories\UserFactory;
@@ -21,7 +23,7 @@ use Modules\SMS\Entities\SmsOtp;
 
 class User extends Authenticatable implements CanResetPassword
 {
-    use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CanResetPasswordTrait;
+    use HasFactory, Notifiable, SoftDeletes, HasApiTokens, CanResetPasswordTrait, LogsActivity;
 
     protected $fillable = [
         'first_name',
@@ -227,5 +229,12 @@ class User extends Authenticatable implements CanResetPassword
     protected static function newFactory(): UserFactory
     {
         return UserFactory::new();
+    }
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnlyDirty()
+            ->logExcept(['password', 'remember_token']) // أمان: لا تسجل كلمة السر أبداً
+            ->useLogName('user');
     }
 }

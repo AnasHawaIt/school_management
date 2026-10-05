@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Modules\Messagings\Entities\Conversation;
 use Modules\Messagings\Entities\Message;
+use Modules\School\Entities\Section;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -33,6 +34,7 @@ class SchoolServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'message' => Message::class,
             'conversation' => Conversation::class,
+            'section' => Section::class,
         ]);
     }
 

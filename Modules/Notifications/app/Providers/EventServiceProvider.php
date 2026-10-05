@@ -15,7 +15,6 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         NotificationCreated::class => [
             SendFirebaseNotification::class,
-            NotificationCreatedLogEventListener::class,
         ],
     ];
 

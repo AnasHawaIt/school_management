@@ -43,7 +43,6 @@ class EventServiceProvider extends ServiceProvider
         */
         AnnouncementCreated::class => [
             AnnouncementCreatedBroadcastEventListener::class,
-            AnnouncementCreatedLogEventListener::class,
         ],
 
         /*
@@ -53,7 +52,6 @@ class EventServiceProvider extends ServiceProvider
         */
         AnnouncementUpdated::class => [
             AnnouncementUpdatedBroadcastEventListener::class,
-            AnnouncementUpdatedLogEventListener::class,
         ],
 
         /*
@@ -63,7 +61,6 @@ class EventServiceProvider extends ServiceProvider
         */
         AnnouncementDeleted::class => [
             AnnouncementDeletedBroadcastEventListener::class,
-            AnnouncementDeletedLogEventListener::class,
         ],
 
         /*
@@ -73,7 +70,6 @@ class EventServiceProvider extends ServiceProvider
         */
         AnnouncementRestored::class => [
             AnnouncementRestoredBroadcastEventListener::class,
-            AnnouncementRestoredLogEventListener::class,
         ],
 
         /*
@@ -83,7 +79,6 @@ class EventServiceProvider extends ServiceProvider
         */
         AnnouncementPublished::class => [
             AnnouncementPublishedBroadcastEventListener::class,
-            AnnouncementPublishedLogEventListener::class,
             AnnouncementPublishedNotificationDatabaseListener::class,
         ],
 
@@ -94,7 +89,6 @@ class EventServiceProvider extends ServiceProvider
         */
         AnnouncementScheduled::class => [
             AnnouncementScheduledBroadcastEventListener::class,
-            AnnouncementScheduledLogEventListener::class,
         ],
 
         /*
@@ -104,7 +98,6 @@ class EventServiceProvider extends ServiceProvider
         */
         AnnouncementExpired::class => [
             AnnouncementExpiredBroadcastEventListener::class,
-            AnnouncementExpiredLogEventListener::class,
         ],
 
     ];
