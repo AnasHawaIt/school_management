@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Academic\Entities\Teacher;
 use Modules\Core\Entities\User;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class TeacherAttendance extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'teacher_id', 'status_id', 'date',
         'check_in_time', 'check_out_time', 'late_minutes', 'notes', 'recorded_by',
@@ -57,5 +60,13 @@ class TeacherAttendance extends Model
     public function scopeAbsent($query)
     {
         return $query->whereHas('status', fn($q) => $q->where('is_present', false));
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('teacher_attendance');
     }
 }

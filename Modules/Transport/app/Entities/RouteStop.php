@@ -14,7 +14,7 @@ class RouteStop extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('route_stop');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('route_stop');
     }
     protected $dates = ['deleted_at'];
 

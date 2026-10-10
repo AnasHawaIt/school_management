@@ -84,6 +84,16 @@ class AppServiceProvider extends ServiceProvider
             'route' => Route::class,
             'route_stop' => RouteStop::class,
             'subscription' => Subscription::class,
+            'counselor' => \Modules\Academic\Entities\Counselor::class,
+            'inspection_program' => \Modules\Academic\Entities\InspectionProgram::class,
+            'student_medical_record' => \Modules\Academic\Entities\StudentMedicalRecord::class,
+            'student_point' => \Modules\Academic\Entities\StudentPoint::class,
+            'subject' => \Modules\Academic\Entities\Subject::class,
+            'teacher_qualification' => \Modules\Academic\Entities\TeacherQualification::class,
+            'timetable' => \Modules\Academic\Entities\Timetable::class,
+            'leave_request' => \Modules\Attendance\Entities\LeaveRequest::class,
+            'student_attendance' => \Modules\Attendance\Entities\StudentAttendance::class,
+            'teacher_attendance' => \Modules\Attendance\Entities\TeacherAttendance::class,
         ]);
     }
 }

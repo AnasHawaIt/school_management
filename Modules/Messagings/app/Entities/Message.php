@@ -18,7 +18,7 @@ class Message extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('message');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('message');
     }
     protected $dates = ['deleted_at'];
 

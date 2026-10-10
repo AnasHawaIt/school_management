@@ -64,7 +64,7 @@ class ActivitySupervisor extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('activity_supervisor');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('activity_supervisor');
     }
 
 }

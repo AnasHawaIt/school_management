@@ -10,9 +10,12 @@ use Modules\Core\Entities\User;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\Semester;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class InspectionProgram extends Model
 {
+    use LogsActivity;
     use SoftDeletes;
 
     protected $fillable = [
@@ -60,5 +63,13 @@ class InspectionProgram extends Model
     public function scopeCompleted($query)
     {
         return $query->where('status', 'completed');
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('inspection_program');
     }
 }

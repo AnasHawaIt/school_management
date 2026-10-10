@@ -18,7 +18,7 @@ class Author extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('author');
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty()->useLogName('author');
     }
     protected $dates = ['deleted_at'];
 

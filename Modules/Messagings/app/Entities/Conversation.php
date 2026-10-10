@@ -20,7 +20,7 @@ class Conversation extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('conversation');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('conversation');
     }
     protected $dates = ['deleted_at'];
 

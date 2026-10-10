@@ -15,7 +15,7 @@ class Route extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('route');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('route');
     }
     protected $dates = ['deleted_at'];
 

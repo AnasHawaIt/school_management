@@ -232,7 +232,7 @@ class User extends Authenticatable implements CanResetPassword
     }
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()
+        return LogOptions::defaults()->logFillable()
             ->logOnlyDirty()
             ->logExcept(['password', 'remember_token']) // أمان: لا تسجل كلمة السر أبداً
             ->useLogName('user');

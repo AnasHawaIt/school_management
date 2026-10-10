@@ -9,9 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Modules\Activities\Entities\ActivityParticipant;
 use Modules\Core\Entities\User;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Guardian extends Model
 {
+    use LogsActivity;
     use  SoftDeletes;
 
     protected $table = 'parents';
@@ -56,6 +59,14 @@ class Guardian extends Model
             ActivityParticipant::class,
             'participant'
         );
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('guardian');
     }
 }
 

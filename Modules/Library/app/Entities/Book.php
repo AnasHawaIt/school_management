@@ -18,7 +18,7 @@ class Book extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('book');
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty()->useLogName('book');
     }
     protected $dates = ['deleted_at'];
 

@@ -15,7 +15,7 @@ class Subscription extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('subscription');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('subscription');
     }
     protected $dates = ['deleted_at'];
 

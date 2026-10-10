@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\Semester;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 
 class Timetable extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'section_id', 'subject_id', 'teacher_id', 'academic_year_id',
         'semester_id', 'day_of_week', 'period_number', 'start_time',
@@ -70,5 +73,13 @@ class Timetable extends Model
     public function scopeByDay($query, string $day)
     {
         return $query->where('day_of_week', $day);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('timetable');
     }
 }

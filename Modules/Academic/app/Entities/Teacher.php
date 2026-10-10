@@ -11,9 +11,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Activities\Entities\ActivityParticipant;
 use Modules\Activities\Entities\ActivitySupervisor;
 use Modules\Core\Entities\User;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Teacher extends Model
 {
+    use LogsActivity;
     use  SoftDeletes;
 
     protected $fillable = [
@@ -107,5 +110,13 @@ class Teacher extends Model
             ActivitySupervisor::class,
             'teacher_id'
         );
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('teacher');
     }
 }

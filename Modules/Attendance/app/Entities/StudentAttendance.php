@@ -9,12 +9,15 @@ use Modules\Core\Entities\User;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\Semester;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * @method insert(array $records)
  */
 class StudentAttendance extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'student_id', 'section_id', 'academic_year_id', 'semester_id',
         'status_id', 'date', 'check_in_time', 'late_minutes', 'notes', 'recorded_by',
@@ -82,5 +85,13 @@ class StudentAttendance extends Model
     public function scopeAbsent($query)
     {
         return $query->whereHas('status', fn($q) => $q->where('is_present', false));
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('student_attendance');
     }
 }

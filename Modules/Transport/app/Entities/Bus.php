@@ -15,7 +15,7 @@ class Bus extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('bus');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('bus');
     }
 
     protected $dates = ['deleted_at'];

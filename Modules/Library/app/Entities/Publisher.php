@@ -16,7 +16,7 @@ class Publisher extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('publisher');
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty()->useLogName('publisher');
     }
     protected $dates = ['deleted_at'];
 

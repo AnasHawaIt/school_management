@@ -20,7 +20,7 @@ class Announcement extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('announcement');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('announcement');
     }
     protected $fillable = [
         'created_by',

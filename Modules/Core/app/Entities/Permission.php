@@ -11,7 +11,7 @@ class Permission extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('permission');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('permission');
     }
     protected $fillable = [
         'name',

@@ -15,7 +15,7 @@ class Notification extends Model
     use HasFactory, SoftDeletes, LogsActivity;
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('notification');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('notification');
     }
 
     protected $table = 'notification';

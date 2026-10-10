@@ -13,9 +13,12 @@ use Modules\Core\Entities\User;
 use Modules\School\Entities\Section;
 use Modules\School\Entities\AcademicYear;
 use Modules\Transport\Entities\Subscription;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Student extends Model
 {
+    use LogsActivity;
     use  SoftDeletes;
 
     protected $fillable = [
@@ -107,5 +110,13 @@ class Student extends Model
         return $this->belongsToMany(Section::class, 'section_student') // اسم الجدول الوسيط لديك
         ->withPivot(['semester_id', 'academic_year_id'])
             ->withTimestamps();
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('student');
     }
 }

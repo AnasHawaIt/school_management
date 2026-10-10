@@ -15,7 +15,7 @@ class Reservation extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('reservation');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('reservation');
     }
     protected $table = 'library_reservations';
 

@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Attendance\Entities\StudentAttendance;
 use Modules\School\Entities\AcademicYear;
 use Modules\School\Entities\Semester;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class StudentPoint extends Model
 {
+    use LogsActivity;
     protected $fillable = [
         'student_id', 'point_category_id', 'academic_year_id', 'semester_id',
         'type', 'points', 'reason', 'date',
@@ -94,5 +97,13 @@ class StudentPoint extends Model
     public function scopeByGivenBy($query, string $type, int $id)
     {
         return $query->where('given_by_type', $type)->where('given_by_id', $id);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName('student_point');
     }
 }

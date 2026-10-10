@@ -10,7 +10,7 @@ class Role extends Model
     use LogsActivity;
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('role');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('role');
     }
     protected $fillable = [
         'name',

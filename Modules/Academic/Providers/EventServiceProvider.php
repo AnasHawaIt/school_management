@@ -64,89 +64,40 @@ use Modules\Academic\Events\TeacherEvents\TeacherUpdated;
 use Modules\Academic\Events\TimetableEvents\TimetableEntryCreated;
 use Modules\Academic\Events\TimetableEvents\TimetableEntryDeleted;
 use Modules\Academic\Events\TimetableEvents\TimetableEntryUpdated;
-use Modules\Academic\Listeners\Counselors\LogCounselors\LogCounselorCreated;
-use Modules\Academic\Listeners\Counselors\LogCounselors\LogCounselorDeleted;
-use Modules\Academic\Listeners\Counselors\LogCounselors\LogCounselorRestored;
 use Modules\Academic\Listeners\Counselors\LogCounselors\LogCounselorSectionAssigned;
 use Modules\Academic\Listeners\Counselors\LogCounselors\LogCounselorSectionUnassigned;
-use Modules\Academic\Listeners\Counselors\LogCounselors\LogCounselorStatusToggled;
-use Modules\Academic\Listeners\Counselors\LogCounselors\LogCounselorUpdated;
 use Modules\Academic\Listeners\Counselors\NotifyCounselorSectionAssigned;
 use Modules\Academic\Listeners\Counselors\NotifyCounselorSectionUnassigned;
-use Modules\Academic\Listeners\Guardians\LogGuardians\LogGuardianCreated;
-use Modules\Academic\Listeners\Guardians\LogGuardians\LogGuardianDeleted;
-use Modules\Academic\Listeners\Guardians\LogGuardians\LogGuardianRestored;
-use Modules\Academic\Listeners\Guardians\LogGuardians\LogGuardianUpdated;
 use Modules\Academic\Listeners\Guardians\LogGuardians\LogStudentAttachedToGuardian;
 use Modules\Academic\Listeners\Guardians\LogGuardians\LogStudentDetachedFromGuardian;
 use Modules\Academic\Listeners\Guardians\NotifyStudentAttachedToGuardian;
 use Modules\Academic\Listeners\Guardians\NotifyStudentDetachedFromGuardian;
 use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogCounselorAssignedToInspectionProgram;
 use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogCounselorUnassignedFromInspectionProgram;
-use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogInspectionProgramCreated;
-use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogInspectionProgramDeleted;
-use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogInspectionProgramRestored;
-use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogInspectionProgramSetCurrent;
-use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogInspectionProgramStatusUpdated;
-use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogInspectionProgramUpdated;
 use Modules\Academic\Listeners\InspectionPrograms\LogInspectionPrograms\LogObservationSubmitted;
 use Modules\Academic\Listeners\InspectionPrograms\NotifyCounselorAssignedToInspectionProgram;
 use Modules\Academic\Listeners\InspectionPrograms\NotifyCounselorUnassignedFromInspectionProgram;
 use Modules\Academic\Listeners\InspectionPrograms\NotifyInspectionProgramSetCurrent;
 use Modules\Academic\Listeners\InspectionPrograms\NotifyInspectionProgramStatusUpdated;
 use Modules\Academic\Listeners\InspectionPrograms\NotifyObservationSubmitted;
-use Modules\Academic\Listeners\LeaveRequests\LogLeaveRequestApproved;
-use Modules\Academic\Listeners\LeaveRequests\LogLeaveRequestCreated;
-use Modules\Academic\Listeners\LeaveRequests\LogLeaveRequestDeleted;
-use Modules\Academic\Listeners\LeaveRequests\LogLeaveRequestRejected;
-use Modules\Academic\Listeners\LeaveRequests\LogLeaveRequestUpdated;
 use Modules\Academic\Listeners\LeaveRequests\NotifyLeaveRequestApproved;
 use Modules\Academic\Listeners\LeaveRequests\NotifyLeaveRequestRejected;
-use Modules\Academic\Listeners\LogSubjects\LogSubjectCreated;
-use Modules\Academic\Listeners\LogSubjects\LogSubjectDeleted;
-use Modules\Academic\Listeners\LogSubjects\LogSubjectRestored;
-use Modules\Academic\Listeners\LogSubjects\LogSubjectUpdated;
 use Modules\Academic\Listeners\LogSubjects\LogTeacherAssignedToSubject;
 use Modules\Academic\Listeners\LogSubjects\LogTeacherUnassignedFromSubject;
 use Modules\Academic\Listeners\StudentAttendance\LogStudentAttendance\LogStudentAttendanceBulkRecorded;
-use Modules\Academic\Listeners\StudentAttendance\LogStudentAttendance\LogStudentAttendanceDeleted;
-use Modules\Academic\Listeners\StudentAttendance\LogStudentAttendance\LogStudentAttendanceRecorded;
-use Modules\Academic\Listeners\StudentAttendance\LogStudentAttendance\LogStudentAttendanceUpdated;
 use Modules\Academic\Listeners\StudentAttendance\NotifyStudentAbsence;
 use Modules\Academic\Listeners\StudentAttendance\NotifyStudentLate;
-use Modules\Academic\Listeners\StudentPoints\LogStudentPoints\LogStudentPointDeleted;
-use Modules\Academic\Listeners\StudentPoints\LogStudentPoints\LogStudentPointGiven;
 use Modules\Academic\Listeners\StudentPoints\LogStudentPoints\LogStudentPointsBulkGiven;
 use Modules\Academic\Listeners\StudentPoints\NotifyStudentPointDeleted;
 use Modules\Academic\Listeners\StudentPoints\NotifyStudentPointGiven;
 use Modules\Academic\Listeners\StudentPoints\NotifyStudentPointsBulkGiven;
-use Modules\Academic\Listeners\Students\LogSudents\LogMedicalRecordUpdated;
 use Modules\Academic\Listeners\Students\LogSudents\LogStudentAssignedToSection;
-use Modules\Academic\Listeners\Students\LogSudents\LogStudentDeleted;
-use Modules\Academic\Listeners\Students\LogSudents\LogStudentPromoted;
-use Modules\Academic\Listeners\Students\LogSudents\LogStudentRestored;
-use Modules\Academic\Listeners\Students\LogSudents\LogStudentStatusUpdated;
-use Modules\Academic\Listeners\Students\LogSudents\LogStudentTransferred;
-use Modules\Academic\Listeners\Students\LogSudents\LogStudentUpdated;
 use Modules\Academic\Listeners\Students\NotifyStudentAssignedToSection;
 use Modules\Academic\Listeners\Students\NotifyStudentDeleted;
 use Modules\Academic\Listeners\Students\NotifyStudentPromoted;
 use Modules\Academic\Listeners\Students\NotifyStudentTransferred;
-use Modules\Academic\Listeners\TeacherAttendance\LogTeacherAttendance\LogTeacherAttendanceDeleted;
-use Modules\Academic\Listeners\TeacherAttendance\LogTeacherAttendance\LogTeacherAttendanceRecorded;
-use Modules\Academic\Listeners\TeacherAttendance\LogTeacherAttendance\LogTeacherAttendanceUpdated;
-use Modules\Academic\Listeners\Teachers\LogTeachers\LogTeacherCreated;
-use Modules\Academic\Listeners\Teachers\LogTeachers\LogTeacherDeleted;
-use Modules\Academic\Listeners\Teachers\LogTeachers\LogTeacherQualificationAdded;
-use Modules\Academic\Listeners\Teachers\LogTeachers\LogTeacherQualificationDeleted;
-use Modules\Academic\Listeners\Teachers\LogTeachers\LogTeacherRestored;
-use Modules\Academic\Listeners\Teachers\LogTeachers\LogTeacherStatusToggled;
-use Modules\Academic\Listeners\Teachers\LogTeachers\LogTeacherUpdated;
 use Modules\Academic\Listeners\Teachers\NotifyTeacherAssignedToSubject;
 use Modules\Academic\Listeners\Teachers\NotifyTeacherUnassignedFromSubject;
-use Modules\Academic\Listeners\Timetables\LogTimetables\LogTimetableEntryCreated;
-use Modules\Academic\Listeners\Timetables\LogTimetables\LogTimetableEntryDeleted;
-use Modules\Academic\Listeners\Timetables\LogTimetables\LogTimetableEntryUpdated;
 use Modules\Academic\Listeners\Timetables\NotifyTimetableEntryCreated;
 use Modules\Academic\Listeners\Timetables\NotifyTimetableEntryDeleted;
 use Modules\Academic\Listeners\Timetables\NotifyTimetableEntryUpdated;
@@ -168,17 +119,13 @@ class EventServiceProvider extends ServiceProvider
         */
 
         CounselorCreated::class => [
-            LogCounselorCreated::class,
             ],
         CounselorDeleted::class => [
-            LogCounselorDeleted::class,
         ],
         CounselorUpdated::class => [
-            LogCounselorUpdated::class,
         ],
 
         CounselorRestored::class => [
-            LogCounselorRestored::class,
         ],
 
         CounselorSectionAssigned::class => [
@@ -192,7 +139,6 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         CounselorStatusToggled::class=>[
-            LogCounselorStatusToggled::class,
         ],
 
         /*
@@ -202,19 +148,15 @@ class EventServiceProvider extends ServiceProvider
        */
 
         GuardianCreated::class => [
-            LogGuardianCreated::class,
         ],
 
         GuardianDeleted::class => [
-            LogGuardianDeleted::class,
         ],
 
         GuardianUpdated::class => [
-            LogGuardianUpdated::class,
         ],
 
         GuardianRestored::class=>[
-            LogGuardianRestored::class,
         ],
 
         StudentAttachedToGuardian::class=>[
@@ -244,29 +186,23 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         InspectionProgramCreated::class=>[
-            LogInspectionProgramCreated::class,
         ],
 
         InspectionProgramDeleted::class=>[
-            LogInspectionProgramDeleted::class,
         ],
 
         InspectionProgramRestored::class=>[
-            LogInspectionProgramRestored::class,
         ],
 
         InspectionProgramSetCurrent::class=>[
-            LogInspectionProgramSetCurrent::class,
             NotifyInspectionProgramSetCurrent::class,
         ],
 
         InspectionProgramStatusUpdated::class=>[
-            LogInspectionProgramStatusUpdated::class,
             NotifyInspectionProgramStatusUpdated::class,
         ],
 
         InspectionProgramUpdated::class=>[
-            LogInspectionProgramUpdated::class,
         ],
 
         ObservationSubmitted::class=>[
@@ -281,24 +217,19 @@ class EventServiceProvider extends ServiceProvider
         */
 
         LeaveRequestCreated::class => [
-            LogLeaveRequestCreated::class,
         ],
 
         LeaveRequestUpdated::class => [
-            LogLeaveRequestUpdated::class,
         ],
 
         LeaveRequestDeleted::class => [
-            LogLeaveRequestDeleted::class,
         ],
 
         LeaveRequestApproved::class => [
-            LogLeaveRequestApproved::class,
             NotifyLeaveRequestApproved::class,
         ],
 
         LeaveRequestRejected::class => [
-            LogLeaveRequestRejected::class,
             NotifyLeaveRequestRejected::class,
         ],
 
@@ -310,17 +241,14 @@ class EventServiceProvider extends ServiceProvider
         */
 
         StudentAttendanceRecorded::class => [
-            LogStudentAttendanceRecorded::class,
             NotifyStudentAbsence::class,
             NotifyStudentLate::class,
         ],
 
         StudentAttendanceUpdated::class => [
-            LogStudentAttendanceUpdated::class,
         ],
 
         StudentAttendanceDeleted::class => [
-            LogStudentAttendanceDeleted::class,
         ],
 
         StudentAttendanceBulkRecorded::class => [
@@ -334,7 +262,6 @@ class EventServiceProvider extends ServiceProvider
        */
 
         MedicalRecordUpdated::class => [
-            LogMedicalRecordUpdated::class,
         ],
 
         StudentAssignedToSection::class=>[
@@ -347,30 +274,24 @@ class EventServiceProvider extends ServiceProvider
         ],
 
         StudentDeleted::class => [
-            LogStudentDeleted::class,
             NotifyStudentDeleted::class,
         ],
 
         StudentPromoted::class => [
-            LogStudentPromoted::class,
             NotifyStudentPromoted::class,
         ],
 
         StudentRestored::class => [
-            LogStudentRestored::class,
         ],
 
         StudentStatusUpdated::class => [
-            LogStudentStatusUpdated::class,
         ],
 
         StudentTransferred::class => [
-            LogStudentTransferred::class,
             NotifyStudentTransferred::class,
         ],
 
         StudentUpdated::class => [
-            LogStudentUpdated::class,
         ],
 
         /*
@@ -380,12 +301,10 @@ class EventServiceProvider extends ServiceProvider
        */
 
         StudentPointDeleted::class => [
-            LogStudentPointDeleted::class,
             NotifyStudentPointDeleted::class,
         ],
 
         StudentPointGiven::class => [
-            LogStudentPointGiven::class,
             NotifyStudentPointGiven::class,
         ],
 
@@ -401,19 +320,15 @@ class EventServiceProvider extends ServiceProvider
         */
 
         SubjectCreated::class => [
-            LogSubjectCreated::class,
         ],
 
         SubjectDeleted::class => [
-            LogSubjectDeleted::class,
         ],
 
         SubjectRestored::class => [
-            LogSubjectRestored::class,
         ],
 
         SubjectUpdated::class => [
-            LogSubjectUpdated::class,
         ],
 
         TeacherAssignedToSubject::class=>[
@@ -433,15 +348,12 @@ class EventServiceProvider extends ServiceProvider
         */
 
         TeacherAttendanceRecorded::class => [
-            LogTeacherAttendanceRecorded::class,
         ],
 
         TeacherAttendanceUpdated::class => [
-            LogTeacherAttendanceUpdated::class,
         ],
 
         TeacherAttendanceDeleted::class => [
-            LogTeacherAttendanceDeleted::class,
         ],
 
         /*
@@ -451,31 +363,24 @@ class EventServiceProvider extends ServiceProvider
         */
 
         QualificationAdded::class => [
-            LogTeacherQualificationAdded::class,
         ],
 
         QualificationDeleted::class => [
-            LogTeacherQualificationDeleted::class,
         ],
 
         TeacherCreated::class => [
-            LogTeacherCreated::class,
         ],
 
         TeacherDeleted::class => [
-            LogTeacherDeleted::class,
         ],
 
         TeacherRestored::class => [
-            LogTeacherRestored::class,
         ],
 
         TeacherStatusToggled::class => [
-            LogTeacherStatusToggled::class,
         ],
 
         TeacherUpdated::class => [
-            LogTeacherUpdated::class,
         ],
 
       /*
@@ -485,17 +390,14 @@ class EventServiceProvider extends ServiceProvider
       */
 
         TimetableEntryCreated::class => [
-            LogTimetableEntryCreated::class,
             NotifyTimetableEntryCreated::class,
         ],
 
         TimetableEntryDeleted::class => [
-            LogTimetableEntryDeleted::class,
             NotifyTimetableEntryDeleted::class,
         ],
 
         TimetableEntryUpdated::class => [
-            LogTimetableEntryUpdated::class,
             NotifyTimetableEntryUpdated::class,
         ],
     ];

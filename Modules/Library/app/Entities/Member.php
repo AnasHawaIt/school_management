@@ -18,7 +18,7 @@ class Member extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('member');
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty()->useLogName('member');
     }
     protected $dates = ['deleted_at'];
 

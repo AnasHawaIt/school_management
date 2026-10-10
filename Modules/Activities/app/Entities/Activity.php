@@ -131,7 +131,7 @@ class Activity extends Model
     }
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('activity');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('activity');
     }
 
 

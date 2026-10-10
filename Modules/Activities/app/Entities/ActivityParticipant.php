@@ -96,6 +96,6 @@ class ActivityParticipant extends Model
     }
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('activity_participant');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('activity_participant');
     }
 }

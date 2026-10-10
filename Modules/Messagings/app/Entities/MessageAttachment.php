@@ -15,7 +15,7 @@ class MessageAttachment extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('message_attachment');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('message_attachment');
     }
     protected $fillable = [
         'message_id',

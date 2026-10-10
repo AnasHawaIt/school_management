@@ -17,7 +17,7 @@ class Borrowing extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('borrowing');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('borrowing');
     }
     protected $table = 'transactions';
 

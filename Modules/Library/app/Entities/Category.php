@@ -17,7 +17,7 @@ class Category extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('category');
+        return LogOptions::defaults()->logUnguarded()->logOnlyDirty()->useLogName('category');
     }
     protected $dates = ['deleted_at'];
 

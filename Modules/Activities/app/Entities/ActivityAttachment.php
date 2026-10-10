@@ -80,7 +80,7 @@ class ActivityAttachment extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('activity_attachment');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('activity_attachment');
     }
 
 }

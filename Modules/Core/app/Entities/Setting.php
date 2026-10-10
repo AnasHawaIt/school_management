@@ -13,7 +13,7 @@ class Setting extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->logOnlyDirty()->useLogName('setting');
+        return LogOptions::defaults()->logFillable()->logOnlyDirty()->useLogName('setting');
     }
 
     protected $fillable = [
