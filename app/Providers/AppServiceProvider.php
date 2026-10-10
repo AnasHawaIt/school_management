@@ -22,6 +22,7 @@ use Modules\Library\Entities\Category;
 use Modules\Library\Entities\Fine;
 use Modules\Library\Entities\Member;
 use Modules\Library\Entities\Publisher;
+use Modules\Library\Entities\Reservation;
 use Modules\Library\Policy\LibraryPolicy;
 use Modules\Messagings\Entities\Message;
 use Modules\Messagings\Entities\MessageAttachment;
@@ -29,6 +30,9 @@ use Modules\Messagings\Policies\MessagePolicy;
 use Modules\Notifications\Entities\Notification;
 use Modules\Transport\Entities\Bus;
 use Modules\Examination\Entities\Exam;
+use Modules\Transport\Entities\Route;
+use Modules\Transport\Entities\RouteStop;
+use Modules\Transport\Entities\Subscription;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -63,6 +67,7 @@ class AppServiceProvider extends ServiceProvider
             'category' => Category::class,
             'member' => Member::class,
             'publisher' => Publisher::class,
+            'reservation '=> Reservation::class,
             'book_copy' => BookCopy::class,
             'fine' => Fine::class,
             'user' => User::class,
@@ -76,6 +81,9 @@ class AppServiceProvider extends ServiceProvider
             'message_attachment' => MessageAttachment::class,
             'announcement' =>Announcement::class,
             'exam' => Exam::class,
+            'route' => Route::class,
+            'route_stop' => RouteStop::class,
+            'subscription' => Subscription::class,
         ]);
     }
 }

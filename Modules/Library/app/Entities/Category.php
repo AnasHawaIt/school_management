@@ -7,12 +7,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Library\Entities\Book;
 
-// use Modules\Library\Database\Factories\CategoryFactory;
+// Category.php
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Category extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logOnlyDirty()->useLogName('category');
+    }
     protected $dates = ['deleted_at'];
 
     protected $guarded = [];

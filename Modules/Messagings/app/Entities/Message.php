@@ -9,11 +9,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Core\Entities\User;
 use Modules\Messagings\database\factories\MessageFactory;
 
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Message extends Model
 {
-    use SoftDeletes,HasFactory;
+    use SoftDeletes, HasFactory, LogsActivity;
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logOnlyDirty()->useLogName('message');
+    }
     protected $dates = ['deleted_at'];
 
     protected $fillable = [

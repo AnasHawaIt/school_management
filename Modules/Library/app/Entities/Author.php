@@ -9,11 +9,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Library\Entities\Book;
 
 // use Modules\Library\Database\Factories\AuthorFactory;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Author extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logOnlyDirty()->useLogName('author');
+    }
     protected $dates = ['deleted_at'];
 
     protected $guarded = [];

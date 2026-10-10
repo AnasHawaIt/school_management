@@ -7,11 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 // use Modules\Library\Database\Factories\PublishersFactory;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Publisher extends Model
 {
-    use HasFactory,softDeletes;
+    use HasFactory, softDeletes, LogsActivity;
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logOnlyDirty()->useLogName('publisher');
+    }
     protected $dates = ['deleted_at'];
 
 

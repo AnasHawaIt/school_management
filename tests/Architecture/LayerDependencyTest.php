@@ -48,7 +48,7 @@ const DEBT = [
     'Messagings'    => ['Announcement'],
     'SMS'           => ['Announcement'],
     'School'        => ['Academic', 'Messagings', 'Notifications'],
-    'Transport'     => ['Library', 'Notifications'],
+    'Transport'     => ['Notifications'], // Library انحلت 2026-10-05 (كان Listener غلط مستورد من Library)
 ];
 
 foreach (ALL_MODULES as $module) {

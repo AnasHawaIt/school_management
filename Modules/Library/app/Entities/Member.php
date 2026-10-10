@@ -9,11 +9,17 @@ use Modules\Core\Entities\User;
 use Modules\Library\Entities\Borrowing;
 
 // use Modules\Library\Database\Factories\MemberFactory;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Member extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->logOnlyDirty()->useLogName('member');
+    }
     protected $dates = ['deleted_at'];
 
     protected $guarded=[];

@@ -37,21 +37,6 @@ use Modules\Messagings\Listeners\Broadcasting\BroadcastParticipantLeft;
 use Modules\Messagings\Listeners\Broadcasting\BroadcastParticipantRemoved;
 use Modules\Messagings\Listeners\Broadcasting\BroadcastTypingStarted;
 use Modules\Messagings\Listeners\Broadcasting\BroadcastTypingStopped;
-use Modules\Messagings\Listeners\Log\LogAdminDemotedEventListener;
-use Modules\Messagings\Listeners\Log\LogAdminPromotedEventListener;
-use Modules\Messagings\Listeners\Log\LogAttachmentDeletedEventListener;
-use Modules\Messagings\Listeners\Log\LogAttachmentUploadedEventListener;
-use Modules\Messagings\Listeners\Log\LogConversationCreatedEventListener;
-use Modules\Messagings\Listeners\Log\LogConversationDeletedEventListener;
-use Modules\Messagings\Listeners\Log\LogMessageCreatedEventListener;
-use Modules\Messagings\Listeners\Log\LogMessageDeletedEventListener;
-use Modules\Messagings\Listeners\Log\LogMessageForwardedEventListener;
-use Modules\Messagings\Listeners\Log\LogMessageReadEventListener;
-use Modules\Messagings\Listeners\Log\LogMessageRepliedEventListener;
-use Modules\Messagings\Listeners\Log\LogMessageRestoredEventListener;
-use Modules\Messagings\Listeners\Log\LogParticipantAddedEventListener;
-use Modules\Messagings\Listeners\Log\LogParticipantLeftEventListener;
-use Modules\Messagings\Listeners\Log\LogParticipantRemovedEventListener;
 use Modules\Messagings\Listeners\SendAdminDemotedNotificationListener;
 use Modules\Messagings\Listeners\SendAdminPromotedNotificationListener;
 use Modules\Messagings\Listeners\SendEmailListener;
@@ -77,12 +62,10 @@ class EventServiceProvider extends ServiceProvider
             // =========================
 
             ConversationCreated::class => [
-                LogConversationCreatedEventListener::class,
                 BroadcastConversationCreated::class
             ],
 
             ConversationDeleted::class => [
-                LogConversationDeletedEventListener::class,
                 BroadcastConversationDeleted::class
             ],
 
@@ -91,19 +74,16 @@ class EventServiceProvider extends ServiceProvider
             // =========================
 
             ParticipantAdded::class => [
-                LogParticipantAddedEventListener::class,
                 SendParticipantAddedNotificationListener::class,
                 BroadcastParticipantAdded::class,
             ],
 
             ParticipantRemoved::class => [
-                LogParticipantRemovedEventListener::class,
                 SendParticipantRemovedNotificationListener::class,
                 BroadcastParticipantRemoved::class,
             ],
 
             ParticipantLeft::class => [
-                LogParticipantLeftEventListener::class,
                 SendParticipantLeftNotificationListener::class,
                 BroadcastParticipantLeft::class,
             ],
@@ -113,13 +93,11 @@ class EventServiceProvider extends ServiceProvider
             // =========================
 
             AdminPromoted::class => [
-                LogAdminPromotedEventListener::class,
                 SendAdminPromotedNotificationListener::class,
                 BroadcastAdminPromoted::class,
             ],
 
             AdminDemoted::class => [
-                LogAdminDemotedEventListener::class,
                 SendAdminDemotedNotificationListener::class,
                 BroadcastAdminDemoted::class,
             ],
@@ -130,7 +108,6 @@ class EventServiceProvider extends ServiceProvider
             // =========================
 
             MessageCreated::class => [
-                LogMessageCreatedEventListener::class,
                 StoreMessageStatisticsListener::class,
                 SendMessageNotificationListener::class,
                 SendEmailListener::class,
@@ -138,29 +115,24 @@ class EventServiceProvider extends ServiceProvider
             ],
 
             MessageDeleted::class => [
-                LogMessageDeletedEventListener::class,
                 BroadcastMessageDeleted::class,
             ],
 
             MessageForwarded::class => [
-                LogMessageForwardedEventListener::class,
                 UpdateMessageForwardStatistic::class,
                 BroadcastMessageForwarded::class,
             ],
 
             MessageRead::class => [
-                LogMessageReadEventListener::class,
                 BroadcastMessageRead::class,
             ],
 
             MessageReplied::class => [
-                LogMessageRepliedEventListener::class,
                 UpdateMessageReplyStatistic::class,
                 BroadcastMessageReplied::class,
             ],
 
             MessageRestored::class => [
-                LogMessageRestoredEventListener::class,
                 BroadcastMessageRestored::class,
             ],
 
@@ -170,12 +142,10 @@ class EventServiceProvider extends ServiceProvider
 
 
             AttachmentUploaded::class => [
-                LogAttachmentUploadedEventListener::class,
                 BroadcastAttachmentUploaded::class,
             ],
 
             AttachmentDeleted::class => [
-                LogAttachmentDeletedEventListener::class,
                 BroadcastAttachmentDeleted::class,
             ],
 
