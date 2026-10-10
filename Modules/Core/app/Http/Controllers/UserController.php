@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Modules\Core\Contracts\Repositories\ActivityLogRepositoryInterface;
 use Modules\Core\Contracts\Repositories\UserRepositoryInterface;
 use Modules\Core\Contracts\Services\UserServiceInterface;
 use Modules\Core\Entities\User;
@@ -24,11 +23,9 @@ class UserController extends Controller
     public function __construct(
         UserServiceInterface $userService,
         UserRepositoryInterface $userRepository,
-        ActivityLogRepositoryInterface $activityLogRepository
     ) {
         $this->userService = $userService;
         $this->userRepository = $userRepository; // هذا كان مفقوداً
-        $this->activityLogRepository = $activityLogRepository; // هذا كان مفقوداً
     }
 
     /**
@@ -273,7 +270,6 @@ class UserController extends Controller
         $oldValues = $user->toArray();
         $data=[];
         if ($request->hasFile('avatar')) {
-            // قم بحذف الصورة القديمة من السيرفر إذا لزم الأمر
             if ($user->avatar_path) {
                 Storage::disk('public')->delete($user->avatar_path);
             }
@@ -281,13 +277,7 @@ class UserController extends Controller
             $data['avatar']=$request->file('avatar')->store('avatars', 'public');
         }
         $updated = $this->userRepository->update($id, $data);
-        $this->activityLogRepository->log([
-            'action' => 'update',
-            'model_type' => User::class,
-            //  'model_id' => $id,
-            'old_values' => $oldValues,
-            'new_values' => $data,
-        ]);
+
         DB::commit();
 
         return response()->json([

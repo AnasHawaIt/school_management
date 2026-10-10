@@ -79,10 +79,6 @@ class CoreServiceProvider extends ServiceProvider
         );
 
         // ActivityLog Repository
-        $this->app->bind(
-            \Modules\Core\Contracts\Repositories\ActivityLogRepositoryInterface::class,
-            \Modules\Core\Repositories\ActivityLogRepository::class
-        );
 
         // Setting Repository
         $this->app->bind(

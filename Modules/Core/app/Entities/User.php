@@ -81,10 +81,7 @@ class User extends Authenticatable implements CanResetPassword
             ->withTimestamps();
     }
 
-    public function activityLogs()
-    {
-        return $this->hasMany(EventLogs::class);
-    }
+
     public function teacher() { return $this->hasOne(Teacher::class); }
     public function student() { return $this->hasOne(Student::class); }
     public function parent()  { return $this->hasOne(Guardian::class); }
