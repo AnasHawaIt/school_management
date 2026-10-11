@@ -7,7 +7,7 @@
     "Library": true,
     "Transport": true,
     "Attendance": true,
-    "Messaging": true,
+    "Messagings": true,
     "Examination": true,
     "Notifications": true,
     "Activities": true,
