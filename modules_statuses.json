@@ -9,7 +9,6 @@
     "Attendance": true,
     "Messaging": true,
     "Examination": true,
-    "Messagings": true,
     "Notifications": true,
     "Activities": true,
     "Finance": true
