@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace Modules\Shared\Services;
 
-use App\Models\Images;
+use Modules\Shared\Entities\Images;
 use Illuminate\Support\Facades\Storage;
 
 class ImageService

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * حارس: الكلاسات الأساسية انتقلت من app/ إلى Modules\Shared (المرحلة ب، يوم 7).
+ * حارس: الكلاسات الأساسية انتقلت من app/ إلى Modules\Shared (المرحلة ب، يوم 7 و8).
  * فحص نصي (مو arch()) لأنو arch() ما بيلتقط استيراد كلاس صار محذوف أصلاً.
  */
 
@@ -10,6 +10,8 @@ const LEGACY_SHARED_IMPORTS = [
     'App\\Contracts\\Repositories\\BaseRepositoryInterface',
     'App\\Filters\\BaseFilter',
     'App\\Filters\\QueryFilter',
+    'App\\Models\\Images',
+    'App\\Services\\ImageService',
 ];
 
 it('never imports the legacy base repository / filter classes from app/', function () {

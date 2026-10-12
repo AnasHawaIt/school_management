@@ -2,7 +2,7 @@
 
 namespace Modules\Library\Services;
 
-use App\Services\ImageService;
+use Modules\Shared\Services\ImageService;
 use Modules\Library\Events\BookEvents\BookCreated;
 use Modules\Library\Events\BookEvents\BookDeleted;
 use Modules\Library\Events\BookEvents\BookForceDeleted;

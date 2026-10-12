@@ -2,7 +2,7 @@
 
  namespace Modules\Messagings\Entities;
 
- use App\Models\Images;
+ use Modules\Shared\Entities\Images;
  use Illuminate\Database\Eloquent\Factories\HasFactory;
  use Illuminate\Database\Eloquent\Model;
  use Illuminate\Database\Eloquent\SoftDeletes;

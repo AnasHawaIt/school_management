@@ -2,7 +2,7 @@
 
 namespace Modules\Library\Services;
 
-use App\Services\ImageService;
+use Modules\Shared\Services\ImageService;
 use Modules\Library\Events\AuthorEvents\AuthorCreated;
 use Modules\Library\Events\AuthorEvents\AuthorDeleted;
 use Modules\Library\Events\AuthorEvents\AuthorForceDeleted;

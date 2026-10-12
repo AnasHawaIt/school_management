@@ -2,7 +2,7 @@
 
 namespace Modules\Announcement\Services;
 
-use App\Services\ImageService;
+use Modules\Shared\Services\ImageService;
 use Modules\Announcement\Entities\Announcement;
 use Modules\Announcement\Events\AnnouncementCreated;
 use Modules\Announcement\Events\AnnouncementDeleted;
