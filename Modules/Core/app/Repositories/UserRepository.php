@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Repositories;
 
-use App\Repositories\BaseRepository;
+use Modules\Shared\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Modules\Core\Contracts\Repositories\UserRepositoryInterface;

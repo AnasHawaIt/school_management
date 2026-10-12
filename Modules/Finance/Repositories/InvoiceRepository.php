@@ -2,7 +2,7 @@
 
 namespace Modules\Finance\Repositories;
 
-use App\Repositories\BaseRepository;
+use Modules\Shared\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Finance\Contracts\Repositories\InvoiceRepositoryInterface;
 use Modules\Finance\Entities\Invoice;

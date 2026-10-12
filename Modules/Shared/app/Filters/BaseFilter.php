@@ -1,5 +1,5 @@
 <?php
-namespace App\Filters;
+namespace Modules\Shared\Filters;
 
 use Illuminate\Http\Request;
 

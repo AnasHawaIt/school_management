@@ -8,7 +8,7 @@
 const MODULE_NAMES = [
     'Academic', 'Activities', 'Announcement', 'Attendance', 'Core',
     'Examination', 'Finance', 'Library', 'Messagings', 'Notifications',
-    'SMS', 'School', 'Transport',
+    'SMS', 'School', 'Shared', 'Transport',
 ];
 
 function scanForBadNamespace(string $root): array

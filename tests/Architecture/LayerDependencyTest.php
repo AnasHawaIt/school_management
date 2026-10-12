@@ -16,11 +16,12 @@
 const ALL_MODULES = [
     'Academic', 'Activities', 'Announcement', 'Attendance', 'Core',
     'Examination', 'Finance', 'Library', 'Messagings', 'Notifications',
-    'SMS', 'School', 'Transport',
+    'SMS', 'School', 'Shared', 'Transport',
 ];
 
 // الاعتماديات المسموحة لكل موديول (القسم 10.1 بالوثيقة)
 const ALLOWED = [
+    'Shared'        => [], // الطبقة 0: ما بتعتمد على أي موديول
     'Core'          => [],
     'School'        => ['Core'],
     'Academic'      => ['School', 'Core'],
@@ -52,7 +53,11 @@ const DEBT = [
 ];
 
 foreach (ALL_MODULES as $module) {
+    // Shared (الطبقة 0) مسموح لكل الموديولات تستخدمه، ما عدا Shared نفسه
     $allowed = ALLOWED[$module] ?? [];
+    if ($module !== 'Shared') {
+        $allowed[] = 'Shared';
+    }
     $debt = DEBT[$module] ?? [];
 
     // ممنوع = كل الموديولات الأخرى، ناقص نفسه، ناقص المسموح فعلياً

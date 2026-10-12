@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Transport\Filters;
 
-use App\Filters\QueryFilter;
+use Modules\Shared\Filters\QueryFilter;
 
 class SubscriptionFilter extends QueryFilter
 {

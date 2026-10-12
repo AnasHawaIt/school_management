@@ -2,7 +2,7 @@
 
 namespace Modules\Finance\Repositories;
 
-use App\Repositories\BaseRepository;
+use Modules\Shared\Repositories\BaseRepository;
 use Modules\Finance\Contracts\Repositories\FeeTypeRepositoryInterface;
 use Modules\Finance\Entities\FeeType;
 

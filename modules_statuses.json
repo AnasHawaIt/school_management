@@ -1,4 +1,5 @@
 {
+    "Shared": true,
     "Core": true,
     "School": true,
     "Academic": true,

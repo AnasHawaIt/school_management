@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Contracts\Repositories;
 
-use App\Contracts\Repositories\BaseRepositoryInterface;
+use Modules\Shared\Contracts\Repositories\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 
 interface PermissionRepositoryInterface extends BaseRepositoryInterface

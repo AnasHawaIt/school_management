@@ -1,0 +1,11 @@
+{
+    "name": "Shared",
+    "alias": "shared",
+    "description": "Layer 0: technical building blocks (base repository, filters, helpers). Knows nothing about the school domain.",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Shared\\Providers\\SharedServiceProvider"
+    ],
+    "files": []
+}

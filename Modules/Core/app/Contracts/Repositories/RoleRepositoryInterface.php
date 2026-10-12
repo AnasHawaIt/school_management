@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Contracts\Repositories;
 
-use App\Contracts\Repositories\BaseRepositoryInterface;
+use Modules\Shared\Contracts\Repositories\BaseRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Modules\Core\Entities\Permission;
 use Modules\Core\Entities\Role;

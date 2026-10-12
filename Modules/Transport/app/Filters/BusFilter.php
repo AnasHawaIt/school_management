@@ -2,7 +2,7 @@
 
 namespace Modules\Transport\Filters;
 
-use App\Filters\QueryFilter;
+use Modules\Shared\Filters\QueryFilter;
 
 class BusFilter extends QueryFilter
 {

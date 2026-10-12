@@ -2,7 +2,7 @@
 
 namespace Modules\Finance\Repositories;
 
-use App\Repositories\BaseRepository;
+use Modules\Shared\Repositories\BaseRepository;
 use Modules\Finance\Contracts\Repositories\StudentFeeRepositoryInterface;
 use Modules\Finance\Entities\StudentFee;
 use Illuminate\Database\Eloquent\Collection;

@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Library\Filters;
 
-use App\Filters\QueryFilter;
+use Modules\Shared\Filters\QueryFilter;
 
 class TransactionFilter extends QueryFilter
 {

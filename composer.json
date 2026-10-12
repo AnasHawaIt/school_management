@@ -45,6 +45,7 @@
             "Modules\\Notifications\\": "Modules/Notifications/app/",
             "Modules\\SMS\\": "Modules/SMS/app/",
             "Modules\\School\\": "Modules/School/app/",
+            "Modules\\Shared\\": "Modules/Shared/app/",
             "Modules\\Transport\\": "Modules/Transport/app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",

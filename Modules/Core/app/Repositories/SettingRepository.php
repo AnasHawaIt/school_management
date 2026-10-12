@@ -2,7 +2,7 @@
 
 namespace Modules\Core\Repositories;
 
-use App\Repositories\BaseRepository;
+use Modules\Shared\Repositories\BaseRepository;
 use Modules\Core\Contracts\Repositories\SettingRepositoryInterface;
 use Modules\Core\Entities\Setting;
 

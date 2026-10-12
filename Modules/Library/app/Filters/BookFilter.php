@@ -2,7 +2,7 @@
 
 namespace Modules\Library\Filters;
 
-use App\Filters\QueryFilter;
+use Modules\Shared\Filters\QueryFilter;
 use Modules\Library\Enums\BookCopiesStatus;
 
 class BookFilter extends QueryFilter

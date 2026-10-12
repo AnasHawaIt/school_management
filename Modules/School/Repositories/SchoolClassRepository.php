@@ -2,7 +2,7 @@
 
 namespace Modules\School\Repositories;
 
-use App\Repositories\BaseRepository;
+use Modules\Shared\Repositories\BaseRepository;
 use Modules\School\Contracts\Repositories\SchoolClassRepositoryInterface;
 use Modules\School\Entities\SchoolClass;
 use Illuminate\Database\Eloquent\Collection;

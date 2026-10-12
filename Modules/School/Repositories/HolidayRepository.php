@@ -2,7 +2,7 @@
 
 namespace Modules\School\Repositories;
 
-use App\Repositories\BaseRepository;
+use Modules\Shared\Repositories\BaseRepository;
 use Modules\School\Contracts\Repositories\HolidayRepositoryInterface;
 use Modules\School\Entities\Holiday;
 use Illuminate\Database\Eloquent\Collection;
